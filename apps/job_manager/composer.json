@@ -4,6 +4,11 @@
     "minimum-stability": "dev",
     "require": {
         "php": "^7.1",
+        "enqueue/amqp-ext": "^0.4.0@dev",
+        "enqueue/enqueue-bundle": "^0.4.0@dev",
+        "makasim/values": "@dev",
+        "makasim/yadm": "@dev",
+        "makasim/yadm-bundle": "@dev",
         "symfony/flex": "^1.0",
         "symfony/framework-bundle": "^3.3",
         "symfony/yaml": "^3.3"
