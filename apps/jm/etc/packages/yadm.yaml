@@ -1,0 +1,12 @@
+yadm:
+    mongo_uri: '%env(MONGO_DSN)%'
+    models:
+        process:
+            class: 'Formapro\Pvm\Process'
+            collection: 'pvm_process'
+            database: 'job_manager'
+
+        process_execution:
+            class: 'Formapro\Pvm\Process'
+            collection: 'pvm_process_execution'
+            database: 'job_manager'
