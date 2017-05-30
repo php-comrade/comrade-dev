@@ -3,3 +3,21 @@
 parameters:
 
 services:
+    app.pvm.storage:
+        class: 'Formapro\Pvm\MongoProcessStorage'
+        arguments:
+            - '@yadm.process.storage'
+            - '@yadm.process_execution.storage'
+
+    app.pvm.behavior_registry:
+        class: 'Formapro\Pvm\DefaultBehaviorRegistry'
+
+    app.pvm.async_transition:
+        class: 'Formapro\Pvm\SyncAsyncTransition'
+
+    app.pvm.process_engine:
+        class: 'Formapro\Pvm\ProcessEngine'
+        arguments:
+            - '@app.pvm.behavior_registry'
+            - '@app.pvm.storage'
+            - '@app.pvm.async_transition'
