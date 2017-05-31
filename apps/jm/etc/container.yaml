@@ -7,26 +7,33 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
-        public: false
+        public: true
 
     App\Storage\JobStorage: '@yadm.job.storage'
-    App\Storage\ProcessStorage: '@yadm.job.process'
-    App\Storage\ProcessExecutionStorage: '@yadm.job.execution_process'
+    App\Storage\ProcessStorage: '@yadm.process.storage'
+    App\Storage\ProcessExecutionStorage: '@yadm.process_execution.storage'
+
+    Enqueue\Client\ProducerInterface:
+        alias: 'enqueue.producer'
+        
 
     Formapro\Pvm\MongoProcessStorage:
         autowire: false
-        public: true
+        arguments:
+            - '@App\Storage\ProcessStorage'
+            - '@App\Storage\ProcessExecutionStorage'
 
     Formapro\Pvm\ProcessStorage: '@Formapro\Pvm\MongoProcessStorage'
 
     Formapro\Pvm\DefaultBehaviorRegistry: ~
+
     Formapro\Pvm\BehaviorRegistry: '@Formapro\Pvm\DefaultBehaviorRegistry'
+        
 
     Formapro\Pvm\SyncAsyncTransition: ~
     Formapro\Pvm\AsyncTransition: '@Formapro\Pvm\SyncAsyncTransition'
 
     Formapro\Pvm\ProcessEngine:
-        public: true
 
     App\Infra\JsonSchema\LocalUriRetriver:
         autowire: false
@@ -48,7 +55,10 @@ services:
 
     App\Infra\JsonSchema\SchemaValidator: ~
 
-    App\Async\:
-        resource: '../src/Async/*Processor'
-        public: true
+    App\Async\Processor\:
+        resource: '../src/Async/Processor/*'
         tags: ['enqueue.client.processor']
+
+    App\Pvm\Behavior\:
+        resource: '../src/Pvm/Behavior/*'
+        tags: ['pvm.behavior']

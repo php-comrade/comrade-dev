@@ -1,0 +1,10 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "id": "http://jm.forma-pro.com/schemas/message/create-job.json",
+  "type": "object",
+  "properties": {
+    "job": { "$ref": "../job.json" },
+    "token": { "$ref": "../uid.json" }
+  },
+  "required": ["job", "token"]
+}

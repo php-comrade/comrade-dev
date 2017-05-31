@@ -3,9 +3,13 @@
 namespace App;
 
 use App\Async\CreateJob;
+use App\Async\ExecuteJob;
+use App\Infra\DependencyInjection\RegisterPvmBehaviorPass;
 use App\Infra\Yadm\ObjectBuilderHook;
 use App\Model\Job;
+use App\Model\Process;
 use function Makasim\Values\register_cast_hooks;
+use function Makasim\Values\register_hook;
 use function Makasim\Values\register_object_hooks;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -58,6 +62,8 @@ final class Kernel extends BaseKernel
             $loader->load($confDir.'/packages/'.$this->environment.'/**/*'.self::CONFIG_EXTS, 'glob');
         }
         $loader->load($confDir.'/container'.self::CONFIG_EXTS, 'glob');
+
+        $container->addCompilerPass(new RegisterPvmBehaviorPass());
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
@@ -77,9 +83,16 @@ final class Kernel extends BaseKernel
         register_cast_hooks();
         register_object_hooks();
 
+        register_hook(Process::class, 'post_build_sub_object', function($object, $context, $contextKey) {
+            if (method_exists($object, 'setProcess')) {
+                $object->setProcess($context);
+            }
+        });
+
         (new ObjectBuilderHook([
             Job::SCHEMA => Job::class,
             CreateJob::SCHEMA => CreateJob::class,
+            ExecuteJob::SCHEMA => ExecuteJob::class,
         ]))->register();
     }
 }

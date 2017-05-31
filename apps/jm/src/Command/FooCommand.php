@@ -5,13 +5,16 @@ use App\Async\CreateJob;
 use App\Async\Topics;
 use App\Infra\Uuid;
 use App\Model\Job;
+use Enqueue\Client\ProducerInterface;
+use Formapro\Pvm\BehaviorRegistry;
+use Formapro\Pvm\DefaultBehaviorRegistry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
-class TestCommand extends Command implements ContainerAwareInterface
+class FooCommand extends Command implements ContainerAwareInterface
 {
     use ContainerAwareTrait;
 
@@ -26,6 +29,7 @@ class TestCommand extends Command implements ContainerAwareInterface
         $job->setName('testJob');
         $job->setUid(Uuid::generate());
         $job->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
+
 
         $producer = $this->container->get('enqueue.producer');
 

@@ -2,7 +2,8 @@ version: '3'
 
 services:
   jm:
-    image: 'formapro/nginx-php-fpm:latest-all-exts'
+    build: { context: 'docker/jm' }
+    # image: 'formapro/nginx-php-fpm:latest-all-exts'
     restart: 'on-failure'
     working_dir: '/jobs_dev/apps/jm'
     depends_on:

@@ -1,22 +1,22 @@
 {
     "type": "project",
     "license": "proprietary",
-    "minimum-stability": "dev",
     "require": {
         "php": "^7.1",
         "enqueue/amqp-ext": "^0.4.0@dev",
         "enqueue/enqueue-bundle": "^0.4.11@dev",
         "formapro/php-quartz": "dev-master",
         "formapro/pvm": "dev-master",
+        "justinrainbow/json-schema": "^5",
         "makasim/values": "@dev",
         "makasim/yadm": "@dev",
         "makasim/yadm-bundle": "@dev",
+        "ramsey/uuid": "^3.6",
         "symfony/console": "^3.3",
         "symfony/flex": "^1.0",
         "symfony/framework-bundle": "^3.3",
-        "symfony/yaml": "^3.3",
-        "justinrainbow/json-schema": "^5",
-        "ramsey/uuid": "^3.6"
+        "symfony/twig-bundle": "^3.3",
+        "symfony/yaml": "^3.3"
     },
     "require-dev": {
         "symfony/dotenv": "^3.3"
