@@ -2,6 +2,11 @@
 
 namespace App;
 
+use App\Async\CreateJob;
+use App\Infra\Yadm\ObjectBuilderHook;
+use App\Model\Job;
+use function Makasim\Values\register_cast_hooks;
+use function Makasim\Values\register_object_hooks;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -37,6 +42,14 @@ final class Kernel extends BaseKernel
         }
     }
 
+    public function boot()
+    {
+        if (false == $this->booted) {
+            $this->configureYadmHooks();
+        }
+        parent::boot();
+    }
+
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
         $confDir = dirname(__DIR__).'/etc';
@@ -57,5 +70,16 @@ final class Kernel extends BaseKernel
             $routes->import($confDir.'/routing/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
         }
         $routes->import($confDir.'/routing'.self::CONFIG_EXTS, '/', 'glob');
+    }
+
+    public function configureYadmHooks()
+    {
+        register_cast_hooks();
+        register_object_hooks();
+
+        (new ObjectBuilderHook([
+            Job::SCHEMA => Job::class,
+            CreateJob::SCHEMA => CreateJob::class,
+        ]))->register();
     }
 }

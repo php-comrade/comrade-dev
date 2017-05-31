@@ -1,12 +1,20 @@
 yadm:
     mongo_uri: '%env(MONGO_DSN)%'
     models:
+        job:
+            class: 'App\Model\Job'
+            storage_class: 'App\Storage\JobStorage'
+            collection: 'job'
+            database: '%mongo_database%'
+
         process:
-            class: 'Formapro\Pvm\Process'
+            class: 'App\Model\Process'
+            storage_class: 'App\Storage\ProcessStorage'
             collection: 'pvm_process'
-            database: 'job_manager'
+            database: '%mongo_database%'
 
         process_execution:
-            class: 'Formapro\Pvm\Process'
+            class: 'App\Model\Process'
+            storage_class: 'App\Storage\ProcessExecutionStorage'
             collection: 'pvm_process_execution'
-            database: 'job_manager'
+            database: '%mongo_database%'

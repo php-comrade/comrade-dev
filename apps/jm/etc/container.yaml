@@ -1,23 +1,54 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
+    mongo_database: 'job_manager'
 
 services:
-    app.pvm.storage:
-        class: 'Formapro\Pvm\MongoProcessStorage'
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    App\Storage\JobStorage: '@yadm.job.storage'
+    App\Storage\ProcessStorage: '@yadm.job.process'
+    App\Storage\ProcessExecutionStorage: '@yadm.job.execution_process'
+
+    Formapro\Pvm\MongoProcessStorage:
+        autowire: false
+        public: true
+
+    Formapro\Pvm\ProcessStorage: '@Formapro\Pvm\MongoProcessStorage'
+
+    Formapro\Pvm\DefaultBehaviorRegistry: ~
+    Formapro\Pvm\BehaviorRegistry: '@Formapro\Pvm\DefaultBehaviorRegistry'
+
+    Formapro\Pvm\SyncAsyncTransition: ~
+    Formapro\Pvm\AsyncTransition: '@Formapro\Pvm\SyncAsyncTransition'
+
+    Formapro\Pvm\ProcessEngine:
+        public: true
+
+    App\Infra\JsonSchema\LocalUriRetriver:
+        autowire: false
         arguments:
-            - '@yadm.process.storage'
-            - '@yadm.process_execution.storage'
+            - '%kernel.root_dir%/../etc/schemas'
+            - 'http://jm.forma-pro.com/schemas'
 
-    app.pvm.behavior_registry:
-        class: 'Formapro\Pvm\DefaultBehaviorRegistry'
+    JsonSchema\Uri\UriRetriever:
+        autowire: false
+        calls:
+            - ['setUriRetriever', ['@App\Infra\JsonSchema\LocalUriRetriver']]
 
-    app.pvm.async_transition:
-        class: 'Formapro\Pvm\SyncAsyncTransition'
-
-    app.pvm.process_engine:
-        class: 'Formapro\Pvm\ProcessEngine'
+    JsonSchema\Constraints\Factory:
+        autowire: false
         arguments:
-            - '@app.pvm.behavior_registry'
-            - '@app.pvm.storage'
-            - '@app.pvm.async_transition'
+            - ~
+            - '@JsonSchema\Uri\UriRetriever'
+            - 2 # JsonSchema\Constraints\Constraint::CHECK_MODE_TYPE_CAST
+
+    App\Infra\JsonSchema\SchemaValidator: ~
+
+    App\Async\:
+        resource: '../src/Async/*Processor'
+        public: true
+        tags: ['enqueue.client.processor']
