@@ -10,7 +10,6 @@ use Enqueue\Psr\PsrContext;
 use Enqueue\Psr\PsrMessage;
 use Enqueue\Psr\PsrProcessor;
 use Formapro\Pvm\ProcessEngine;
-use function Makasim\Yadm\set_object_id;
 use function Makasim\Yadm\unset_object_id;
 use Psr\Log\NullLogger;
 
@@ -76,7 +75,6 @@ class ScheduleJobProcessor implements PsrProcessor, TopicSubscriberInterface
             $waitTokens = $this->processEngine->proceed($token, new NullLogger());
         } finally {
             $this->processExecutionStorage->update($process);
-
         }
 
         return self::ACK;

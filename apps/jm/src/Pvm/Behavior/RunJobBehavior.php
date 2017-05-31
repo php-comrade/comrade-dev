@@ -2,27 +2,28 @@
 namespace App\Pvm\Behavior;
 
 use App\Async\ExecuteJob;
-use App\Async\Topics;
 use App\Model\Job;
-use Enqueue\Client\ProducerInterface;
+use Enqueue\Psr\PsrContext;
+use Enqueue\Util\JSON;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Exception\WaitExecutionException;
 use Formapro\Pvm\SignalBehavior;
 use Formapro\Pvm\Token;
+use function Makasim\Values\get_value;
 
 class RunJobBehavior implements Behavior, SignalBehavior
 {
     /**
-     * @var ProducerInterface
+     * @var PsrContext
      */
-    private $producer;
+    private $psrContext;
 
     /**
-     * @param ProducerInterface $producer
+     * @param PsrContext $psrContext
      */
-    public function __construct(ProducerInterface $producer)
+    public function __construct(PsrContext $psrContext)
     {
-        $this->producer = $producer;
+        $this->psrContext = $psrContext;
     }
 
     /**
@@ -39,7 +40,10 @@ class RunJobBehavior implements Behavior, SignalBehavior
         $message->setJob($job);
         $message->setToken($token->getId());
 
-        $this->producer->send(Topics::EXECUTE_JOB, $message);
+        $queue = $this->psrContext->createQueue(get_value($job, 'enqueue.queue'));
+        $message = $this->psrContext->createMessage(JSON::encode($message));
+
+        $this->psrContext->createProducer()->send($queue, $message);
 
         throw new WaitExecutionException();
     }
@@ -49,6 +53,13 @@ class RunJobBehavior implements Behavior, SignalBehavior
      */
     public function signal(Token $token)
     {
+        $transition = $token->getTransition();
 
+        /** @var Job $job */
+        $job = $transition->getTo()->getObject('job');
+
+        if (false == get_value($job, 'finished', false)) {
+            throw new WaitExecutionException();
+        }
     }
 }

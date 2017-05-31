@@ -5,4 +5,4 @@ trap "docker-compose stop jm_consumer; killall fswatch" SIGTERM  SIGINT
 
 fswatch --latency=0.5 -o -L apps/jm                   | xargs -n1 -I{} docker-compose restart jm_consumer &
 
-docker-compose logs --tail=10 -f jm jm_consumer
+docker-compose logs --tail=10 -f jm jm_consumer demo

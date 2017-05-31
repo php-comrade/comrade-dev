@@ -7,5 +7,5 @@ class Topics
 
     const SCHEDULE_JOB = 'job_manager.schedule_job';
 
-    const EXECUTE_JOB = 'job_manager.execute_job';
+    const PROCESS_FEEDBACK = 'job_manager.process_feedback';
 }

@@ -5,9 +5,7 @@ use App\Async\CreateJob;
 use App\Async\Topics;
 use App\Infra\Uuid;
 use App\Model\Job;
-use Enqueue\Client\ProducerInterface;
-use Formapro\Pvm\BehaviorRegistry;
-use Formapro\Pvm\DefaultBehaviorRegistry;
+use function Makasim\Values\set_value;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -29,7 +27,7 @@ class FooCommand extends Command implements ContainerAwareInterface
         $job->setName('testJob');
         $job->setUid(Uuid::generate());
         $job->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
-
+        set_value($job, 'enqueue.queue', 'demo_job');
 
         $producer = $this->container->get('enqueue.producer');
 

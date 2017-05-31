@@ -41,6 +41,28 @@ services:
       - RABBITMQ_DEFAULT_PASS=guest
       - RABBITMQ_DEFAULT_VHOST=jm
 
+  demo:
+    image: 'formapro/nginx-php-fpm:latest-all-exts'
+    restart: 'on-failure'
+    entrypoint: "php demo.php"
+    working_dir: '/jobs_dev/apps/demo'
+    depends_on:
+      - 'rabbitmq'
+    volumes:
+      - './apps/demo:/jobs_dev/apps/demo:cached'
+      - './apps/jm:/jobs_dev/apps/jm:cached'
+    env_file: 'apps/jm/.env'
+
+  rabbitmq:
+    image: 'enqueue/rabbitmq:latest'
+    restart: 'on-failure'
+    environment:
+      - VIRTUAL_HOST=rabbitmq.jm.loc
+      - VIRTUAL_PORT=15672
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_DEFAULT_VHOST=jm
+
   mongo:
     image: 'mongo:3'
     restart: 'on-failure'

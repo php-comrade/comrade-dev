@@ -4,6 +4,7 @@ namespace App;
 
 use App\Async\CreateJob;
 use App\Async\ExecuteJob;
+use App\Async\ProcessFeedback;
 use App\Infra\DependencyInjection\RegisterPvmBehaviorPass;
 use App\Infra\Yadm\ObjectBuilderHook;
 use App\Model\Job;
@@ -93,6 +94,7 @@ final class Kernel extends BaseKernel
             Job::SCHEMA => Job::class,
             CreateJob::SCHEMA => CreateJob::class,
             ExecuteJob::SCHEMA => ExecuteJob::class,
+            ProcessFeedback::SCHEMA => ProcessFeedback::class,
         ]))->register();
     }
 }
