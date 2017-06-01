@@ -54,6 +54,10 @@ class ProcessFeedbackProcessor implements PsrProcessor, TopicSubscriberInterface
      */
     public function process(PsrMessage $psrMessage, PsrContext $psrContext)
     {
+        if ($psrMessage->isRedelivered()) {
+            return Result::reject('The message failed. Remove it');
+        }
+
         $data = JSON::decode($psrMessage->getBody());
         if ($errors = $this->schemaValidator->validate($data, ProcessFeedback::SCHEMA)) {
             return Result::reject(Errors::toString($errors, 'Message schema validation has failed.'));
@@ -63,14 +67,14 @@ class ProcessFeedbackProcessor implements PsrProcessor, TopicSubscriberInterface
         $job = $message->getJob();
         $token = $message->getToken();
 
-        if (false == $process = $this->processExecutionStorage->findOne(['job.uid' => $job->getUid()])) {
+        if (false == $process = $this->processExecutionStorage->findOne(['jobs.uid' => $job->getUid()])) {
             return self::REJECT;
         }
 
         try {
             $token = $process->getToken($token);
 
-            set_object($token->getTransition()->getTo(), 'job', $job);
+            set_object($token->getTransition()->getTo(), 'jobFeedback', $message->getJobFeedback());
 
             $this->processEngine->proceed($token, new NullLogger());
         } finally {

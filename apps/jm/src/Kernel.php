@@ -8,6 +8,7 @@ use App\Async\ProcessFeedback;
 use App\Infra\DependencyInjection\RegisterPvmBehaviorPass;
 use App\Infra\Yadm\ObjectBuilderHook;
 use App\Model\Job;
+use App\Model\JobFeedback;
 use App\Model\Process;
 use function Makasim\Values\register_cast_hooks;
 use function Makasim\Values\register_hook;
@@ -92,6 +93,7 @@ final class Kernel extends BaseKernel
 
         (new ObjectBuilderHook([
             Job::SCHEMA => Job::class,
+            JobFeedback::SCHEMA => JobFeedback::class,
             CreateJob::SCHEMA => CreateJob::class,
             ExecuteJob::SCHEMA => ExecuteJob::class,
             ProcessFeedback::SCHEMA => ProcessFeedback::class,

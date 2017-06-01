@@ -2,13 +2,15 @@
 namespace App\Pvm\Behavior;
 
 use App\Async\ExecuteJob;
-use App\Model\Job;
+use App\Model\JobFeedback;
+use App\Model\Process;
 use Enqueue\Psr\PsrContext;
 use Enqueue\Util\JSON;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Exception\WaitExecutionException;
 use Formapro\Pvm\SignalBehavior;
 use Formapro\Pvm\Token;
+use function Makasim\Values\get_object;
 use function Makasim\Values\get_value;
 
 class RunJobBehavior implements Behavior, SignalBehavior
@@ -31,10 +33,9 @@ class RunJobBehavior implements Behavior, SignalBehavior
      */
     public function execute(Token $token)
     {
-        $transition = $token->getTransition();
-
-        /** @var Job $job */
-        $job = $transition->getTo()->getObject('job');
+        /** @var Process $process */
+        $process = $token->getProcess();
+        $job = $process->getJob(get_value($token->getTransition()->getTo(), 'job.uid'));
 
         $message = ExecuteJob::create();
         $message->setJob($job);
@@ -53,12 +54,10 @@ class RunJobBehavior implements Behavior, SignalBehavior
      */
     public function signal(Token $token)
     {
-        $transition = $token->getTransition();
+        /** @var JobFeedback $jobFeedback */
+        $jobFeedback = get_object($token->getTransition()->getTo(), 'jobFeedback');
 
-        /** @var Job $job */
-        $job = $transition->getTo()->getObject('job');
-
-        if (false == get_value($job, 'finished', false)) {
+        if (false == get_value($jobFeedback, 'finished', false)) {
             throw new WaitExecutionException();
         }
     }

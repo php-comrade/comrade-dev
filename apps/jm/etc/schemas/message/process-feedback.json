@@ -4,7 +4,8 @@
   "type": "object",
   "properties": {
     "job": { "$ref": "../job.json" },
+    "jobFeedback": { "$ref": "../job-feedback.json" },
     "token": { "type": "string" }
   },
-  "required": ["job", "token"]
+  "required": ["job", "jobFeedback", "token"]
 }

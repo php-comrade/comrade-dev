@@ -6,6 +6,7 @@ use App\Model\Process;
 use App\Storage\ProcessExecutionStorage;
 use App\Storage\ProcessStorage;
 use Enqueue\Client\TopicSubscriberInterface;
+use Enqueue\Consumption\Result;
 use Enqueue\Psr\PsrContext;
 use Enqueue\Psr\PsrMessage;
 use Enqueue\Psr\PsrProcessor;
@@ -50,6 +51,10 @@ class ScheduleJobProcessor implements PsrProcessor, TopicSubscriberInterface
      */
     public function process(PsrMessage $psrMessage, PsrContext $psrContext)
     {
+        if ($psrMessage->isRedelivered()) {
+            return Result::reject('The message failed. Remove it');
+        }
+
         $processId = $psrMessage->getBody();
 
         /** @var Process $process */

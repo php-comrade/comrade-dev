@@ -70,6 +70,10 @@ class CreateJobProcessor implements PsrProcessor, TopicSubscriberInterface
      */
     public function process(PsrMessage $psrMessage, PsrContext $psrContext)
     {
+        if ($psrMessage->isRedelivered()) {
+            return Result::reject('The message failed. Remove it');
+        }
+
         $data = JSON::decode($psrMessage->getBody());
         if ($errors = $this->schemaValidator->validate($data, CreateJob::SCHEMA)) {
             return Result::reject(Errors::toString($errors, 'Message schema validation has failed.'));
@@ -79,7 +83,7 @@ class CreateJobProcessor implements PsrProcessor, TopicSubscriberInterface
         $this->jobStorage->update($job, ['uid' => $job->getUid()], ['upsert' => true]);
 
         $process = $this->createProcessForJobService->createProcess($job);
-        $this->processStorage->update($process, ['job.uid' => $job->getUid()], ['upsert' => true]);
+        $this->processStorage->update($process, ['jobs.uid' => $job->getUid()], ['upsert' => true]);
 
         $this->producer->send(Topics::SCHEDULE_JOB, $process->getId());
 

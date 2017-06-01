@@ -3,6 +3,7 @@ namespace App\Async;
 
 use App\Infra\Yadm\CreateTrait;
 use App\Model\Job;
+use App\Model\JobFeedback;
 use function Makasim\Values\get_object;
 use function Makasim\Values\get_value;
 use function Makasim\Values\get_values;
@@ -34,6 +35,22 @@ class ProcessFeedback implements \JsonSerializable
     public function setJob(Job $job)
     {
         set_object($this, 'job', $job);
+    }
+
+    /**
+     * @return JobFeedback|object
+     */
+    public function getJobFeedback()
+    {
+        return get_object($this,'jobFeedback');
+    }
+
+    /**
+     * @param JobFeedback $jobFeedback
+     */
+    public function setJobFeedback(JobFeedback $jobFeedback)
+    {
+        set_object($this, 'jobFeedback', $jobFeedback);
     }
 
     /**
