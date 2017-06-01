@@ -4,7 +4,7 @@ services:
   jm:
     build: { context: 'docker/jm' }
     # image: 'formapro/nginx-php-fpm:latest-all-exts'
-    restart: 'on-failure'
+    restart: 'always'
     working_dir: '/jobs_dev/apps/jm'
     depends_on:
       - 'rabbitmq'
@@ -21,8 +21,8 @@ services:
 
   jm_consumer:
     image: 'formapro/nginx-php-fpm:latest-all-exts'
-    restart: 'on-failure'
-    entrypoint: "php bin/console enqueue:consume --setup-broker -vvv"
+    restart: 'always'
+    entrypoint: "php bin/consume.php"
     working_dir: '/jobs_dev/apps/jm'
     depends_on:
       - 'rabbitmq'
@@ -33,7 +33,7 @@ services:
 
   rabbitmq:
     image: 'enqueue/rabbitmq:latest'
-    restart: 'on-failure'
+    restart: 'always'
     environment:
       - VIRTUAL_HOST=rabbitmq.jm.loc
       - VIRTUAL_PORT=15672
@@ -43,7 +43,7 @@ services:
 
   demo:
     image: 'formapro/nginx-php-fpm:latest-all-exts'
-    restart: 'on-failure'
+    restart: 'always'
     entrypoint: "php demo.php"
     working_dir: '/jobs_dev/apps/demo'
     depends_on:
@@ -55,7 +55,7 @@ services:
 
   rabbitmq:
     image: 'enqueue/rabbitmq:latest'
-    restart: 'on-failure'
+    restart: 'always'
     environment:
       - VIRTUAL_HOST=rabbitmq.jm.loc
       - VIRTUAL_PORT=15672
@@ -65,13 +65,13 @@ services:
 
   mongo:
     image: 'mongo:3'
-    restart: 'on-failure'
+    restart: 'always'
     ports:
       - "27017:27017"
 
   front:
     image: 'jwilder/nginx-proxy'
-    restart: 'on-failure'
+    restart: 'always'
     ports:
       - "80:80"
     volumes:

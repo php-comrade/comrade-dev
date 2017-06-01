@@ -4,27 +4,21 @@ namespace App\Async\Processor;
 use App\Async\Topics;
 use App\Model\Process;
 use App\Storage\ProcessExecutionStorage;
-use App\Storage\ProcessStorage;
 use Enqueue\Client\TopicSubscriberInterface;
 use Enqueue\Consumption\Result;
 use Enqueue\Psr\PsrContext;
 use Enqueue\Psr\PsrMessage;
 use Enqueue\Psr\PsrProcessor;
+use Enqueue\Util\JSON;
 use Formapro\Pvm\ProcessEngine;
-use function Makasim\Yadm\unset_object_id;
 use Psr\Log\NullLogger;
 
-class ScheduleJobProcessor implements PsrProcessor, TopicSubscriberInterface
+class HandleAsyncTransitionProcessor implements PsrProcessor, TopicSubscriberInterface
 {
     /**
      * @var ProcessEngine
      */
     private $processEngine;
-
-    /**
-     * @var ProcessStorage
-     */
-    private $processStorage;
 
     /**
      * @var ProcessExecutionStorage
@@ -33,16 +27,11 @@ class ScheduleJobProcessor implements PsrProcessor, TopicSubscriberInterface
 
     /**
      * @param ProcessEngine $processEngine
-     * @param ProcessStorage $processStorage
      * @param ProcessExecutionStorage $processExecutionStorage
      */
-    public function __construct(
-        ProcessEngine $processEngine,
-        ProcessStorage $processStorage,
-        ProcessExecutionStorage $processExecutionStorage
-    ) {
+    public function __construct(ProcessEngine $processEngine, ProcessExecutionStorage $processExecutionStorage)
+    {
         $this->processEngine = $processEngine;
-        $this->processStorage = $processStorage;
         $this->processExecutionStorage = $processExecutionStorage;
     }
 
@@ -55,27 +44,19 @@ class ScheduleJobProcessor implements PsrProcessor, TopicSubscriberInterface
             return Result::reject('The message failed. Remove it');
         }
 
-        $processId = $psrMessage->getBody();
+        $data = JSON::decode($psrMessage->getBody());
 
         /** @var Process $process */
-        if (false == $process = $this->processExecutionStorage->findOne(['id' => $processId])) {
-            /** @var Process $process */
-            if (false == $process = $this->processStorage->findOne(['id' => $processId])) {
-                return self::REJECT;
-            }
+        if (false == $process = $this->processExecutionStorage->findOne(['id' => $data['process']])) {
+            return Result::reject('Process was not found');
+        }
 
-            unset_object_id($process);
-            $this->processExecutionStorage->insert($process);
+        if (false == $token = $process->getToken($data['token'])) {
+            return Result::reject('No such token');
         }
 
         try {
-            foreach ($process->getTransitions() as $transition) {
-                if ($transition->getFrom() === null) {
-                    $token = $process->createToken($transition);
-
-                    $this->processEngine->proceed($token);
-                }
-            }
+            $this->processEngine->proceed($token, new NullLogger());
         } finally {
             $this->processExecutionStorage->update($process);
         }
@@ -88,6 +69,6 @@ class ScheduleJobProcessor implements PsrProcessor, TopicSubscriberInterface
      */
     public static function getSubscribedTopics()
     {
-        return [Topics::SCHEDULE_JOB];
+        return [Topics::PVM_HANDLE_ASYNC_TRANSITION];
     }
 }

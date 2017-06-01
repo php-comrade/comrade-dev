@@ -12,6 +12,7 @@ use Formapro\Pvm\SignalBehavior;
 use Formapro\Pvm\Token;
 use function Makasim\Values\get_object;
 use function Makasim\Values\get_value;
+use function Makasim\Values\get_values;
 
 class RunJobBehavior implements Behavior, SignalBehavior
 {
@@ -56,6 +57,14 @@ class RunJobBehavior implements Behavior, SignalBehavior
     {
         /** @var JobFeedback $jobFeedback */
         $jobFeedback = get_object($token->getTransition()->getTo(), 'jobFeedback');
+
+        /** @var Process $process */
+        $process = $token->getProcess();
+        $job = $process->getJob(get_value($token->getTransition()->getTo(), 'job.uid'));
+
+        if (get_value($job, 'timeoutAt')) {
+            return;
+        }
 
         if (false == get_value($jobFeedback, 'finished', false)) {
             throw new WaitExecutionException();

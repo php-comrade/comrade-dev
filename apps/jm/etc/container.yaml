@@ -28,10 +28,9 @@ services:
     Formapro\Pvm\DefaultBehaviorRegistry: ~
 
     Formapro\Pvm\BehaviorRegistry: '@Formapro\Pvm\DefaultBehaviorRegistry'
-        
 
-    Formapro\Pvm\SyncAsyncTransition: ~
-    Formapro\Pvm\AsyncTransition: '@Formapro\Pvm\SyncAsyncTransition'
+    App\Pvm\SyncAsyncTransition: ~
+    Formapro\Pvm\AsyncTransition: '@App\Pvm\SyncAsyncTransition'
 
     Formapro\Pvm\ProcessEngine:
 

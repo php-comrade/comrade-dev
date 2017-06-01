@@ -3,8 +3,7 @@
   "id": "http://jm.forma-pro.com/schemas/message/createJob.json",
   "type": "object",
   "properties": {
-    "job": { "$ref": "../job.json" },
-    "token": { "type": "string" }
+    "jobPattern": { "$ref": "../jobPattern.json" }
   },
-  "required": ["job", "token"]
+  "required": ["jobPattern"]
 }

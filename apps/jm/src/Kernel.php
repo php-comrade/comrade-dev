@@ -7,8 +7,10 @@ use App\Async\ExecuteJob;
 use App\Async\ProcessFeedback;
 use App\Infra\DependencyInjection\RegisterPvmBehaviorPass;
 use App\Infra\Yadm\ObjectBuilderHook;
+use App\Model\GracePeriodPolicy;
 use App\Model\Job;
 use App\Model\JobFeedback;
+use App\Model\JobPattern;
 use App\Model\Process;
 use function Makasim\Values\register_cast_hooks;
 use function Makasim\Values\register_hook;
@@ -30,12 +32,12 @@ final class Kernel extends BaseKernel
 
     public function getCacheDir(): string
     {
-        return dirname(__DIR__).'/var/cache/'.$this->environment;
+        return '/dev/shm/jm/cache/'.$this->getEnvironment();
     }
 
     public function getLogDir(): string
     {
-        return dirname(__DIR__).'/var/logs';
+        return '/dev/shm/jm/logs/'.$this->getEnvironment();
     }
 
     public function registerBundles(): iterable
@@ -93,10 +95,12 @@ final class Kernel extends BaseKernel
 
         (new ObjectBuilderHook([
             Job::SCHEMA => Job::class,
+            JobPattern::SCHEMA => JobPattern::class,
             JobFeedback::SCHEMA => JobFeedback::class,
             CreateJob::SCHEMA => CreateJob::class,
             ExecuteJob::SCHEMA => ExecuteJob::class,
             ProcessFeedback::SCHEMA => ProcessFeedback::class,
+            GracePeriodPolicy::SCHEMA => GracePeriodPolicy::class,
         ]))->register();
     }
 }

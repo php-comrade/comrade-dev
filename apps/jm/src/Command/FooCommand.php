@@ -4,7 +4,9 @@ namespace App\Command;
 use App\Async\CreateJob;
 use App\Async\Topics;
 use App\Infra\Uuid;
-use App\Model\Job;
+use App\Model\GracePeriodPolicy;
+use App\Model\JobPattern;
+use Enqueue\Client\ProducerInterface;
 use function Makasim\Values\set_value;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,17 +25,24 @@ class FooCommand extends Command implements ContainerAwareInterface
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $job = Job::create();
-        $job->setName('testJob');
-        $job->setUid(Uuid::generate());
-        $job->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
-        set_value($job, 'enqueue.queue', 'demo_job');
+        $gracePeriodPolicy = GracePeriodPolicy::create();
+        $gracePeriodPolicy->setPeriodEndsAt(new \DateTime('now + 10 seconds'));
 
+        $jobPattern = JobPattern::create();
+        $jobPattern->setName('testJob');
+        $jobPattern->setUid(Uuid::generate());
+        $jobPattern->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
+        $jobPattern->addPolicy($gracePeriodPolicy);
+        set_value($jobPattern, 'enqueue.queue', 'demo_job');
+
+        /** @var ProducerInterface $producer */
         $producer = $this->container->get('enqueue.producer');
 
         $message = CreateJob::create();
-        $message->setJob($job);
+        $message->setJobPattern($jobPattern);
 
         $producer->send(Topics::CREATE_JOB, $message);
+
+        $output->writeln('');
     }
 }

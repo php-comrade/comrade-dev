@@ -5,6 +5,7 @@ use App\Async\CreateJob;
 use App\Async\Topics;
 use App\Infra\JsonSchema\Errors;
 use App\Infra\JsonSchema\SchemaValidator;
+use App\Model\Job;
 use App\Service\CreateProcessForJobService;
 use App\Storage\JobStorage;
 use App\Storage\ProcessStorage;
@@ -79,7 +80,8 @@ class CreateJobProcessor implements PsrProcessor, TopicSubscriberInterface
             return Result::reject(Errors::toString($errors, 'Message schema validation has failed.'));
         }
 
-        $job = CreateJob::create($data)->getJob();
+        $jobPattern = CreateJob::create($data)->getJobPattern();
+        $job = Job::createFromPattern($jobPattern);
         $this->jobStorage->update($job, ['uid' => $job->getUid()], ['upsert' => true]);
 
         $process = $this->createProcessForJobService->createProcess($job);
