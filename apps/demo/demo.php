@@ -35,7 +35,7 @@ class EchoLogger implements LoggerInterface
 register_object_hooks();
 
 /** @var \Enqueue\AmqpExt\AmqpContext $c */
-$c = dsn_to_context('amqp://guest:guest@rabbitmq:5672/jm');
+$c = dsn_to_context('amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1');
 
 $queue = $c->createQueue('demo_job');
 $queue->addFlag(AMQP_DURABLE);
@@ -54,14 +54,13 @@ $queueConsumer->bind($queue, function(PsrMessage $message, PsrContext $context) 
     /** @var JobFeedback $jobFeedback */
 
     if (get_value($job, 'retryAttempts', 0) > 2) {
-        set_value($job, 'finished', true);
+        $job->setStatus(Job::STATUS_COMPLETED);
         $jobFeedback = build_object(JobFeedback::class, [
             'finished' => true,
             'schema' => JobFeedback::SCHEMA,
         ]);
     } else {
-        set_value($job, 'finished', false);
-        set_value($job, 'failed', true);
+        $job->setStatus(Job::STATUS_FAILED);
         $jobFeedback = build_object(JobFeedback::class, [
             'finished' => false,
             'failed' => true,
@@ -75,10 +74,10 @@ $queueConsumer->bind($queue, function(PsrMessage $message, PsrContext $context) 
     $feedbackMessage->setJob($job);
     $feedbackMessage->setJobFeedback($jobFeedback);
 
-    $feedbackQueue = $context->createQueue('job_manager_process_feedback');
+    $feedbackQueue = $context->createQueue('enqueue.app.default');
     $message = $context->createMessage(JSON::encode($feedbackMessage), [
         'enqueue.topic_name' => 'job_manager.process_feedback',
-        'enqueue.processor_queue_name' => 'job_manager_process_feedback',
+        'enqueue.processor_queue_name' => 'enqueue.app.default',
         'enqueue.processor_name' => 'job_manager_process_feedback',
     ]);
 

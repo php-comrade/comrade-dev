@@ -1,11 +1,13 @@
 {
   "$schema": "http://json-schema.org/schema#",
   "id": "http://jm.forma-pro.com/schemas/job.json",
-  "type": "object",
-  "properties": {
-    "uid": { "$ref" : "http://jm.forma-pro.com/schemas/uid.json" },
-    "name": { "type": "string"},
-    "details": { "type": ["object", "array"] }
-  },
-  "required": ["uid", "name"]
+  "allOf": [
+    { "$ref": "jobPattern.json" },
+    {
+      "type": "object",
+      "properties": {
+        "status": { "type" : "string", "enum": [ "new", "running", "canceled", "completed", "failed", "terminated" ] }
+      }
+    }
+  ]
 }

@@ -33,15 +33,14 @@ class RetryFailedBehavior implements Behavior
     {
         /** @var Process $process */
         $process = $token->getProcess();
+        $job = $process->getTokenJob($token);
+        if (false == $job->isFailed()) {
+            return ['complete'];
+        }
 
         /** @var RetryFailedPolicy $retryFailedPolicy */
         $retryFailedPolicy = get_object($token->getTransition()->getTo(), 'retryFailedPolicy');
         $retryLimit = $retryFailedPolicy->getRetryLimit();
-        $job = $process->getJob(get_value($token->getTransition()->getTo(), 'job.uid'));
-
-        if (get_value($job, 'finished', false)) {
-            return ['complete'];
-        }
 
         $retryAttempts = get_value($job, 'retryAttempts', 0);
         if ($retryAttempts >= $retryLimit) {

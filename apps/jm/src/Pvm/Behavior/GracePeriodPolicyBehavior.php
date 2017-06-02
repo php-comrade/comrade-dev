@@ -36,7 +36,7 @@ class GracePeriodPolicyBehavior implements Behavior
         /** @var GracePeriodPolicy $gracePeriodPolicy */
         $gracePeriodPolicy = get_object($token->getTransition()->getTo(), 'gracePeriodPolicy');
         $endsAt = $gracePeriodPolicy->getPeriodEndsAt()->getTimestamp();
-        $job = $process->getJob(get_value($token->getTransition()->getTo(), 'job.uid'));
+        $job = $process->getTokenJob($token);
 
         $this->processExecutionStorage->update($token->getProcess());
         while (time() < $endsAt) {
@@ -45,8 +45,8 @@ class GracePeriodPolicyBehavior implements Behavior
 
         $reloadedProcess = $this->processExecutionStorage->findOne(['id' => $process->getId()]);
 
-        $job = $reloadedProcess->getJob(get_value($token->getTransition()->getTo(), 'job.uid'));
-        if (get_value($job, 'finished', false)) {
+        $job = $reloadedProcess->getJob($job->getUid());
+        if ($job->isCompleted() || $job->isCanceled() || $job->isTerminated()) {
             return ['completed'];
         }
 

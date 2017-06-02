@@ -75,6 +75,7 @@ class ProcessFeedbackProcessor implements PsrProcessor, TopicSubscriberInterface
             $token = $process->getToken($token);
 
             set_object($token->getTransition()->getTo(), 'jobFeedback', $message->getJobFeedback());
+            $process->getJob($job->getUid())->setStatus($job->getStatus());
 
             $this->processEngine->proceed($token, new NullLogger());
         } finally {
@@ -89,12 +90,6 @@ class ProcessFeedbackProcessor implements PsrProcessor, TopicSubscriberInterface
      */
     public static function getSubscribedTopics()
     {
-        return [
-            Topics::PROCESS_FEEDBACK => [
-                'queueName' => 'job_manager_process_feedback',
-                'queueNameHardcoded' => true,
-                'processorName' => 'job_manager_process_feedback',
-            ]
-        ];
+        return [Topics::PROCESS_FEEDBACK => ['processorName' => 'job_manager_process_feedback']];
     }
 }

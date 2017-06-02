@@ -2,6 +2,7 @@
 namespace App\Pvm\Behavior;
 
 use App\Async\ExecuteJob;
+use App\Model\Job;
 use App\Model\JobFeedback;
 use App\Model\Process;
 use Enqueue\Psr\PsrContext;
@@ -36,7 +37,7 @@ class RunJobBehavior implements Behavior, SignalBehavior
     {
         /** @var Process $process */
         $process = $token->getProcess();
-        $job = $process->getJob(get_value($token->getTransition()->getTo(), 'job.uid'));
+        $job = $process->getTokenJob($token);
 
         $message = ExecuteJob::create();
         $message->setJob($job);
@@ -44,6 +45,8 @@ class RunJobBehavior implements Behavior, SignalBehavior
 
         $queue = $this->psrContext->createQueue(get_value($job, 'enqueue.queue'));
         $message = $this->psrContext->createMessage(JSON::encode($message));
+
+        $job->setStatus(Job::STATUS_RUNNING);
 
         $this->psrContext->createProducer()->send($queue, $message);
 
@@ -55,29 +58,22 @@ class RunJobBehavior implements Behavior, SignalBehavior
      */
     public function signal(Token $token)
     {
-        /** @var JobFeedback $jobFeedback */
-        $jobFeedback = get_object($token->getTransition()->getTo(), 'jobFeedback');
-
         /** @var Process $process */
         $process = $token->getProcess();
-        $job = $process->getJob(get_value($token->getTransition()->getTo(), 'job.uid'));
+        $job = $process->getTokenJob($token);
 
-        if (get_value($jobFeedback, 'finished')) {
+        if ($job->isFailed()) {
+            return ['failed'];
+        }
+
+        if ($job->isCompleted() || $job->isCanceled() || $job->isTerminated()){
             return ['completed'];
         }
 
-        if (get_value($job, 'timeoutAt')) {
-            return ['failed'];
-        }
-
-        if (get_value($jobFeedback, 'failed', false)) {
-            return ['failed'];
-        }
-
-        if (false == get_value($jobFeedback, 'finished', false)) {
+        if ($job->isRunning() || $job->isNew()) {
             throw new WaitExecutionException();
         }
 
-        return ['completed'];
+        throw new \LogicException(sprintf('Status "%s"is not supported', $job->getStatus()));
     }
 }
