@@ -5,8 +5,10 @@ use App\Infra\Uuid;
 use App\Model\GracePeriodPolicy;
 use App\Model\Job;
 use App\Model\Process;
+use App\Model\RetryFailedPolicy;
 use App\Pvm\Behavior\GracePeriodPolicyBehavior;
 use App\Pvm\Behavior\IdleBehavior;
+use App\Pvm\Behavior\RetryFailedBehavior;
 use App\Pvm\Behavior\RunJobBehavior;
 use Formapro\Pvm\Node;
 use function Makasim\Values\set_object;
@@ -34,27 +36,51 @@ class CreateProcessForJobService
         $runJobTask->setLabel('Run job: '.$job->getUid());
         $runJobTask->setBehavior(RunJobBehavior::class);
         set_value($runJobTask, 'job.uid', $job->getUid());
-
         $process->createTransition($startTask, $runJobTask);
 
-        $this->buildPolicyNodes($job, $startTask, $process);
+        $jobCompletedTask = $process->createNode();
+        $jobCompletedTask->setLabel('Completed');
+        $jobCompletedTask->setBehavior(IdleBehavior::class);
+        $process->createTransition($runJobTask, $jobCompletedTask, 'completed');
 
-        return $process;
-    }
-    
-    private function buildPolicyNodes(Job $job, Node $startTask, Process $process)
-    {
+        $onFailedTasks = [];
+
+        $jobFailedTask = $process->createNode();
+        $jobFailedTask->setLabel('Failed');
+        $jobFailedTask->setBehavior(IdleBehavior::class);
+        $runJobToFailedTransition = $process->createTransition($runJobTask, $jobFailedTask, 'failed');
+
         foreach ($job->getPolices() as $policy) {
             if ($policy instanceof  GracePeriodPolicy) {
+                $now = new \DateTime('now');
+                $diff = $now->diff($policy->getPeriodEndsAt());
+
                 $policyTask = $process->createNode();
-                $policyTask->setLabel('Grace period for job: '.$job->getUid());
+                $policyTask->setLabel('Grace period '.$diff->s.' seconds');
                 $policyTask->setBehavior(GracePeriodPolicyBehavior::class);
                 set_value($policyTask, 'job.uid', $job->getUid());
                 set_object($policyTask, 'gracePeriodPolicy', $policy);
 
                 $transition = $process->createTransition($startTask, $policyTask);
                 $transition->setAsync(true);
+
+                $process->createTransition($policyTask, $jobFailedTask);
+            }
+
+            if ($policy instanceof  RetryFailedPolicy) {
+                $policyTask = $process->createNode();
+                $policyTask->setLabel('Retries '.$policy->getRetryLimit());
+                $policyTask->setBehavior(RetryFailedBehavior::class);
+                set_value($policyTask, 'job.uid', $job->getUid());
+                set_object($policyTask, 'retryFailedPolicy', $policy);
+
+                $onFailedTasks[] = $policyTask;
+
+                $process->breakTransition($runJobToFailedTransition, $policyTask);
+                $process->createTransition($policyTask, $runJobTask, 'retry');
             }
         }
+
+        return $process;
     }
 }

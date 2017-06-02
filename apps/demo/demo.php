@@ -14,7 +14,9 @@ use Enqueue\Psr\PsrContext;
 use Enqueue\Psr\PsrMessage;
 use Enqueue\Util\JSON;
 use function Makasim\Values\build_object;
+use function Makasim\Values\get_value;
 use function Makasim\Values\register_object_hooks;
+use function Makasim\Values\set_value;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
 
@@ -50,10 +52,22 @@ $queueConsumer->bind($queue, function(PsrMessage $message, PsrContext $context) 
     /** @var Job $job */
     $job = build_object(Job::class, $data['job']);
     /** @var JobFeedback $jobFeedback */
-    $jobFeedback = build_object(JobFeedback::class, [
-        'finished' => true,
-        'schema' => JobFeedback::SCHEMA,
-    ]);
+
+    if (get_value($job, 'retryAttempts', 0) > 2) {
+        set_value($job, 'finished', true);
+        $jobFeedback = build_object(JobFeedback::class, [
+            'finished' => true,
+            'schema' => JobFeedback::SCHEMA,
+        ]);
+    } else {
+        set_value($job, 'finished', false);
+        set_value($job, 'failed', true);
+        $jobFeedback = build_object(JobFeedback::class, [
+            'finished' => false,
+            'failed' => true,
+            'schema' => JobFeedback::SCHEMA,
+        ]);
+    }
 
     /** @var ProcessFeedback $feedbackMessage */
     $feedbackMessage = build_object(ProcessFeedback::class, []);

@@ -37,7 +37,11 @@ class ConsumeDaemon
                     echo 'Daemon is reloading now.'.PHP_EOL;
 
                     foreach ($workers as $id => $worker) {
-                        $worker->signal(SIGQUIT);
+                        try {
+                            if ($worker->isRunning()) {
+                                $worker->signal(SIGQUIT);
+                            }
+                        } catch (\Exception $e) { }
                     }
 
                     break;

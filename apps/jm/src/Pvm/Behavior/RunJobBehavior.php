@@ -62,12 +62,22 @@ class RunJobBehavior implements Behavior, SignalBehavior
         $process = $token->getProcess();
         $job = $process->getJob(get_value($token->getTransition()->getTo(), 'job.uid'));
 
+        if (get_value($jobFeedback, 'finished')) {
+            return ['completed'];
+        }
+
         if (get_value($job, 'timeoutAt')) {
-            return;
+            return ['failed'];
+        }
+
+        if (get_value($jobFeedback, 'failed', false)) {
+            return ['failed'];
         }
 
         if (false == get_value($jobFeedback, 'finished', false)) {
             throw new WaitExecutionException();
         }
+
+        return ['completed'];
     }
 }

@@ -12,6 +12,7 @@ use App\Model\Job;
 use App\Model\JobFeedback;
 use App\Model\JobPattern;
 use App\Model\Process;
+use App\Model\RetryFailedPolicy;
 use function Makasim\Values\register_cast_hooks;
 use function Makasim\Values\register_hook;
 use function Makasim\Values\register_object_hooks;
@@ -101,6 +102,7 @@ final class Kernel extends BaseKernel
             ExecuteJob::SCHEMA => ExecuteJob::class,
             ProcessFeedback::SCHEMA => ProcessFeedback::class,
             GracePeriodPolicy::SCHEMA => GracePeriodPolicy::class,
+            RetryFailedPolicy::SCHEMA => RetryFailedPolicy::class,
         ]))->register();
     }
 }

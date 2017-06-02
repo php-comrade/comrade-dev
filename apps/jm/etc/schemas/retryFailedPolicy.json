@@ -1,0 +1,9 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "id": "http://jm.forma-pro.com/schemas/retryFailedPolicy.json",
+  "type": "object",
+  "properties": {
+    "retryLimit": { "type" : "integer", "minimum": "1" }
+  },
+  "required": ["retryLimit"]
+}

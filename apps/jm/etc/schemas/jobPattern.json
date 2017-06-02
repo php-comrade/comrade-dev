@@ -10,9 +10,8 @@
       "type": "array",
       "items": {
         "oneOf": [
-          {
-            "$ref": "gracePeriodPolicy.json"
-          }
+          { "$ref": "gracePeriodPolicy.json" },
+          { "$ref": "retryFailedPolicy.json" }
         ]
       }
     }

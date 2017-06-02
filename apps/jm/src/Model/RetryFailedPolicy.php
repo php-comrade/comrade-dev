@@ -1,0 +1,31 @@
+<?php
+namespace App\Model;
+
+use App\Infra\Yadm\CreateTrait;
+use function Makasim\Values\get_value;
+use function Makasim\Values\set_value;
+
+class RetryFailedPolicy implements Policy
+{
+    use CreateTrait;
+
+    const SCHEMA = 'http://jm.forma-pro.com/schemas/retryFailedPolicy.json';
+
+    private $values = [];
+
+    /**
+     * @param int $retryLimit
+     */
+    public function setRetryLimit(int $retryLimit)
+    {
+        set_value($this, 'retryLimit', $retryLimit);
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getRetryLimit(): ?int
+    {
+        return get_value($this, 'retryLimit');
+    }
+}
