@@ -15,22 +15,21 @@ services:
 
     Enqueue\Client\ProducerInterface:
         alias: 'enqueue.producer'
-        
 
-    Formapro\Pvm\MongoProcessStorage:
+    formapro.pvm.process_execution_storage:
         autowire: false
+        class: 'Formapro\Pvm\Yadm\MongoProcessStorage'
         arguments:
-            - '@App\Storage\ProcessStorage'
             - '@App\Storage\ProcessExecutionStorage'
 
-    Formapro\Pvm\ProcessStorage: '@Formapro\Pvm\MongoProcessStorage'
+    Formapro\Pvm\ProcessStorage: '@formapro.pvm.process_execution_storage'
 
     Formapro\Pvm\DefaultBehaviorRegistry: ~
 
     Formapro\Pvm\BehaviorRegistry: '@Formapro\Pvm\DefaultBehaviorRegistry'
 
-    App\Pvm\SyncAsyncTransition: ~
-    Formapro\Pvm\AsyncTransition: '@App\Pvm\SyncAsyncTransition'
+    Formapro\Pvm\Enqueue\AsyncTransition: ~
+    Formapro\Pvm\AsyncTransition: '@Formapro\Pvm\Enqueue\AsyncTransition'
 
     Formapro\Pvm\ProcessEngine:
 
@@ -61,3 +60,10 @@ services:
     App\Pvm\Behavior\:
         resource: '../src/Pvm/Behavior/*'
         tags: ['pvm.behavior']
+
+    Formapro\Pvm\Enqueue\HandleAsyncTransitionProcessor:
+        autowire: false
+        arguments:
+            - '@Formapro\Pvm\ProcessEngine'
+            - '@formapro.pvm.process_execution_storage'
+        tags: ['enqueue.client.processor']

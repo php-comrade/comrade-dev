@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Async\CreateJob;
+use App\Async\CreateSubJobs;
 use App\Async\ExecuteJob;
 use App\Async\ProcessFeedback;
 use App\Infra\DependencyInjection\RegisterPvmBehaviorPass;
@@ -103,6 +104,7 @@ final class Kernel extends BaseKernel
             ProcessFeedback::SCHEMA => ProcessFeedback::class,
             GracePeriodPolicy::SCHEMA => GracePeriodPolicy::class,
             RetryFailedPolicy::SCHEMA => RetryFailedPolicy::class,
+            CreateSubJobs::SCHEMA => CreateSubJobs::class,
         ]))->register();
     }
 }

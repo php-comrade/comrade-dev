@@ -27,7 +27,7 @@ class CreateProcessForJobService
         $process->addJob($job);
 
         $startTask = $process->createNode();
-        $startTask->setLabel('Start process: '.$process->getId());
+        $startTask->setLabel('Start process');
         $startTask->setBehavior(IdleBehavior::class);
         $process->createTransition(null, $startTask);
 

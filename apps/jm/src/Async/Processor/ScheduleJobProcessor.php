@@ -2,6 +2,7 @@
 namespace App\Async\Processor;
 
 use App\Async\Topics;
+use App\Infra\Uuid;
 use App\Model\Process;
 use App\Storage\ProcessExecutionStorage;
 use App\Storage\ProcessStorage;
@@ -11,6 +12,7 @@ use Enqueue\Psr\PsrContext;
 use Enqueue\Psr\PsrMessage;
 use Enqueue\Psr\PsrProcessor;
 use Formapro\Pvm\ProcessEngine;
+use function Makasim\Values\set_value;
 use function Makasim\Yadm\unset_object_id;
 use Psr\Log\NullLogger;
 
@@ -65,6 +67,8 @@ class ScheduleJobProcessor implements PsrProcessor, TopicSubscriberInterface
             }
 
             unset_object_id($process);
+            set_value($process, 'patternProcessId', $process->getId());
+            $process->setId(Uuid::generate());
             $this->processExecutionStorage->insert($process);
         }
 

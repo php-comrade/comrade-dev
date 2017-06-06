@@ -2,6 +2,7 @@
 namespace App\Command;
 
 use App\Async\CreateJob;
+use App\Async\CreateSubJobs;
 use App\Async\Topics;
 use App\Infra\Uuid;
 use App\Model\GracePeriodPolicy;
@@ -32,13 +33,13 @@ class FooCommand extends Command implements ContainerAwareInterface
         $jobPattern->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
         set_value($jobPattern, 'enqueue.queue', 'demo_job');
 
-        $retryFailedPolicy = RetryFailedPolicy::create();
-        $retryFailedPolicy->setRetryLimit(5);
-        $jobPattern->addPolicy($retryFailedPolicy);
-
-        $gracePeriodPolicy = GracePeriodPolicy::create();
-        $gracePeriodPolicy->setPeriodEndsAt(new \DateTime('now + 30 seconds'));
-        $jobPattern->addPolicy($gracePeriodPolicy);
+//        $retryFailedPolicy = RetryFailedPolicy::create();
+//        $retryFailedPolicy->setRetryLimit(5);
+//        $jobPattern->addPolicy($retryFailedPolicy);
+//
+//        $gracePeriodPolicy = GracePeriodPolicy::create();
+//        $gracePeriodPolicy->setPeriodEndsAt(new \DateTime('now + 30 seconds'));
+//        $jobPattern->addPolicy($gracePeriodPolicy);
 
         /** @var ProducerInterface $producer */
         $producer = $this->container->get('enqueue.producer');
@@ -47,6 +48,43 @@ class FooCommand extends Command implements ContainerAwareInterface
         $message->setJobPattern($jobPattern);
 
         $producer->send(Topics::CREATE_JOB, $message);
+
+        sleep(2);
+
+        $createSubJobs = CreateSubJobs::create();
+        $createSubJobs->setParentJobUid($jobPattern->getUid());
+        // TODO
+        $createSubJobs->setParentProcessUid(Uuid::generate());
+
+        $jobPattern = JobPattern::create();
+        $jobPattern->setName('testSubJob1');
+        $jobPattern->setUid(Uuid::generate());
+        $jobPattern->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
+        set_value($jobPattern, 'enqueue.queue', 'demo_sub_job');
+        $createSubJobs->addSubJobPatterns($jobPattern);
+
+        $jobPattern = JobPattern::create();
+        $jobPattern->setName('testSubJob2');
+        $jobPattern->setUid(Uuid::generate());
+        $jobPattern->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
+        set_value($jobPattern, 'enqueue.queue', 'demo_sub_job');
+        $createSubJobs->addSubJobPatterns($jobPattern);
+
+        $jobPattern = JobPattern::create();
+        $jobPattern->setName('testSubJob3');
+        $jobPattern->setUid(Uuid::generate());
+        $jobPattern->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
+        set_value($jobPattern, 'enqueue.queue', 'demo_sub_job');
+        $createSubJobs->addSubJobPatterns($jobPattern);
+
+        $jobPattern = JobPattern::create();
+        $jobPattern->setName('testSubJob4');
+        $jobPattern->setUid(Uuid::generate());
+        $jobPattern->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
+        set_value($jobPattern, 'enqueue.queue', 'demo_sub_job');
+        $createSubJobs->addSubJobPatterns($jobPattern);
+
+        $producer->send(Topics::CREATE_SUB_JOBS, $createSubJobs);
 
         $output->writeln('');
     }

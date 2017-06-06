@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "id": "http://jm.forma-pro.com/schemas/message/CreateSubJobs.json",
+  "type": "object",
+  "properties": {
+    "parentProcessUid": { "$ref" : "http://jm.forma-pro.com/schemas/uid.json" },
+    "parentJobUid": { "$ref" : "http://jm.forma-pro.com/schemas/uid.json" },
+    "jobPatterns": {
+      "type": "array",
+      "items": { "$ref": "../jobPattern.json" }
+    }
+  },
+  "required": ["jobPatterns"]
+}

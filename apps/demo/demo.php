@@ -41,6 +41,10 @@ $queue = $c->createQueue('demo_job');
 $queue->addFlag(AMQP_DURABLE);
 $c->declareQueue($queue);
 
+$subJobQueue = $c->createQueue('demo_sub_job');
+$subJobQueue->addFlag(AMQP_DURABLE);
+$c->declareQueue($subJobQueue);
+
 $queueConsumer = new QueueConsumer($c, new ChainExtension([
     new LoggerExtension(new EchoLogger()),
     new SignalExtension(),
@@ -67,6 +71,39 @@ $queueConsumer->bind($queue, function(PsrMessage $message, PsrContext $context) 
             'schema' => JobFeedback::SCHEMA,
         ]);
     }
+
+    /** @var ProcessFeedback $feedbackMessage */
+    $feedbackMessage = build_object(ProcessFeedback::class, []);
+    $feedbackMessage->setToken($data['token']);
+    $feedbackMessage->setJob($job);
+    $feedbackMessage->setJobFeedback($jobFeedback);
+
+    $feedbackQueue = $context->createQueue('enqueue.app.default');
+    $message = $context->createMessage(JSON::encode($feedbackMessage), [
+        'enqueue.topic_name' => 'job_manager.process_feedback',
+        'enqueue.processor_queue_name' => 'enqueue.app.default',
+        'enqueue.processor_name' => 'job_manager_process_feedback',
+    ]);
+
+    $context->createProducer()->send($feedbackQueue, $message);
+
+    return Result::ACK;
+});
+
+$queueConsumer->bind($subJobQueue, function(PsrMessage $message, PsrContext $context) {
+    $data = JSON::decode($message->getBody());
+
+    $status = [Job::STATUS_FAILED, Job::STATUS_COMPLETED];
+
+    /** @var Job $job */
+    $job = build_object(Job::class, $data['job']);
+    /** @var JobFeedback $jobFeedback */
+
+    $job->setStatus($status[rand(0, 1)]);
+    $jobFeedback = build_object(JobFeedback::class, [
+        'finished' => true,
+        'schema' => JobFeedback::SCHEMA,
+    ]);
 
     /** @var ProcessFeedback $feedbackMessage */
     $feedbackMessage = build_object(ProcessFeedback::class, []);

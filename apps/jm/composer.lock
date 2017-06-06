@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2067de427ae00713bab65c70ddc04ddd",
+    "content-hash": "a4fc7f8b2ae08fa61ff0ce7bb4910896",
     "packages": [
         {
             "name": "clue/graph",
@@ -803,6 +803,61 @@
                 "queue"
             ],
             "time": "2017-05-25T09:44:04+00:00"
+        },
+        {
+            "name": "enqueue/simple-client",
+            "version": "0.4.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-enqueue/simple-client.git",
+                "reference": "d723695c91c5ef149360719d6572095b9d419a66"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-enqueue/simple-client/zipball/d723695c91c5ef149360719d6572095b9d419a66",
+                "reference": "d723695c91c5ef149360719d6572095b9d419a66",
+                "shasum": ""
+            },
+            "require": {
+                "enqueue/enqueue": "^0.4",
+                "php": ">=5.6",
+                "symfony/config": "^2.8|^3",
+                "symfony/console": "^2.8|^3",
+                "symfony/dependency-injection": "^2.8|^3"
+            },
+            "require-dev": {
+                "enqueue/amqp-ext": "^0.4",
+                "enqueue/fs": "^0.4",
+                "enqueue/null": "^0.4",
+                "enqueue/test": "^0.4",
+                "phpunit/phpunit": "~5.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Enqueue\\SimpleClient\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Message Queue Simple Client",
+            "keywords": [
+                "AMQP",
+                "messaging",
+                "queue",
+                "rabbitmq"
+            ],
+            "time": "2017-05-15T11:33:13+00:00"
         },
         {
             "name": "formapro/php-quartz",
