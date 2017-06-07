@@ -1,13 +1,17 @@
 <?php
 namespace App\Model;
 
+use function Makasim\Values\add_object;
+use function Makasim\Values\get_object;
+use function Makasim\Values\get_objects;
 use function Makasim\Values\get_value;
 use function Makasim\Values\get_values;
+use function Makasim\Values\set_object;
 use function Makasim\Values\set_value;
 
-class Job extends JobPattern
+class Job extends JobTemplate
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/job.json';
+    const SCHEMA = 'http://jm.forma-pro.com/schemas/Job.json';
 
     const STATUS_NEW = 'new';
 
@@ -26,51 +30,69 @@ class Job extends JobPattern
      */
     private $values = [];
 
-    public static function createFromPattern(JobPattern $jobPattern) : Job
+    public static function createFromTemplate(JobTemplate $jobTemplate) : Job
     {
-        $values = get_values($jobPattern);
+        $values = get_values($jobTemplate);
         unset($values['schema']);
 
         return static::create($values);
     }
 
-    public function getStatus() :string
+    /**
+     * @return string
+     */
+    public function getId(): string
     {
-        return get_value($this, 'status', static::STATUS_NEW);
+        return get_value($this,'id');
     }
 
-    public function setStatus(string $status) : void
+    /**
+     * @param string $id
+     */
+    public function setId(string $id)
     {
-        set_value($this, 'status', $status);
+        set_value($this, 'id', $id);
     }
 
-    public function isNew():bool
+    /**
+     * @return string
+     */
+    public function getProcessId(): string
     {
-        return $this->getStatus() === static::STATUS_NEW;
+        return get_value($this,'processId');
     }
 
-    public function isRunning():bool
+    /**
+     * @param string $id
+     */
+    public function setProcessId(string $id)
     {
-        return $this->getStatus() === static::STATUS_RUNNING;
+        set_value($this, 'processId', $id);
     }
 
-    public function isCanceled():bool
+    public function addResult(JobResult $jobResult):void
     {
-        return $this->getStatus() === static::STATUS_CANCELED;
+        add_object($this, 'results', $jobResult);
     }
 
-    public function isCompleted():bool
+    /**
+     * @return \Traversable|JobResult[]
+     */
+    public function getResults():\Traversable
     {
-        return $this->getStatus() === static::STATUS_COMPLETED;
+        return get_objects($this, 'results');
     }
 
-    public function isFailed():bool
+    public function setCurrentResult(JobResult $jobResult):void
     {
-        return $this->getStatus() === static::STATUS_FAILED;
+        set_object($this, 'currentResult', $jobResult);
     }
 
-    public function isTerminated():bool
+    /**
+     * @return JobResult|object
+     */
+    public function getCurrentResult():JobResult
     {
-        return $this->getStatus() === static::STATUS_TERMINATED;
+        return get_object($this, 'currentResult');
     }
 }

@@ -3,12 +3,11 @@ namespace App\Pvm\Behavior;
 
 use App\Model\GracePeriodPolicy;
 use App\Model\Process;
+use App\Storage\JobStorage;
 use App\Storage\ProcessExecutionStorage;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Token;
 use function Makasim\Values\get_object;
-use function Makasim\Values\get_value;
-use function Makasim\Values\set_value;
 
 class GracePeriodPolicyBehavior implements Behavior
 {
@@ -18,11 +17,20 @@ class GracePeriodPolicyBehavior implements Behavior
     private $processExecutionStorage;
 
     /**
-     * @param ProcessExecutionStorage $processExecutionStorage
+     * @var JobStorage
      */
-    public function __construct(ProcessExecutionStorage $processExecutionStorage)
-    {
+    private $jobStorage;
+
+    /**
+     * @param ProcessExecutionStorage $processExecutionStorage
+     * @param JobStorage $jobStorage
+     */
+    public function __construct(
+        ProcessExecutionStorage $processExecutionStorage,
+        JobStorage $jobStorage
+    ) {
         $this->processExecutionStorage = $processExecutionStorage;
+        $this->jobStorage = $jobStorage;
     }
 
     /**
@@ -36,17 +44,15 @@ class GracePeriodPolicyBehavior implements Behavior
         /** @var GracePeriodPolicy $gracePeriodPolicy */
         $gracePeriodPolicy = get_object($token->getTransition()->getTo(), 'gracePeriodPolicy');
         $endsAt = $gracePeriodPolicy->getPeriodEndsAt()->getTimestamp();
-        $job = $process->getTokenJob($token);
 
         $this->processExecutionStorage->update($token->getProcess());
         while (time() < $endsAt) {
             sleep(1);
         }
 
-        $reloadedProcess = $this->processExecutionStorage->findOne(['id' => $process->getId()]);
-
-        $job = $reloadedProcess->getJob($job->getUid());
-        if ($job->isCompleted() || $job->isCanceled() || $job->isTerminated()) {
+        $job = $this->jobStorage->getOneById($process->getTokenJobId($token));
+        $result = $job->getCurrentResult();
+        if ($result->isCompleted() || $result->isCanceled() || $result->isTerminated()) {
             return ['completed'];
         }
 

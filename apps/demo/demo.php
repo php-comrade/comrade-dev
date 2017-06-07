@@ -1,9 +1,11 @@
 <?php
 namespace DemoApp;
 
-use App\Async\ProcessFeedback;
+use App\Async\DoJob;
+use App\Infra\Yadm\ObjectBuilderHook;
 use App\Model\Job;
-use App\Model\JobFeedback;
+use App\Async\JobResult as JobResultMessage;
+use App\Model\JobResult;
 use Enqueue\Consumption\ChainExtension;
 use Enqueue\Consumption\Extension\LoggerExtension;
 use Enqueue\Consumption\Extension\SignalExtension;
@@ -15,8 +17,8 @@ use Enqueue\Psr\PsrMessage;
 use Enqueue\Util\JSON;
 use function Makasim\Values\build_object;
 use function Makasim\Values\get_value;
+use function Makasim\Values\register_cast_hooks;
 use function Makasim\Values\register_object_hooks;
-use function Makasim\Values\set_value;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
 
@@ -28,11 +30,19 @@ class EchoLogger implements LoggerInterface
 
     public function log($level, $message, array $context = array())
     {
-        echo sprintf('[%s] %s %s', $level, $message, json_encode($context)).PHP_EOL;
+        echo sprintf('[%s] %s %s ', $level, $message, json_encode($context)).PHP_EOL;
     }
 }
 
+register_cast_hooks();
 register_object_hooks();
+
+(new ObjectBuilderHook([
+    Job::SCHEMA => Job::class,
+    JobResult::SCHEMA => JobResult::class,
+    DoJob::SCHEMA => DoJob::class,
+    JobResultMessage::SCHEMA => JobResultMessage::class,
+]))->register();
 
 /** @var \Enqueue\AmqpExt\AmqpContext $c */
 $c = dsn_to_context('amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1');
@@ -51,68 +61,29 @@ $queueConsumer = new QueueConsumer($c, new ChainExtension([
 ]));
 
 $queueConsumer->bind($queue, function(PsrMessage $message, PsrContext $context) {
-    $data = JSON::decode($message->getBody());
-
-    /** @var Job $job */
-    $job = build_object(Job::class, $data['job']);
-    /** @var JobFeedback $jobFeedback */
-
-    if (get_value($job, 'retryAttempts', 0) > 2) {
-        $job->setStatus(Job::STATUS_COMPLETED);
-        $jobFeedback = build_object(JobFeedback::class, [
-            'finished' => true,
-            'schema' => JobFeedback::SCHEMA,
-        ]);
-    } else {
-        $job->setStatus(Job::STATUS_FAILED);
-        $jobFeedback = build_object(JobFeedback::class, [
-            'finished' => false,
-            'failed' => true,
-            'schema' => JobFeedback::SCHEMA,
-        ]);
+    if ($message->isRedelivered()) {
+        return Result::reject('The message was redelivered. Reject it');
     }
 
-    /** @var ProcessFeedback $feedbackMessage */
-    $feedbackMessage = build_object(ProcessFeedback::class, []);
-    $feedbackMessage->setToken($data['token']);
-    $feedbackMessage->setJob($job);
-    $feedbackMessage->setJobFeedback($jobFeedback);
-
-    $feedbackQueue = $context->createQueue('enqueue.app.default');
-    $message = $context->createMessage(JSON::encode($feedbackMessage), [
-        'enqueue.topic_name' => 'job_manager.process_feedback',
-        'enqueue.processor_queue_name' => 'enqueue.app.default',
-        'enqueue.processor_name' => 'job_manager_process_feedback',
-    ]);
-
-    $context->createProducer()->send($feedbackQueue, $message);
-
-    return Result::ACK;
-});
-
-$queueConsumer->bind($subJobQueue, function(PsrMessage $message, PsrContext $context) {
     $data = JSON::decode($message->getBody());
 
-    $status = [Job::STATUS_FAILED, Job::STATUS_COMPLETED];
+    $doJob = DoJob::create($data);
 
-    /** @var Job $job */
-    $job = build_object(Job::class, $data['job']);
-    /** @var JobFeedback $jobFeedback */
+    $job = $doJob->getJob();
 
-    $job->setStatus($status[rand(0, 1)]);
-    $jobFeedback = build_object(JobFeedback::class, [
-        'finished' => true,
-        'schema' => JobFeedback::SCHEMA,
-    ]);
+    if (get_value($job, 'retryAttempts', 0) > 2) {
+        $result = JobResult::createFor(Job::STATUS_COMPLETED);
+    } else {
+        $result = JobResult::createFor(Job::STATUS_FAILED);
+    }
 
-    /** @var ProcessFeedback $feedbackMessage */
-    $feedbackMessage = build_object(ProcessFeedback::class, []);
-    $feedbackMessage->setToken($data['token']);
-    $feedbackMessage->setJob($job);
-    $feedbackMessage->setJobFeedback($jobFeedback);
+    $jobResultMessage = JobResultMessage::create();
+    $jobResultMessage->setToken($data['token']);
+    $jobResultMessage->setJobId($job->getId());
+    $jobResultMessage->setResult($result);
 
     $feedbackQueue = $context->createQueue('enqueue.app.default');
-    $message = $context->createMessage(JSON::encode($feedbackMessage), [
+    $message = $context->createMessage(JSON::encode($jobResultMessage), [
         'enqueue.topic_name' => 'job_manager.process_feedback',
         'enqueue.processor_queue_name' => 'enqueue.app.default',
         'enqueue.processor_name' => 'job_manager_process_feedback',
@@ -122,5 +93,42 @@ $queueConsumer->bind($subJobQueue, function(PsrMessage $message, PsrContext $con
 
     return Result::ACK;
 });
+
+//$queueConsumer->bind($subJobQueue, function(PsrMessage $message, PsrContext $context) {
+//    if ($message->isRedelivered()) {
+//        return Result::reject('The message was redelivered. Reject it');
+//    }
+//
+//    $data = JSON::decode($message->getBody());
+//
+//    $status = [Job::STATUS_FAILED, Job::STATUS_COMPLETED];
+//
+//    /** @var Job $job */
+//    $job = build_object(Job::class, $data['job']);
+//    /** @var JobResult $jobFeedback */
+//
+//    $job->setStatus($status[rand(0, 1)]);
+//    $jobFeedback = build_object(JobResult::class, [
+//        'finished' => true,
+//        'schema' => JobResult::SCHEMA,
+//    ]);
+//
+//    /** @var JobResult $feedbackMessage */
+//    $feedbackMessage = build_object(JobResult::class, []);
+//    $feedbackMessage->setToken($data['token']);
+//    $feedbackMessage->setJob($job);
+//    $feedbackMessage->setJobFeedback($jobFeedback);
+//
+//    $feedbackQueue = $context->createQueue('enqueue.app.default');
+//    $message = $context->createMessage(JSON::encode($feedbackMessage), [
+//        'enqueue.topic_name' => 'job_manager.process_feedback',
+//        'enqueue.processor_queue_name' => 'enqueue.app.default',
+//        'enqueue.processor_name' => 'job_manager_process_feedback',
+//    ]);
+//
+//    $context->createProducer()->send($feedbackQueue, $message);
+//
+//    return Result::ACK;
+//});
 
 $queueConsumer->consume();

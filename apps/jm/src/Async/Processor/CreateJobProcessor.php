@@ -5,9 +5,12 @@ use App\Async\CreateJob;
 use App\Async\Topics;
 use App\Infra\JsonSchema\Errors;
 use App\Infra\JsonSchema\SchemaValidator;
+use App\Infra\Uuid;
 use App\Model\Job;
+use App\Model\JobResult;
 use App\Service\CreateProcessForJobService;
 use App\Storage\JobStorage;
+use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessStorage;
 use Enqueue\Client\ProducerInterface;
 use Enqueue\Client\TopicSubscriberInterface;
@@ -28,6 +31,11 @@ class CreateJobProcessor implements PsrProcessor, TopicSubscriberInterface
     /**
      * @var JobStorage
      */
+    private $jobTemplateStorage;
+
+    /**
+     * @var JobStorage
+     */
     private $jobStorage;
 
     /**
@@ -39,6 +47,7 @@ class CreateJobProcessor implements PsrProcessor, TopicSubscriberInterface
      * @var CreateProcessForJobService
      */
     private $createProcessForJobService;
+
     /**
      * @var ProducerInterface
      */
@@ -46,6 +55,7 @@ class CreateJobProcessor implements PsrProcessor, TopicSubscriberInterface
 
     /**
      * @param SchemaValidator $schemaValidator
+     * @param JobTemplateStorage $jobTemplateStorage
      * @param JobStorage $jobStorage
      * @param ProcessStorage $processStorage
      * @param CreateProcessForJobService $createProcessForJobService
@@ -53,12 +63,14 @@ class CreateJobProcessor implements PsrProcessor, TopicSubscriberInterface
      */
     public function __construct(
         SchemaValidator $schemaValidator,
+        JobTemplateStorage $jobTemplateStorage,
         JobStorage $jobStorage,
         ProcessStorage $processStorage,
         CreateProcessForJobService $createProcessForJobService,
         ProducerInterface $producer
     ) {
         $this->schemaValidator = $schemaValidator;
+        $this->jobTemplateStorage = $jobTemplateStorage;
         $this->jobStorage = $jobStorage;
         $this->processStorage = $processStorage;
         $this->createProcessForJobService = $createProcessForJobService;
@@ -80,12 +92,28 @@ class CreateJobProcessor implements PsrProcessor, TopicSubscriberInterface
             return Result::reject(Errors::toString($errors, 'Message schema validation has failed.'));
         }
 
-        $jobPattern = CreateJob::create($data)->getJobPattern();
-        $job = Job::createFromPattern($jobPattern);
-        $this->jobStorage->update($job, ['uid' => $job->getUid()], ['upsert' => true]);
+        $jobTemplate = CreateJob::create($data)->getJobTemplate();
+        $this->jobTemplateStorage->insert($jobTemplate);
+
+        $job = Job::createFromTemplate($jobTemplate);
+        $job->setId(Uuid::generate());
 
         $process = $this->createProcessForJobService->createProcess($job);
-        $this->processStorage->update($process, ['jobs.uid' => $job->getUid()], ['upsert' => true]);
+        $job->setProcessId($process->getId());
+
+        $result = JobResult::create();
+        $result->setStatus(Job::STATUS_NEW);
+        $result->setCreatedAt(new \DateTime('now'));
+        $job->addResult($result);
+        $job->setCurrentResult($result);
+
+        // TODO for debugging purposes here
+        if ($errors = $this->schemaValidator->validate(get_values($job), Job::SCHEMA)) {
+            return Result::reject(Errors::toString($errors, 'Job schema validation has failed.'));
+        }
+
+        $this->jobStorage->insert($job);
+        $this->processStorage->insert($process);
 
         $this->producer->send(Topics::SCHEDULE_JOB, $process->getId());
 

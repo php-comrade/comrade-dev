@@ -4,14 +4,14 @@ namespace App;
 
 use App\Async\CreateJob;
 use App\Async\CreateSubJobs;
-use App\Async\ExecuteJob;
-use App\Async\ProcessFeedback;
+use App\Async\DoJob;
+use App\Async\JobResult;
 use App\Infra\DependencyInjection\RegisterPvmBehaviorPass;
 use App\Infra\Yadm\ObjectBuilderHook;
 use App\Model\GracePeriodPolicy;
 use App\Model\Job;
-use App\Model\JobFeedback;
-use App\Model\JobPattern;
+use App\Model\JobResult as JobResultModel;
+use App\Model\JobTemplate;
 use App\Model\Process;
 use App\Model\RetryFailedPolicy;
 use function Makasim\Values\register_cast_hooks;
@@ -97,11 +97,11 @@ final class Kernel extends BaseKernel
 
         (new ObjectBuilderHook([
             Job::SCHEMA => Job::class,
-            JobPattern::SCHEMA => JobPattern::class,
-            JobFeedback::SCHEMA => JobFeedback::class,
+            JobTemplate::SCHEMA => JobTemplate::class,
+            JobResultModel::SCHEMA => JobResultModel::class,
             CreateJob::SCHEMA => CreateJob::class,
-            ExecuteJob::SCHEMA => ExecuteJob::class,
-            ProcessFeedback::SCHEMA => ProcessFeedback::class,
+            DoJob::SCHEMA => DoJob::class,
+            JobResult::SCHEMA => JobResult::class,
             GracePeriodPolicy::SCHEMA => GracePeriodPolicy::class,
             RetryFailedPolicy::SCHEMA => RetryFailedPolicy::class,
             CreateSubJobs::SCHEMA => CreateSubJobs::class,

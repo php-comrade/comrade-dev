@@ -2,7 +2,7 @@
 namespace App\Async;
 
 use App\Infra\Yadm\CreateTrait;
-use App\Model\JobPattern;
+use App\Model\JobTemplate;
 use function Makasim\Values\add_object;
 use function Makasim\Values\get_objects;
 use function Makasim\Values\get_value;
@@ -54,19 +54,19 @@ class CreateSubJobs implements \JsonSerializable
     }
 
     /**
-     * @return JobPattern[]|\Traversable
+     * @return JobTemplate[]|\Traversable
      */
-    public function getSubJobPatterns() : \Traversable
+    public function getSubJobTemplates() : \Traversable
     {
-        return get_objects($this,'jobPatterns');
+        return get_objects($this,'jobTemplates');
     }
 
     /**
-     * @param JobPattern $jobPattern
+     * @param JobTemplate $jobTemplates
      */
-    public function addSubJobPatterns(JobPattern $jobPattern)
+    public function addSubJobTemplates(JobTemplate $jobTemplates)
     {
-        add_object($this, 'jobPatterns', $jobPattern);
+        add_object($this, 'jobTemplates', $jobTemplates);
     }
 
     /**

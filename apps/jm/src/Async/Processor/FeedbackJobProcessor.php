@@ -1,10 +1,12 @@
 <?php
 namespace App\Async\Processor;
 
-use App\Async\ProcessFeedback;
+use App\Async\JobResult;
 use App\Async\Topics;
 use App\Infra\JsonSchema\Errors;
 use App\Infra\JsonSchema\SchemaValidator;
+use App\Model\Job;
+use App\Storage\JobStorage;
 use App\Storage\ProcessExecutionStorage;
 use Enqueue\Client\TopicSubscriberInterface;
 use Enqueue\Consumption\Result;
@@ -13,11 +15,12 @@ use Enqueue\Psr\PsrMessage;
 use Enqueue\Psr\PsrProcessor;
 use Enqueue\Util\JSON;
 use Formapro\Pvm\ProcessEngine;
+use function Makasim\Values\add_object;
 use function Makasim\Values\set_object;
-use function Makasim\Values\set_value;
+use function Makasim\Yadm\get_object_id;
 use Psr\Log\NullLogger;
 
-class ProcessFeedbackProcessor implements PsrProcessor, TopicSubscriberInterface
+class FeedbackJobProcessor implements PsrProcessor, TopicSubscriberInterface
 {
     /**
      * @var SchemaValidator
@@ -35,18 +38,26 @@ class ProcessFeedbackProcessor implements PsrProcessor, TopicSubscriberInterface
     private $processEngine;
 
     /**
+     * @var JobStorage
+     */
+    private $jobStorage;
+
+    /**
      * @param SchemaValidator $schemaValidator
      * @param ProcessExecutionStorage $processExecutionStorage
      * @param ProcessEngine $processEngine
+     * @param JobStorage $jobStorage
      */
     public function __construct(
         SchemaValidator $schemaValidator,
         ProcessExecutionStorage $processExecutionStorage,
-        ProcessEngine $processEngine
+        ProcessEngine $processEngine,
+        JobStorage $jobStorage
     ) {
         $this->schemaValidator = $schemaValidator;
         $this->processExecutionStorage = $processExecutionStorage;
         $this->processEngine = $processEngine;
+        $this->jobStorage = $jobStorage;
     }
 
     /**
@@ -59,25 +70,28 @@ class ProcessFeedbackProcessor implements PsrProcessor, TopicSubscriberInterface
         }
 
         $data = JSON::decode($psrMessage->getBody());
-        if ($errors = $this->schemaValidator->validate($data, ProcessFeedback::SCHEMA)) {
+        if ($errors = $this->schemaValidator->validate($data, JobResult::SCHEMA)) {
             return Result::reject(Errors::toString($errors, 'Message schema validation has failed.'));
         }
 
-        $message = ProcessFeedback::create($data);
-        $job = $message->getJob();
+        $message = JobResult::create($data);
         $token = $message->getToken();
 
-        if (false == $process = $this->processExecutionStorage->findOne(['jobs.uid' => $job->getUid()])) {
+        if (false == $process = $this->processExecutionStorage->getOneByToken($message->getToken())) {
             return self::REJECT;
         }
 
+        $job = $this->jobStorage->getOneById($message->getJobId());
+        $this->jobStorage->lock(get_object_id($job), function(Job $job, JobStorage $jobStorage) use($message) {
+            $job->addResult($message->getResult());
+            $job->setCurrentResult($message->getResult());
+
+            $jobStorage->update($job);
+        });
+
         try {
             $token = $process->getToken($token);
-
-            set_object($token->getTransition()->getTo(), 'jobFeedback', $message->getJobFeedback());
-            $process->getJob($job->getUid())->setStatus($job->getStatus());
-
-            $this->processEngine->proceed($token, new NullLogger());
+            $this->processEngine->proceed($token);
         } finally {
             $this->processExecutionStorage->update($process);
         }

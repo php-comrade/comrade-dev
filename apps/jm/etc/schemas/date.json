@@ -4,6 +4,6 @@
   "type": "object",
   "properties": {
     "iso": { "type": "string" },
-    "unix": { "type": "integer", "minimum": 0 }
+    "unix": { "$ref": "timestamp.json" }
   }
 }

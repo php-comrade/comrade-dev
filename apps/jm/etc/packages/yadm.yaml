@@ -1,11 +1,18 @@
 yadm:
     mongo_uri: '%env(MONGO_DSN)%'
     models:
+        job_template:
+            class: 'App\Model\JobTemplate'
+            storage_class: 'App\Storage\JobTemplateStorage'
+            collection: 'job_template'
+            database: '%mongo_database%'
+
         job:
             class: 'App\Model\Job'
             storage_class: 'App\Storage\JobStorage'
             collection: 'job'
             database: '%mongo_database%'
+            pessimistic_lock: true
 
         process:
             class: 'App\Model\Process'

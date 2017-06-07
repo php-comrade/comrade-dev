@@ -7,9 +7,9 @@ use function Makasim\Values\get_objects;
 use function Makasim\Values\get_value;
 use function Makasim\Values\set_value;
 
-class JobPattern
+class JobTemplate
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/jobPattern.json';
+    const SCHEMA = 'http://jm.forma-pro.com/schemas/JobTemplate.json';
 
     use CreateTrait;
 
@@ -21,17 +21,33 @@ class JobPattern
     /**
      * @return string
      */
-    public function getUid(): ?string
+    public function getTemplateId(): string
     {
-        return get_value($this,'uid');
+        return get_value($this,'templateId');
     }
 
     /**
-     * @param string $uid
+     * @param string $id
      */
-    public function setUid($uid)
+    public function setTemplateId(string $id)
     {
-        set_value($this, 'uid', $uid);
+        set_value($this, 'templateId', $id);
+    }
+
+    /**
+     * @return string
+     */
+    public function getProcessTemplateId(): string
+    {
+        return get_value($this,'processTemplateId');
+    }
+
+    /**
+     * @param string $id
+     */
+    public function setProcessTemplateId(string $id)
+    {
+        set_value($this, 'processTemplateId', $id);
     }
 
     /**

@@ -11,6 +11,7 @@ services:
       - 'mongo'
     volumes:
       - './apps/jm:/jobs_dev/apps/jm:cached'
+      - './shared:/shared'
     env_file: 'apps/jm/.env'
     environment:
       - VIRTUAL_HOST=jm.loc
@@ -29,6 +30,7 @@ services:
       - 'mongo'
     volumes:
       - './apps/jm:/jobs_dev/apps/jm:cached'
+      - './shared:/shared'
     env_file: 'apps/jm/.env'
 
   demo:
@@ -41,6 +43,7 @@ services:
     volumes:
       - './apps/demo:/jobs_dev/apps/demo:cached'
       - './apps/jm:/jobs_dev/apps/jm:cached'
+      - './shared:/shared'
     env_file: 'apps/jm/.env'
 
   rabbitmq:

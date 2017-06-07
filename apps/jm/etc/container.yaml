@@ -10,6 +10,7 @@ services:
         public: true
 
     App\Storage\JobStorage: '@yadm.job.storage'
+    App\Storage\JobTemplateStorage: '@yadm.job_template.storage'
     App\Storage\ProcessStorage: '@yadm.process.storage'
     App\Storage\ProcessExecutionStorage: '@yadm.process_execution.storage'
 

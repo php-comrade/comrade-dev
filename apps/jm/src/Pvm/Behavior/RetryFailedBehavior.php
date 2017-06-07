@@ -4,6 +4,7 @@ namespace App\Pvm\Behavior;
 use App\Model\GracePeriodPolicy;
 use App\Model\Process;
 use App\Model\RetryFailedPolicy;
+use App\Storage\JobStorage;
 use App\Storage\ProcessExecutionStorage;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Token;
@@ -19,11 +20,20 @@ class RetryFailedBehavior implements Behavior
     private $processExecutionStorage;
 
     /**
-     * @param ProcessExecutionStorage $processExecutionStorage
+     * @var JobStorage
      */
-    public function __construct(ProcessExecutionStorage $processExecutionStorage)
-    {
+    private $jobStorage;
+
+    /**
+     * @param ProcessExecutionStorage $processExecutionStorage
+     * @param JobStorage $jobStorage
+     */
+    public function __construct(
+        ProcessExecutionStorage $processExecutionStorage,
+        JobStorage $jobStorage
+    ) {
         $this->processExecutionStorage = $processExecutionStorage;
+        $this->jobStorage = $jobStorage;
     }
 
     /**
@@ -33,8 +43,8 @@ class RetryFailedBehavior implements Behavior
     {
         /** @var Process $process */
         $process = $token->getProcess();
-        $job = $process->getTokenJob($token);
-        if (false == $job->isFailed()) {
+        $job = $this->jobStorage->getOneById($process->getTokenJobId($token));
+        if (false == $job->getCurrentResult()->isFailed()) {
             return ['complete'];
         }
 
@@ -48,6 +58,7 @@ class RetryFailedBehavior implements Behavior
         }
 
         set_value($job, 'retryAttempts', ++$retryAttempts);
+        $this->jobStorage->update($job);
 
         return ['retry'];
     }

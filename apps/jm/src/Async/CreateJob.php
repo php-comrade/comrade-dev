@@ -2,14 +2,14 @@
 namespace App\Async;
 
 use App\Infra\Yadm\CreateTrait;
-use App\Model\JobPattern;
+use App\Model\JobTemplate;
 use function Makasim\Values\get_object;
 use function Makasim\Values\get_values;
 use function Makasim\Values\set_object;
 
 class CreateJob implements \JsonSerializable
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/message/createJob.json';
+    const SCHEMA = 'http://jm.forma-pro.com/schemas/message/CreateJob.json';
 
     use CreateTrait;
 
@@ -19,19 +19,19 @@ class CreateJob implements \JsonSerializable
     private $values = [];
 
     /**
-     * @return JobPattern|object
+     * @return JobTemplate|object
      */
-    public function getJobPattern() : ?JobPattern
+    public function getJobTemplate() : ?JobTemplate
     {
-        return get_object($this,'jobPattern');
+        return get_object($this,'jobTemplate');
     }
 
     /**
-     * @param JobPattern $jobPattern
+     * @param JobTemplate $jobTemplate
      */
-    public function setJobPattern(JobPattern $jobPattern)
+    public function setJobTemplate(JobTemplate $jobTemplate)
     {
-        set_object($this, 'jobPattern', $jobPattern);
+        set_object($this, 'jobTemplate', $jobTemplate);
     }
 
     /**

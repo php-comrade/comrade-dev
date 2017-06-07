@@ -20,10 +20,6 @@ class CreateProcessForSubJobsService
         $process = new Process();
         $process->setId(Uuid::generate());
 
-        foreach ($jobs as $job) {
-            $process->addJob($job);
-        }
-
         $startTask = $process->createNode();
         $startTask->setLabel('Start process');
         $startTask->setBehavior(IdleBehavior::class);

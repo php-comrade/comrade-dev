@@ -47,7 +47,6 @@ class SimpleSynchronizeBehavior implements Behavior
         $refreshedNode = $refreshedProcess->getNode($node->getId());
 
         if (get_value($refreshedNode, 'currentWeight') != get_value($refreshedNode, 'requiredWeight')) {
-            var_dump(get_value($refreshedNode, 'currentWeight'), get_value($refreshedNode, 'requiredWeight'));
             throw new InterruptExecutionException();
         }
 

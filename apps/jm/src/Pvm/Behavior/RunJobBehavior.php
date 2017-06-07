@@ -1,19 +1,18 @@
 <?php
 namespace App\Pvm\Behavior;
 
-use App\Async\ExecuteJob;
+use App\Async\DoJob;
 use App\Model\Job;
-use App\Model\JobFeedback;
+use App\Model\JobResult;
 use App\Model\Process;
+use App\Storage\JobStorage;
 use Enqueue\Psr\PsrContext;
 use Enqueue\Util\JSON;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Exception\WaitExecutionException;
 use Formapro\Pvm\SignalBehavior;
 use Formapro\Pvm\Token;
-use function Makasim\Values\get_object;
 use function Makasim\Values\get_value;
-use function Makasim\Values\get_values;
 
 class RunJobBehavior implements Behavior, SignalBehavior
 {
@@ -23,11 +22,20 @@ class RunJobBehavior implements Behavior, SignalBehavior
     private $psrContext;
 
     /**
-     * @param PsrContext $psrContext
+     * @var JobStorage
      */
-    public function __construct(PsrContext $psrContext)
-    {
+    private $jobStorage;
+
+    /**
+     * @param PsrContext $psrContext
+     * @param JobStorage $jobStorage
+     */
+    public function __construct(
+        PsrContext $psrContext,
+        JobStorage $jobStorage
+    ) {
         $this->psrContext = $psrContext;
+        $this->jobStorage = $jobStorage;
     }
 
     /**
@@ -37,16 +45,18 @@ class RunJobBehavior implements Behavior, SignalBehavior
     {
         /** @var Process $process */
         $process = $token->getProcess();
-        $job = $process->getTokenJob($token);
-
-        $message = ExecuteJob::create();
-        $message->setJob($job);
-        $message->setToken($token->getId());
+        $job = $this->jobStorage->getOneById($process->getTokenJobId($token));
 
         $queue = $this->psrContext->createQueue(get_value($job, 'enqueue.queue'));
-        $message = $this->psrContext->createMessage(JSON::encode($message));
+        $message = $this->psrContext->createMessage(JSON::encode(DoJob::createFor($job, $token)));
 
-        $job->setStatus(Job::STATUS_RUNNING);
+        $result = JobResult::create();
+        $result->setStatus(Job::STATUS_RUNNING);
+        $result->setCreatedAt(new \DateTime('now'));
+        $job->addResult($result);
+        $job->setCurrentResult($result);
+
+        $this->jobStorage->update($job);
 
         $this->psrContext->createProducer()->send($queue, $message);
 
@@ -60,20 +70,21 @@ class RunJobBehavior implements Behavior, SignalBehavior
     {
         /** @var Process $process */
         $process = $token->getProcess();
-        $job = $process->getTokenJob($token);
+        $job = $this->jobStorage->getOneById($process->getTokenJobId($token));
+        $result = $job->getCurrentResult();
 
-        if ($job->isFailed()) {
+        if ($result->isFailed()) {
             return ['failed'];
         }
 
-        if ($job->isCompleted() || $job->isCanceled() || $job->isTerminated()){
+        if ($result->isCompleted() || $result->isCanceled() || $result->isTerminated()){
             return ['completed'];
         }
 
-        if ($job->isRunning() || $job->isNew()) {
+        if ($result->isRunning() || $result->isNew()) {
             throw new WaitExecutionException();
         }
 
-        throw new \LogicException(sprintf('Status "%s"is not supported', $job->getStatus()));
+        throw new \LogicException(sprintf('Status "%s"is not supported', $result->getStatus()));
     }
 }

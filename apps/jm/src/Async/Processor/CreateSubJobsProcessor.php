@@ -90,12 +90,12 @@ class CreateSubJobsProcessor implements PsrProcessor, TopicSubscriberInterface
         }
 
         $jobs = [];
-        foreach ($message->getSubJobPatterns() as $jobPattern) {
-            $job = Job::createFromPattern($jobPattern);
+        foreach ($message->getSubJobTemplates() as $jobTemplate) {
+            $job = Job::createFromTemplate($jobTemplate);
 
             $jobs[] = $job;
 
-            $this->jobStorage->update($job, ['uid' => $job->getUid()], ['upsert' => true]);
+            $this->jobStorage->update($job, ['uid' => $job->getId()], ['upsert' => true]);
         }
 
         $process = $this->createProcessForSubJobsService->createProcess($jobs);

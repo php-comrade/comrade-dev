@@ -11,6 +11,7 @@ use App\Pvm\Behavior\IdleBehavior;
 use App\Pvm\Behavior\RetryFailedBehavior;
 use App\Pvm\Behavior\RunJobBehavior;
 use function Makasim\Values\set_object;
+use function Makasim\Values\set_value;
 
 
 class CreateProcessForJobService
@@ -24,7 +25,6 @@ class CreateProcessForJobService
     {
         $process = new Process();
         $process->setId(Uuid::generate());
-        $process->addJob($job);
 
         $startTask = $process->createNode();
         $startTask->setLabel('Start process');
@@ -32,7 +32,7 @@ class CreateProcessForJobService
         $process->createTransition(null, $startTask);
 
         $runJobTask = $process->createNode();
-        $runJobTask->setLabel('Run job: '.$job->getUid());
+        $runJobTask->setLabel('Run job: '.$job->getName());
         $runJobTask->setBehavior(RunJobBehavior::class);
         $process->setNodeJob($runJobTask, $job);
         $process->createTransition($startTask, $runJobTask);
