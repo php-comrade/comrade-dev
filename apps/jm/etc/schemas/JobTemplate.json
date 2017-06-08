@@ -12,7 +12,8 @@
       "items": {
         "oneOf": [
           { "$ref": "gracePeriodPolicy.json" },
-          { "$ref": "retryFailedPolicy.json" }
+          { "$ref": "retryFailedPolicy.json" },
+          { "$ref": "RunSubJobsPolicy.json" }
         ]
       }
     }

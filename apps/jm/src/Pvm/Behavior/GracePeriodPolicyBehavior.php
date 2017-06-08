@@ -2,10 +2,13 @@
 namespace App\Pvm\Behavior;
 
 use App\Model\GracePeriodPolicy;
+use App\Model\Job;
+use App\Model\JobResult;
 use App\Model\Process;
 use App\Storage\JobStorage;
 use App\Storage\ProcessExecutionStorage;
 use Formapro\Pvm\Behavior;
+use Formapro\Pvm\Exception\InterruptExecutionException;
 use Formapro\Pvm\Token;
 use function Makasim\Values\get_object;
 
@@ -41,21 +44,36 @@ class GracePeriodPolicyBehavior implements Behavior
         /** @var Process $process */
         $process = $token->getProcess();
 
-        /** @var GracePeriodPolicy $gracePeriodPolicy */
-        $gracePeriodPolicy = get_object($token->getTransition()->getTo(), 'gracePeriodPolicy');
-        $endsAt = $gracePeriodPolicy->getPeriodEndsAt()->getTimestamp();
+        $endsAt = $this->getGracePeriodPolicy($token)->getPeriodEndsAt()->getTimestamp();
 
         $this->processExecutionStorage->update($token->getProcess());
         while (time() < $endsAt) {
             sleep(1);
         }
 
-        $job = $this->jobStorage->getOneById($process->getTokenJobId($token));
-        $result = $job->getCurrentResult();
-        if ($result->isCompleted() || $result->isCanceled() || $result->isTerminated()) {
-            return ['completed'];
-        }
+        $this->jobStorage->lockByJobId($process->getTokenJobId($token), function(Job $job) {
+            $result = $job->getCurrentResult();
+            if ($result->isWaitingSubJobs() || $result->isCompleted() || $result->isCanceled() || $result->isTerminated() || $result->isFailed()) {
+                throw new InterruptExecutionException();
+            }
 
-        return ['failed'];
+            $jobResult = JobResult::createFor(Job::STATUS_FAILED);
+            $job->addResult($jobResult);
+            $job->setCurrentResult($jobResult);
+
+            $this->jobStorage->update($job);
+
+            return ['failed'];
+        });
+    }
+
+    /**
+     * @param Token $token
+     *
+     * @return GracePeriodPolicy|object
+     */
+    private function getGracePeriodPolicy(Token $token):GracePeriodPolicy
+    {
+        return get_object($token->getTransition()->getTo(), 'gracePeriodPolicy');
     }
 }

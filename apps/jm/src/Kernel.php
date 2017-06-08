@@ -3,7 +3,7 @@
 namespace App;
 
 use App\Async\CreateJob;
-use App\Async\CreateSubJobs;
+use App\Async\WaitingForSubJobsResult;
 use App\Async\DoJob;
 use App\Async\JobResult;
 use App\Infra\DependencyInjection\RegisterPvmBehaviorPass;
@@ -14,6 +14,7 @@ use App\Model\JobResult as JobResultModel;
 use App\Model\JobTemplate;
 use App\Model\Process;
 use App\Model\RetryFailedPolicy;
+use App\Model\RunSubJobsPolicy;
 use function Makasim\Values\register_cast_hooks;
 use function Makasim\Values\register_hook;
 use function Makasim\Values\register_object_hooks;
@@ -98,13 +99,16 @@ final class Kernel extends BaseKernel
         (new ObjectBuilderHook([
             Job::SCHEMA => Job::class,
             JobTemplate::SCHEMA => JobTemplate::class,
+            JobResult::SCHEMA => JobResult::class,
+            WaitingForSubJobsResult::SCHEMA => WaitingForSubJobsResult::class,
+
             JobResultModel::SCHEMA => JobResultModel::class,
             CreateJob::SCHEMA => CreateJob::class,
             DoJob::SCHEMA => DoJob::class,
-            JobResult::SCHEMA => JobResult::class,
+
             GracePeriodPolicy::SCHEMA => GracePeriodPolicy::class,
             RetryFailedPolicy::SCHEMA => RetryFailedPolicy::class,
-            CreateSubJobs::SCHEMA => CreateSubJobs::class,
+            RunSubJobsPolicy::SCHEMA => RunSubJobsPolicy::class,
         ]))->register();
     }
 }

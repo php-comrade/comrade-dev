@@ -46,6 +46,12 @@ class RunJobBehavior implements Behavior, SignalBehavior
         /** @var Process $process */
         $process = $token->getProcess();
         $job = $this->jobStorage->getOneById($process->getTokenJobId($token));
+        if ($job->getCurrentResult()->isCompleted()) {
+            return ['completed'];
+        }
+        if ($job->getCurrentResult()->isFailed()) {
+            return ['failed'];
+        }
 
         $queue = $this->psrContext->createQueue(get_value($job, 'enqueue.queue'));
         $message = $this->psrContext->createMessage(JSON::encode(DoJob::createFor($job, $token)));
@@ -75,6 +81,10 @@ class RunJobBehavior implements Behavior, SignalBehavior
 
         if ($result->isFailed()) {
             return ['failed'];
+        }
+
+        if ($result->isWaitingSubJobs()) {
+            return ['run_sub_jobs'];
         }
 
         if ($result->isCompleted() || $result->isCanceled() || $result->isTerminated()){

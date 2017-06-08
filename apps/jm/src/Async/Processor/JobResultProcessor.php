@@ -3,6 +3,7 @@ namespace App\Async\Processor;
 
 use App\Async\JobResult;
 use App\Async\Topics;
+use App\Async\WaitingForSubJobsResult;
 use App\Infra\JsonSchema\Errors;
 use App\Infra\JsonSchema\SchemaValidator;
 use App\Model\Job;
@@ -20,7 +21,7 @@ use function Makasim\Values\set_object;
 use function Makasim\Yadm\get_object_id;
 use Psr\Log\NullLogger;
 
-class FeedbackJobProcessor implements PsrProcessor, TopicSubscriberInterface
+class JobResultProcessor implements PsrProcessor, TopicSubscriberInterface
 {
     /**
      * @var SchemaValidator
@@ -74,6 +75,15 @@ class FeedbackJobProcessor implements PsrProcessor, TopicSubscriberInterface
             return Result::reject(Errors::toString($errors, 'Message schema validation has failed.'));
         }
 
+        if (
+            WaitingForSubJobsResult::SCHEMA == $data['schema'] &&
+            $errors = $this->schemaValidator->validate($data, WaitingForSubJobsResult::SCHEMA)
+        ) {
+            return Result::reject(Errors::toString($errors, 'Message schema validation has failed.'));
+        }
+
+
+
         $message = JobResult::create($data);
         $token = $message->getToken();
 
@@ -81,12 +91,28 @@ class FeedbackJobProcessor implements PsrProcessor, TopicSubscriberInterface
             return self::REJECT;
         }
 
-        $job = $this->jobStorage->getOneById($message->getJobId());
-        $this->jobStorage->lock(get_object_id($job), function(Job $job, JobStorage $jobStorage) use($message) {
+        $this->jobStorage->lockByJobId($message->getJobId(), function(Job $job) use($message) {
             $job->addResult($message->getResult());
             $job->setCurrentResult($message->getResult());
 
-            $jobStorage->update($job);
+            if ($message instanceof WaitingForSubJobsResult) {
+                $parentProcess = $this->processExecutionStorage->getOneById($message->getToken());
+
+                $jobTemplates = iterator_to_array($message->getJobTemplates());
+                foreach ($jobTemplates as $jobTemplate) {
+                    $job = Job::createFromTemplate($jobTemplate);
+                    $this->jobStorage->insert($jobTemplate);
+                }
+
+                $process = $this->createProcessForSubJobsService->createProcess($jobTemplates);
+                set_value($process, 'parentProcessId', $parentProcess->getId());
+
+                $this->processStorage->insert($process);
+
+                $this->producer->send(Topics::SCHEDULE_JOB, $process->getId());
+            }
+
+            $this->jobStorage->update($job);
         });
 
         try {
@@ -104,6 +130,6 @@ class FeedbackJobProcessor implements PsrProcessor, TopicSubscriberInterface
      */
     public static function getSubscribedTopics()
     {
-        return [Topics::PROCESS_FEEDBACK => ['processorName' => 'job_manager_process_feedback']];
+        return [Topics::JOB_RESULT => ['processorName' => 'job_result']];
     }
 }

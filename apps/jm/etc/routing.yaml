@@ -6,6 +6,10 @@ graph:
     path: /graph/{id}
     defaults: { _controller: 'App\Controller\FooController::graphAction' }
 
+graph_token:
+    path: /graph/token/{token}
+    defaults: { _controller: 'App\Controller\FooController::graphTokenAction' }
+
 # Depends on sensio/framework-extra-bundle:^3.0 and doctrine/annotations
 #controllers:
 #    resource: ../src/Controller/

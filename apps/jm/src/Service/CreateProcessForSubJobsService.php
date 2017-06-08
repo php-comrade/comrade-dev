@@ -2,7 +2,7 @@
 namespace App\Service;
 
 use App\Infra\Uuid;
-use App\Model\Job;
+use App\Model\JobTemplate;
 use App\Model\Process;
 use App\Pvm\Behavior\IdleBehavior;
 use App\Pvm\Behavior\RunJobBehavior;
@@ -11,11 +11,11 @@ use App\Pvm\Behavior\SimpleSynchronizeBehavior;
 class CreateProcessForSubJobsService
 {
     /**
-     * @param Job[] $jobs
+     * @param JobTemplate[] $jobTemplates
      *
      * @return Process
      */
-    public function createProcess(array $jobs) : Process
+    public function createProcess(array $jobTemplates) : Process
     {
         $process = new Process();
         $process->setId(Uuid::generate());
@@ -28,11 +28,11 @@ class CreateProcessForSubJobsService
         $failedTasks = [];
         $completedTasks = [];
 
-        foreach ($jobs as $job) {
+        foreach ($jobTemplates as $jobTemplate) {
             $runJobTask = $process->createNode();
-            $runJobTask->setLabel('Run job: '.$job->getName());
+            $runJobTask->setLabel('Run job: '.$jobTemplate->getName());
             $runJobTask->setBehavior(RunJobBehavior::class);
-            $process->setNodeJob($runJobTask, $job);
+            $process->addNodeJobTemplate($runJobTask, $jobTemplate);
             $transition = $process->createTransition($startTask, $runJobTask);
             $transition->setAsync(true);
 

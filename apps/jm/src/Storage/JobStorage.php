@@ -2,6 +2,7 @@
 namespace App\Storage;
 
 use App\Model\Job;
+use function Makasim\Yadm\get_object_id;
 use Makasim\Yadm\Storage;
 
 /**
@@ -22,5 +23,18 @@ class JobStorage extends Storage
         }
 
         return $job;
+    }
+
+    /**
+     * @param string $jobId
+     * @param callable $lockCallback
+     *
+     * @return mixed
+     */
+    public function lockByJobId(string $jobId, callable $lockCallback)
+    {
+        $job = $this->getOneById($jobId);
+
+        return $this->lock(get_object_id($job), $lockCallback);
     }
 }

@@ -2,6 +2,8 @@
 namespace App\Pvm\Behavior;
 
 use App\Model\GracePeriodPolicy;
+use App\Model\Job;
+use App\Model\JobResult;
 use App\Model\Process;
 use App\Model\RetryFailedPolicy;
 use App\Storage\JobStorage;
@@ -11,6 +13,7 @@ use Formapro\Pvm\Token;
 use function Makasim\Values\get_object;
 use function Makasim\Values\get_value;
 use function Makasim\Values\set_value;
+use function Makasim\Yadm\get_object_id;
 
 class RetryFailedBehavior implements Behavior
 {
@@ -43,23 +46,35 @@ class RetryFailedBehavior implements Behavior
     {
         /** @var Process $process */
         $process = $token->getProcess();
-        $job = $this->jobStorage->getOneById($process->getTokenJobId($token));
-        if (false == $job->getCurrentResult()->isFailed()) {
-            return ['complete'];
-        }
+        $this->jobStorage->lockByJobId($process->getTokenJobId($token), function(Job $job) use ($token) {
+            if (false == $job->getCurrentResult()->isFailed()) {
+                return ['complete'];
+            }
 
-        /** @var RetryFailedPolicy $retryFailedPolicy */
-        $retryFailedPolicy = get_object($token->getTransition()->getTo(), 'retryFailedPolicy');
-        $retryLimit = $retryFailedPolicy->getRetryLimit();
+            $retryLimit = $this->getRetryFailedPolicy($token)->getRetryLimit();
 
-        $retryAttempts = get_value($job, 'retryAttempts', 0);
-        if ($retryAttempts >= $retryLimit) {
-            return ['failed'];
-        }
+            $retryAttempts = get_value($job, 'retryAttempts', 0);
+            if ($retryAttempts >= $retryLimit) {
+                return ['failed'];
+            }
 
-        set_value($job, 'retryAttempts', ++$retryAttempts);
-        $this->jobStorage->update($job);
+            $jobResult = JobResult::createFor(Job::STATUS_NEW);
+            set_value($job, 'retryAttempts', ++$retryAttempts);
+            $job->addResult($jobResult);
+            $job->setCurrentResult($jobResult);
+            $this->jobStorage->update($job);
 
-        return ['retry'];
+            return ['retry'];
+        });
+    }
+
+    /**
+     * @param Token $token
+     *
+     * @return RetryFailedPolicy|object
+     */
+    private function getRetryFailedPolicy(Token $token):RetryFailedPolicy
+    {
+        return get_object($token->getTransition()->getTo(), 'retryFailedPolicy');
     }
 }

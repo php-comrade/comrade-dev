@@ -9,4 +9,4 @@ $workerBuilder->setPrefix('php');
 $workerBuilder->setWorkingDirectory(realpath(__DIR__));
 
 $daemon = new ConsumeDaemon($workerBuilder);
-$daemon->start(3);
+$daemon->start(1);

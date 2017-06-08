@@ -1,14 +1,14 @@
 <?php
 namespace App\Async\Processor;
 
-use App\Async\CreateSubJobs;
+use App\Async\WaitingForSubJobsResult;
 use App\Async\Topics;
 use App\Infra\JsonSchema\Errors;
 use App\Infra\JsonSchema\SchemaValidator;
-use App\Model\Job;
-use App\Service\CreateProcessForJobService;
 use App\Service\CreateProcessForSubJobsService;
 use App\Storage\JobStorage;
+use App\Storage\JobTemplateStorage;
+use App\Storage\ProcessExecutionStorage;
 use App\Storage\ProcessStorage;
 use Enqueue\Client\ProducerInterface;
 use Enqueue\Client\TopicSubscriberInterface;
@@ -17,6 +17,7 @@ use Enqueue\Psr\PsrContext;
 use Enqueue\Psr\PsrMessage;
 use Enqueue\Psr\PsrProcessor;
 use Enqueue\Util\JSON;
+use function Makasim\Values\set_value;
 
 class CreateSubJobsProcessor implements PsrProcessor, TopicSubscriberInterface
 {
@@ -31,6 +32,11 @@ class CreateSubJobsProcessor implements PsrProcessor, TopicSubscriberInterface
     private $jobStorage;
 
     /**
+     * @var JobTemplateStorage
+     */
+    private $jobTemplateStorage;
+
+    /**
      * @var ProcessStorage
      */
     private $processStorage;
@@ -39,28 +45,39 @@ class CreateSubJobsProcessor implements PsrProcessor, TopicSubscriberInterface
      * @var CreateProcessForSubJobsService
      */
     private $createProcessForSubJobsService;
+
     /**
      * @var ProducerInterface
      */
     private $producer;
+    /**
+     * @var ProcessExecutionStorage
+     */
+    private $processExecutionStorage;
 
     /**
      * @param SchemaValidator $schemaValidator
      * @param JobStorage $jobStorage
+     * @param JobTemplateStorage $jobTemplateStorage
      * @param ProcessStorage $processStorage
+     * @param ProcessExecutionStorage $processExecutionStorage
      * @param CreateProcessForSubJobsService $createProcessForSubJobsService
      * @param ProducerInterface $producer
      */
     public function __construct(
         SchemaValidator $schemaValidator,
         JobStorage $jobStorage,
+        JobTemplateStorage $jobTemplateStorage,
         ProcessStorage $processStorage,
+        ProcessExecutionStorage $processExecutionStorage,
         CreateProcessForSubJobsService $createProcessForSubJobsService,
         ProducerInterface $producer
     ) {
         $this->schemaValidator = $schemaValidator;
         $this->jobStorage = $jobStorage;
+        $this->jobTemplateStorage = $jobTemplateStorage;
         $this->processStorage = $processStorage;
+        $this->processExecutionStorage = $processExecutionStorage;
         $this->createProcessForSubJobsService = $createProcessForSubJobsService;
         $this->producer = $producer;
     }
@@ -76,32 +93,11 @@ class CreateSubJobsProcessor implements PsrProcessor, TopicSubscriberInterface
         }
 
         $data = JSON::decode($psrMessage->getBody());
-        if ($errors = $this->schemaValidator->validate($data, CreateSubJobs::SCHEMA)) {
+        if ($errors = $this->schemaValidator->validate($data, WaitingForSubJobsResult::SCHEMA)) {
             return Result::reject(Errors::toString($errors, 'Message schema validation has failed.'));
         }
 
-        $message = CreateSubJobs::create($data);
-//        if (false == $process = $this->processStorage->findOne(['uid' => $message->getParentProcessUid()])) {
-//            return Result::reject(sprintf('The process with uid "%s" could not be found.', $message->getParentProcessUid()));
-//        }
 
-        if (false == $parentJob = $this->jobStorage->findOne(['uid' => $message->getParentJobUid()])) {
-            return Result::reject(sprintf('The parent job with uid "%s" could not be found.', $message->getParentJobUid()));
-        }
-
-        $jobs = [];
-        foreach ($message->getSubJobTemplates() as $jobTemplate) {
-            $job = Job::createFromTemplate($jobTemplate);
-
-            $jobs[] = $job;
-
-            $this->jobStorage->update($job, ['uid' => $job->getId()], ['upsert' => true]);
-        }
-
-        $process = $this->createProcessForSubJobsService->createProcess($jobs);
-        $this->processStorage->insert($process);
-
-        $this->producer->send(Topics::SCHEDULE_JOB, $process->getId());
 
         return self::ACK;
     }

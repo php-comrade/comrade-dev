@@ -43,4 +43,15 @@ class FooController extends Controller
 
         return $this->render('graph.html.twig', ['graph' => $graph]);
     }
+
+    public function graphTokenAction($token)
+    {
+        $process = $this->processExecutionStorage->findOne(['tokens.'.$token => ['$exists' => true]]);
+
+        if (false == $process) {
+            throw new NotFoundHttpException(sprintf('Process %s was not found', $id));
+        }
+
+        return $this->graphAction($process->getId());
+    }
 }

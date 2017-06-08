@@ -4,12 +4,15 @@ namespace App\Service;
 use App\Infra\Uuid;
 use App\Model\GracePeriodPolicy;
 use App\Model\Job;
+use App\Model\JobTemplate;
 use App\Model\Process;
 use App\Model\RetryFailedPolicy;
+use App\Model\RunSubJobsPolicy;
 use App\Pvm\Behavior\GracePeriodPolicyBehavior;
 use App\Pvm\Behavior\IdleBehavior;
 use App\Pvm\Behavior\RetryFailedBehavior;
 use App\Pvm\Behavior\RunJobBehavior;
+use App\Pvm\Behavior\RunSubJobsProcessBehavior;
 use function Makasim\Values\set_object;
 use function Makasim\Values\set_value;
 
@@ -17,14 +20,14 @@ use function Makasim\Values\set_value;
 class CreateProcessForJobService
 {
     /**
-     * @param Job $job
+     * @param JobTemplate $jobTemplate
      *
      * @return Process
      */
-    public function createProcess(Job $job) : Process
+    public function createProcess(JobTemplate $jobTemplate) : Process
     {
         $process = new Process();
-        $process->setId(Uuid::generate());
+        $process->setId($jobTemplate->getProcessTemplateId());
 
         $startTask = $process->createNode();
         $startTask->setLabel('Start process');
@@ -32,24 +35,22 @@ class CreateProcessForJobService
         $process->createTransition(null, $startTask);
 
         $runJobTask = $process->createNode();
-        $runJobTask->setLabel('Run job: '.$job->getName());
+        $runJobTask->setLabel('Run job: '.$jobTemplate->getName());
         $runJobTask->setBehavior(RunJobBehavior::class);
-        $process->setNodeJob($runJobTask, $job);
+        $process->addNodeJobTemplate($runJobTask, $jobTemplate);
         $process->createTransition($startTask, $runJobTask);
 
         $jobCompletedTask = $process->createNode();
         $jobCompletedTask->setLabel('Completed');
         $jobCompletedTask->setBehavior(IdleBehavior::class);
-        $process->createTransition($runJobTask, $jobCompletedTask, 'completed');
-
-        $onFailedTasks = [];
+        $runJobToCompletedTransition = $process->createTransition($runJobTask, $jobCompletedTask, 'completed');
 
         $jobFailedTask = $process->createNode();
         $jobFailedTask->setLabel('Failed');
         $jobFailedTask->setBehavior(IdleBehavior::class);
         $runJobToFailedTransition = $process->createTransition($runJobTask, $jobFailedTask, 'failed');
 
-        foreach ($job->getPolices() as $policy) {
+        foreach ($jobTemplate->getPolices() as $policy) {
             if ($policy instanceof  GracePeriodPolicy) {
                 $now = new \DateTime('now');
                 $diff = $now->diff($policy->getPeriodEndsAt());
@@ -57,27 +58,36 @@ class CreateProcessForJobService
                 $policyTask = $process->createNode();
                 $policyTask->setLabel('Grace period '.$diff->s.' seconds');
                 $policyTask->setBehavior(GracePeriodPolicyBehavior::class);
-                $process->setNodeJob($policyTask, $job);
+                $process->addNodeJobTemplate($policyTask, $jobTemplate);
                 set_object($policyTask, 'gracePeriodPolicy', $policy);
 
                 $transition = $process->createTransition($startTask, $policyTask);
                 $transition->setAsync(true);
 
                 $process->createTransition($policyTask, $jobFailedTask, 'failed');
-                $process->createTransition($policyTask, $jobCompletedTask, 'completed');
             }
 
             if ($policy instanceof  RetryFailedPolicy) {
                 $policyTask = $process->createNode();
                 $policyTask->setLabel('Retries '.$policy->getRetryLimit());
                 $policyTask->setBehavior(RetryFailedBehavior::class);
-                $process->setNodeJob($policyTask, $job);
+                $process->addNodeJobTemplate($policyTask, $jobTemplate);
                 set_object($policyTask, 'retryFailedPolicy', $policy);
 
-                $onFailedTasks[] = $policyTask;
-
-                $process->breakTransition($runJobToFailedTransition, $policyTask, 'failed');
+                $runJobToFailedTransition = $process->breakTransition($runJobToFailedTransition, $policyTask, 'failed');
                 $process->createTransition($policyTask, $runJobTask, 'retry');
+            }
+
+            if ($policy instanceof  RunSubJobsPolicy) {
+                $policyTask = $process->createNode();
+                $policyTask->setLabel('Run sub jobs');
+                $policyTask->setBehavior(RunSubJobsProcessBehavior::class);
+                $process->addNodeJobTemplate($policyTask, $jobTemplate);
+                set_object($policyTask, 'runSubJobsPolicy', $policy);
+
+                $process->createTransition($runJobTask, $policyTask, 'run_sub_jobs');
+                $process->createTransition($policyTask, $jobFailedTask, 'failed');
+                $process->createTransition($policyTask, $jobCompletedTask, 'completed');
             }
         }
 

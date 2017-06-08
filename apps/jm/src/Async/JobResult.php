@@ -18,7 +18,7 @@ class JobResult implements \JsonSerializable
     /**
      * @var array
      */
-    private $values = [];
+    protected $values = [];
 
     /**
      * @return string

@@ -4,6 +4,7 @@ namespace App\Model;
 use Formapro\Pvm\Node;
 use Formapro\Pvm\Process as PvmProcess;
 use Formapro\Pvm\Token;
+use function Makasim\Values\add_value;
 use function Makasim\Values\get_value;
 use function Makasim\Values\set_value;
 
@@ -11,11 +12,17 @@ class Process extends PvmProcess
 {
     /**
      * @param Node $node
-     * @param Job $job
+     * @param JobTemplate $jobTemplate
      */
-    public function setNodeJob(Node $node, Job $job):void
+    public function addNodeJobTemplate(Node $node, JobTemplate $jobTemplate):void
     {
-        set_value($node, 'jobId', $job->getId());
+        set_value($node, 'jobTemplateId', $jobTemplate->getTemplateId());
+        add_value($node->getProcess(), 'jobTemplateIds', $jobTemplate->getTemplateId());
+    }
+
+    public function addJob(Job $job)
+    {
+        add_value($this, 'jobIds', $job->getId(), $job->getTemplateId());
     }
 
     /**
@@ -35,6 +42,8 @@ class Process extends PvmProcess
      */
     public function getNodeJobId(Node $node):string
     {
-        return get_value($node, 'jobId');
+        $jobTemplateId = get_value($node, 'jobTemplateId');
+
+        return get_value($node->getProcess(), 'jobIds.'.$jobTemplateId);
     }
 }

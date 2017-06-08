@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "id": "http://jm.forma-pro.com/schemas/message/WaitingForSubJobsResult.json",
+  "allOf": [
+    { "$ref": "JobResult.json" },
+    {
+      "type": "object",
+      "properties": {
+        "jobResult": {
+          "type": "object",
+          "properties": {
+            "status": { "type": "string", "enum": ["waiting_sub_jobs"] }
+          }
+        },
+        "jobTemplates": {
+          "type": "array",
+          "items": {
+            "$ref": "../JobTemplate.json"
+          }
+        }
+      },
+      "required": [
+        "jobTemplates"
+      ]
+    }
+  ]
+}
