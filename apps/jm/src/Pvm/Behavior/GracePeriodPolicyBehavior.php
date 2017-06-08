@@ -53,7 +53,7 @@ class GracePeriodPolicyBehavior implements Behavior
 
         $this->jobStorage->lockByJobId($process->getTokenJobId($token), function(Job $job) {
             $result = $job->getCurrentResult();
-            if ($result->isWaitingSubJobs() || $result->isCompleted() || $result->isCanceled() || $result->isTerminated() || $result->isFailed()) {
+            if ($result->isRunSubJobs() || $result->isCompleted() || $result->isCanceled() || $result->isTerminated() || $result->isFailed()) {
                 throw new InterruptExecutionException();
             }
 

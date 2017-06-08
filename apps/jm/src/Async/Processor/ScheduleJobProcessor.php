@@ -2,12 +2,7 @@
 namespace App\Async\Processor;
 
 use App\Async\Topics;
-use App\Infra\Uuid;
-use App\Model\Job;
-use App\Model\JobResult;
-use App\Model\Process;
-use App\Storage\JobStorage;
-use App\Storage\JobTemplateStorage;
+use App\Service\ScheduleProcessService;
 use App\Storage\ProcessExecutionStorage;
 use App\Storage\ProcessStorage;
 use Enqueue\Client\TopicSubscriberInterface;
@@ -16,10 +11,6 @@ use Enqueue\Psr\PsrContext;
 use Enqueue\Psr\PsrMessage;
 use Enqueue\Psr\PsrProcessor;
 use Formapro\Pvm\ProcessEngine;
-use function Makasim\Values\get_value;
-use function Makasim\Values\set_value;
-use function Makasim\Yadm\unset_object_id;
-use Psr\Log\NullLogger;
 
 class ScheduleJobProcessor implements PsrProcessor, TopicSubscriberInterface
 {
@@ -39,34 +30,26 @@ class ScheduleJobProcessor implements PsrProcessor, TopicSubscriberInterface
     private $processExecutionStorage;
 
     /**
-     * @var JobStorage
+     * @var ScheduleProcessService
      */
-    private $jobStorage;
-
-    /**
-     * @var JobTemplateStorage
-     */
-    private $jobTemplateStorage;
+    private $scheduleProcessService;
 
     /**
      * @param ProcessEngine $processEngine
      * @param ProcessStorage $processStorage
      * @param ProcessExecutionStorage $processExecutionStorage
-     * @param JobStorage $jobStorage
-     * @param JobTemplateStorage $jobTemplateStorage
+     * @param ScheduleProcessService $scheduleProcessService
      */
     public function __construct(
         ProcessEngine $processEngine,
         ProcessStorage $processStorage,
         ProcessExecutionStorage $processExecutionStorage,
-        JobStorage $jobStorage,
-        JobTemplateStorage $jobTemplateStorage
+        ScheduleProcessService $scheduleProcessService
     ) {
         $this->processEngine = $processEngine;
         $this->processStorage = $processStorage;
         $this->processExecutionStorage = $processExecutionStorage;
-        $this->jobStorage = $jobStorage;
-        $this->jobTemplateStorage = $jobTemplateStorage;
+        $this->scheduleProcessService = $scheduleProcessService;
     }
 
     /**
@@ -79,37 +62,11 @@ class ScheduleJobProcessor implements PsrProcessor, TopicSubscriberInterface
         }
 
         $processId = $psrMessage->getBody();
-
-        /** @var Process $process */
-        if (false == $process = $this->processExecutionStorage->findOne(['id' => $processId])) {
-            /** @var Process $process */
-            if (false == $process = $this->processStorage->findOne(['id' => $processId])) {
-                return self::REJECT;
-            }
-
-            unset_object_id($process);
-            set_value($process, 'templateId', $process->getId());
-            $process->setId(Uuid::generate());
-
-
-            foreach (get_value($process, 'jobTemplateIds') as $jobTemplateId) {
-                $jobTemplate = $this->jobTemplateStorage->findOne(['templateId' => $jobTemplateId]);
-
-                $job = Job::createFromTemplate($jobTemplate);
-                $job->setId(Uuid::generate());
-                $job->setProcessId($process->getId());
-
-                $result = JobResult::createFor(Job::STATUS_NEW);
-                $job->addResult($result);
-                $job->setCurrentResult($result);
-
-                $process->addJob($job);
-
-                $this->jobStorage->insert($job);
-            }
-
-            $this->processExecutionStorage->insert($process);
+        if (false == $templateProcess = $this->processStorage->findOne(['id' => $processId])) {
+            return self::REJECT;
         }
+
+        $process = $this->scheduleProcessService->schedule($templateProcess);
 
         try {
             foreach ($process->getTransitions() as $transition) {
@@ -131,6 +88,6 @@ class ScheduleJobProcessor implements PsrProcessor, TopicSubscriberInterface
      */
     public static function getSubscribedTopics()
     {
-        return [Topics::SCHEDULE_JOB];
+        return [Topics::SCHEDULE_PROCESS];
     }
 }

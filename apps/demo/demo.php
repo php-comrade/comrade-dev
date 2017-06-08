@@ -1,7 +1,7 @@
 <?php
 namespace DemoApp;
 
-use App\Async\WaitingForSubJobsResult;
+use App\Async\RunSubJobsResult;
 use App\Async\DoJob;
 use App\Async\Topics;
 use App\Infra\Uuid;
@@ -22,20 +22,14 @@ use Enqueue\Util\JSON;
 use function Makasim\Values\register_cast_hooks;
 use function Makasim\Values\register_object_hooks;
 use function Makasim\Values\set_value;
-use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerTrait;
+use Symfony\Component\Console\Logger\ConsoleLogger;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
 require_once __DIR__.'/../jm/vendor/autoload.php';
 
-class EchoLogger implements LoggerInterface
-{
-    use LoggerTrait;
 
-    public function log($level, $message, array $context = array())
-    {
-        echo sprintf('[%s] %s %s ', $level, $message, json_encode($context)).PHP_EOL;
-    }
-}
+$output = new ConsoleOutput(ConsoleOutput::VERBOSITY_QUIET);
+$logger = new ConsoleLogger($output);
 
 register_cast_hooks();
 register_object_hooks();
@@ -45,15 +39,17 @@ register_object_hooks();
     JobResult::SCHEMA => JobResult::class,
     DoJob::SCHEMA => DoJob::class,
     JobResultMessage::SCHEMA => JobResultMessage::class,
-    WaitingForSubJobsResult::SCHEMA => WaitingForSubJobsResult::class,
+    RunSubJobsResult::SCHEMA => RunSubJobsResult::class,
     JobTemplate::SCHEMA => JobTemplate::class,
+    RunSubJobsResult::SCHEMA => RunSubJobsResult::class,
 ]))->register();
 
-function createSubTasks(Job $job, PsrContext $context)
+function createSubTasks(Job $job, PsrContext $context, array $data):RunSubJobsResult
 {
-    $createSubJobs = WaitingForSubJobsResult::create();
-    $createSubJobs->setJobId($job->getId());
-    $createSubJobs->setToken($job->getProcessId());
+    $jobResultMessage = RunSubJobsResult::create();
+    $jobResultMessage->setToken($data['token']);
+    $jobResultMessage->setJobId($job->getId());
+    $jobResultMessage->setResult(JobResult::createFor(Job::STATUS_RUN_SUB_JOBS));
 
     $jobTemplate = JobTemplate::create();
     $jobTemplate->setName('testSubJob1');
@@ -61,7 +57,7 @@ function createSubTasks(Job $job, PsrContext $context)
     $jobTemplate->setProcessTemplateId(Uuid::generate());
     $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
     set_value($jobTemplate, 'enqueue.queue', 'demo_sub_job');
-    $createSubJobs->addJobTemplate($jobTemplate);
+    $jobResultMessage->addJobTemplate($jobTemplate);
 
     $jobTemplate = JobTemplate::create();
     $jobTemplate->setName('testSubJob2');
@@ -69,7 +65,7 @@ function createSubTasks(Job $job, PsrContext $context)
     $jobTemplate->setProcessTemplateId(Uuid::generate());
     $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
     set_value($jobTemplate, 'enqueue.queue', 'demo_sub_job');
-    $createSubJobs->addJobTemplate($jobTemplate);
+    $jobResultMessage->addJobTemplate($jobTemplate);
 
     $jobTemplate = JobTemplate::create();
     $jobTemplate->setName('testSubJob3');
@@ -77,7 +73,7 @@ function createSubTasks(Job $job, PsrContext $context)
     $jobTemplate->setProcessTemplateId(Uuid::generate());
     $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
     set_value($jobTemplate, 'enqueue.queue', 'demo_sub_job');
-    $createSubJobs->addJobTemplate($jobTemplate);
+    $jobResultMessage->addJobTemplate($jobTemplate);
 
     $jobTemplate = JobTemplate::create();
     $jobTemplate->setName('testSubJob4');
@@ -85,18 +81,13 @@ function createSubTasks(Job $job, PsrContext $context)
     $jobTemplate->setProcessTemplateId(Uuid::generate());
     $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
     set_value($jobTemplate, 'enqueue.queue', 'demo_sub_job');
-    $createSubJobs->addJobTemplate($jobTemplate);
+    $jobResultMessage->addJobTemplate($jobTemplate);
 
-    $createSubJobsQueue = $context->createQueue('enqueue.app.default');
-    $message = $context->createMessage(JSON::encode($createSubJobs), [
-        'enqueue.topic_name' => Topics::CREATE_SUB_JOBS,
-    ]);
-
-    $context->createProducer()->send($createSubJobsQueue, $message);
+    return $jobResultMessage;
 }
 
 /** @var \Enqueue\AmqpExt\AmqpContext $c */
-$c = dsn_to_context('amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1');
+$c = dsn_to_context('amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=4');
 
 $queue = $c->createQueue('demo_job');
 $queue->addFlag(AMQP_DURABLE);
@@ -107,7 +98,7 @@ $subJobQueue->addFlag(AMQP_DURABLE);
 $c->declareQueue($subJobQueue);
 
 $queueConsumer = new QueueConsumer($c, new ChainExtension([
-    new LoggerExtension(new EchoLogger()),
+    new LoggerExtension($logger),
     new SignalExtension(),
 ]));
 
@@ -123,17 +114,16 @@ $queueConsumer->bind($queue, function(PsrMessage $message, PsrContext $context) 
     $job = $doJob->getJob();
 
 //    if (get_value($job, 'retryAttempts', 0) > 2) {
-        $result = JobResult::createFor(Job::STATUS_COMPLETED);
+//        $result = JobResult::createFor(Job::STATUS_COMPLETED);
 //    } else {
 //        $result = JobResult::createFor(Job::STATUS_FAILED);
 //    }
     
-//    createSubTasks($job, $context);
-
-    $jobResultMessage = JobResultMessage::create();
-    $jobResultMessage->setToken($data['token']);
-    $jobResultMessage->setJobId($job->getId());
-    $jobResultMessage->setResult($result);
+    $jobResultMessage = createSubTasks($job, $context, $data);
+//    $jobResultMessage = JobResultMessage::create();
+//    $jobResultMessage->setToken($data['token']);
+//    $jobResultMessage->setJobId($job->getId());
+//    $jobResultMessage->setResult($result);
 
     $feedbackQueue = $context->createQueue('enqueue.app.default');
     $message = $context->createMessage(JSON::encode($jobResultMessage), [

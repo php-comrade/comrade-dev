@@ -1,7 +1,7 @@
 <?php
 namespace App\Async\Processor;
 
-use App\Async\WaitingForSubJobsResult;
+use App\Async\RunSubJobsResult;
 use App\Async\Topics;
 use App\Infra\JsonSchema\Errors;
 use App\Infra\JsonSchema\SchemaValidator;
@@ -93,7 +93,7 @@ class CreateSubJobsProcessor implements PsrProcessor, TopicSubscriberInterface
         }
 
         $data = JSON::decode($psrMessage->getBody());
-        if ($errors = $this->schemaValidator->validate($data, WaitingForSubJobsResult::SCHEMA)) {
+        if ($errors = $this->schemaValidator->validate($data, RunSubJobsResult::SCHEMA)) {
             return Result::reject(Errors::toString($errors, 'Message schema validation has failed.'));
         }
 

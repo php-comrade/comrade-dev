@@ -53,9 +53,14 @@ class JobResult
         return $this->getStatus() === Job::STATUS_FAILED;
     }
 
-    public function isWaitingSubJobs():bool
+    public function isRunSubJobs():bool
     {
-        return $this->getStatus() === Job::STATUS_WAITING_SUB_JOBS;
+        return $this->getStatus() === Job::STATUS_RUN_SUB_JOBS;
+    }
+
+    public function isRunningSubJobs():bool
+    {
+        return $this->getStatus() === Job::STATUS_RUNNING_SUB_JOBS;
     }
 
     public function isTerminated():bool

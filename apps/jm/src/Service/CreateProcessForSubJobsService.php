@@ -5,17 +5,20 @@ use App\Infra\Uuid;
 use App\Model\JobTemplate;
 use App\Model\Process;
 use App\Pvm\Behavior\IdleBehavior;
+use App\Pvm\Behavior\NotifyParentProcessBehavior;
 use App\Pvm\Behavior\RunJobBehavior;
 use App\Pvm\Behavior\SimpleSynchronizeBehavior;
+use Formapro\Pvm\Token;
 
 class CreateProcessForSubJobsService
 {
     /**
+     * @param Token $parentProcessToken
      * @param JobTemplate[] $jobTemplates
      *
      * @return Process
      */
-    public function createProcess(array $jobTemplates) : Process
+    public function createProcess(Token $parentProcessToken, array $jobTemplates) : Process
     {
         $process = new Process();
         $process->setId(Uuid::generate());
@@ -61,6 +64,14 @@ class CreateProcessForSubJobsService
         foreach ($failedTasks as $failedTask) {
             $process->createTransition($failedTask, $synchronizeJobsTask);
         }
+
+        $notifyParentProcessTask = $process->createNode();
+        $notifyParentProcessTask->setLabel('Notify parent process');
+        $notifyParentProcessTask->setValue('parentProcessId', $parentProcessToken->getProcess()->getId());
+        $notifyParentProcessTask->setValue('parentProcessToken', $parentProcessToken->getId());
+        $notifyParentProcessTask->setBehavior(NotifyParentProcessBehavior::class);
+
+        $process->createTransition($synchronizeJobsTask, $notifyParentProcessTask);
 
         return $process;
     }

@@ -86,7 +86,7 @@ class CreateJobProcessor implements PsrProcessor, TopicSubscriberInterface
         $this->jobTemplateStorage->insert($jobTemplate);
         $this->processStorage->insert($processTemplate);
 
-        $this->producer->send(Topics::SCHEDULE_JOB, $processTemplate->getId());
+        $this->producer->send(Topics::SCHEDULE_PROCESS, $processTemplate->getId());
 
         return self::ACK;
     }

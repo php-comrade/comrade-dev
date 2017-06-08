@@ -6,9 +6,9 @@ use function Makasim\Values\add_object;
 use function Makasim\Values\get_objects;
 use function Makasim\Values\get_values;
 
-class WaitingForSubJobsResult extends JobResult
+class RunSubJobsResult extends JobResult
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/message/WaitingForSubJobsResult.json';
+    const SCHEMA = 'http://jm.forma-pro.com/schemas/message/RunSubJobsResult.json';
 
     /**
      * @return JobTemplate[]|\Traversable

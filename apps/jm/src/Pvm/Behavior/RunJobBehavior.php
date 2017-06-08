@@ -78,12 +78,11 @@ class RunJobBehavior implements Behavior, SignalBehavior
         $process = $token->getProcess();
         $job = $this->jobStorage->getOneById($process->getTokenJobId($token));
         $result = $job->getCurrentResult();
-
         if ($result->isFailed()) {
             return ['failed'];
         }
 
-        if ($result->isWaitingSubJobs()) {
+        if ($result->isRunSubJobs()) {
             return ['run_sub_jobs'];
         }
 

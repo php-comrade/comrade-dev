@@ -17,7 +17,9 @@ class Job extends JobTemplate
 
     const STATUS_RUNNING = 'running';
 
-    const STATUS_WAITING_SUB_JOBS = 'waiting_sub_jobs';
+    const STATUS_RUN_SUB_JOBS = 'run_sub_jobs';
+
+    const STATUS_RUNNING_SUB_JOBS = 'running_sub_jobs';
 
     const STATUS_CANCELED = 'canceled';
 

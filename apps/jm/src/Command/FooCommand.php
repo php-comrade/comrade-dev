@@ -2,7 +2,7 @@
 namespace App\Command;
 
 use App\Async\CreateJob;
-use App\Async\WaitingForSubJobsResult;
+use App\Async\RunSubJobsResult;
 use App\Async\Topics;
 use App\Infra\Uuid;
 use App\Model\GracePeriodPolicy;
@@ -35,18 +35,17 @@ class FooCommand extends Command implements ContainerAwareInterface
         $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
         set_value($jobTemplate, 'enqueue.queue', 'demo_job');
 
-        $retryFailedPolicy = RetryFailedPolicy::create();
-        $retryFailedPolicy->setRetryLimit(5);
-        $jobTemplate->addPolicy($retryFailedPolicy);
-
-        $gracePeriodPolicy = GracePeriodPolicy::create();
-        $gracePeriodPolicy->setPeriodEndsAt(new \DateTime('now + 30 seconds'));
-        $jobTemplate->addPolicy($gracePeriodPolicy);
+//        $retryFailedPolicy = RetryFailedPolicy::create();
+//        $retryFailedPolicy->setRetryLimit(5);
+//        $jobTemplate->addPolicy($retryFailedPolicy);
+//
+//        $gracePeriodPolicy = GracePeriodPolicy::create();
+//        $gracePeriodPolicy->setPeriodEndsAt(new \DateTime('now + 30 seconds'));
+//        $jobTemplate->addPolicy($gracePeriodPolicy);
 
         $runSubJobsPolicy = RunSubJobsPolicy::create();
-        $runSubJobsPolicy->setSubProcessId(Uuid::generate());
+        $runSubJobsPolicy->setOnFailedSubJob(RunSubJobsPolicy::MARK_PARENT_JOB_AS_COMPLETED);
         $jobTemplate->addPolicy($runSubJobsPolicy);
-
 
         /** @var ProducerInterface $producer */
         $producer = $this->container->get('enqueue.producer');

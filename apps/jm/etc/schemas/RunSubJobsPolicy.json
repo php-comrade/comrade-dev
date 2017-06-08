@@ -3,7 +3,7 @@
   "id": "http://jm.forma-pro.com/schemas/RunSubJobsPolicy.json",
   "type": "object",
   "properties": {
-    "subProcessId": { "$ref": "uuid4.json" }
+    "onFailedSubJob": { "type": "string", "enum": ["mark_parent_job_as_failed", "mark_parent_job_as_completed" ] }
   },
-  "required": ["subProcessId"]
+  "required": ["onFailedSubJob"]
 }
