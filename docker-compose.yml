@@ -49,6 +49,17 @@ services:
       - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
     env_file: 'apps/jm/.env'
 
+  qs:
+    image: 'node:8.1'
+    restart: 'always'
+    entrypoint: "npm start"
+    working_dir: '/qs'
+    volumes:
+      - './apps/qs:/qs:cached'
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+
   rabbitmq:
     image: 'enqueue/rabbitmq:latest'
     restart: 'always'
