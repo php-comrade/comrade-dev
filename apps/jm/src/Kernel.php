@@ -8,6 +8,7 @@ use App\Async\DoJob;
 use App\Async\JobResult;
 use App\Infra\DependencyInjection\RegisterPvmBehaviorPass;
 use App\Infra\Yadm\ObjectBuilderHook;
+use App\Model\ExclusivePolicy;
 use App\Model\GracePeriodPolicy;
 use App\Model\Job;
 use App\Model\JobResult as JobResultModel;
@@ -113,6 +114,7 @@ final class Kernel extends BaseKernel
             GracePeriodPolicy::SCHEMA => GracePeriodPolicy::class,
             RetryFailedPolicy::SCHEMA => RetryFailedPolicy::class,
             RunSubJobsPolicy::SCHEMA => RunSubJobsPolicy::class,
+            ExclusivePolicy::SCHEMA => ExclusivePolicy::class,
         ]))->register();
     }
 }

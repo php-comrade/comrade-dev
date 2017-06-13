@@ -1,19 +1,16 @@
 <?php
 namespace App\Pvm\Behavior;
 
-use App\Model\GracePeriodPolicy;
+use App\JobStatus;
 use App\Model\Job;
 use App\Model\JobResult;
 use App\Model\Process;
-use App\Model\RetryFailedPolicy;
 use App\Storage\JobStorage;
 use App\Storage\ProcessExecutionStorage;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Token;
-use function Makasim\Values\get_object;
 use function Makasim\Values\get_value;
 use function Makasim\Values\set_value;
-use function Makasim\Yadm\get_object_id;
 
 class RetryFailedBehavior implements Behavior
 {
@@ -51,14 +48,14 @@ class RetryFailedBehavior implements Behavior
                 return ['complete'];
             }
 
-            $retryLimit = $this->getRetryFailedPolicy($token)->getRetryLimit();
+            $retryLimit = $job->getRetryFailedPolicy()->getRetryLimit();
 
             $retryAttempts = get_value($job, 'retryAttempts', 0);
             if ($retryAttempts >= $retryLimit) {
                 return ['failed'];
             }
 
-            $jobResult = JobResult::createFor(Job::STATUS_NEW);
+            $jobResult = JobResult::createFor(JobStatus::STATUS_NEW);
             set_value($job, 'retryAttempts', ++$retryAttempts);
             $job->addResult($jobResult);
             $job->setCurrentResult($jobResult);
@@ -66,15 +63,5 @@ class RetryFailedBehavior implements Behavior
 
             return ['retry'];
         });
-    }
-
-    /**
-     * @param Token $token
-     *
-     * @return RetryFailedPolicy|object
-     */
-    private function getRetryFailedPolicy(Token $token):RetryFailedPolicy
-    {
-        return get_object($token->getTransition()->getTo(), 'retryFailedPolicy');
     }
 }

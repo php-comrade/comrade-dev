@@ -3,8 +3,10 @@ namespace App\Model;
 
 use App\Infra\Yadm\CreateTrait;
 use function Makasim\Values\add_object;
+use function Makasim\Values\get_object;
 use function Makasim\Values\get_objects;
 use function Makasim\Values\get_value;
+use function Makasim\Values\set_object;
 use function Makasim\Values\set_value;
 
 class JobTemplate
@@ -83,18 +85,66 @@ class JobTemplate
     }
 
     /**
-     * @param Policy $policy
+     * @return GracePeriodPolicy|object|null
      */
-    public function addPolicy(Policy $policy)
+    public function getGracePeriodPolicy():?GracePeriodPolicy
     {
-        add_object($this, 'polices', $policy);
+        return get_object($this, 'gracePeriodPolicy');
     }
 
     /**
-     * @return \Traversable|Policy[]
+     * @param GracePeriodPolicy|null $gracePeriodPolicy
      */
-    public function getPolices(): \Traversable
+    public function setGracePeriodPolicy(GracePeriodPolicy $gracePeriodPolicy = null):void
     {
-        return get_objects($this,'polices');
+        set_object($this, 'gracePeriodPolicy', $gracePeriodPolicy);
+    }
+
+    /**
+     * @return RetryFailedPolicy|object|null
+     */
+    public function getRetryFailedPolicy():?RetryFailedPolicy
+    {
+        return get_object($this, 'retryFailedPolicy');
+    }
+
+    /**
+     * @param RetryFailedPolicy|null $retryFailedPolicy
+     */
+    public function setRetryFailedPolicy(RetryFailedPolicy $retryFailedPolicy = null):void
+    {
+        set_object($this, 'retryFailedPolicy', $retryFailedPolicy);
+    }
+
+    /**
+     * @return RunSubJobsPolicy|object|null
+     */
+    public function getRunSubJobsPolicy():?RunSubJobsPolicy
+    {
+        return get_object($this, 'runSubJobsPolicy');
+    }
+
+    /**
+     * @param RunSubJobsPolicy|null $runSubJobsPolicy
+     */
+    public function setRunSubJobsPolicy(RunSubJobsPolicy $runSubJobsPolicy = null):void
+    {
+        set_object($this, 'runSubJobsPolicy', $runSubJobsPolicy);
+    }
+
+    /**
+     * @return ExclusivePolicy|object|null
+     */
+    public function getExclusivePolicy():?ExclusivePolicy
+    {
+        return get_object($this, 'exclusivePolicy');
+    }
+
+    /**
+     * @param ExclusivePolicy|null $exclusivePolicy
+     */
+    public function setExclusivePolicy(ExclusivePolicy $exclusivePolicy = null):void
+    {
+        set_object($this, 'exclusivePolicy', $exclusivePolicy);
     }
 }

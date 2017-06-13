@@ -1,8 +1,8 @@
 <?php
 namespace App\Async\Processor;
 
+use App\Async\Commands;
 use App\Async\RunSubJobsResult;
-use App\Async\Topics;
 use App\Infra\JsonSchema\Errors;
 use App\Infra\JsonSchema\SchemaValidator;
 use App\Service\CreateProcessForSubJobsService;
@@ -10,16 +10,15 @@ use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessExecutionStorage;
 use App\Storage\ProcessStorage;
+use Enqueue\Client\CommandSubscriberInterface;
 use Enqueue\Client\ProducerInterface;
-use Enqueue\Client\TopicSubscriberInterface;
 use Enqueue\Consumption\Result;
 use Enqueue\Psr\PsrContext;
 use Enqueue\Psr\PsrMessage;
 use Enqueue\Psr\PsrProcessor;
 use Enqueue\Util\JSON;
-use function Makasim\Values\set_value;
 
-class CreateSubJobsProcessor implements PsrProcessor, TopicSubscriberInterface
+class CreateSubJobsProcessor implements PsrProcessor, CommandSubscriberInterface
 {
     /**
      * @var SchemaValidator
@@ -105,8 +104,8 @@ class CreateSubJobsProcessor implements PsrProcessor, TopicSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedTopics()
+    public static function getSubscribedCommand()
     {
-        return [Topics::CREATE_SUB_JOBS];
+        return Commands::CREATE_SUB_JOBS;
     }
 }

@@ -1,23 +1,25 @@
 <?php
 namespace App\Async\Processor;
 
+use App\Async\Commands;
 use App\Async\CreateJob;
-use App\Async\Topics;
 use App\Infra\JsonSchema\Errors;
 use App\Infra\JsonSchema\SchemaValidator;
+use App\Model\ExclusiveJob;
 use App\Service\CreateProcessForJobService;
+use App\Storage\ExclusiveJobStorage;
 use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessStorage;
-use Enqueue\Client\ProducerInterface;
-use Enqueue\Client\TopicSubscriberInterface;
+use Enqueue\Client\CommandSubscriberInterface;
+use Enqueue\Client\ProducerV2Interface;
 use Enqueue\Consumption\Result;
 use Enqueue\Psr\PsrContext;
 use Enqueue\Psr\PsrMessage;
 use Enqueue\Psr\PsrProcessor;
 use Enqueue\Util\JSON;
 
-class CreateJobProcessor implements PsrProcessor, TopicSubscriberInterface
+class CreateJobProcessor implements PsrProcessor, CommandSubscriberInterface
 {
     /**
      * @var SchemaValidator
@@ -40,26 +42,33 @@ class CreateJobProcessor implements PsrProcessor, TopicSubscriberInterface
     private $createProcessForJobService;
 
     /**
-     * @var ProducerInterface
+     * @var ProducerV2Interface
      */
     private $producer;
+    /**
+     * @var ExclusiveJobStorage
+     */
+    private $exclusiveJobStorage;
 
     /**
      * @param SchemaValidator $schemaValidator
      * @param JobTemplateStorage $jobTemplateStorage
+     * @param ExclusiveJobStorage $exclusiveJobStorage
      * @param ProcessStorage $processStorage
      * @param CreateProcessForJobService $createProcessForJobService
-     * @param ProducerInterface $producer
+     * @param ProducerV2Interface $producer
      */
     public function __construct(
         SchemaValidator $schemaValidator,
         JobTemplateStorage $jobTemplateStorage,
+        ExclusiveJobStorage $exclusiveJobStorage,
         ProcessStorage $processStorage,
         CreateProcessForJobService $createProcessForJobService,
-        ProducerInterface $producer
+        ProducerV2Interface $producer
     ) {
         $this->schemaValidator = $schemaValidator;
         $this->jobTemplateStorage = $jobTemplateStorage;
+        $this->exclusiveJobStorage = $exclusiveJobStorage;
         $this->processStorage = $processStorage;
         $this->createProcessForJobService = $createProcessForJobService;
         $this->producer = $producer;
@@ -86,7 +95,14 @@ class CreateJobProcessor implements PsrProcessor, TopicSubscriberInterface
         $this->jobTemplateStorage->insert($jobTemplate);
         $this->processStorage->insert($processTemplate);
 
-        $this->producer->send(Topics::SCHEDULE_PROCESS, $processTemplate->getId());
+        if ($jobTemplate->getExclusivePolicy()) {
+            $exclusiveJob = new ExclusiveJob();
+            $exclusiveJob->setName($jobTemplate->getName());
+
+            $this->exclusiveJobStorage->update($exclusiveJob, ['name' => $exclusiveJob->getName()], ['upsert' => true]);
+        }
+
+        $this->producer->sendCommand(Commands::SCHEDULE_PROCESS, $processTemplate->getId());
 
         return self::ACK;
     }
@@ -94,8 +110,8 @@ class CreateJobProcessor implements PsrProcessor, TopicSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedTopics()
+    public static function getSubscribedCommand()
     {
-        return [Topics::CREATE_JOB];
+        return Commands::CREATE_JOB;
     }
 }

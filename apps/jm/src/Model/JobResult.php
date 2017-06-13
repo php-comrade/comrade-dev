@@ -2,6 +2,7 @@
 namespace App\Model;
 
 use App\Infra\Yadm\CreateTrait;
+use App\JobStatus;
 use Makasim\Values\CastTrait;
 use function Makasim\Values\get_value;
 use function Makasim\Values\set_value;
@@ -18,54 +19,54 @@ class JobResult
         getValue as public;
     }
 
-    public function getStatus() :string
+    public function getStatus():int
     {
         return get_value($this, 'status');
     }
 
-    public function setStatus(string $status) : void
+    public function setStatus(int $status) : void
     {
         set_value($this, 'status', $status);
     }
 
     public function isNew():bool
     {
-        return $this->getStatus() === Job::STATUS_NEW;
+        return JobStatus::isNew($this);
     }
 
     public function isRunning():bool
     {
-        return $this->getStatus() === Job::STATUS_RUNNING;
+        return JobStatus::isRunning($this);
     }
 
     public function isCanceled():bool
     {
-        return $this->getStatus() === Job::STATUS_CANCELED;
+        return JobStatus::isCanceled($this);
     }
 
     public function isCompleted():bool
     {
-        return $this->getStatus() === Job::STATUS_COMPLETED;
+        return JobStatus::isCompleted($this);
     }
 
     public function isFailed():bool
     {
-        return $this->getStatus() === Job::STATUS_FAILED;
+        return JobStatus::isFailed($this);
     }
 
     public function isRunSubJobs():bool
     {
-        return $this->getStatus() === Job::STATUS_RUN_SUB_JOBS;
+        return JobStatus::isRunSubJobs($this);
     }
 
     public function isRunningSubJobs():bool
     {
-        return $this->getStatus() === Job::STATUS_RUNNING_SUB_JOBS;
+        return JobStatus::isRunningSubJobs($this);
     }
 
     public function isTerminated():bool
     {
-        return $this->getStatus() === Job::STATUS_TERMINATED;
+        return JobStatus::isTerminated($this);
     }
 
     /**
@@ -85,12 +86,12 @@ class JobResult
     }
 
     /**
-     * @param string $status
+     * @param int $status
      * @param \DateTime|null $dateTime
      *
      * @return object|static
      */
-    public static function createFor(string $status, \DateTime $dateTime = null)
+    public static function createFor(int $status, \DateTime $dateTime = null)
     {
         $result = static::create();
         $result->setStatus($status);

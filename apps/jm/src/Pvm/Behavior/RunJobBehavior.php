@@ -2,6 +2,7 @@
 namespace App\Pvm\Behavior;
 
 use App\Async\DoJob;
+use App\JobStatus;
 use App\Model\Job;
 use App\Model\JobResult;
 use App\Model\Process;
@@ -57,7 +58,7 @@ class RunJobBehavior implements Behavior, SignalBehavior
         $message = $this->psrContext->createMessage(JSON::encode(DoJob::createFor($job, $token)));
 
         $result = JobResult::create();
-        $result->setStatus(Job::STATUS_RUNNING);
+        $result->setStatus(JobStatus::STATUS_RUNNING);
         $result->setCreatedAt(new \DateTime('now'));
         $job->addResult($result);
         $job->setCurrentResult($result);

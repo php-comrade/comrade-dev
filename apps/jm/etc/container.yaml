@@ -10,12 +10,16 @@ services:
         public: true
 
     App\Storage\JobStorage: '@yadm.job.storage'
+    App\Storage\ExclusiveJobStorage: '@yadm.exclusive_job.storage'
     App\Storage\JobTemplateStorage: '@yadm.job_template.storage'
     App\Storage\ProcessStorage: '@yadm.process.storage'
     App\Storage\ProcessExecutionStorage: '@yadm.process_execution.storage'
 
     Enqueue\Client\ProducerInterface:
-        alias: 'enqueue.producer'
+        alias: 'enqueue.client.producer'
+
+    Enqueue\Client\ProducerV2Interface:
+        alias: 'enqueue.client.producer_v2'
 
     formapro.pvm.process_execution_storage:
         autowire: false
@@ -68,3 +72,20 @@ services:
             - '@Formapro\Pvm\ProcessEngine'
             - '@formapro.pvm.process_execution_storage'
         tags: ['enqueue.client.processor']
+
+
+    App\Infra\Enqueue\Producer:
+        autowire: false
+        arguments:
+            - '@enqueue.producer'
+            - '@enqueue.client.meta.queue_meta_registry'
+
+    App\Infra\Enqueue\RejectMessageOnExceptionExtension:
+        tags:
+            - { name: 'enqueue.consumption.extension', priority: -100 }
+
+    App\Service\BuildMongoIndexesService:
+        autowire: false
+        arguments:
+            - '@yadm.client'
+            - '%mongo_database%'

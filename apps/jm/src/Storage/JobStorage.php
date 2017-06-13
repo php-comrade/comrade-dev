@@ -27,6 +27,16 @@ class JobStorage extends Storage
 
     /**
      * @param string $jobId
+     *
+     * @return Job[]|\Traversable
+     */
+    public function findSubJobs(string $jobId):\Traversable
+    {
+        return $this->find(['parentId' => $jobId]);
+    }
+
+    /**
+     * @param string $jobId
      * @param callable $lockCallback
      *
      * @return mixed

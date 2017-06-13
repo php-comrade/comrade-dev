@@ -13,22 +13,6 @@ class Job extends JobTemplate
 {
     const SCHEMA = 'http://jm.forma-pro.com/schemas/Job.json';
 
-    const STATUS_NEW = 'new';
-
-    const STATUS_RUNNING = 'running';
-
-    const STATUS_RUN_SUB_JOBS = 'run_sub_jobs';
-
-    const STATUS_RUNNING_SUB_JOBS = 'running_sub_jobs';
-
-    const STATUS_CANCELED = 'canceled';
-
-    const STATUS_COMPLETED = 'completed';
-
-    const STATUS_FAILED = 'failed';
-
-    const STATUS_TERMINATED = 'terminated';
-
     /**
      * @var array
      */

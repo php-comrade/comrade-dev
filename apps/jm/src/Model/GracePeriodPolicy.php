@@ -11,7 +11,7 @@ class GracePeriodPolicy implements Policy
     use CastTrait;
     use CreateTrait;
 
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/gracePeriodPolicy.json';
+    const SCHEMA = 'http://jm.forma-pro.com/schemas/policy/GracePeriodPolicy.json';
 
     private $values = [];
 

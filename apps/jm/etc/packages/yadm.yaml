@@ -14,6 +14,13 @@ yadm:
             database: '%mongo_database%'
             pessimistic_lock: true
 
+        exclusive_job:
+            class: 'App\Model\ExclusiveJob'
+            storage_class: 'App\Storage\ExclusiveJobStorage'
+            collection: 'exclusive_job'
+            database: '%mongo_database%'
+            pessimistic_lock: true
+
         process:
             class: 'App\Model\Process'
             storage_class: 'App\Storage\ProcessStorage'

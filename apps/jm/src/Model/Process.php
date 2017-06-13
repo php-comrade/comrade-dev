@@ -16,8 +16,17 @@ class Process extends PvmProcess
      */
     public function addNodeJobTemplate(Node $node, JobTemplate $jobTemplate):void
     {
+        if ($node->getProcess() !== $this) {
+            throw new \LogicException('The node is not from this processes');
+        }
+
         set_value($node, 'jobTemplateId', $jobTemplate->getTemplateId());
-        add_value($node->getProcess(), 'jobTemplateIds', $jobTemplate->getTemplateId());
+
+        $jobTemplateIds = get_value($this, 'jobTemplateIds');
+        $jobTemplateIds[] = $jobTemplate->getTemplateId();
+        $jobTemplateIds = array_unique($jobTemplateIds);
+
+        set_value($this, 'jobTemplateIds', $jobTemplateIds);
     }
 
     public function addJob(Job $job)

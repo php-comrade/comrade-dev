@@ -31,6 +31,7 @@ services:
     volumes:
       - './apps/jm:/jobs_dev/apps/jm:cached'
       - './shared:/shared'
+      - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
     env_file: 'apps/jm/.env'
 
   demo:
@@ -44,6 +45,7 @@ services:
       - './apps/demo:/jobs_dev/apps/demo:cached'
       - './apps/jm:/jobs_dev/apps/jm:cached'
       - './shared:/shared'
+      - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
     env_file: 'apps/jm/.env'
 
   rabbitmq:

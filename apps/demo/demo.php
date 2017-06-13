@@ -6,6 +6,7 @@ use App\Async\DoJob;
 use App\Async\Topics;
 use App\Infra\Uuid;
 use App\Infra\Yadm\ObjectBuilderHook;
+use App\JobStatus;
 use App\Model\Job;
 use App\Async\JobResult as JobResultMessage;
 use App\Model\JobResult;
@@ -49,7 +50,7 @@ function createSubTasks(Job $job, PsrContext $context, array $data):RunSubJobsRe
     $jobResultMessage = RunSubJobsResult::create();
     $jobResultMessage->setToken($data['token']);
     $jobResultMessage->setJobId($job->getId());
-    $jobResultMessage->setResult(JobResult::createFor(Job::STATUS_RUN_SUB_JOBS));
+    $jobResultMessage->setResult(JobResult::createFor(JobStatus::STATUS_RUN_SUB_JOBS));
 
     $jobTemplate = JobTemplate::create();
     $jobTemplate->setName('testSubJob1');
@@ -87,7 +88,7 @@ function createSubTasks(Job $job, PsrContext $context, array $data):RunSubJobsRe
 }
 
 /** @var \Enqueue\AmqpExt\AmqpContext $c */
-$c = dsn_to_context('amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=4');
+$c = dsn_to_context('amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume');
 
 $queue = $c->createQueue('demo_job');
 $queue->addFlag(AMQP_DURABLE);
@@ -114,22 +115,23 @@ $queueConsumer->bind($queue, function(PsrMessage $message, PsrContext $context) 
     $job = $doJob->getJob();
 
 //    if (get_value($job, 'retryAttempts', 0) > 2) {
-//        $result = JobResult::createFor(Job::STATUS_COMPLETED);
+        $result = JobResult::createFor(JobStatus::STATUS_COMPLETED);
 //    } else {
-//        $result = JobResult::createFor(Job::STATUS_FAILED);
+//        $result = JobResult::createFor(JobStatus::STATUS_FAILED);
 //    }
-    
-    $jobResultMessage = createSubTasks($job, $context, $data);
-//    $jobResultMessage = JobResultMessage::create();
-//    $jobResultMessage->setToken($data['token']);
-//    $jobResultMessage->setJobId($job->getId());
-//    $jobResultMessage->setResult($result);
+
+    sleep(10);
+
+//    $jobResultMessage = createSubTasks($job, $context, $data);
+    $jobResultMessage = JobResultMessage::create();
+    $jobResultMessage->setToken($data['token']);
+    $jobResultMessage->setJobId($job->getId());
+    $jobResultMessage->setResult($result);
 
     $feedbackQueue = $context->createQueue('enqueue.app.default');
     $message = $context->createMessage(JSON::encode($jobResultMessage), [
         'enqueue.topic_name' => Topics::JOB_RESULT,
         'enqueue.processor_queue_name' => 'enqueue.app.default',
-        'enqueue.processor_name' => 'job_result',
     ]);
 
     $context->createProducer()->send($feedbackQueue, $message);
@@ -148,7 +150,7 @@ $queueConsumer->bind($subJobQueue, function(PsrMessage $message, PsrContext $con
 
     $job = $doJob->getJob();
 
-    $statuses = [Job::STATUS_FAILED, Job::STATUS_COMPLETED, Job::STATUS_COMPLETED, Job::STATUS_COMPLETED];
+    $statuses = [JobStatus::STATUS_FAILED, JobStatus::STATUS_COMPLETED, JobStatus::STATUS_COMPLETED, JobStatus::STATUS_COMPLETED];
 
 //    if (get_value($job, 'retryAttempts', 0) > 2) {
     $result = JobResult::createFor($statuses[rand(0, 3)]);
@@ -165,7 +167,6 @@ $queueConsumer->bind($subJobQueue, function(PsrMessage $message, PsrContext $con
     $message = $context->createMessage(JSON::encode($jobResultMessage), [
         'enqueue.topic_name' => Topics::JOB_RESULT,
         'enqueue.processor_queue_name' => 'enqueue.app.default',
-        'enqueue.processor_name' => 'job_result',
     ]);
 
     $context->createProducer()->send($feedbackQueue, $message);

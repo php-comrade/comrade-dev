@@ -5,15 +5,15 @@ use App\Infra\Yadm\CreateTrait;
 use function Makasim\Values\get_value;
 use function Makasim\Values\set_value;
 
-class RunSubJobsPolicy implements Policy
+class ExclusivePolicy implements Policy
 {
     use CreateTrait;
 
     const SCHEMA = 'http://jm.forma-pro.com/schemas/policy/RunSubJobsPolicy.json';
 
-    const MARK_JOB_AS_FAILED = 'mark_job_as_failed';
+    const MARK_JOB_AS_CANCELED = 'mark_job_as_canceled';
 
-    const MARK_JOB_AS_COMPLETED = 'mark_job_as_completed';
+    const MARK_JOB_AS_FAILED = 'mark_job_as_failed';
 
     private $values = [];
 
@@ -22,7 +22,7 @@ class RunSubJobsPolicy implements Policy
      */
     public function setOnFailedSubJob(string $action):void
     {
-        set_value($this, 'onFailedSubJob', $action);
+        set_value($this, 'onDuplicateRun', $action);
     }
 
     /**
@@ -30,7 +30,7 @@ class RunSubJobsPolicy implements Policy
      */
     public function getOnFailedSubJob(): string
     {
-        return get_value($this, 'onFailedSubJob');
+        return get_value($this, 'onDuplicateRun');
     }
 
     /**
@@ -44,8 +44,8 @@ class RunSubJobsPolicy implements Policy
     /**
      * @return bool
      */
-    public function isMarkParentJobAsCompleted():bool
+    public function isMarkParentJobAsCanceled():bool
     {
-        return $this->getOnFailedSubJob() === static::MARK_JOB_AS_COMPLETED;
+        return $this->getOnFailedSubJob() === static::MARK_JOB_AS_CANCELED;
     }
 }

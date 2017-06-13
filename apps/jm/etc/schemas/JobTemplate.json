@@ -7,16 +7,10 @@
     "processTemplateId": { "$ref" : "http://jm.forma-pro.com/schemas/uuid4.json" },
     "name": { "type": "string"},
     "details": { "type": ["object", "array"] },
-    "polices": {
-      "type": "array",
-      "items": {
-        "oneOf": [
-          { "$ref": "gracePeriodPolicy.json" },
-          { "$ref": "retryFailedPolicy.json" },
-          { "$ref": "RunSubJobsPolicy.json" }
-        ]
-      }
-    }
+    "gracePeriodPolicy": { "$ref": "policy/GracePeriodPolicy.json" },
+    "retryFailedPolicy": { "$ref": "policy/RetryFailedPolicy.json" },
+    "runSubJobsPolicy": { "$ref": "policy/RunSubJobsPolicy.json" },
+    "exclusivePolicy": { "$ref": "policy/ExclusivePolicy.json" }
   },
   "required": ["templateId", "processTemplateId", "name"]
 }

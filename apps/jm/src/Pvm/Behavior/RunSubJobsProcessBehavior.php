@@ -1,21 +1,20 @@
 <?php
 namespace App\Pvm\Behavior;
 
-use App\Async\Topics;
+use App\Async\Commands;
+use App\JobStatus;
 use App\Model\Job;
 use App\Model\JobResult;
 use App\Model\Process;
-use App\Model\RunSubJobsPolicy;
 use App\Service\CreateProcessForSubJobsService;
 use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessStorage;
-use Enqueue\Client\ProducerInterface;
+use Enqueue\Client\ProducerV2Interface;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Exception\WaitExecutionException;
 use Formapro\Pvm\SignalBehavior;
 use Formapro\Pvm\Token;
-use function Makasim\Values\get_object;
 
 class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
 {
@@ -40,7 +39,7 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
     private $createProcessForSubJobsService;
 
     /**
-     * @var ProducerInterface
+     * @var ProducerV2Interface
      */
     private $producer;
 
@@ -49,14 +48,14 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
      * @param JobTemplateStorage $jobTemplateStorage
      * @param ProcessStorage $processStorage
      * @param CreateProcessForSubJobsService $createProcessForSubJobsService
-     * @param ProducerInterface $producer
+     * @param ProducerV2Interface $producer
      */
     public function __construct(
         JobStorage $jobStorage,
         JobTemplateStorage $jobTemplateStorage,
         ProcessStorage $processStorage,
         CreateProcessForSubJobsService $createProcessForSubJobsService,
-        ProducerInterface $producer
+        ProducerV2Interface $producer
     ) {
         $this->jobStorage = $jobStorage;
         $this->jobTemplateStorage = $jobTemplateStorage;
@@ -80,7 +79,7 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
 
         $jobTemplates = iterator_to_array($this->jobTemplateStorage->find(['parentId' => $job->getId()]));
         if (false == $jobTemplates) {
-            $jobResult = JobResult::createFor(Job::STATUS_COMPLETED);
+            $jobResult = JobResult::createFor(JobStatus::STATUS_COMPLETED);
             $job->addResult($jobResult);
             $job->setCurrentResult($jobResult);
             $this->jobStorage->update($job);
@@ -88,7 +87,7 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
             return;
         }
 
-        $jobResult = JobResult::createFor(Job::STATUS_RUNNING_SUB_JOBS);
+        $jobResult = JobResult::createFor(JobStatus::STATUS_RUNNING_SUB_JOBS);
         $job->addResult($jobResult);
         $job->setCurrentResult($jobResult);
         $this->jobStorage->update($job);
@@ -96,7 +95,7 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
         $subProcess = $this->createProcessForSubJobsService->createProcess($token, $jobTemplates);
         $this->processStorage->insert($subProcess);
 
-        $this->producer->send(Topics::SCHEDULE_PROCESS, $subProcess->getId());
+        $this->producer->sendCommand(Commands::SCHEDULE_PROCESS, $subProcess->getId());
 
         throw new WaitExecutionException();
     }
@@ -108,24 +107,29 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
     {
         /** @var Process $process */
         $process = $token->getProcess();
-        $job = $this->jobStorage->getOneById($process->getTokenJobId($token));
 
-        $jobResult = JobResult::createFor(Job::STATUS_COMPLETED);
-        $job->addResult($jobResult);
-        $job->setCurrentResult($jobResult);
+        return $this->jobStorage->lockByJobId($process->getTokenJobId($token), function(Job $job) {
+            if ($job->getRunSubJobsPolicy()->isMarkParentJobAsFailed()) {
+                foreach ($this->jobStorage->findSubJobs($job->getId()) as $subJob) {
+                    if ($subJob->getCurrentResult()->isFailed()) {
+                        $jobResult = JobResult::createFor(JobStatus::STATUS_FAILED);
+                        $job->addResult($jobResult);
+                        $job->setCurrentResult($jobResult);
 
-        $this->jobStorage->update($job);
+                        $this->jobStorage->update($job);
 
-        return ['completed'];
-    }
+                        return ['failed'];
+                    }
+                }
+            }
 
-    /**
-     * @param Token $token
-     *
-     * @return RunSubJobsPolicy|object
-     */
-    private function getRunSubJobsPolicy(Token $token):RunSubJobsPolicy
-    {
-        return get_object($token->getTransition()->getTo(), 'runSubJobsPolicy');
+            $jobResult = JobResult::createFor(JobStatus::STATUS_COMPLETED);
+            $job->addResult($jobResult);
+            $job->setCurrentResult($jobResult);
+
+            $this->jobStorage->update($job);
+
+            return ['completed'];
+        });
     }
 }

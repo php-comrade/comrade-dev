@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema#",
   "id": "http://jm.forma-pro.com/schemas/Job.json",
-  "type" : "string",
-  "enum": [ "new", "running", "canceled", "completed", "failed", "terminated", "run_sub_jobs", "running_sub_jobs" ]
+  "type" : "integer",
+  "enum": [ 1, 2, 4, 8, 16, 18, 258, 4, 12, 36, 68, 132 ]
 }

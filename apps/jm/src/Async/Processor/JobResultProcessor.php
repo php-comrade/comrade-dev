@@ -142,6 +142,6 @@ class JobResultProcessor implements PsrProcessor, TopicSubscriberInterface
      */
     public static function getSubscribedTopics()
     {
-        return [Topics::JOB_RESULT => ['processorName' => 'job_result']];
+        return [Topics::JOB_RESULT];
     }
 }

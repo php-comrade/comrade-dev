@@ -1,18 +1,18 @@
 <?php
 namespace App\Async\Processor;
 
-use App\Async\Topics;
+use App\Async\Commands;
 use App\Service\ScheduleProcessService;
 use App\Storage\ProcessExecutionStorage;
 use App\Storage\ProcessStorage;
-use Enqueue\Client\TopicSubscriberInterface;
+use Enqueue\Client\CommandSubscriberInterface;
 use Enqueue\Consumption\Result;
 use Enqueue\Psr\PsrContext;
 use Enqueue\Psr\PsrMessage;
 use Enqueue\Psr\PsrProcessor;
 use Formapro\Pvm\ProcessEngine;
 
-class ScheduleJobProcessor implements PsrProcessor, TopicSubscriberInterface
+class ScheduleProcessProcessor implements PsrProcessor, CommandSubscriberInterface
 {
     /**
      * @var ProcessEngine
@@ -86,8 +86,8 @@ class ScheduleJobProcessor implements PsrProcessor, TopicSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedTopics()
+    public static function getSubscribedCommand()
     {
-        return [Topics::SCHEDULE_PROCESS];
+        return Commands::SCHEDULE_PROCESS;
     }
 }

@@ -2,6 +2,7 @@
 namespace App\Service;
 
 use App\Infra\Uuid;
+use App\JobStatus;
 use App\Model\Job;
 use App\Model\JobResult;
 use App\Model\Process;
@@ -62,7 +63,7 @@ class ScheduleProcessService
             $job->setId(Uuid::generate());
             $job->setProcessId($process->getId());
 
-            $result = JobResult::createFor(Job::STATUS_NEW);
+            $result = JobResult::createFor(JobStatus::STATUS_NEW);
             $job->addResult($result);
             $job->setCurrentResult($result);
 
