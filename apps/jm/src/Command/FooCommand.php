@@ -47,6 +47,7 @@ class FooCommand extends Command implements ContainerAwareInterface
         $jobTemplate->setTemplateId(Uuid::generate());
         $jobTemplate->setProcessTemplateId(Uuid::generate());
         $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
+        set_value($jobTemplate, 'enqueue.queue', 'demo_job');
 
         $exclusivePolicy = ExclusivePolicy::create();
         $exclusivePolicy->setOnFailedSubJob(ExclusivePolicy::MARK_JOB_AS_FAILED);

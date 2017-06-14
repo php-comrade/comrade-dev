@@ -89,3 +89,10 @@ services:
         arguments:
             - '@yadm.client'
             - '%mongo_database%'
+
+    App\Infra\Enqueue\CheckMasterProcessExtension:
+        autowire: false
+        arguments:
+            - '%kernel.project_dir%/var/workers.pid'
+        tags:
+            - { name: 'enqueue.consumption.extension' }

@@ -29,7 +29,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 require_once __DIR__.'/../jm/vendor/autoload.php';
 
 
-$output = new ConsoleOutput(ConsoleOutput::VERBOSITY_QUIET);
+$output = new ConsoleOutput(ConsoleOutput::VERBOSITY_DEBUG);
 $logger = new ConsoleLogger($output);
 
 register_cast_hooks();
