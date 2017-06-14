@@ -9,6 +9,7 @@ use App\Model\GracePeriodPolicy;
 use App\Model\JobTemplate;
 use App\Model\RetryFailedPolicy;
 use App\Model\RunSubJobsPolicy;
+use App\Model\SimpleTrigger;
 use App\Service\BuildMongoIndexesService;
 use Enqueue\Client\ProducerV2Interface;
 use function Makasim\Values\set_value;
@@ -49,9 +50,17 @@ class FooCommand extends Command implements ContainerAwareInterface
         $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
         set_value($jobTemplate, 'enqueue.queue', 'demo_job');
 
-        $exclusivePolicy = ExclusivePolicy::create();
-        $exclusivePolicy->setOnFailedSubJob(ExclusivePolicy::MARK_JOB_AS_FAILED);
-        $jobTemplate->setExclusivePolicy($exclusivePolicy);
+        $simpleTrigger = SimpleTrigger::create();
+        $simpleTrigger->setMisfireInstruction(SimpleTrigger::MISFIRE_INSTRUCTION_FIRE_NOW);
+        $jobTemplate->addTrigger($simpleTrigger);
+
+//        $exclusivePolicy = ExclusivePolicy::create();
+//        $exclusivePolicy->setOnFailedSubJob(ExclusivePolicy::MARK_JOB_AS_FAILED);
+//        $jobTemplate->setExclusivePolicy($exclusivePolicy);
+
+//        $gracePeriodPolicy = GracePeriodPolicy::create();
+//        $gracePeriodPolicy->setPeriodEndsAt(new \DateTime('now + 30 seconds'));
+//        $jobTemplate->setGracePeriodPolicy($gracePeriodPolicy);
 
         $message = CreateJob::create();
         $message->setJobTemplate($jobTemplate);

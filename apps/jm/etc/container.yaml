@@ -9,6 +9,8 @@ services:
         autoconfigure: true
         public: true
 
+    Symfony\Component\EventDispatcher\EventDispatcherInterface: '@event_dispatcher'
+
     App\Storage\JobStorage: '@yadm.job.storage'
     App\Storage\ExclusiveJobStorage: '@yadm.exclusive_job.storage'
     App\Storage\JobTemplateStorage: '@yadm.job_template.storage'
@@ -20,6 +22,9 @@ services:
 
     Enqueue\Client\ProducerV2Interface:
         alias: 'enqueue.client.producer_v2'
+
+    Enqueue\Client\RpcClient:
+        alias: 'enqueue.client.rpc_client'
 
     formapro.pvm.process_execution_storage:
         autowire: false
@@ -96,3 +101,51 @@ services:
             - '%kernel.project_dir%/var/workers.pid'
         tags:
             - { name: 'enqueue.consumption.extension' }
+
+    App\Infra\Quartz\EnqueueResponseJob: ~
+
+    Quartz\Store\YadmStoreResource:
+        autowire: false
+        arguments:
+            -
+                uri: '%env(MONGO_DSN)%'
+                dbName: '%mongo_database%'
+                managementLockCol: 'quartz_management_lock'
+                calendarCol: 'quartz_calendar'
+                triggerCol: 'quartz_trigger'
+                firedTriggerCol: 'quartz_fired_trigger'
+                jobCol: 'quartz_job'
+                pausedTriggerCol: 'quartz_paused_trigger'
+
+    Quartz\Store\YadmStore: ~
+    Quartz\Core\JobStore: '@Quartz\Store\YadmStore'
+
+    Quartz\App\EnqueueResponseJob: ~
+    Quartz\App\Async\AsyncJobRunShell: ~
+
+    quartz.async_job_run_shell: '@Quartz\App\Async\AsyncJobRunShell'
+
+    Quartz\Core\StdJobRunShellFactory:
+        autowire: false
+        arguments: ['@quartz.async_job_run_shell']
+
+    Quartz\Core\StdJobRunShell:
+        calls:
+            - ['initialize', ['@Quartz\Core\StdScheduler']]
+
+    Quartz\Core\JobRunShellFactory: '@Quartz\Core\StdJobRunShellFactory'
+
+    Quartz\Core\StdScheduler: ~
+    Quartz\Core\Scheduler: '@Quartz\Core\StdScheduler'
+
+
+    Quartz\Core\SimpleJobFactory:
+        autowire: false
+        arguments:
+            -
+                Quartz\App\EnqueueResponseJob: '@Quartz\App\EnqueueResponseJob'
+                App\Infra\Quartz\EnqueueResponseJob: '@App\Infra\Quartz\EnqueueResponseJob'
+    Quartz\Core\JobFactory: '@Quartz\Core\SimpleJobFactory'
+
+    Quartz\App\RpcProtocol: ~
+    Quartz\App\RemoteScheduler: ~

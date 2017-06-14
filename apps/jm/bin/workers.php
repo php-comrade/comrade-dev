@@ -29,8 +29,10 @@ function onReceive($pipe) {
 }
 // loop creation process
 for($i = 0; $i < $worker_num; $i++) {
-    createProcess();
+    createConsumeProcess();
 }
+
+createQuartzConsumeProcess();
 
 swoole_process::signal(SIGCHLD, 'rebootProcess');
 swoole_process::signal(SIGTERM, 'handleSignal');
@@ -80,22 +82,31 @@ function handleSignal($signal) {
 
 function rebootProcess()
 {
-    global $exiting;
+    global $exiting, $workers;
 
     // represents the child process has closed, recycle it
     if ($ret = swoole_process::wait()) {
         echo "master | Child process: {$ret['pid']} exited with status {$ret['code']}\n";
 
         if (false == $exiting) {
+            $oldProcess = $workers[$ret['pid']];
+
             removeProcess($ret['pid']);
-            $newProcess = createProcess();
+
+            if ($oldProcess->workerType == 'enqueue:consume') {
+                $newProcess = createConsumeProcess();
+            } else if ($oldProcess->workerType == 'quartz:scheduler') {
+                $newProcess = createQuartzConsumeProcess();
+            } else {
+                throw new \LogicException(sprintf('The workerType "%s" is not set or not supported', $oldProcess->workerType));
+            }
 
             echo "master | Reboot process: {$ret['pid']} => {$newProcess->pid} Done\n";
         }
     }
 }
 
-function createProcess():\swoole_process
+function createConsumeProcess():\swoole_process
 {
     global $pipes, $workers;
 
@@ -108,6 +119,31 @@ function createProcess():\swoole_process
         }
     }, true, true);
 
+    $process->workerType = 'enqueue:consume';
+    $process->start();
+
+    $pipes[$process->pipe] = $process;
+    $workers[$process->pid] = $process;
+
+    swoole_event_add($process->pipe, 'onReceive');
+
+    return $process;
+}
+
+function createQuartzConsumeProcess():\swoole_process
+{
+    global $pipes, $workers;
+
+    $process = new \swoole_process(function(\swoole_process $process) {
+        $phpBin = (new PhpExecutableFinder)->find();
+        if (false !== $phpBin) {
+            $process->exec($phpBin, [__DIR__ . '/console', 'quartz:scheduler', '-vvv']);
+        } else {
+            throw new \LogicException('Php executable could not be found');
+        }
+    }, true, true);
+
+    $process->workerType = 'quartz:scheduler';
     $process->start();
 
     $pipes[$process->pipe] = $process;

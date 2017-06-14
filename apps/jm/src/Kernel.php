@@ -8,6 +8,7 @@ use App\Async\DoJob;
 use App\Async\JobResult;
 use App\Infra\DependencyInjection\RegisterPvmBehaviorPass;
 use App\Infra\Yadm\ObjectBuilderHook;
+use App\Model\CronTrigger;
 use App\Model\ExclusivePolicy;
 use App\Model\GracePeriodPolicy;
 use App\Model\Job;
@@ -16,6 +17,7 @@ use App\Model\JobTemplate;
 use App\Model\Process;
 use App\Model\RetryFailedPolicy;
 use App\Model\RunSubJobsPolicy;
+use App\Model\SimpleTrigger;
 use App\Model\SubJob;
 use App\Model\SubJobTemplate;
 use function Makasim\Values\register_cast_hooks;
@@ -115,6 +117,9 @@ final class Kernel extends BaseKernel
             RetryFailedPolicy::SCHEMA => RetryFailedPolicy::class,
             RunSubJobsPolicy::SCHEMA => RunSubJobsPolicy::class,
             ExclusivePolicy::SCHEMA => ExclusivePolicy::class,
+
+            CronTrigger::SCHEMA => CronTrigger::class,
+            SimpleTrigger::SCHEMA => SimpleTrigger::class,
         ]))->register();
     }
 }

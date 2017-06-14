@@ -147,4 +147,17 @@ class JobTemplate
     {
         set_object($this, 'exclusivePolicy', $exclusivePolicy);
     }
+
+    public function addTrigger(Trigger $trigger):void
+    {
+        add_object($this, 'triggers', $trigger);
+    }
+
+    /**
+     * @return \Traversable|Trigger[]
+     */
+    public function getTriggers():\Traversable
+    {
+        return get_objects($this, 'triggers');
+    }
 }
