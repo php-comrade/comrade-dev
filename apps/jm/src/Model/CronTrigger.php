@@ -14,6 +14,11 @@ class CronTrigger implements Trigger
 
     const MISFIRE_INSTRUCTION_DO_NOTHING = "do_nothing";
 
+    const MISFIRE_INSTRUCTION_SMART_POLICY = 'smart_policy';
+
+    const MISFIRE_INSTRUCTION_IGNORE_MISFIRE_POLICY = 'ignore_misfire_policy';
+
+
     use CreateTrait;
     use CastTrait;
 
@@ -21,6 +26,16 @@ class CronTrigger implements Trigger
      * @var array
      */
     private $values = [];
+
+    public function setStartAt(\DateTime $startAt):void
+    {
+        set_value($this, 'startAt', $startAt);
+    }
+
+    public function getStartAt():?\DateTime
+    {
+        return get_value($this, 'startAt', null, \DateTime::class);
+    }
 
     public function setExpression(string $expression):void
     {

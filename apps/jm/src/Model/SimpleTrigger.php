@@ -23,6 +23,10 @@ class SimpleTrigger implements Trigger
 
     const MISFIRE_INSTRUCTION_RESCHEDULE_NEXT_WITH_EXISTING_COUNT = "reschedule_next_with_existing_count";
 
+    const MISFIRE_INSTRUCTION_SMART_POLICY = 'smart_policy';
+
+    const MISFIRE_INSTRUCTION_IGNORE_MISFIRE_POLICY = 'ignore_misfire_policy';
+
     /**
      * @var array
      */

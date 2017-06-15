@@ -51,6 +51,8 @@ services:
       - './apps/jm:/jobs_dev/apps/jm:cached'
       - './shared:/shared'
       - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
+      - './shared/swoole.so:/usr/lib/php/20160303/swoole.so'
+      - './docker/swoole.ini:/etc/php/7.1/cli/conf.d/20-swoole.ini'
     env_file: 'apps/jm/.env'
 
   rabbitmq:

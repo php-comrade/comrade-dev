@@ -1,13 +1,13 @@
 <?php
 namespace App\Async\Processor;
 
-use Enqueue\Client\TopicSubscriberInterface;
+use Enqueue\Client\CommandSubscriberInterface;
 use Quartz\App\RemoteScheduler;
 
-class RemoteSchedulerProcessor extends \Quartz\App\RemoteSchedulerProcessor implements TopicSubscriberInterface
+class RemoteSchedulerProcessor extends \Quartz\App\RemoteSchedulerProcessor implements CommandSubscriberInterface
 {
-    public static function getSubscribedTopics()
+    public static function getSubscribedCommand()
     {
-        return [RemoteScheduler::TOPIC];
+        return RemoteScheduler::COMMAND;
     }
 }

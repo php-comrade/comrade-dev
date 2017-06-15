@@ -1,12 +1,16 @@
 <?php
-use App\Infra\Enqueue\ConsumeDaemon;
-use Symfony\Component\Process\ProcessBuilder;
+use App\Infra\Swoole\Daemon;
+use Symfony\Component\Process\PhpExecutableFinder;
 
 require __DIR__.'/../jm/vendor/autoload.php';
 
-$workerBuilder = new ProcessBuilder(['demo.php']);
-$workerBuilder->setPrefix('php');
-$workerBuilder->setWorkingDirectory(realpath(__DIR__));
+$phpBin = (new PhpExecutableFinder)->find();
+if (false === $phpBin) {
+    throw new \LogicException('Php executable could not be found');
+}
 
-$daemon = new ConsumeDaemon($workerBuilder);
-$daemon->start(3);
+
+$daemon = new Daemon();
+$daemon->addWorker(3, $phpBin, ['demo.php']);
+
+$daemon->run();

@@ -55,12 +55,12 @@ class ExecuteJobProcessor implements PsrProcessor, CommandSubscriberInterface
         }
 
         $data = JSON::decode($psrMessage->getBody());
-        if (false == $jobTemplate = $this->jobTemplateStorage->findOne(['id' => $data['jobTemplate']])) {
-            return self::REJECT;
+        if (false == $jobTemplate = $this->jobTemplateStorage->findOne(['templateId' => $data['jobTemplate']])) {
+            return Result::reject(sprintf('The job template with id "%s" could not be found', $data['jobTemplate']));
         }
 
-        if (false == $processTemplate = $this->processStorage->findOne(['templateId' => $jobTemplate->getProcessTemplateId()])) {
-            return self::REJECT;
+        if (false == $processTemplate = $this->processStorage->findOne(['id' => $jobTemplate->getProcessTemplateId()])) {
+            return Result::reject(sprintf('The process template with id "%s" could not be found', $jobTemplate->getProcessTemplateId()));
         }
 
         $this->buildAndExecuteProcessService->buildAndRun($processTemplate);

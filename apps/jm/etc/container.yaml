@@ -104,7 +104,7 @@ services:
 
     App\Infra\Quartz\EnqueueResponseJob: ~
 
-    Quartz\Store\YadmStoreResource:
+    Quartz\Scheduler\Store\YadmStoreResource:
         autowire: false
         arguments:
             -
@@ -117,26 +117,26 @@ services:
                 jobCol: 'quartz_job'
                 pausedTriggerCol: 'quartz_paused_trigger'
 
-    Quartz\Store\YadmStore: ~
-    Quartz\Core\JobStore: '@Quartz\Store\YadmStore'
+    Quartz\Scheduler\Store\YadmStore: ~
+    Quartz\Scheduler\JobStore: '@Quartz\Scheduler\Store\YadmStore'
 
     Quartz\App\EnqueueResponseJob: ~
     Quartz\App\Async\AsyncJobRunShell: ~
 
     quartz.async_job_run_shell: '@Quartz\App\Async\AsyncJobRunShell'
 
-    Quartz\Core\StdJobRunShellFactory:
+    Quartz\Scheduler\StdJobRunShellFactory:
         autowire: false
         arguments: ['@quartz.async_job_run_shell']
 
-    Quartz\Core\StdJobRunShell:
+    Quartz\Scheduler\StdJobRunShell:
         calls:
-            - ['initialize', ['@Quartz\Core\StdScheduler']]
+            - ['initialize', ['@Quartz\Scheduler\StdScheduler']]
 
-    Quartz\Core\JobRunShellFactory: '@Quartz\Core\StdJobRunShellFactory'
+    Quartz\Scheduler\JobRunShellFactory: '@Quartz\Scheduler\StdJobRunShellFactory'
 
-    Quartz\Core\StdScheduler: ~
-    Quartz\Core\Scheduler: '@Quartz\Core\StdScheduler'
+    Quartz\Scheduler\StdScheduler: ~
+    Quartz\Core\Scheduler: '@Quartz\Scheduler\StdScheduler'
 
 
     Quartz\Core\SimpleJobFactory:

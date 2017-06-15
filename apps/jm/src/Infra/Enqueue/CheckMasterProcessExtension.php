@@ -9,27 +9,16 @@ class CheckMasterProcessExtension implements ExtensionInterface
 {
     use EmptyExtensionTrait;
 
-    /**
-     * @var
-     */
-    private $pidFil;
-
-    /**
-     * @param $pidFile
-     */
-    public function __construct($pidFile)
-    {
-        $this->pidFil = $pidFile;
-    }
-
     public function onBeforeReceive(Context $context)
     {
-        $mPid = file_get_contents($this->pidFil);
+        if (false == $mPid = getenv('MASTER_PROCESS_PID')) {
+            throw new \LogicException('The extension rely on MASTER_PROCESS_PID env var set but it is not set.');
+        }
 
         if(false == \swoole_process::kill($mPid,0)){
             $context->setExecutionInterrupted(true);
 
-            $context->getLogger()->info('[CheckMasterProcessExtension] The master process existed. So do I');
+            $context->getLogger()->info('[CheckMasterProcessExtension] The master process exited. So do I');
         }
     }
 }
