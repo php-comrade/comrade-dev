@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 docker-compose up -d
-trap "docker-compose stop jm_consumer demo; killall fswatch" SIGTERM  SIGINT
+trap "docker-compose stop jm_worker demo; killall fswatch" SIGTERM  SIGINT
 
-fswatch --latency=0.5 -o -L apps/jm | xargs -n1 -I{} docker-compose kill -s USR1 jm_consumer &
+fswatch --latency=0.5 -o -L apps/jm | xargs -n1 -I{} docker-compose kill -s USR1 jm_worker &
 fswatch --latency=0.5 -o -L apps/jm apps/demo | xargs -n1 -I{} docker-compose kill -s USR1 demo &
 
-docker-compose logs --tail=10 -f jm jm_consumer demo
+docker-compose logs --tail=10 -f jm jm_worker demo

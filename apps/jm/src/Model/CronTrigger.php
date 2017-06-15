@@ -1,0 +1,59 @@
+<?php
+namespace App\Model;
+
+use App\Infra\Yadm\CreateTrait;
+use Makasim\Values\CastTrait;
+use function Makasim\Values\get_value;
+use function Makasim\Values\set_value;
+
+class CronTrigger implements Trigger
+{
+    const SCHEMA = 'http://jm.forma-pro.com/schemas/trigger/CronTrigger.json';
+
+    const MISFIRE_INSTRUCTION_FIRE_ONCE_NOW = 'fire_once_now';
+
+    const MISFIRE_INSTRUCTION_DO_NOTHING = "do_nothing";
+
+    const MISFIRE_INSTRUCTION_SMART_POLICY = 'smart_policy';
+
+    const MISFIRE_INSTRUCTION_IGNORE_MISFIRE_POLICY = 'ignore_misfire_policy';
+
+
+    use CreateTrait;
+    use CastTrait;
+
+    /**
+     * @var array
+     */
+    private $values = [];
+
+    public function setStartAt(\DateTime $startAt):void
+    {
+        set_value($this, 'startAt', $startAt);
+    }
+
+    public function getStartAt():?\DateTime
+    {
+        return get_value($this, 'startAt', null, \DateTime::class);
+    }
+
+    public function setExpression(string $expression):void
+    {
+        set_value($this, 'expression', $expression);
+    }
+
+    public function getExpression():string
+    {
+        return get_value($this, 'expression');
+    }
+
+    public function setMisfireInstruction(string $instruction):void
+    {
+        set_value($this, 'misfireInstruction', $instruction);
+    }
+
+    public function getMisfireInstruction():string
+    {
+        return get_value($this, 'misfireInstruction');
+    }
+}

@@ -7,5 +7,7 @@ final class Commands
 
     const CREATE_SUB_JOBS = 'create_sub_jobs';
 
-    const SCHEDULE_PROCESS = 'schedule_process';
+    const SCHEDULE_JOB = 'schedule_job';
+
+    const EXECUTE_JOB = 'execute_job';
 }

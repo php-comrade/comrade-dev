@@ -25,13 +25,13 @@ class CreateProcessForJobService
         $startTask = $process->createNode();
         $startTask->setLabel('Start process');
         $startTask->setBehavior(IdleBehavior::class);
-        $startToRunTransition = $process->createTransition(null, $startTask);
+        $process->createTransition(null, $startTask);
 
         $runJobTask = $process->createNode();
         $runJobTask->setLabel('Run job: '.$jobTemplate->getName());
         $runJobTask->setBehavior(RunJobBehavior::class);
         $process->addNodeJobTemplate($runJobTask, $jobTemplate);
-        $process->createTransition($startTask, $runJobTask);
+        $startToRunTransition = $process->createTransition($startTask, $runJobTask);
 
         $jobCompletedTask = $process->createNode();
         $jobCompletedTask->setLabel('Completed');

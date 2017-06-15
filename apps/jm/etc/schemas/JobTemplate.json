@@ -10,7 +10,15 @@
     "gracePeriodPolicy": { "$ref": "policy/GracePeriodPolicy.json" },
     "retryFailedPolicy": { "$ref": "policy/RetryFailedPolicy.json" },
     "runSubJobsPolicy": { "$ref": "policy/RunSubJobsPolicy.json" },
-    "exclusivePolicy": { "$ref": "policy/ExclusivePolicy.json" }
+    "exclusivePolicy": { "$ref": "policy/ExclusivePolicy.json" },
+    "triggers": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "oneOf": [
+        { "$ref": "trigger/SimpleTrigger.json" },
+        { "$ref": "trigger/CronTrigger.json" }
+      ]}
+    }
   },
-  "required": ["templateId", "processTemplateId", "name"]
+  "required": ["templateId", "processTemplateId", "name", "triggers"]
 }

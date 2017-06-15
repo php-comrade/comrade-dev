@@ -9,18 +9,24 @@ use App\Model\Process;
 use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessExecutionStorage;
+use Formapro\Pvm\ProcessEngine;
 use function Makasim\Values\build_object;
 use function Makasim\Values\get_value;
 use function Makasim\Values\get_values;
 use function Makasim\Values\set_value;
 use function Makasim\Yadm\unset_object_id;
 
-class ScheduleProcessService
+class BuildAndExecuteProcessService
 {
     /**
      * @var ProcessExecutionStorage
      */
     private $processExecutionStorage;
+
+    /**
+     * @var ProcessEngine
+     */
+    private $processEngine;
 
     /**
      * @var JobStorage
@@ -34,20 +40,23 @@ class ScheduleProcessService
 
     /**
      * @param ProcessExecutionStorage $processExecutionStorage
+     * @param ProcessEngine $processEngine
      * @param JobStorage $jobStorage
      * @param JobTemplateStorage $jobTemplateStorage
      */
     public function __construct(
         ProcessExecutionStorage $processExecutionStorage,
+        ProcessEngine $processEngine,
         JobStorage $jobStorage,
         JobTemplateStorage $jobTemplateStorage
     ) {
         $this->processExecutionStorage = $processExecutionStorage;
         $this->jobStorage = $jobStorage;
         $this->jobTemplateStorage = $jobTemplateStorage;
+        $this->processEngine = $processEngine;
     }
 
-    public function schedule(Process $templateProcess):Process
+    public function buildAndRun(Process $templateProcess):Process
     {
         /** @var Process $process */
         $process = build_object(Process::class, get_values($templateProcess));
@@ -73,6 +82,18 @@ class ScheduleProcessService
         }
 
         $this->processExecutionStorage->insert($process);
+
+        try {
+            foreach ($process->getTransitions() as $transition) {
+                if ($transition->getFrom() === null) {
+                    $token = $process->createToken($transition);
+
+                    $this->processEngine->proceed($token);
+                }
+            }
+        } finally {
+            $this->processExecutionStorage->update($process);
+        }
 
         return $process;
     }

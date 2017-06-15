@@ -1,38 +1,45 @@
 <?php
 namespace App\Pvm\Behavior;
 
+use App\Async\Topics;
 use App\JobStatus;
 use App\Model\Job;
 use App\Model\JobResult;
 use App\Model\Process;
 use App\Storage\JobStorage;
-use App\Storage\ProcessExecutionStorage;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Exception\InterruptExecutionException;
+use Formapro\Pvm\Exception\WaitExecutionException;
+use Formapro\Pvm\SignalBehavior;
 use Formapro\Pvm\Token;
+use Quartz\App\EnqueueResponseJob;
+use Quartz\App\RemoteScheduler;
+use Quartz\Core\JobBuilder;
+use Quartz\Core\SimpleScheduleBuilder;
+use Quartz\Core\TriggerBuilder;
 
-class GracePeriodPolicyBehavior implements Behavior
+class GracePeriodPolicyBehavior implements Behavior, SignalBehavior
 {
-    /**
-     * @var ProcessExecutionStorage
-     */
-    private $processExecutionStorage;
-
     /**
      * @var JobStorage
      */
     private $jobStorage;
 
     /**
-     * @param ProcessExecutionStorage $processExecutionStorage
+     * @var RemoteScheduler
+     */
+    private $remoteScheduler;
+
+    /**
      * @param JobStorage $jobStorage
+     * @param RemoteScheduler $remoteScheduler
      */
     public function __construct(
-        ProcessExecutionStorage $processExecutionStorage,
-        JobStorage $jobStorage
+        JobStorage $jobStorage,
+        RemoteScheduler $remoteScheduler
     ) {
-        $this->processExecutionStorage = $processExecutionStorage;
         $this->jobStorage = $jobStorage;
+        $this->remoteScheduler = $remoteScheduler;
     }
 
     /**
@@ -42,18 +49,40 @@ class GracePeriodPolicyBehavior implements Behavior
     {
         /** @var Process $process */
         $process = $token->getProcess();
-        $job = $this->jobStorage->getOneById($process->getTokenJobId($token));
+//        $job = $this->jobStorage->getOneById($process->getTokenJobId($token));
+//
+//        $endsAt = $job->getGracePeriodPolicy()->getPeriodEndsAt()->getTimestamp();
+//        $endsAt = time() + 30;
 
-        $endsAt = $job->getGracePeriodPolicy()->getPeriodEndsAt()->getTimestamp();
 
-        $this->processExecutionStorage->update($token->getProcess());
-        while (time() < $endsAt) {
-            sleep(1);
-        }
+        $job = JobBuilder::newJob(EnqueueResponseJob::class)->build();
+        $trigger = TriggerBuilder::newTrigger()
+            ->forJobDetail($job)
+            ->withSchedule(SimpleScheduleBuilder::simpleSchedule()->repeatForever())
+            ->setJobData([
+                'topic' => Topics::PVM_HANDLE_ASYNC_TRANSITION,
+                'process' => $process->getId(),
+                'token' => $token->getId(),
+            ])
+            ->startAt(new \DateTime('now + 30 seconds'))
+            ->build();
+
+        $this->remoteScheduler->scheduleJob($trigger, $job);
+
+        throw new WaitExecutionException;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function signal(Token $token)
+    {
+        /** @var Process $process */
+        $process = $token->getProcess();
 
         return $this->jobStorage->lockByJobId($process->getTokenJobId($token), function(Job $job) {
             $result = $job->getCurrentResult();
-            if ($result->isRunSubJobs() || $result->isCompleted() || $result->isCanceled() || $result->isTerminated() || $result->isFailed()) {
+            if ($result->isDone() || $result->isRunSubJobs() || $result->isRunningSubJobs()) {
                 throw new InterruptExecutionException();
             }
 

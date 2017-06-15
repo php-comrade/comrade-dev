@@ -49,6 +49,11 @@ class JobResult
         return JobStatus::isCompleted($this);
     }
 
+    public function isDone():bool
+    {
+        return JobStatus::isDone($this);
+    }
+
     public function isFailed():bool
     {
         return JobStatus::isFailed($this);

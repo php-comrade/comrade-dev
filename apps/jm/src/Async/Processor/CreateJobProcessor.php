@@ -102,7 +102,7 @@ class CreateJobProcessor implements PsrProcessor, CommandSubscriberInterface
             $this->exclusiveJobStorage->update($exclusiveJob, ['name' => $exclusiveJob->getName()], ['upsert' => true]);
         }
 
-        $this->producer->sendCommand(Commands::SCHEDULE_PROCESS, $processTemplate->getId());
+        $this->producer->sendCommand(Commands::SCHEDULE_JOB, ['jobTemplate' => $jobTemplate->getTemplateId()]);
 
         return self::ACK;
     }

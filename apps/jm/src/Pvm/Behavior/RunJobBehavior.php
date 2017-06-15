@@ -64,7 +64,6 @@ class RunJobBehavior implements Behavior, SignalBehavior
         $job->setCurrentResult($result);
 
         $this->jobStorage->update($job);
-
         $this->psrContext->createProducer()->send($queue, $message);
 
         throw new WaitExecutionException();
