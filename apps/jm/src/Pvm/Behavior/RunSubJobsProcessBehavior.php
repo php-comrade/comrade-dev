@@ -95,7 +95,7 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
         $subProcess = $this->createProcessForSubJobsService->createProcess($token, $jobTemplates);
         $this->processStorage->insert($subProcess);
 
-        $this->producer->sendCommand(Commands::SCHEDULE_PROCESS, $subProcess->getId());
+        $this->producer->sendCommand(Commands::SCHEDULE_JOB, $subProcess->getId());
 
         throw new WaitExecutionException();
     }

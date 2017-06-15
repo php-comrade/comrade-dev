@@ -569,16 +569,16 @@
         },
         {
             "name": "enqueue/enqueue",
-            "version": "0.4.14",
+            "version": "0.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/enqueue.git",
-                "reference": "a78b3cc565d99dacb658da0f1d98e10b245927e1"
+                "reference": "1503639b8120c1724facba23ff6c929ad9f21f8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/a78b3cc565d99dacb658da0f1d98e10b245927e1",
-                "reference": "a78b3cc565d99dacb658da0f1d98e10b245927e1",
+                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/1503639b8120c1724facba23ff6c929ad9f21f8f",
+                "reference": "1503639b8120c1724facba23ff6c929ad9f21f8f",
                 "shasum": ""
             },
             "require": {
@@ -640,7 +640,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2017-06-09T14:13:37+00:00"
+            "time": "2017-06-14T06:36:39+00:00"
         },
         {
             "name": "enqueue/enqueue-bundle",
@@ -865,7 +865,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:formapro/php-quartz.git",
-                "reference": "287c93b7db3cb3efb45ff6e4ef71eeee10fa2ba7"
+                "reference": "5dd42e6bec4578fe07924beea99c037be22b2d07"
             },
             "require": {
                 "enqueue/amqp-ext": "^0.3|^0.4",
@@ -908,7 +908,7 @@
                 "time",
                 "time scheduler"
             ],
-            "time": "2017-06-09 13:51:56"
+            "time": "2017-06-14 09:10:39"
         },
         {
             "name": "formapro/pvm",
@@ -916,7 +916,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:formapro/pvm.git",
-                "reference": "9d14ed8ce80959ac098cdad953f69f2c18d54ec0"
+                "reference": "b9a4a1b0e7a849ffe8d70a2a02993df868a3e28e"
             },
             "require": {
                 "graphp/graphviz": "^0.2.1",
@@ -957,7 +957,7 @@
                 "process",
                 "workflow"
             ],
-            "time": "2017-06-08 08:28:42"
+            "time": "2017-06-14 10:08:40"
         },
         {
             "name": "g4/cron",
@@ -2297,16 +2297,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.0.3",
+            "version": "v1.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "40802c3f01f842be9f0313095efa4fdda7d3753c"
+                "reference": "761787e98d087c4d93a86fef82ec8dd5c0612565"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/40802c3f01f842be9f0313095efa4fdda7d3753c",
-                "reference": "40802c3f01f842be9f0313095efa4fdda7d3753c",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/761787e98d087c4d93a86fef82ec8dd5c0612565",
+                "reference": "761787e98d087c4d93a86fef82ec8dd5c0612565",
                 "shasum": ""
             },
             "require": {
@@ -2339,7 +2339,7 @@
                     "email": "fabien.potencier@gmail.com"
                 }
             ],
-            "time": "2017-06-10T00:38:56+00:00"
+            "time": "2017-06-14T04:58:05+00:00"
         },
         {
             "name": "symfony/framework-bundle",
