@@ -63,8 +63,8 @@ services:
     volumes:
       - './apps/qs:/qs:cached'
     ports:
-      - "3000:3000"
-      - "3001:3001"
+      - "3005:3000"
+      - "3006:3001"
 
   rabbitmq:
     image: 'enqueue/rabbitmq:latest'
