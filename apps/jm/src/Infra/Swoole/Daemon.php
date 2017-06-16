@@ -45,6 +45,11 @@ class Daemon
                 $this->execProcess($dataId, $workerData);
             }
         }
+
+        // https://wiki.swoole.com/wiki/page/215.html "Precautions"
+        foreach ($this->pipes as $process) {
+            swoole_event_add($process->pipe, [$this, 'onReceive']);
+        }
     }
 
     public function onReceive(int $pipe):void
@@ -107,8 +112,6 @@ class Daemon
         $this->pipes[$process->pipe] = $process;
         $this->workers[$process->pid] = $process;
 
-        swoole_event_add($process->pipe, [$this, 'onReceive']);
-
         return $process;
     }
 
@@ -125,6 +128,9 @@ class Daemon
 
                 $workerData = $this->workersData[$oldProcess->dataId];
                 $newProcess = $this->execProcess($oldProcess->dataId, $workerData);
+
+                // https://wiki.swoole.com/wiki/page/215.html "Precautions"
+                swoole_event_add($newProcess->pipe, [$this, 'onReceive']);
 
                 echo "master | Reboot process: {$ret['pid']} => {$newProcess->pid} Done\n";
             }

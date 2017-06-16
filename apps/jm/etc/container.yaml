@@ -144,7 +144,6 @@ services:
         arguments:
             -
                 Quartz\App\EnqueueResponseJob: '@Quartz\App\EnqueueResponseJob'
-                App\Infra\Quartz\EnqueueResponseJob: '@App\Infra\Quartz\EnqueueResponseJob'
     Quartz\Core\JobFactory: '@Quartz\Core\SimpleJobFactory'
 
     Quartz\App\RpcProtocol: ~
