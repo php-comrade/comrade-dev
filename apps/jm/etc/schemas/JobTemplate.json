@@ -20,5 +20,5 @@
       ]}
     }
   },
-  "required": ["templateId", "processTemplateId", "name", "triggers"]
+  "required": ["templateId", "processTemplateId", "name"]
 }

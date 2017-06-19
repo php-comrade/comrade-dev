@@ -58,10 +58,10 @@ class FooCommand extends Command implements ContainerAwareInterface
 //        $simpleTrigger->setMisfireInstruction(SimpleTrigger::MISFIRE_INSTRUCTION_FIRE_NOW);
 //        $jobTemplate->addTrigger($simpleTrigger);
 //
-        $cronTrigger = CronTrigger::create();
-        $cronTrigger->setExpression('*/20 * * * * *');
-        $cronTrigger->setMisfireInstruction(CronTrigger::MISFIRE_INSTRUCTION_FIRE_ONCE_NOW);
-        $jobTemplate->addTrigger($cronTrigger);
+//        $cronTrigger = CronTrigger::create();
+//        $cronTrigger->setExpression('*/20 * * * * *');
+//        $cronTrigger->setMisfireInstruction(CronTrigger::MISFIRE_INSTRUCTION_FIRE_ONCE_NOW);
+//        $jobTemplate->addTrigger($cronTrigger);
 //
         $exclusivePolicy = ExclusivePolicy::create();
         $exclusivePolicy->setOnFailedSubJob(ExclusivePolicy::MARK_JOB_AS_FAILED);
@@ -74,8 +74,8 @@ class FooCommand extends Command implements ContainerAwareInterface
         $message = CreateJob::create();
         $message->setJobTemplate($jobTemplate);
 
-        $output->writeln(json_encode(get_values($jobTemplate), JSON_PRETTY_PRINT));
-//        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $message);
+//        $output->writeln(json_encode(get_values($jobTemplate), JSON_PRETTY_PRINT));
+        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $message);
 
         $output->writeln('');
     }
