@@ -5,4 +5,5 @@ return [
     'Makasim\Yadm\Bundle\YadmBundle' => ['all' => true],
     'Enqueue\Bundle\EnqueueBundle' => ['all' => true],
     'Symfony\Bundle\TwigBundle\TwigBundle' => ['all' => true],
+    'Nelmio\CorsBundle\NelmioCorsBundle' => ['all' => true],
 ];
