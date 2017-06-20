@@ -4,7 +4,7 @@
     "require": {
         "php": "^7.1",
         "enqueue/amqp-ext": "^0.4.0@dev",
-        "enqueue/enqueue-bundle": "^0.4.11@dev",
+        "enqueue/enqueue-bundle": "^0.4.20@dev",
         "formapro/php-quartz": "dev-master",
         "formapro/pvm": "dev-master",
         "justinrainbow/json-schema": "^5",
