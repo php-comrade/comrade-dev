@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "2067de427ae00713bab65c70ddc04ddd",
+    "content-hash": "006967cfd6c24ea04e670e30acce9ddd",
     "packages": [
         {
             "name": "clue/graph",
@@ -569,16 +569,16 @@
         },
         {
             "name": "enqueue/enqueue",
-            "version": "0.4.16",
+            "version": "0.4.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/enqueue.git",
-                "reference": "e0dbabf9dd0e300066fa28cc4788a21cf56af4d2"
+                "reference": "e136bb2caf402d142991fac0aa8169dbafcc5b8b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/e0dbabf9dd0e300066fa28cc4788a21cf56af4d2",
-                "reference": "e0dbabf9dd0e300066fa28cc4788a21cf56af4d2",
+                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/e136bb2caf402d142991fac0aa8169dbafcc5b8b",
+                "reference": "e136bb2caf402d142991fac0aa8169dbafcc5b8b",
                 "shasum": ""
             },
             "require": {
@@ -640,7 +640,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2017-06-15T12:10:28+00:00"
+            "time": "2017-06-20T10:32:08+00:00"
         },
         {
             "name": "enqueue/enqueue-bundle",
@@ -648,30 +648,30 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/enqueue-bundle.git",
-                "reference": "f973bbfdaf0ca0ba245551e35ce9ecafd6e8f92e"
+                "reference": "acbe56478b18c3ea51aea3737b0e272673fa2c1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/enqueue-bundle/zipball/f973bbfdaf0ca0ba245551e35ce9ecafd6e8f92e",
-                "reference": "f973bbfdaf0ca0ba245551e35ce9ecafd6e8f92e",
+                "url": "https://api.github.com/repos/php-enqueue/enqueue-bundle/zipball/acbe56478b18c3ea51aea3737b0e272673fa2c1a",
+                "reference": "acbe56478b18c3ea51aea3737b0e272673fa2c1a",
                 "shasum": ""
             },
             "require": {
-                "enqueue/enqueue": "^0.4",
+                "enqueue/enqueue": "^0.4.18",
                 "enqueue/null": "^0.4",
                 "php": ">=5.6",
                 "symfony/framework-bundle": "^2.8|^3"
             },
             "require-dev": {
                 "doctrine/doctrine-bundle": "~1.2",
-                "enqueue/amqp-ext": "^0.3@dev|0.4@dev",
+                "enqueue/amqp-ext": "^0.3@dev|^0.4@dev",
                 "enqueue/dbal": "^0.4",
                 "enqueue/fs": "^0.4",
-                "enqueue/job-queue": "^0.3@dev|0.4@dev",
+                "enqueue/job-queue": "^0.3@dev|^0.4@dev",
                 "enqueue/redis": "^0.4",
                 "enqueue/sqs": "^0.4",
-                "enqueue/stomp": "^0.3@dev|0.4@dev",
-                "enqueue/test": "^0.3@dev|0.4@dev",
+                "enqueue/stomp": "^0.3@dev|^0.4@dev",
+                "enqueue/test": "^0.3@dev|^0.4@dev",
                 "phpunit/phpunit": "~5.5",
                 "symfony/browser-kit": "^2.8|^3",
                 "symfony/expression-language": "^2.8|^3",
@@ -702,7 +702,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2017-06-09 14:13:37"
+            "time": "2017-06-20 11:13:18"
         },
         {
             "name": "enqueue/null",
@@ -916,7 +916,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:formapro/pvm.git",
-                "reference": "b9a4a1b0e7a849ffe8d70a2a02993df868a3e28e"
+                "reference": "a60fd861965bdb826c769abfe4729242954d7973"
             },
             "require": {
                 "graphp/graphviz": "^0.2.1",
@@ -957,7 +957,7 @@
                 "process",
                 "workflow"
             ],
-            "time": "2017-06-14 10:08:40"
+            "time": "2017-06-19 09:22:06"
         },
         {
             "name": "g4/cron",
@@ -2297,16 +2297,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.0.7",
+            "version": "v1.0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "84ad7b3f8f6e10135f29ce402c88376e2a3c4c64"
+                "reference": "63377e357ad918d5e08b0bbaa03e9c74c527320d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/84ad7b3f8f6e10135f29ce402c88376e2a3c4c64",
-                "reference": "84ad7b3f8f6e10135f29ce402c88376e2a3c4c64",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/63377e357ad918d5e08b0bbaa03e9c74c527320d",
+                "reference": "63377e357ad918d5e08b0bbaa03e9c74c527320d",
                 "shasum": ""
             },
             "require": {
@@ -2339,7 +2339,7 @@
                     "email": "fabien.potencier@gmail.com"
                 }
             ],
-            "time": "2017-06-17T01:02:40+00:00"
+            "time": "2017-06-19T23:18:08+00:00"
         },
         {
             "name": "symfony/framework-bundle",
