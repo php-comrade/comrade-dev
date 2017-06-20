@@ -1,0 +1,18 @@
+<div class="container">
+    <p *ngIf="!jobTemplates">Loading</p>
+
+    <table *ngIf="jobTemplates" class="table table-striped table-hover table-bordered">
+        <thead class="thead-inverse">
+        <tr>
+            <th>Id:</th>
+            <th>Name:</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let jobTemplate of jobTemplates">
+            <td>{{jobTemplate.templateId}}</td>
+            <td>{{jobTemplate.name}}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
