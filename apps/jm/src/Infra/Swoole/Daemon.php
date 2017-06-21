@@ -39,6 +39,7 @@ class Daemon
         \swoole_process::signal(SIGQUIT, [$this, 'handleSignal']);
         \swoole_process::signal(SIGINT, [$this, 'handleSignal']);
         \swoole_process::signal(SIGUSR1, [$this, 'handleSignal']);
+        \swoole_process::signal(SIGUSR2, [$this, 'handleSignal']);
 
         foreach ($this->workersData as $dataId => $workerData) {
             foreach (range(1, $workerData['quantity']) as $index) {
@@ -71,6 +72,30 @@ class Daemon
                 foreach (array_keys($this->workers) as $cPid) {
                     \swoole_process::kill($cPid, SIGTERM);
                 }
+
+                break;
+            case SIGUSR2:   // print status
+                echo "master | workers data status {dataId} => {data}:\n";
+                foreach ($this->workersData as $dataId => $data) {
+                    echo "master | {$dataId} => ".json_encode($data)."\n";
+                }
+
+                echo "master | workers status {pid} => {dataId} => {working}:\n";
+                foreach ($this->workers as $cPid => $process) {
+                    echo sprintf(
+                        "master | %s => %s => %s\n",
+                        $cPid,
+                        $process->dataId,
+                        \swoole_process::kill($cPid, 0) ? 'yes' : 'no'
+                    );
+                }
+
+                echo "master | pipes status {pipe} => {datId}:\n";
+                foreach ($this->pipes as $pipe => $process) {
+                    echo "master | {$pipe} => {$process->dataId}\n";
+                }
+
+                echo "master | exiting => '".$this->exiting ? 'true' : 'false'."'\n";
 
                 break;
             case SIGTERM:  // 15 : supervisor default stop

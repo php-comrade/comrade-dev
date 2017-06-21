@@ -109,6 +109,9 @@ services:
 
     Quartz\Bridge\Scheduler\RemoteScheduler: '@quartz.remote.scheduler'
 
+    Quartz\Bridge\Swoole\CheckMasterProcessSubscriber:
+        tags: [{ name: 'kernel.event_subscriber' }]
+
 #    App\Infra\Quartz\EnqueueResponseJob: ~
 #
 #    Quartz\Scheduler\Store\YadmStoreResource:

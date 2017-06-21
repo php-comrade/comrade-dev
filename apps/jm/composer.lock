@@ -810,7 +810,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:formapro/pvm.git",
-                "reference": "78a4ee63565c5ca70e4770b84a4927b8372ea83a"
+                "reference": "f4ac7841db363e18833b432795568e600a892785"
             },
             "require": {
                 "graphp/graphviz": "^0.2.1",
@@ -851,7 +851,7 @@
                 "process",
                 "workflow"
             ],
-            "time": "2017-06-20 13:49:34"
+            "time": "2017-06-21 07:36:20"
         },
         {
             "name": "g4/cron",
@@ -1436,12 +1436,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-quartz/bridge.git",
-                "reference": "b8bc32bf771258ca8ac2aa6cf7fe845949749770"
+                "reference": "6ea0459c032144483f5e86b6f438344ba669ac16"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-quartz/bridge/zipball/b8bc32bf771258ca8ac2aa6cf7fe845949749770",
-                "reference": "b8bc32bf771258ca8ac2aa6cf7fe845949749770",
+                "url": "https://api.github.com/repos/php-quartz/bridge/zipball/6ea0459c032144483f5e86b6f438344ba669ac16",
+                "reference": "6ea0459c032144483f5e86b6f438344ba669ac16",
                 "shasum": ""
             },
             "require": {
@@ -1479,7 +1479,7 @@
                 "time",
                 "time scheduler"
             ],
-            "time": "2017-06-21T06:37:29+00:00"
+            "time": "2017-06-21T07:37:56+00:00"
         },
         {
             "name": "php-quartz/bundle",

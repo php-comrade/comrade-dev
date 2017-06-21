@@ -3,4 +3,10 @@ quartz:
     scheduler:
         store:
             uri: '%env(MONGO_DSN)%'
-            db_name: '%mongo_database%'
+            dbName: '%mongo_database%'
+            managementLockCol: 'quartz_management_lock'
+            calendarCol: 'quartz_calendar'
+            triggerCol: 'quartz_trigger'
+            firedTriggerCol: 'quartz_fired_trigger'
+            jobCol: 'quartz_job'
+            pausedTriggerCol: 'quartz_paused_trigger'

@@ -5,14 +5,8 @@ use App\Async\Commands;
 use App\Async\CreateJob;
 use App\Infra\JsonSchema\Errors;
 use App\Infra\JsonSchema\SchemaValidator;
-use App\Model\ExclusiveJob;
-use App\Service\CreateProcessForJobService;
-use App\Storage\ExclusiveJobStorage;
-use App\Storage\JobStorage;
-use App\Storage\JobTemplateStorage;
-use App\Storage\ProcessStorage;
+use App\Service\CreateJobTemplateService;
 use Enqueue\Client\CommandSubscriberInterface;
-use Enqueue\Client\ProducerV2Interface;
 use Enqueue\Consumption\Result;
 use Enqueue\Psr\PsrContext;
 use Enqueue\Psr\PsrMessage;
@@ -27,53 +21,21 @@ class CreateJobProcessor implements PsrProcessor, CommandSubscriberInterface
     private $schemaValidator;
 
     /**
-     * @var JobStorage
+     * @var CreateJobTemplateService
      */
-    private $jobTemplateStorage;
-
-    /**
-     * @var ProcessStorage
-     */
-    private $processStorage;
-
-    /**
-     * @var CreateProcessForJobService
-     */
-    private $createProcessForJobService;
-
-    /**
-     * @var ProducerV2Interface
-     */
-    private $producer;
-    /**
-     * @var ExclusiveJobStorage
-     */
-    private $exclusiveJobStorage;
+    private $createJobTemplateService;
 
     /**
      * @param SchemaValidator $schemaValidator
-     * @param JobTemplateStorage $jobTemplateStorage
-     * @param ExclusiveJobStorage $exclusiveJobStorage
-     * @param ProcessStorage $processStorage
-     * @param CreateProcessForJobService $createProcessForJobService
-     * @param ProducerV2Interface $producer
+     * @param CreateJobTemplateService $createJobTemplateService
      */
     public function __construct(
         SchemaValidator $schemaValidator,
-        JobTemplateStorage $jobTemplateStorage,
-        ExclusiveJobStorage $exclusiveJobStorage,
-        ProcessStorage $processStorage,
-        CreateProcessForJobService $createProcessForJobService,
-        ProducerV2Interface $producer
+        CreateJobTemplateService $createJobTemplateService
     ) {
         $this->schemaValidator = $schemaValidator;
-        $this->jobTemplateStorage = $jobTemplateStorage;
-        $this->exclusiveJobStorage = $exclusiveJobStorage;
-        $this->processStorage = $processStorage;
-        $this->createProcessForJobService = $createProcessForJobService;
-        $this->producer = $producer;
+        $this->createJobTemplateService = $createJobTemplateService;
     }
-
 
     /**
      * {@inheritdoc}
@@ -89,20 +51,7 @@ class CreateJobProcessor implements PsrProcessor, CommandSubscriberInterface
             return Result::reject(Errors::toString($errors, 'Message schema validation has failed.'));
         }
 
-        $jobTemplate = CreateJob::create($data)->getJobTemplate();
-        $processTemplate = $this->createProcessForJobService->createProcess($jobTemplate);
-
-        $this->jobTemplateStorage->insert($jobTemplate);
-        $this->processStorage->insert($processTemplate);
-
-        if ($jobTemplate->getExclusivePolicy()) {
-            $exclusiveJob = new ExclusiveJob();
-            $exclusiveJob->setName($jobTemplate->getName());
-
-            $this->exclusiveJobStorage->update($exclusiveJob, ['name' => $exclusiveJob->getName()], ['upsert' => true]);
-        }
-
-        $this->producer->sendCommand(Commands::SCHEDULE_JOB, ['jobTemplate' => $jobTemplate->getTemplateId()]);
+        $this->createJobTemplateService->create(CreateJob::create($data)->getJobTemplate());
 
         return self::ACK;
     }

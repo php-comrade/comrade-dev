@@ -2,8 +2,8 @@
 namespace App\Api\Controller;
 
 use App\Async\CreateJob;
-use App\Infra\JsonSchema\Errors;
 use App\Infra\JsonSchema\SchemaValidator;
+use App\Service\CreateJobTemplateService;
 use App\Storage\JobTemplateStorage;
 use Enqueue\Util\JSON;
 use function Makasim\Values\get_values;
@@ -22,42 +22,26 @@ class JobTemplateController
      * @Extra\Method("POST")
      *
      * @param Request $request
-     * @param JobTemplateStorage $jobTemplateStorage
+     * @param SchemaValidator $schemaValidator
+     * @param CreateJobTemplateService $createJobTemplateService
+     *
      * @return JsonResponse
      */
-    public function createAction(Request $request, JobTemplateStorage $jobTemplateStorage, SchemaValidator $schemaValidator)
+    public function createAction(Request $request, SchemaValidator $schemaValidator, CreateJobTemplateService $createJobTemplateService)
     {
         try {
             $data = JSON::decode($request->getContent());
         } catch (\Exception $e) {
             throw new BadRequestHttpException('The content is not valid json.', null, $e);
         }
-
-
+        
         if ($errors = $schemaValidator->validate($data, CreateJob::SCHEMA)) {
             return new JsonResponse($errors, 400);
         }
 
-        $jobTemplate = CreateJob::create($data)->getJobTemplate();
-        $processTemplate = $this->createProcessForJobService->createProcess($jobTemplate);
+        $createJobTemplateService->create(CreateJob::create($data)->getJobTemplate());
 
-        $this->jobTemplateStorage->insert($jobTemplate);
-        $this->processStorage->insert($processTemplate);
-
-        if ($jobTemplate->getExclusivePolicy()) {
-            $exclusiveJob = new ExclusiveJob();
-            $exclusiveJob->setName($jobTemplate->getName());
-
-            $this->exclusiveJobStorage->update($exclusiveJob, ['name' => $exclusiveJob->getName()], ['upsert' => true]);
-        }
-
-        $this->producer->sendCommand(Commands::SCHEDULE_JOB, ['jobTemplate' => $jobTemplate->getTemplateId()]);
-
-        return self::ACK;
-
-
-
-        return $response;
+        return new JsonResponse('OK');
     }
 
     /**

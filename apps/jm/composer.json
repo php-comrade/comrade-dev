@@ -12,7 +12,7 @@
         "makasim/values": "@dev",
         "makasim/yadm": "@dev",
         "makasim/yadm-bundle": "@dev",
-        "nelmio/cors-bundle": "^3",
+        "nelmio/cors-bundle": "^1",
         "php-quartz/bridge": "*@dev",
         "php-quartz/bundle": "*@dev",
         "php-quartz/quartz": "*@dev",
