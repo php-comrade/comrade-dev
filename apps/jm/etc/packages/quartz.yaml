@@ -1,0 +1,6 @@
+quartz:
+    remote_scheduler: ~
+    scheduler:
+        store:
+            uri: '%env(MONGO_DSN)%'
+            db_name: '%mongo_database%'

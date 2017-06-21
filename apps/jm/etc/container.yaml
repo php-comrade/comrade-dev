@@ -102,49 +102,56 @@ services:
         tags:
             - { name: 'enqueue.consumption.extension' }
 
-    App\Infra\Quartz\EnqueueResponseJob: ~
+    App\Api\Controller\:
+        resource: '../src/Api/Controller'
+        public: true
+        tags: ['controller.service_arguments']
 
-    Quartz\Scheduler\Store\YadmStoreResource:
-        autowire: false
-        arguments:
-            -
-                uri: '%env(MONGO_DSN)%'
-                dbName: '%mongo_database%'
-                managementLockCol: 'quartz_management_lock'
-                calendarCol: 'quartz_calendar'
-                triggerCol: 'quartz_trigger'
-                firedTriggerCol: 'quartz_fired_trigger'
-                jobCol: 'quartz_job'
-                pausedTriggerCol: 'quartz_paused_trigger'
+    Quartz\Bridge\Scheduler\RemoteScheduler: '@quartz.remote.scheduler'
 
-    Quartz\Scheduler\Store\YadmStore: ~
-    Quartz\Scheduler\JobStore: '@Quartz\Scheduler\Store\YadmStore'
-
-    Quartz\App\EnqueueResponseJob: ~
-    Quartz\App\Async\AsyncJobRunShell: ~
-
-    quartz.async_job_run_shell: '@Quartz\App\Async\AsyncJobRunShell'
-
-    Quartz\Scheduler\StdJobRunShellFactory:
-        autowire: false
-        arguments: ['@quartz.async_job_run_shell']
-
-    Quartz\Scheduler\StdJobRunShell:
-        calls:
-            - ['initialize', ['@Quartz\Scheduler\StdScheduler']]
-
-    Quartz\Scheduler\JobRunShellFactory: '@Quartz\Scheduler\StdJobRunShellFactory'
-
-    Quartz\Scheduler\StdScheduler: ~
-    Quartz\Core\Scheduler: '@Quartz\Scheduler\StdScheduler'
-
-
-    Quartz\Core\SimpleJobFactory:
-        autowire: false
-        arguments:
-            -
-                Quartz\App\EnqueueResponseJob: '@Quartz\App\EnqueueResponseJob'
-    Quartz\Core\JobFactory: '@Quartz\Core\SimpleJobFactory'
-
-    Quartz\App\RpcProtocol: ~
-    Quartz\App\RemoteScheduler: ~
+#    App\Infra\Quartz\EnqueueResponseJob: ~
+#
+#    Quartz\Scheduler\Store\YadmStoreResource:
+#        autowire: false
+#        arguments:
+#            -
+#                uri: '%env(MONGO_DSN)%'
+#                dbName: '%mongo_database%'
+#                managementLockCol: 'quartz_management_lock'
+#                calendarCol: 'quartz_calendar'
+#                triggerCol: 'quartz_trigger'
+#                firedTriggerCol: 'quartz_fired_trigger'
+#                jobCol: 'quartz_job'
+#                pausedTriggerCol: 'quartz_paused_trigger'
+#
+#    Quartz\Scheduler\Store\YadmStore: ~
+#    Quartz\Scheduler\JobStore: '@Quartz\Scheduler\Store\YadmStore'
+#
+#    Quartz\App\EnqueueResponseJob: ~
+#    Quartz\App\Async\AsyncJobRunShell: ~
+#
+#    quartz.async_job_run_shell: '@Quartz\App\Async\AsyncJobRunShell'
+#
+#    Quartz\Scheduler\StdJobRunShellFactory:
+#        autowire: false
+#        arguments: ['@quartz.async_job_run_shell']
+#
+#    Quartz\Scheduler\StdJobRunShell:
+#        calls:
+#            - ['initialize', ['@Quartz\Scheduler\StdScheduler']]
+#
+#    Quartz\Scheduler\JobRunShellFactory: '@Quartz\Scheduler\StdJobRunShellFactory'
+#
+#    Quartz\Scheduler\StdScheduler: ~
+#    Quartz\Core\Scheduler: '@Quartz\Scheduler\StdScheduler'
+#
+#
+#    Quartz\Core\SimpleJobFactory:
+#        autowire: false
+#        arguments:
+#            -
+#                Quartz\App\EnqueueResponseJob: '@Quartz\App\EnqueueResponseJob'
+#    Quartz\Core\JobFactory: '@Quartz\Core\SimpleJobFactory'
+#
+#    Quartz\App\RpcProtocol: ~
+#    Quartz\App\RemoteScheduler: ~

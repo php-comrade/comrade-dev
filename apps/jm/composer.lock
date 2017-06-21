@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "865ca306198c81c9f906d4da269b807e",
+    "content-hash": "234291422b7d9a84b288b9d8cbfcd09f",
     "packages": [
         {
             "name": "clue/graph",
@@ -515,25 +515,25 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/amqp-ext.git",
-                "reference": "1cc70bdd3e1af6e70c552e2809451f8420e17669"
+                "reference": "144cbbc011d58d1ccd555b36211abf9b7c446ccb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/amqp-ext/zipball/1cc70bdd3e1af6e70c552e2809451f8420e17669",
-                "reference": "1cc70bdd3e1af6e70c552e2809451f8420e17669",
+                "url": "https://api.github.com/repos/php-enqueue/amqp-ext/zipball/144cbbc011d58d1ccd555b36211abf9b7c446ccb",
+                "reference": "144cbbc011d58d1ccd555b36211abf9b7c446ccb",
                 "shasum": ""
             },
             "require": {
-                "enqueue/psr-queue": "^0.4",
+                "enqueue/psr-queue": "^0.5@dev",
                 "ext-amqp": "^1.6",
                 "php": ">=5.6",
                 "psr/log": "^1"
             },
             "require-dev": {
                 "empi89/php-amqp-stubs": "*@dev",
-                "enqueue/enqueue": "^0.4",
-                "enqueue/null": "^0.4",
-                "enqueue/test": "^0.4",
+                "enqueue/enqueue": "^0.5@dev",
+                "enqueue/null": "^0.5@dev",
+                "enqueue/test": "^0.5@dev",
                 "phpunit/phpunit": "~5.4.0",
                 "symfony/config": "^2.8|^3",
                 "symfony/dependency-injection": "^2.8|^3"
@@ -544,7 +544,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.4.x-dev"
+                    "dev-master": "0.5.x-dev"
                 }
             },
             "autoload": {
@@ -565,35 +565,35 @@
                 "messaging",
                 "queue"
             ],
-            "time": "2017-06-19 08:45:51"
+            "time": "2017-06-20 19:40:21"
         },
         {
             "name": "enqueue/enqueue",
-            "version": "0.4.18",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/enqueue.git",
-                "reference": "e136bb2caf402d142991fac0aa8169dbafcc5b8b"
+                "reference": "b4cbb7c4174eeb943eeb6150b95b71dbe6198e72"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/e136bb2caf402d142991fac0aa8169dbafcc5b8b",
-                "reference": "e136bb2caf402d142991fac0aa8169dbafcc5b8b",
+                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/b4cbb7c4174eeb943eeb6150b95b71dbe6198e72",
+                "reference": "b4cbb7c4174eeb943eeb6150b95b71dbe6198e72",
                 "shasum": ""
             },
             "require": {
-                "enqueue/null": "^0.4",
-                "enqueue/psr-queue": "^0.4",
+                "enqueue/null": "^0.5@dev",
+                "enqueue/psr-queue": "^0.5@dev",
                 "php": ">=5.6",
                 "ramsey/uuid": "^2|^3.5"
             },
             "require-dev": {
                 "empi89/php-amqp-stubs": "*@dev",
-                "enqueue/amqp-ext": "^0.4",
-                "enqueue/dbal": "^0.4",
-                "enqueue/fs": "^0.4",
-                "enqueue/simple-client": "^0.4",
-                "enqueue/test": "^0.4",
+                "enqueue/amqp-ext": "^0.5@dev",
+                "enqueue/dbal": "^0.5@dev",
+                "enqueue/fs": "^0.5@dev",
+                "enqueue/simple-client": "^0.5@dev",
+                "enqueue/test": "^0.5@dev",
                 "phpunit/phpunit": "~5.5",
                 "symfony/config": "^2.8|^3",
                 "symfony/console": "^2.8|^3",
@@ -615,7 +615,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.4.x-dev"
+                    "dev-master": "0.5.x-dev"
                 }
             },
             "autoload": {
@@ -640,7 +640,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2017-06-20T10:32:08+00:00"
+            "time": "2017-06-20 19:53:39"
         },
         {
             "name": "enqueue/enqueue-bundle",
@@ -648,30 +648,30 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/enqueue-bundle.git",
-                "reference": "acbe56478b18c3ea51aea3737b0e272673fa2c1a"
+                "reference": "bc677d23e12b591909630f5ebfcb0fcc263d7913"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/enqueue-bundle/zipball/acbe56478b18c3ea51aea3737b0e272673fa2c1a",
-                "reference": "acbe56478b18c3ea51aea3737b0e272673fa2c1a",
+                "url": "https://api.github.com/repos/php-enqueue/enqueue-bundle/zipball/bc677d23e12b591909630f5ebfcb0fcc263d7913",
+                "reference": "bc677d23e12b591909630f5ebfcb0fcc263d7913",
                 "shasum": ""
             },
             "require": {
-                "enqueue/enqueue": "^0.4.18",
-                "enqueue/null": "^0.4",
+                "enqueue/enqueue": "^0.5@dev",
+                "enqueue/null": "^0.5@dev",
                 "php": ">=5.6",
                 "symfony/framework-bundle": "^2.8|^3"
             },
             "require-dev": {
                 "doctrine/doctrine-bundle": "~1.2",
-                "enqueue/amqp-ext": "^0.3@dev|^0.4@dev",
-                "enqueue/dbal": "^0.4",
-                "enqueue/fs": "^0.4",
-                "enqueue/job-queue": "^0.3@dev|^0.4@dev",
-                "enqueue/redis": "^0.4",
-                "enqueue/sqs": "^0.4",
-                "enqueue/stomp": "^0.3@dev|^0.4@dev",
-                "enqueue/test": "^0.3@dev|^0.4@dev",
+                "enqueue/amqp-ext": "^0.5@dev",
+                "enqueue/dbal": "^0.5@dev",
+                "enqueue/fs": "^0.5@dev",
+                "enqueue/job-queue": "^0.5@dev",
+                "enqueue/redis": "^0.5@dev",
+                "enqueue/sqs": "^0.5@dev",
+                "enqueue/stomp": "^0.5@dev",
+                "enqueue/test": "^0.5@dev",
                 "phpunit/phpunit": "~5.5",
                 "symfony/browser-kit": "^2.8|^3",
                 "symfony/expression-language": "^2.8|^3",
@@ -680,7 +680,7 @@
             "type": "symfony-bundle",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.4.x-dev"
+                    "dev-master": "0.5.x-dev"
                 }
             },
             "autoload": {
@@ -702,30 +702,30 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2017-06-20 11:13:18"
+            "time": "2017-06-20 19:36:12"
         },
         {
             "name": "enqueue/null",
-            "version": "0.4.9",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/null.git",
-                "reference": "1394e2ba0e02726c64ce5b86ab09850fc071da55"
+                "reference": "238efe90e0984de35f4f318169e2526bc7c842e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/null/zipball/1394e2ba0e02726c64ce5b86ab09850fc071da55",
-                "reference": "1394e2ba0e02726c64ce5b86ab09850fc071da55",
+                "url": "https://api.github.com/repos/php-enqueue/null/zipball/238efe90e0984de35f4f318169e2526bc7c842e7",
+                "reference": "238efe90e0984de35f4f318169e2526bc7c842e7",
                 "shasum": ""
             },
             "require": {
-                "enqueue/psr-queue": "^0.4",
+                "enqueue/psr-queue": "^0.5@dev",
                 "php": ">=5.6",
                 "psr/log": "^1"
             },
             "require-dev": {
-                "enqueue/enqueue": "^0.4",
-                "enqueue/test": "^0.4",
+                "enqueue/enqueue": "^0.5@dev",
+                "enqueue/test": "^0.5@dev",
                 "phpunit/phpunit": "~5.5",
                 "symfony/config": "^2.8|^3",
                 "symfony/dependency-injection": "^2.8|^3"
@@ -733,7 +733,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.4.x-dev"
+                    "dev-master": "0.5.x-dev"
                 }
             },
             "autoload": {
@@ -754,33 +754,33 @@
                 "queue",
                 "testing"
             ],
-            "time": "2017-05-25T09:53:54+00:00"
+            "time": "2017-06-20 19:36:12"
         },
         {
             "name": "enqueue/psr-queue",
-            "version": "0.4.9",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/psr-queue.git",
-                "reference": "96f93b84d8bddd1eb3a69cb3903783f22a1d6d11"
+                "reference": "785d223e73c4bc795ad14ed8b11ddb1d6833581f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/psr-queue/zipball/96f93b84d8bddd1eb3a69cb3903783f22a1d6d11",
-                "reference": "96f93b84d8bddd1eb3a69cb3903783f22a1d6d11",
+                "url": "https://api.github.com/repos/php-enqueue/psr-queue/zipball/785d223e73c4bc795ad14ed8b11ddb1d6833581f",
+                "reference": "785d223e73c4bc795ad14ed8b11ddb1d6833581f",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.6"
             },
             "require-dev": {
-                "enqueue/test": "^0.4",
+                "enqueue/test": "^0.5@dev",
                 "phpunit/phpunit": "~5.5"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.4.x-dev"
+                    "dev-master": "0.5.x-dev"
                 }
             },
             "autoload": {
@@ -802,113 +802,7 @@
                 "messaging",
                 "queue"
             ],
-            "time": "2017-05-25T09:44:04+00:00"
-        },
-        {
-            "name": "enqueue/simple-client",
-            "version": "0.4.17",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-enqueue/simple-client.git",
-                "reference": "5ac3d31aab7d4e0be5ad54405378b84b5c201224"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/simple-client/zipball/5ac3d31aab7d4e0be5ad54405378b84b5c201224",
-                "reference": "5ac3d31aab7d4e0be5ad54405378b84b5c201224",
-                "shasum": ""
-            },
-            "require": {
-                "enqueue/enqueue": "^0.4",
-                "php": ">=5.6",
-                "symfony/config": "^2.8|^3",
-                "symfony/console": "^2.8|^3",
-                "symfony/dependency-injection": "^2.8|^3"
-            },
-            "require-dev": {
-                "enqueue/amqp-ext": "^0.4",
-                "enqueue/fs": "^0.4",
-                "enqueue/null": "^0.4",
-                "enqueue/test": "^0.4",
-                "phpunit/phpunit": "~5.5"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.4.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Enqueue\\SimpleClient\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Message Queue Simple Client",
-            "keywords": [
-                "AMQP",
-                "messaging",
-                "queue",
-                "rabbitmq"
-            ],
-            "time": "2017-06-19T08:35:12+00:00"
-        },
-        {
-            "name": "formapro/php-quartz",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "git@github.com:formapro/php-quartz.git",
-                "reference": "e4b97b2c3eeb1bdc75ad871f230d9623a80aa701"
-            },
-            "require": {
-                "enqueue/amqp-ext": "^0.3|^0.4",
-                "enqueue/enqueue": "^0.3|^0.4",
-                "enqueue/simple-client": "^0.3|^0.4",
-                "g4/cron": "^0.1",
-                "makasim/yadm": "*@dev",
-                "php": ">=5.6",
-                "ramsey/uuid": "^2|^3.5",
-                "symfony/config": "^2.8|^3",
-                "symfony/console": "^2.8|^3",
-                "symfony/event-dispatcher": "^2.8|^3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~5.5"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.1.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Quartz\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "Job Time Scheduler Library",
-            "keywords": [
-                "chrono",
-                "job",
-                "quartz",
-                "task",
-                "time",
-                "time scheduler"
-            ],
-            "time": "2017-06-15 10:57:47"
+            "time": "2017-06-20 19:36:12"
         },
         {
             "name": "formapro/pvm",
@@ -916,7 +810,7 @@
             "source": {
                 "type": "git",
                 "url": "git@github.com:formapro/pvm.git",
-                "reference": "a60fd861965bdb826c769abfe4729242954d7973"
+                "reference": "78a4ee63565c5ca70e4770b84a4927b8372ea83a"
             },
             "require": {
                 "graphp/graphviz": "^0.2.1",
@@ -957,7 +851,7 @@
                 "process",
                 "workflow"
             ],
-            "time": "2017-06-19 09:22:06"
+            "time": "2017-06-20 13:49:34"
         },
         {
             "name": "g4/cron",
@@ -1432,6 +1326,63 @@
             "time": "2013-11-23T19:48:39+00:00"
         },
         {
+            "name": "nelmio/cors-bundle",
+            "version": "1.5.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nelmio/NelmioCorsBundle.git",
+                "reference": "ac6576a599d7db9c2c6022602c188a5594216056"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nelmio/NelmioCorsBundle/zipball/ac6576a599d7db9c2c6022602c188a5594216056",
+                "reference": "ac6576a599d7db9c2c6022602c188a5594216056",
+                "shasum": ""
+            },
+            "require": {
+                "symfony/framework-bundle": "^2.7 || ^3.0"
+            },
+            "require-dev": {
+                "matthiasnoback/symfony-dependency-injection-test": "^0.7.6",
+                "mockery/mockery": "0.9.*"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Nelmio\\CorsBundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nelmio",
+                    "homepage": "http://nelm.io"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://github.com/nelmio/NelmioCorsBundle/contributors"
+                }
+            ],
+            "description": "Adds CORS (Cross-Origin Resource Sharing) headers support in your Symfony2 application",
+            "keywords": [
+                "api",
+                "cors",
+                "crossdomain"
+            ],
+            "time": "2017-04-24T09:12:42+00:00"
+        },
+        {
             "name": "paragonie/random_compat",
             "version": "v2.0.10",
             "source": {
@@ -1478,6 +1429,168 @@
                 "random"
             ],
             "time": "2017-03-13T16:27:32+00:00"
+        },
+        {
+            "name": "php-quartz/bridge",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-quartz/bridge.git",
+                "reference": "b8bc32bf771258ca8ac2aa6cf7fe845949749770"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-quartz/bridge/zipball/b8bc32bf771258ca8ac2aa6cf7fe845949749770",
+                "reference": "b8bc32bf771258ca8ac2aa6cf7fe845949749770",
+                "shasum": ""
+            },
+            "require": {
+                "enqueue/enqueue": "^0.5@dev",
+                "php": ">=5.6",
+                "php-quartz/quartz": "@dev"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~5.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Quartz\\Bridge\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Job Time Scheduler Library",
+            "keywords": [
+                "chrono",
+                "job",
+                "quartz",
+                "task",
+                "time",
+                "time scheduler"
+            ],
+            "time": "2017-06-21T06:37:29+00:00"
+        },
+        {
+            "name": "php-quartz/bundle",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-quartz/bundle.git",
+                "reference": "78a39500d448d0846f717ae2583f77a83c863565"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-quartz/bundle/zipball/78a39500d448d0846f717ae2583f77a83c863565",
+                "reference": "78a39500d448d0846f717ae2583f77a83c863565",
+                "shasum": ""
+            },
+            "require": {
+                "enqueue/enqueue": "^0.5@dev",
+                "enqueue/enqueue-bundle": "^0.5@dev",
+                "enqueue/psr-queue": "^0.5@dev",
+                "php": ">=5.6",
+                "php-quartz/bridge": "@dev",
+                "php-quartz/quartz": "@dev",
+                "symfony/console": "^2.8|^3",
+                "symfony/framework-bundle": "^2.8|^3"
+            },
+            "require-dev": {
+                "enqueue/null": "^0.5@dev",
+                "phpunit/phpunit": "~5.5",
+                "symfony/browser-kit": "^2.8|^3"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.4.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Quartz\\Bundle\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Quartz Remote Scheduler Bundle",
+            "keywords": [
+                "chrono",
+                "job",
+                "quartz",
+                "task",
+                "time",
+                "time scheduler"
+            ],
+            "time": "2017-06-21T06:50:40+00:00"
+        },
+        {
+            "name": "php-quartz/quartz",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-quartz/quartz.git",
+                "reference": "ee84e1f8bd3583fd0137b232ab405edf285f4efb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-quartz/quartz/zipball/ee84e1f8bd3583fd0137b232ab405edf285f4efb",
+                "reference": "ee84e1f8bd3583fd0137b232ab405edf285f4efb",
+                "shasum": ""
+            },
+            "require": {
+                "g4/cron": "^0.1",
+                "makasim/yadm": "*@dev",
+                "php": ">=5.6",
+                "ramsey/uuid": "^2|^3.5",
+                "symfony/event-dispatcher": "^2.8|^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~5.5"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Quartz\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Job Time Scheduler Library",
+            "keywords": [
+                "chrono",
+                "job",
+                "quartz",
+                "task",
+                "time",
+                "time scheduler"
+            ],
+            "time": "2017-06-19T13:12:23+00:00"
         },
         {
             "name": "psr/cache",
@@ -3178,63 +3291,6 @@
     ],
     "packages-dev": [
         {
-            "name": "nelmio/cors-bundle",
-            "version": "1.5.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nelmio/NelmioCorsBundle.git",
-                "reference": "ac6576a599d7db9c2c6022602c188a5594216056"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nelmio/NelmioCorsBundle/zipball/ac6576a599d7db9c2c6022602c188a5594216056",
-                "reference": "ac6576a599d7db9c2c6022602c188a5594216056",
-                "shasum": ""
-            },
-            "require": {
-                "symfony/framework-bundle": "^2.7 || ^3.0"
-            },
-            "require-dev": {
-                "matthiasnoback/symfony-dependency-injection-test": "^0.7.6",
-                "mockery/mockery": "0.9.*"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.5.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Nelmio\\CorsBundle\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nelmio",
-                    "homepage": "http://nelm.io"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://github.com/nelmio/NelmioCorsBundle/contributors"
-                }
-            ],
-            "description": "Adds CORS (Cross-Origin Resource Sharing) headers support in your Symfony2 application",
-            "keywords": [
-                "api",
-                "cors",
-                "crossdomain"
-            ],
-            "time": "2017-04-24T09:12:42+00:00"
-        },
-        {
             "name": "symfony/dotenv",
             "version": "v3.3.2",
             "source": {
@@ -3296,12 +3352,17 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "enqueue/amqp-ext": 20,
+        "enqueue/enqueue": 20,
         "enqueue/enqueue-bundle": 20,
-        "formapro/php-quartz": 20,
+        "enqueue/psr-queue": 20,
         "formapro/pvm": 20,
         "makasim/values": 20,
         "makasim/yadm": 20,
-        "makasim/yadm-bundle": 20
+        "makasim/yadm-bundle": 20,
+        "php-quartz/bridge": 20,
+        "php-quartz/bundle": 20,
+        "php-quartz/quartz": 20,
+        "enqueue/null": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

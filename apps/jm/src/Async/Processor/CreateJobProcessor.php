@@ -112,6 +112,11 @@ class CreateJobProcessor implements PsrProcessor, CommandSubscriberInterface
      */
     public static function getSubscribedCommand()
     {
-        return Commands::CREATE_JOB;
+        return [
+            'processorName' => Commands::CREATE_JOB,
+            'queueName' => Commands::CREATE_JOB,
+            'queueNameHardcoded' => true,
+            'exclusive' => true,
+        ];
     }
 }

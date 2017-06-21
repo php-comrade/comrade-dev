@@ -3,7 +3,7 @@ namespace App\Async;
 
 final class Commands
 {
-    const CREATE_JOB = 'create_job';
+    const CREATE_JOB = 'jm_create_job';
 
     const CREATE_SUB_JOBS = 'create_sub_jobs';
 

@@ -7,4 +7,5 @@ return [
     'Symfony\Bundle\TwigBundle\TwigBundle' => ['all' => true],
     'Nelmio\CorsBundle\NelmioCorsBundle' => ['all' => true],
     'Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle' => ['all' => true],
+    'Quartz\Bundle\QuartzBundle' => ['all' => true],
 ];

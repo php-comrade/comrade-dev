@@ -3,15 +3,21 @@
     "license": "proprietary",
     "require": {
         "php": "^7.1",
-        "enqueue/amqp-ext": "^0.4.0@dev",
-        "enqueue/enqueue-bundle": "^0.4.20@dev",
-        "formapro/php-quartz": "dev-master",
+        "enqueue/amqp-ext": "^0.5@dev",
+        "enqueue/enqueue": "^0.5@dev",
+        "enqueue/enqueue-bundle": "^0.5@dev",
+        "enqueue/psr-queue": "^0.5@dev",
         "formapro/pvm": "dev-master",
         "justinrainbow/json-schema": "^5",
         "makasim/values": "@dev",
         "makasim/yadm": "@dev",
         "makasim/yadm-bundle": "@dev",
+        "nelmio/cors-bundle": "^3",
+        "php-quartz/bridge": "*@dev",
+        "php-quartz/bundle": "*@dev",
+        "php-quartz/quartz": "*@dev",
         "ramsey/uuid": "^3.6",
+        "sensio/framework-extra-bundle": "^3",
         "symfony/console": "^3.3",
         "symfony/flex": "^1.0",
         "symfony/framework-bundle": "^3.3",
@@ -20,7 +26,8 @@
         "symfony/yaml": "^3.3"
     },
     "require-dev": {
-        "symfony/dotenv": "^3.3"
+        "symfony/dotenv": "^3.3",
+        "enqueue/null": "^0.5@dev"
     },
     "config": {
         "platform": {
