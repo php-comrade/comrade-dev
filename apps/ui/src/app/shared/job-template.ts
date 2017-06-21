@@ -1,5 +1,5 @@
 export class JobTemplate {
-    schema: string;
+    schema: string = "http://jm.forma-pro.com/schemas/JobTemplate.json";
     name: string;
     templateId: string;
     processTemplateId: string;

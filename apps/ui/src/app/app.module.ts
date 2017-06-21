@@ -9,11 +9,17 @@ import { AppRoutingModule }     from './app-routing.module';
 import { AppComponent }  from './app.component';
 import { GridComponent } from "./template/grid.component";
 import {JobTemplateService} from "./shared/job-template.service";
+import { NavbarComponent } from './navbar/navbar.component';
+import { NewComponent } from './template/new.component';
+import { JsonInputComponent } from './json-input/json-input.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GridComponent
+    GridComponent,
+    NavbarComponent,
+    NewComponent,
+    JsonInputComponent
   ],
   imports: [
     BrowserModule,

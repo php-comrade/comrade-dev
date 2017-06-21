@@ -1,14 +1,19 @@
 @import 'assets/litera-bootstrap.min.css';
 
-body {
-    padding-top: 5rem;
-}
-.starter-template {
-    padding: 3rem 1.5rem;
-    text-align: center;
+.container { padding-top: 5rem; }
+
+input.ng-valid[required] , input.ng-valid.required  {
+    border-left: 5px solid #42A948; /* green */
 }
 
-html {
-    position: relative;
-    min-height: 100%;
+input.ng-invalid:not(form)  {
+    border-left: 5px solid #a94442; /* red */
+}
+
+.ng-valid[required] textarea, .ng-valid.required textarea {
+    border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form) textarea {
+    border-left: 5px solid #a94442; /* red */
 }
