@@ -3,5 +3,6 @@ export class JobTemplate {
     name: string;
     templateId: string;
     processTemplateId: string;
+    createdAt: Date;
     details: any;
 }

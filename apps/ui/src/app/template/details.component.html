@@ -1,0 +1,23 @@
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="{ 'active': tab == 'summary' }" (click)="switchTab('summary', $event)">Summary</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="{ 'active': tab == 'graph' }" (click)="switchTab('graph', $event)">Graph</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="{ 'active': tab == 'timeline' }" (click)="switchTab('timeline', $event)">Time line</a>
+  </li>
+</ul>
+
+<div *ngIf="tab == 'summary' && jobTemplate">
+  <p>Template Id: {{jobTemplate.templateId}}</p>
+  <p>Process Template Id: {{jobTemplate.processTemplateId}}</p>
+  <p>Name: {{jobTemplate.name}}</p>
+  <p>Details: {{jobTemplate.details | json }}</p>
+  <p>Created At: <time [attr.datetime]="jobTemplate.createdAt.unix" [attr.title]="jobTemplate.createdAt.iso">{{ (jobTemplate.createdAt.unix | amFromUnix) | amTimeAgo }}</time></p>
+</div>
+<div *ngIf="tab == 'graph' && jobTemplate">
+  <img src="http://jm.loc/api/job-templates/{{ jobTemplate.templateId }}/graph" />
+</div>
+<div *ngIf="tab === 'timeline' && jobTemplate">Timeline</div>

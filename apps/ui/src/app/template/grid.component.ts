@@ -24,4 +24,10 @@ export class GridComponent {
       this.jobTemplates = jobTemplates
     });
   }
+
+  runNow(id: string, event):void {
+    event.stopPropagation();
+
+    this.jobTemplateService.runNow(id);
+  }
 }

@@ -11,7 +11,9 @@ import { GridComponent } from "./template/grid.component";
 import {JobTemplateService} from "./shared/job-template.service";
 import { NavbarComponent } from './navbar/navbar.component';
 import { NewComponent } from './template/new.component';
+import { DetailsComponent } from './template/details.component';
 import { JsonInputComponent } from './json-input/json-input.component';
+import {MomentModule} from "angular2-moment";
 
 @NgModule({
   declarations: [
@@ -19,14 +21,16 @@ import { JsonInputComponent } from './json-input/json-input.component';
     GridComponent,
     NavbarComponent,
     NewComponent,
-    JsonInputComponent
+    JsonInputComponent,
+    DetailsComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
     HttpModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
+    MomentModule
   ],
   providers: [
       JobTemplateService,

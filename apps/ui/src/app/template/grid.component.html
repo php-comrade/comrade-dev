@@ -12,12 +12,21 @@
         <tr>
             <th>Id:</th>
             <th>Name:</th>
+            <th>Created at</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
         <tr *ngFor="let jobTemplate of jobTemplates">
             <td>{{jobTemplate.templateId}}</td>
             <td>{{jobTemplate.name}}</td>
+            <td>
+                <time [attr.datetime]="jobTemplate.createdAt.unix" [attr.title]="jobTemplate.createdAt.iso">{{ (jobTemplate.createdAt.unix | amFromUnix) | amTimeAgo }}</time>
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary btn-sm" [routerLink]="['/job-template', jobTemplate.templateId ]">View</button>
+                <button type="button" class="btn btn-primary btn-sm" (click)="runNow(jobTemplate.templateId, $event)">Run now</button>
+            </td>
         </tr>
         </tbody>
     </table>
