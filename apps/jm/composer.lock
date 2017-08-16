@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "82a6867ee0de15e7db1926aff94fa69d",
+    "content-hash": "58732a90107627c1d1ca84ba6b8bbfc2",
     "packages": [
         {
             "name": "clue/graph",
@@ -2535,6 +2535,56 @@
             "time": "2017-06-09T14:53:08+00:00"
         },
         {
+            "name": "symfony/expression-language",
+            "version": "v3.3.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/expression-language.git",
+                "reference": "48abe52c5b80babe29e956d900b7ab06faf50eef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/expression-language/zipball/48abe52c5b80babe29e956d900b7ab06faf50eef",
+                "reference": "48abe52c5b80babe29e956d900b7ab06faf50eef",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.9",
+                "symfony/cache": "~3.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\ExpressionLanguage\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony ExpressionLanguage Component",
+            "homepage": "https://symfony.com",
+            "time": "2017-05-01T15:01:29+00:00"
+        },
+        {
             "name": "symfony/filesystem",
             "version": "v3.3.6",
             "source": {
@@ -3511,7 +3561,6 @@
         "enqueue/amqp-ext": 20,
         "enqueue/enqueue": 20,
         "enqueue/enqueue-bundle": 20,
-        "queue-interop/queue-interop": 20,
         "formapro/pvm": 20,
         "makasim/values": 20,
         "makasim/yadm": 20,
@@ -3519,6 +3568,7 @@
         "php-quartz/bridge": 20,
         "php-quartz/bundle": 20,
         "php-quartz/quartz": 20,
+        "queue-interop/queue-interop": 20,
         "enqueue/null": 20
     },
     "prefer-stable": false,
