@@ -59,9 +59,9 @@ services:
     build: { context: 'docker/ui' }
     restart: 'always'
     entrypoint: "ng serve --host=0.0.0.0 --port=80 --public-host=ui.jm.loc"
-    working_dir: '/ui2'
+    working_dir: '/ui'
     volumes:
-      - './apps/ui2:/ui:cached'
+      - './apps/ui:/ui:cached'
     ports:
       - "3000:80"
     expose:
