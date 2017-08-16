@@ -3,20 +3,21 @@
     "license": "proprietary",
     "require": {
         "php": "^7.1",
-        "enqueue/amqp-ext": "^0.5@dev",
-        "enqueue/enqueue": "^0.5@dev",
-        "enqueue/enqueue-bundle": "^0.5@dev",
-        "enqueue/psr-queue": "^0.5@dev",
+        "enqueue/amqp-ext": "^0.7@dev",
+        "enqueue/enqueue": "^0.7@dev",
+        "enqueue/enqueue-bundle": "^0.7@dev",
+        "queue-interop/queue-interop": "^0.6@dev",
         "formapro/pvm": "dev-master",
         "justinrainbow/json-schema": "^5",
         "makasim/values": "@dev",
         "makasim/yadm": "@dev",
         "makasim/yadm-bundle": "@dev",
         "nelmio/cors-bundle": "^1",
-        "php-quartz/bridge": "*@dev",
-        "php-quartz/bundle": "*@dev",
-        "php-quartz/quartz": "*@dev",
+        "php-quartz/bridge": "^0.1@dev",
+        "php-quartz/bundle": "^0.1@dev",
+        "php-quartz/quartz": "^0.1@dev",
         "ramsey/uuid": "^3.6",
+        "graphp/graphviz": "^0.2",
         "sensio/framework-extra-bundle": "^3",
         "symfony/console": "^3.3",
         "symfony/flex": "^1.0",
@@ -27,7 +28,7 @@
     },
     "require-dev": {
         "symfony/dotenv": "^3.3",
-        "enqueue/null": "^0.5@dev"
+        "enqueue/null": "^0.7@dev"
     },
     "config": {
         "platform": {
@@ -70,15 +71,5 @@
             "id": "01BH20HT59R1KN3CEXRM17KTRV",
             "allow-contrib": "true"
         }
-    },
-    "repositories": [
-        {
-            "type": "git",
-            "url": "git@github.com:formapro/pvm.git"
-        },
-        {
-            "type": "git",
-            "url": "git@github.com:formapro/php-quartz.git"
-        }
-    ]
+    }
 }

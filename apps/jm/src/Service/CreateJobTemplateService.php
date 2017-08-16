@@ -62,6 +62,8 @@ class CreateJobTemplateService
      */
     public function create(JobTemplate $jobTemplate):void
     {
+        $jobTemplate->setCreatedAt(new \DateTime('now'));
+
         $processTemplate = $this->createProcessForJobService->createProcess($jobTemplate);
 
         $this->jobTemplateStorage->insert($jobTemplate);

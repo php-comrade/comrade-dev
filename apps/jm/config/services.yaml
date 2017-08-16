@@ -23,9 +23,6 @@ services:
     Enqueue\Client\ProducerV2Interface:
         alias: 'enqueue.client.producer_v2'
 
-    Enqueue\Client\RpcClient:
-        alias: 'enqueue.client.rpc_client'
-
     formapro.pvm.process_execution_storage:
         autowire: false
         class: 'Formapro\Pvm\Yadm\MongoProcessStorage'

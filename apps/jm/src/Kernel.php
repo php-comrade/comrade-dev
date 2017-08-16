@@ -50,7 +50,7 @@ final class Kernel extends BaseKernel
 
     public function registerBundles(): iterable
     {
-        $contents = require dirname(__DIR__).'/etc/bundles.php';
+        $contents = require dirname(__DIR__).'/config/bundles.php';
         foreach ($contents as $class => $envs) {
             if (isset($envs['all']) || isset($envs[$this->environment])) {
                 yield new $class();
@@ -68,26 +68,25 @@ final class Kernel extends BaseKernel
 
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
-        $confDir = dirname(__DIR__).'/etc';
+        $confDir = dirname(__DIR__).'/config';
         $loader->load($confDir.'/packages/*'.self::CONFIG_EXTS, 'glob');
         if (is_dir($confDir.'/packages/'.$this->environment)) {
             $loader->load($confDir.'/packages/'.$this->environment.'/**/*'.self::CONFIG_EXTS, 'glob');
         }
-        $loader->load($confDir.'/container'.self::CONFIG_EXTS, 'glob');
-
         $container->addCompilerPass(new RegisterPvmBehaviorPass());
+        $loader->load($confDir.'/services'.self::CONFIG_EXTS, 'glob');
     }
 
     protected function configureRoutes(RouteCollectionBuilder $routes): void
     {
-        $confDir = dirname(__DIR__).'/etc';
-        if (is_dir($confDir.'/routing/')) {
-            $routes->import($confDir.'/routing/*'.self::CONFIG_EXTS, '/', 'glob');
+        $confDir = dirname(__DIR__).'/config';
+        if (is_dir($confDir.'/routes/')) {
+            $routes->import($confDir.'/routes/*'.self::CONFIG_EXTS, '/', 'glob');
         }
-        if (is_dir($confDir.'/routing/'.$this->environment)) {
-            $routes->import($confDir.'/routing/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
+        if (is_dir($confDir.'/routes/'.$this->environment)) {
+            $routes->import($confDir.'/routes/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
         }
-        $routes->import($confDir.'/routing'.self::CONFIG_EXTS, '/', 'glob');
+        $routes->import($confDir.'/routes'.self::CONFIG_EXTS, '/', 'glob');
     }
 
     public function configureYadmHooks()

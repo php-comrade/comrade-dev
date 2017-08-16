@@ -7,7 +7,7 @@ use App\Model\Job;
 use App\Model\JobResult;
 use App\Model\Process;
 use App\Storage\JobStorage;
-use Enqueue\Psr\PsrContext;
+use Interop\Queue\PsrContext;
 use Enqueue\Util\JSON;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Exception\WaitExecutionException;

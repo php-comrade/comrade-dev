@@ -6,9 +6,9 @@ use App\Service\ScheduleJobService;
 use App\Storage\JobTemplateStorage;
 use Enqueue\Client\CommandSubscriberInterface;
 use Enqueue\Consumption\Result;
-use Enqueue\Psr\PsrContext;
-use Enqueue\Psr\PsrMessage;
-use Enqueue\Psr\PsrProcessor;
+use Interop\Queue\PsrContext;
+use Interop\Queue\PsrMessage;
+use Interop\Queue\PsrProcessor;
 use Enqueue\Util\JSON;
 
 class ScheduleJobProcessor implements PsrProcessor, CommandSubscriberInterface
@@ -46,7 +46,7 @@ class ScheduleJobProcessor implements PsrProcessor, CommandSubscriberInterface
             return self::REJECT;
         }
 
-        $this->scheduleJobService->schedule($jobTemplate);
+        $this->scheduleJobService->schedule($jobTemplate, $jobTemplate->getTriggers());
 
         return self::ACK;
     }

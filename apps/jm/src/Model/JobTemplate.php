@@ -3,6 +3,7 @@ namespace App\Model;
 
 use App\Infra\Yadm\CreateTrait;
 use function Makasim\Values\add_object;
+use Makasim\Values\CastTrait;
 use function Makasim\Values\get_object;
 use function Makasim\Values\get_objects;
 use function Makasim\Values\get_value;
@@ -14,6 +15,7 @@ class JobTemplate
     const SCHEMA = 'http://jm.forma-pro.com/schemas/JobTemplate.json';
 
     use CreateTrait;
+    use CastTrait;
 
     /**
      * @var array
@@ -159,5 +161,15 @@ class JobTemplate
     public function getTriggers():\Traversable
     {
         return get_objects($this, 'triggers');
+    }
+
+    public function setCreatedAt(\DateTime $date)
+    {
+        set_value($this, 'createdAt', $date);
+    }
+
+    public function getCreatedAt():\DateTime
+    {
+        return get_value($this, 'createdAt', null, \DateTime::class);
     }
 }

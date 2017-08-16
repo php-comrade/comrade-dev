@@ -5,6 +5,7 @@ use App\Async\Commands;
 use App\Model\CronTrigger;
 use App\Model\JobTemplate;
 use App\Model\SimpleTrigger;
+use App\Model\Trigger;
 use Quartz\Bridge\Enqueue\EnqueueResponseJob;
 use Quartz\Bridge\Scheduler\RemoteScheduler;
 use Quartz\Core\CronScheduleBuilder;
@@ -29,9 +30,13 @@ class ScheduleJobService
         $this->remoteScheduler = $remoteScheduler;
     }
 
-    public function schedule(JobTemplate $jobTemplate):void
+    /**
+     * @param JobTemplate $jobTemplate
+     * @param Trigger[] $triggers
+     */
+    public function schedule(JobTemplate $jobTemplate, array $triggers):void
     {
-        foreach ($jobTemplate->getTriggers() as $trigger) {
+        foreach ($triggers as $trigger) {
             if ($trigger instanceof SimpleTrigger) {
                 $misfireInstructionsMap = [
                     SimpleTrigger::MISFIRE_INSTRUCTION_FIRE_NOW => QuartzSimpleTrigger::MISFIRE_INSTRUCTION_FIRE_NOW,
