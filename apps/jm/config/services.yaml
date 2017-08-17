@@ -20,9 +20,6 @@ services:
     Enqueue\Client\ProducerInterface:
         alias: 'enqueue.client.producer'
 
-    Enqueue\Client\ProducerV2Interface:
-        alias: 'enqueue.client.producer_v2'
-
     formapro.pvm.process_execution_storage:
         autowire: false
         class: 'Formapro\Pvm\Yadm\MongoProcessStorage'
@@ -43,7 +40,7 @@ services:
     App\Infra\JsonSchema\LocalUriRetriver:
         autowire: false
         arguments:
-            - '%kernel.root_dir%/../etc/schemas'
+            - '%kernel.root_dir%/../config/schemas'
             - 'http://jm.forma-pro.com/schemas'
 
     JsonSchema\Uri\UriRetriever:

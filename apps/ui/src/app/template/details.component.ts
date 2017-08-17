@@ -3,6 +3,8 @@ import {JobTemplate} from "../shared/job-template";
 import {JobTemplateService} from "../shared/job-template.service";
 import {ActivatedRoute, Params} from "@angular/router";
 import 'rxjs/add/operator/switchMap';
+import {Job} from "../shared/job";
+import {JobService} from "../shared/job.service";
 
 @Component({
   selector: 'app-details',
@@ -11,9 +13,12 @@ import 'rxjs/add/operator/switchMap';
 })
 export class DetailsComponent implements OnInit {
   jobTemplate: JobTemplate;
+  jobs: Job[];
+
   tab: string = 'summary';
 
   constructor(
+      private jobService: JobService,
       private jobTemplateService: JobTemplateService,
       private route: ActivatedRoute
   ) { }
@@ -21,7 +26,12 @@ export class DetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.params
         .switchMap((params: Params) => this.jobTemplateService.getJobTemplate(params['id']))
-        .subscribe(jobTemplate => this.jobTemplate = jobTemplate);
+        .subscribe(jobTemplate => {
+          this.jobTemplate = jobTemplate;
+          this.jobService.getJobs(this.jobTemplate).then(jobs => {
+              this.jobs = jobs;
+          });
+        });
   }
 
   switchTab(newTab: string, event):void {

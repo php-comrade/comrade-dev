@@ -4,16 +4,10 @@ namespace App\Command;
 use App\Async\Commands;
 use App\Async\CreateJob;
 use App\Infra\Uuid;
-use App\Model\CronTrigger;
 use App\Model\ExclusivePolicy;
-use App\Model\GracePeriodPolicy;
 use App\Model\JobTemplate;
-use App\Model\RetryFailedPolicy;
-use App\Model\RunSubJobsPolicy;
-use App\Model\SimpleTrigger;
 use App\Service\BuildMongoIndexesService;
-use Enqueue\Client\ProducerV2Interface;
-use function Makasim\Values\get_values;
+use Enqueue\Client\ProducerInterface;
 use function Makasim\Values\set_value;
 use Makasim\Yadm\Registry;
 use Symfony\Component\Console\Command\Command;
@@ -80,9 +74,9 @@ class FooCommand extends Command implements ContainerAwareInterface
         $output->writeln('');
     }
 
-    private function getProducer():ProducerV2Interface
+    private function getProducer():ProducerInterface
     {
-        return $this->container->get(ProducerV2Interface::class);
+        return $this->container->get(ProducerInterface::class);
     }
 
     private function getYadmRegistry():Registry

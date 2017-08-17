@@ -10,7 +10,7 @@ use App\Service\CreateProcessForSubJobsService;
 use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessStorage;
-use Enqueue\Client\ProducerV2Interface;
+use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Exception\WaitExecutionException;
 use Formapro\Pvm\SignalBehavior;
@@ -39,7 +39,7 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
     private $createProcessForSubJobsService;
 
     /**
-     * @var ProducerV2Interface
+     * @var ProducerInterface
      */
     private $producer;
 
@@ -48,14 +48,14 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
      * @param JobTemplateStorage $jobTemplateStorage
      * @param ProcessStorage $processStorage
      * @param CreateProcessForSubJobsService $createProcessForSubJobsService
-     * @param ProducerV2Interface $producer
+     * @param ProducerInterface $producer
      */
     public function __construct(
         JobStorage $jobStorage,
         JobTemplateStorage $jobTemplateStorage,
         ProcessStorage $processStorage,
         CreateProcessForSubJobsService $createProcessForSubJobsService,
-        ProducerV2Interface $producer
+        ProducerInterface $producer
     ) {
         $this->jobStorage = $jobStorage;
         $this->jobTemplateStorage = $jobTemplateStorage;

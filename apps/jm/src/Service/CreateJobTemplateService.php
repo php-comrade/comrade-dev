@@ -7,7 +7,7 @@ use App\Model\JobTemplate;
 use App\Storage\ExclusiveJobStorage;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessStorage;
-use Enqueue\Client\ProducerV2Interface;
+use Enqueue\Client\ProducerInterface;
 
 class CreateJobTemplateService
 {
@@ -32,7 +32,7 @@ class CreateJobTemplateService
     private $exclusiveJobStorage;
 
     /**
-     * @var ProducerV2Interface
+     * @var ProducerInterface
      */
     private $producer;
 
@@ -41,14 +41,14 @@ class CreateJobTemplateService
      * @param JobTemplateStorage $jobTemplateStorage
      * @param ProcessStorage $processStorage
      * @param ExclusiveJobStorage $exclusiveJobStorage
-     * @param ProducerV2Interface $producer
+     * @param ProducerInterface $producer
      */
     public function __construct(
         CreateProcessForJobService $createProcessForJobService,
         JobTemplateStorage $jobTemplateStorage,
         ProcessStorage $processStorage,
         ExclusiveJobStorage $exclusiveJobStorage,
-        ProducerV2Interface $producer
+        ProducerInterface $producer
     ) {
         $this->createProcessForJobService = $createProcessForJobService;
         $this->jobTemplateStorage = $jobTemplateStorage;

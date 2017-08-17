@@ -1,7 +1,7 @@
 <?php
 namespace App\Pvm\Behavior;
 
-use Enqueue\Client\ProducerV2Interface;
+use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Enqueue\HandleAsyncTransitionProcessor;
 use Formapro\Pvm\Token;
@@ -11,14 +11,14 @@ use function Makasim\Values\get_value;
 class NotifyParentProcessBehavior implements Behavior
 {
     /**
-     * @var ProducerV2Interface
+     * @var ProducerInterface
      */
     private $producer;
 
     /**
-     * @param ProducerV2Interface $producer
+     * @param ProducerInterface $producer
      */
-    public function __construct(ProducerV2Interface $producer)
+    public function __construct(ProducerInterface $producer)
     {
         $this->producer = $producer;
     }
