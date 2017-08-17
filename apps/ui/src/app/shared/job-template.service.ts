@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { JobTemplate } from './job-template';
-import { Headers, Http } from '@angular/http';
+import {Headers, Http, Response} from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 import {CreateJob} from "./messages/create-job";
+import {Observable} from "rxjs/Observable";
 
 @Injectable()
 export class JobTemplateService {
@@ -38,14 +39,14 @@ export class JobTemplateService {
             .catch(this.handleError);
     }
 
-    create(jobTemplate: JobTemplate): Promise<void> {
+    create(jobTemplate: JobTemplate): Observable<Response> {
         let createJob = new CreateJob(jobTemplate);
 
-        return this.http
-            .post(this.apiBaseUrl, JSON.stringify(createJob), {headers: this.headers})
-            .toPromise()
-            .then(res => console.log(res.json()))
-            .catch(this.handleError);
+        return this.http.post(
+            this.apiBaseUrl,
+            JSON.stringify(createJob),
+            {headers: this.headers}
+        );
     }
 
     private handleError(error: any): Promise<any> {

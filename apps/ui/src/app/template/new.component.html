@@ -1,11 +1,15 @@
 <h1>New job template</h1>
-<form (ngSubmit)="onSubmit()" #jobTemplateForm="ngForm">
+
+<div *ngIf="message" class="alert alert-danger" role="alert">{{ message }}</div>
+
+<form (ngSubmit)="onSubmit()" #jobTemplateForm="ngForm" (change)="onFormChange()">
   <div class="form-group">
     <label for="name">Name</label>
     <input type="text" class="form-control" id="name"
            required
            [(ngModel)]="model.name" name="name"
-           #name="ngModel">
+           #name="ngModel"
+          >
     <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
       Name is required
     </div>
