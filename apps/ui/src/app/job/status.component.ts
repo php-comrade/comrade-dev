@@ -1,29 +1,43 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
 
 class Status {
     id: number;
     title: string;
+    badgeModifier: string;
+
+    constructor(id: number, title: string, badgeModifier: string) {
+        this.id = id;
+        this.title = title;
+        this.badgeModifier = badgeModifier;
+    }
 }
 
-const STATUSES: Status[] = [
-    { id: 1, title: 'New' },
-    { id: 2, title: 'Running' },
-    { id: 2 | 512, title: 'Run exclusive' },
-    { id: 2 | 16, title: 'Running sub jobs' },
-    { id: 2 | 256, title: 'Run sub jobs' },
-    { id: 4, title: 'Done' },
-    { id: 4 | 8, title: 'Canceled' },
-    { id: 4 | 32, title: 'Completed' },
-    { id: 4 | 64, title: 'Failed' },
-    { id: 4 | 128, title: 'Terminated' }
-];
+const statuses = {
+  1: new Status(1, 'New', 'badge-default'),
+
+  // running
+  2: new Status(2, 'Running', 'badge-info'),
+  514: new Status(514, 'Run exclusive', 'badge-info'),
+  18: new Status(18, 'Running sub jobs', 'badge-info'),
+  258: new Status(258, 'Run sub jobs', 'badge-info'),
+
+  // done
+  4: new Status(4, 'Done', 'badge-success'),
+  12: new Status(12, 'Cancelled', 'badge-default'),
+  36: new Status(36, 'Completed', 'badge-success'),
+  68: new Status(68, 'Failed', 'badge-danger'),
+  132: new Status(132, 'Terminated', 'badge-default'),
+};
 
 @Component({
   selector: 'job-status',
-  template: `Fuck {{ status }}`,
+  template: `<span class="badge {{ statusObj.badgeModifier }}">{{ statusObj.title }}</span>`,
 })
-export class JobStatusComponent {
+export class JobStatusComponent implements OnChanges {
     @Input() status: number;
+    statusObj: Status;
 
-
+    ngOnChanges(changes: SimpleChanges): void {
+        this.statusObj = statuses[this.status];
+    }
 }
