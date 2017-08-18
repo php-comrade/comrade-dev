@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Async\AddTrigger;
 use App\Async\CreateJob;
 use App\Async\RunSubJobsResult;
 use App\Async\DoJob;
@@ -111,6 +112,7 @@ final class Kernel extends BaseKernel
             JobResultModel::SCHEMA => JobResultModel::class,
             CreateJob::SCHEMA => CreateJob::class,
             DoJob::SCHEMA => DoJob::class,
+            AddTrigger::SCHEMA => AddTrigger::class,
 
             GracePeriodPolicy::SCHEMA => GracePeriodPolicy::class,
             RetryFailedPolicy::SCHEMA => RetryFailedPolicy::class,

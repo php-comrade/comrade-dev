@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
 import 'rxjs/add/operator/catch';
 import {Trigger} from "../shared/trigger";
 import {CronTrigger} from "../shared/cron-trigger";
+import {SimpleTrigger} from "../shared/simple-trigger";
 
 @Component({
   selector: 'app-new',
@@ -20,6 +21,8 @@ export class NewComponent {
   message: string;
 
   addCronTrigger: boolean = false;
+
+  addSimpleTrigger: boolean = false;
 
   constructor(private jobTemplateService: JobTemplateService, private router: Router) {
     this.model = new JobTemplate();
@@ -50,14 +53,27 @@ export class NewComponent {
       this.addCronTrigger = !this.addCronTrigger;
   }
 
+  triggerSimpleTrigger(): void {
+      this.addSimpleTrigger = !this.addSimpleTrigger;
+  }
+
   onTriggerAdded(trigger: Trigger) {
     this.model.addTrigger(trigger);
 
-    this.triggerCronTrigger();
+    if (trigger instanceof CronTrigger) {
+      this.addCronTrigger = false;
+    }
+    if (trigger instanceof SimpleTrigger) {
+        this.addSimpleTrigger = false;
+    }
   }
 
-  isCronTriggers(trigger: Trigger): boolean {
+  isCronTrigger(trigger: Trigger): boolean {
     return trigger instanceof CronTrigger;
+  }
+
+  isSimpleTrigger(trigger: Trigger): boolean {
+      return trigger instanceof SimpleTrigger;
   }
 
   removeTrigger(trigger: Trigger)

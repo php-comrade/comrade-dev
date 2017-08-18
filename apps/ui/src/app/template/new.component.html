@@ -22,18 +22,33 @@
 
   <h3>Triggers: </h3>
   <div *ngFor="let trigger of model.triggers">
-    <p *ngIf="isCronTriggers(trigger)">
+    <p *ngIf="isCronTrigger(trigger)">
       Start at
       <time [attr.datetime]="trigger.startAt.unix" [attr.title]="trigger.startAt.iso">{{ (trigger.startAt.unix | amFromUnix) | amCalendar }}</time>
       and run {{ trigger.expression | prettycron }} ({{ trigger.expression }})
       <a (click)="removeTrigger(trigger)" href="javascript:void(0)">Remove</a>
     </p>
+    <p *ngIf="isSimpleTrigger(trigger)">
+      Start at
+      <time [attr.datetime]="trigger.startAt.unix" [attr.title]="trigger.startAt.iso">{{ (trigger.startAt.unix | amFromUnix) | amCalendar }}</time>
+      <span *ngIf="trigger.repeatCount == 0">and run one time</span>
+      <span *ngIf="trigger.repeatCount == -1">and run endlessly every {{ trigger.intervalInSeconds }} seconds</span>
+      <span *ngIf="trigger.repeatCount > 0">and run {{ trigger.repeatCount }} times every {{ trigger.intervalInSeconds }} seconds</span>
+      <a (click)="removeTrigger(trigger)" href="javascript:void(0)">Remove</a>
+    </p>
 
   </div>
+
   <a class="nav-link" *ngIf="!addCronTrigger" (click)="triggerCronTrigger()" href="javascript:void(0)">Add cron trigger</a>
   <div *ngIf="addCronTrigger">
     <new-cron-trigger (onTriggerAdded)="onTriggerAdded($event)"></new-cron-trigger>
     <a (click)="triggerCronTrigger()" href="javascript:void(0)">Cancel</a>
+  </div>
+
+  <a class="nav-link" *ngIf="!addSimpleTrigger" (click)="triggerSimpleTrigger()" href="javascript:void(0)">Add simple trigger</a>
+  <div *ngIf="addSimpleTrigger">
+    <new-simple-trigger (onTriggerAdded)="onTriggerAdded($event)"></new-simple-trigger>
+    <a (click)="triggerSimpleTrigger()" href="javascript:void(0)">Cancel</a>
   </div>
 
   <button type="submit" class="btn btn-success" [disabled]="!jobTemplateForm.form.valid || submitted">Create job template</button>

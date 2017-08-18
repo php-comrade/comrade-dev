@@ -1,9 +1,9 @@
 <?php
 namespace App\Api\Controller;
 
+use App\Async\AddTrigger;
 use App\Async\CreateJob;
 use App\Infra\JsonSchema\SchemaValidator;
-use App\Model\SimpleTrigger;
 use App\Service\CreateJobTemplateService;
 use App\Service\ScheduleJobService;
 use App\Storage\JobTemplateStorage;
@@ -98,26 +98,39 @@ class JobTemplateController
     }
 
     /**
-     * @Extra\Route("/job-templates/{id}/run-now")
+     * @Extra\Route("/add-trigger")
      * @Extra\Method("POST")
      *
-     * @param $id
+     * @param Request $request
+     * @param SchemaValidator $schemaValidator
      * @param JobTemplateStorage $jobTemplateStorage
      * @param ScheduleJobService $scheduleJobService
      *
      * @return Response
      */
-    public function scheduleNowAction($id, JobTemplateStorage $jobTemplateStorage, ScheduleJobService $scheduleJobService)
+    public function addTriggerAction(Request $request, SchemaValidator $schemaValidator, JobTemplateStorage $jobTemplateStorage, ScheduleJobService $scheduleJobService)
     {
-        if (false == $jobTemplate = $jobTemplateStorage->findOne(['templateId' => $id])) {
-            throw new NotFoundHttpException(sprintf('The job template with id "%s" could not be found', $id));
+        try {
+            $data = JSON::decode($request->getContent());
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException('The content is not valid json.', null, $e);
         }
 
-        $simpleTrigger = SimpleTrigger::create();
-        $simpleTrigger->setMisfireInstruction(SimpleTrigger::MISFIRE_INSTRUCTION_FIRE_NOW);
-        $jobTemplate->addTrigger($simpleTrigger);
+        if ($errors = $schemaValidator->validate($data, AddTrigger::SCHEMA)) {
+            return new JsonResponse($errors, 400);
+        }
 
-        $scheduleJobService->schedule($jobTemplate, [$simpleTrigger]);
+        $addTrigger = AddTrigger::create($data);
+
+
+        if (false == $jobTemplate = $jobTemplateStorage->findOne(['templateId' => $addTrigger->getJobTemplateId()])) {
+            throw new NotFoundHttpException(sprintf('The job template with id "%s" could not be found', $addTrigger->getJobTemplateId()));
+        }
+
+        $trigger = $addTrigger->getTrigger();
+        $jobTemplate->addTrigger($trigger);
+
+        $scheduleJobService->schedule($jobTemplate, new \ArrayIterator([$trigger]));
 
         return new JsonResponse('OK');
     }
@@ -147,6 +160,4 @@ class JobTemplateController
 
         return $response;
     }
-
-
 }

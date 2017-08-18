@@ -35,7 +35,7 @@ class JobController
      *
      * @return JsonResponse
      */
-    public function createAction($templateId, JobTemplateStorage $jobTemplateStorage, JobStorage $jobStorage)
+    public function getJobsAction($templateId, JobTemplateStorage $jobTemplateStorage, JobStorage $jobStorage)
     {
         if (false == $jobTemplate = $jobTemplateStorage->findOne(['templateId' => $templateId])) {
             throw new NotFoundHttpException(sprintf('The job template with id "%s" could not be found', $templateId));

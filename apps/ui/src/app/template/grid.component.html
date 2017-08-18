@@ -1,5 +1,7 @@
 <p *ngIf="!jobTemplates">Loading</p>
 
+<div *ngIf="error" class="alert alert-danger" role="alert">{{ error }}</div>
+
 <div *ngIf="jobTemplates">
     <ul class="nav justify-content-end">
         <li class="nav-item">
@@ -24,8 +26,8 @@
                 <time [attr.datetime]="jobTemplate.createdAt.unix" [attr.title]="jobTemplate.createdAt.iso">{{ (jobTemplate.createdAt.unix | amFromUnix) | amTimeAgo }}</time>
             </td>
             <td>
+                <job-run-now [jobTemplate]="jobTemplate" (onRunFailed)="onRunFailed($event)"></job-run-now>
                 <button type="button" class="btn btn-primary btn-sm" [routerLink]="['/job-template', jobTemplate.templateId ]">View</button>
-                <button type="button" class="btn btn-primary btn-sm" (click)="runNow(jobTemplate.templateId, $event)">Run now</button>
             </td>
         </tr>
         </tbody>

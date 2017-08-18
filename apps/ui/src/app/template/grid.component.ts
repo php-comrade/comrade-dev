@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {JobTemplate} from "../shared/job-template";
 import {JobTemplateService} from "../shared/job-template.service";
 
@@ -8,8 +8,9 @@ import {JobTemplateService} from "../shared/job-template.service";
   styleUrls: ['./grid.component.css']
 })
 
-export class GridComponent {
+export class GridComponent implements OnInit {
   jobTemplates: JobTemplate[];
+  error: Error;
 
   constructor(
       private jobTemplateService: JobTemplateService
@@ -25,9 +26,7 @@ export class GridComponent {
     });
   }
 
-  runNow(id: string, event):void {
-    event.stopPropagation();
-
-    this.jobTemplateService.runNow(id);
+  onRunFailed(error: Error):void {
+      this.error = error;
   }
 }
