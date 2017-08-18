@@ -3,11 +3,12 @@ namespace App\Service;
 
 use App\Model\JobTemplate;
 use App\Model\Process;
+use App\Model\QueueRunner;
 use App\Pvm\Behavior\ExclusivePolicyBehavior;
 use App\Pvm\Behavior\GracePeriodPolicyBehavior;
 use App\Pvm\Behavior\IdleBehavior;
 use App\Pvm\Behavior\RetryFailedBehavior;
-use App\Pvm\Behavior\RunJobBehavior;
+use App\Pvm\Behavior\QueueRunnerBehavior;
 use App\Pvm\Behavior\RunSubJobsProcessBehavior;
 
 class CreateProcessForJobService
@@ -27,21 +28,26 @@ class CreateProcessForJobService
         $startTask->setBehavior(IdleBehavior::class);
         $process->createTransition(null, $startTask);
 
-        $runJobTask = $process->createNode();
-        $runJobTask->setLabel('Run job: '.$jobTemplate->getName());
-        $runJobTask->setBehavior(RunJobBehavior::class);
-        $process->addNodeJobTemplate($runJobTask, $jobTemplate);
-        $startToRunTransition = $process->createTransition($startTask, $runJobTask);
+        $runner = $jobTemplate->getRunner();
+        if ($runner instanceof QueueRunner) {
+            $runnerTask = $process->createNode();
+            $runnerTask->setLabel('Queue runner');
+            $runnerTask->setBehavior(QueueRunnerBehavior::class);
+            $process->addNodeJobTemplate($runnerTask, $jobTemplate);
+            $startToRunTransition = $process->createTransition($startTask, $runnerTask);
+        } else {
+            throw new \LogicException(sprintf('The runner "%s" is not supported.', get_class($runner)));
+        }
 
         $jobCompletedTask = $process->createNode();
         $jobCompletedTask->setLabel('Completed');
         $jobCompletedTask->setBehavior(IdleBehavior::class);
-        $runJobToCompletedTransition = $process->createTransition($runJobTask, $jobCompletedTask, 'completed');
+        $runJobToCompletedTransition = $process->createTransition($runnerTask, $jobCompletedTask, 'completed');
 
         $jobFailedTask = $process->createNode();
         $jobFailedTask->setLabel('Failed');
         $jobFailedTask->setBehavior(IdleBehavior::class);
-        $runJobToFailedTransition = $process->createTransition($runJobTask, $jobFailedTask, 'failed');
+        $runJobToFailedTransition = $process->createTransition($runnerTask, $jobFailedTask, 'failed');
 
         if ($policy = $jobTemplate->getExclusivePolicy()) {
             $policyTask = $process->createNode();
@@ -75,7 +81,7 @@ class CreateProcessForJobService
             $process->addNodeJobTemplate($policyTask, $jobTemplate);
 
             $runJobToFailedTransition = $process->breakTransition($runJobToFailedTransition, $policyTask, 'failed');
-            $process->createTransition($policyTask, $runJobTask, 'retry');
+            $process->createTransition($policyTask, $runnerTask, 'retry');
         }
 
         if ($policy = $jobTemplate->getRunSubJobsPolicy()) {
@@ -84,7 +90,7 @@ class CreateProcessForJobService
             $policyTask->setBehavior(RunSubJobsProcessBehavior::class);
             $process->addNodeJobTemplate($policyTask, $jobTemplate);
 
-            $process->createTransition($runJobTask, $policyTask, 'run_sub_jobs');
+            $process->createTransition($runnerTask, $policyTask, 'run_sub_jobs');
             $process->createTransition($policyTask, $jobFailedTask, 'failed');
             $process->createTransition($policyTask, $jobCompletedTask, 'completed');
         }

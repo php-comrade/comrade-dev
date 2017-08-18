@@ -6,8 +6,11 @@ use App\Async\CreateJob;
 use App\Infra\Uuid;
 use App\Model\ExclusivePolicy;
 use App\Model\JobTemplate;
+use App\Model\QueueRunner;
+use App\Model\SimpleTrigger;
 use App\Service\BuildMongoIndexesService;
 use Enqueue\Client\ProducerInterface;
+use function Makasim\Values\get_values;
 use function Makasim\Values\set_value;
 use Makasim\Yadm\Registry;
 use Symfony\Component\Console\Command\Command;
@@ -44,14 +47,17 @@ class FooCommand extends Command implements ContainerAwareInterface
         $jobTemplate->setTemplateId(Uuid::generate());
         $jobTemplate->setProcessTemplateId(Uuid::generate());
         $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
-        set_value($jobTemplate, 'enqueue.queue', 'demo_job');
 
-//        $simpleTrigger = SimpleTrigger::create();
-//        $simpleTrigger->setIntervalInSeconds(30);
-//        $simpleTrigger->setRepeatCount(3);
-//        $simpleTrigger->setMisfireInstruction(SimpleTrigger::MISFIRE_INSTRUCTION_FIRE_NOW);
-//        $jobTemplate->addTrigger($simpleTrigger);
-//
+        $runner = QueueRunner::create();
+        $runner->setQueue('demo_job');
+        $jobTemplate->setRunner($runner);
+
+        $simpleTrigger = SimpleTrigger::create();
+        $simpleTrigger->setIntervalInSeconds(0);
+        $simpleTrigger->setRepeatCount(0);
+        $simpleTrigger->setMisfireInstruction(SimpleTrigger::MISFIRE_INSTRUCTION_FIRE_NOW);
+        $jobTemplate->addTrigger($simpleTrigger);
+
 //        $cronTrigger = CronTrigger::create();
 //        $cronTrigger->setExpression('*/20 * * * * *');
 //        $cronTrigger->setMisfireInstruction(CronTrigger::MISFIRE_INSTRUCTION_FIRE_ONCE_NOW);
@@ -68,7 +74,7 @@ class FooCommand extends Command implements ContainerAwareInterface
         $message = CreateJob::create();
         $message->setJobTemplate($jobTemplate);
 
-//        $output->writeln(json_encode(get_values($jobTemplate), JSON_PRETTY_PRINT));
+        $output->writeln(json_encode(get_values($jobTemplate), JSON_PRETTY_PRINT));
         $this->getProducer()->sendCommand(Commands::CREATE_JOB, $message);
 
         $output->writeln('');

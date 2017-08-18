@@ -163,6 +163,16 @@ class JobTemplate
         return get_objects($this, 'triggers');
     }
 
+    public function setRunner(Runner $executor): void
+    {
+        set_object($this, 'runner', $executor);
+    }
+
+    public function getRunner():Runner
+    {
+        return get_object($this, 'runner');
+    }
+
     public function setCreatedAt(\DateTime $date)
     {
         set_value($this, 'createdAt', $date);

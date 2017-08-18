@@ -6,7 +6,7 @@ use App\Model\JobTemplate;
 use App\Model\Process;
 use App\Pvm\Behavior\IdleBehavior;
 use App\Pvm\Behavior\NotifyParentProcessBehavior;
-use App\Pvm\Behavior\RunJobBehavior;
+use App\Pvm\Behavior\QueueRunnerBehavior;
 use App\Pvm\Behavior\SimpleSynchronizeBehavior;
 use Formapro\Pvm\Token;
 
@@ -34,7 +34,7 @@ class CreateProcessForSubJobsService
         foreach ($jobTemplates as $jobTemplate) {
             $runJobTask = $process->createNode();
             $runJobTask->setLabel('Run job: '.$jobTemplate->getName());
-            $runJobTask->setBehavior(RunJobBehavior::class);
+            $runJobTask->setBehavior(QueueRunnerBehavior::class);
             $process->addNodeJobTemplate($runJobTask, $jobTemplate);
             $transition = $process->createTransition($startTask, $runJobTask);
             $transition->setAsync(true);

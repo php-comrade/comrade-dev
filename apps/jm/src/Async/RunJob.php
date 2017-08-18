@@ -10,9 +10,9 @@ use function Makasim\Values\get_values;
 use function Makasim\Values\set_object;
 use function Makasim\Values\set_value;
 
-class DoJob implements \JsonSerializable
+class RunJob implements \JsonSerializable
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/message/DoJob.json';
+    const SCHEMA = 'http://jm.forma-pro.com/schemas/message/RunJob.json';
 
     use CreateTrait;
 
@@ -77,7 +77,7 @@ class DoJob implements \JsonSerializable
         return get_values($this);
     }
 
-    public static function createFor(Job $job, Token $token):DoJob
+    public static function createFor(Job $job, Token $token):RunJob
     {
         $message = static::create();
         $message->setJob($job);

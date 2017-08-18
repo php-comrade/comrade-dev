@@ -1,11 +1,12 @@
 <?php
 namespace App\Pvm\Behavior;
 
-use App\Async\DoJob;
+use App\Async\RunJob;
 use App\JobStatus;
 use App\Model\Job;
 use App\Model\JobResult;
 use App\Model\Process;
+use App\Model\QueueRunner;
 use App\Storage\JobStorage;
 use Interop\Queue\PsrContext;
 use Enqueue\Util\JSON;
@@ -15,7 +16,7 @@ use Formapro\Pvm\SignalBehavior;
 use Formapro\Pvm\Token;
 use function Makasim\Values\get_value;
 
-class RunJobBehavior implements Behavior, SignalBehavior
+class QueueRunnerBehavior implements Behavior, SignalBehavior
 {
     /**
      * @var PsrContext
@@ -54,8 +55,15 @@ class RunJobBehavior implements Behavior, SignalBehavior
             return ['failed'];
         }
 
-        $queue = $this->psrContext->createQueue(get_value($job, 'enqueue.queue'));
-        $message = $this->psrContext->createMessage(JSON::encode(DoJob::createFor($job, $token)));
+        /** @var QueueRunner $runner */
+        $runner = $job->getRunner();
+
+        if ($runner->getConnectionDsn()) {
+            throw new \LogicException('Not implemented yet');
+        }
+
+        $queue = $this->psrContext->createQueue($runner->getQueue());
+        $message = $this->psrContext->createMessage(JSON::encode(RunJob::createFor($job, $token)));
 
         $result = JobResult::create();
         $result->setStatus(JobStatus::STATUS_RUNNING);

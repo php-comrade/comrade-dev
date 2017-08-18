@@ -2,7 +2,7 @@
 namespace DemoApp;
 
 use App\Async\RunSubJobsResult;
-use App\Async\DoJob;
+use App\Async\RunJob;
 use App\Async\Topics;
 use App\Infra\Uuid;
 use App\Infra\Yadm\ObjectBuilderHook;
@@ -17,8 +17,8 @@ use Enqueue\Consumption\Extension\SignalExtension;
 use Enqueue\Consumption\QueueConsumer;
 use Enqueue\Consumption\Result;
 use function Enqueue\dsn_to_context;
-use Enqueue\Psr\PsrContext;
-use Enqueue\Psr\PsrMessage;
+use Interop\Queue\PsrContext;
+use Interop\Queue\PsrMessage;
 use Enqueue\Util\JSON;
 use function Makasim\Values\register_cast_hooks;
 use function Makasim\Values\register_object_hooks;
@@ -38,7 +38,7 @@ register_object_hooks();
 (new ObjectBuilderHook([
     Job::SCHEMA => Job::class,
     JobResult::SCHEMA => JobResult::class,
-    DoJob::SCHEMA => DoJob::class,
+    RunJob::SCHEMA => RunJob::class,
     JobResultMessage::SCHEMA => JobResultMessage::class,
     RunSubJobsResult::SCHEMA => RunSubJobsResult::class,
     JobTemplate::SCHEMA => JobTemplate::class,
@@ -110,7 +110,7 @@ $queueConsumer->bind($queue, function(PsrMessage $message, PsrContext $context) 
 
     $data = JSON::decode($message->getBody());
 
-    $doJob = DoJob::create($data);
+    $doJob = RunJob::create($data);
 
     $job = $doJob->getJob();
 
@@ -146,7 +146,7 @@ $queueConsumer->bind($subJobQueue, function(PsrMessage $message, PsrContext $con
 
     $data = JSON::decode($message->getBody());
 
-    $doJob = DoJob::create($data);
+    $doJob = RunJob::create($data);
 
     $job = $doJob->getJob();
 

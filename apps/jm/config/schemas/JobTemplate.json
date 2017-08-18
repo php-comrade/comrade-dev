@@ -18,7 +18,11 @@
         { "$ref": "trigger/SimpleTrigger.json" },
         { "$ref": "trigger/CronTrigger.json" }
       ]}
-    }
+    },
+    "runner": {
+      "oneOf": [
+        { "$ref": "runner/QueueRunner.json" }
+      ]}
   },
-  "required": ["templateId", "processTemplateId", "name"]
+  "required": ["templateId", "processTemplateId", "name", "runner"]
 }

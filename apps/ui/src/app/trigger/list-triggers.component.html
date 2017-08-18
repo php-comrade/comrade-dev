@@ -6,11 +6,10 @@
         <a *ngIf="showRemove" (click)="removeTrigger(trigger)" href="javascript:void(0)">Remove</a>
     </p>
     <p *ngIf="isSimpleTrigger(trigger)">
-        Start at
-        <time [attr.datetime]="trigger.startAt.unix" [attr.title]="trigger.startAt.iso">{{ (trigger.startAt.unix | amFromUnix) | amCalendar }}</time>
-        <span *ngIf="trigger.repeatCount == 0">and run one time</span>
-        <span *ngIf="trigger.repeatCount == -1">and run endlessly every {{ trigger.intervalInSeconds }} seconds</span>
-        <span *ngIf="trigger.repeatCount > 0">and run {{ trigger.repeatCount }} times every {{ trigger.intervalInSeconds }} seconds</span>
+        <span *ngIf="trigger.startAt">Start at <time [attr.datetime]="trigger.startAt.unix" [attr.title]="trigger.startAt.iso">{{ (trigger.startAt.unix | amFromUnix) | amCalendar }}</time></span>
+        <span *ngIf="trigger.repeatCount == 0">run one time</span>
+        <span *ngIf="trigger.repeatCount == -1">run endlessly every {{ trigger.intervalInSeconds }} seconds</span>
+        <span *ngIf="trigger.repeatCount > 0">run {{ trigger.repeatCount }} times every {{ trigger.intervalInSeconds }} seconds</span>
         <a *ngIf="showRemove" (click)="removeTrigger(trigger)" href="javascript:void(0)">Remove</a>
     </p>
 </div>
