@@ -16,18 +16,16 @@ import { JobTemplateService } from "../shared/job-template.service";
 export class RunNowJobComponent {
     @Input() jobTemplate: JobTemplate;
     @Output() onRunFailed = new EventEmitter<Error>();
+    @Output() onRunSucceeded = new EventEmitter<JobTemplate>();
 
     constructor(private jobTemplateService: JobTemplateService) { }
 
     runNow(jobTemplate: JobTemplate, event):void {
         event.stopPropagation();
 
-        this.jobTemplateService.runNow(jobTemplate)
-            .catch(res => { throw res })
-            .subscribe({
-                error: err => {
-                    this.onRunFailed.emit(err);
-                }
-            });
+        this.jobTemplateService.runNow(jobTemplate).subscribe(
+        (jobTemplate: JobTemplate) => this.onRunSucceeded.emit(jobTemplate),
+        (error: Error) => this.onRunFailed.emit(error)
+        );
     }
 }

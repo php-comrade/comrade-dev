@@ -45,6 +45,10 @@ export class DetailsComponent implements OnInit {
     this.error = error;
   }
 
+  onRunSucceeded(jobTemplate: JobTemplate):void {
+    this.jobTemplate = jobTemplate;
+  }
+
   // TODO: Remove this when we're done
   get diagnostic() { return JSON.stringify(this.jobTemplate); }
 }

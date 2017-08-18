@@ -133,7 +133,9 @@ class JobTemplateController
 
         $scheduleJobService->schedule($jobTemplate, new \ArrayIterator([$trigger]));
 
-        return new JsonResponse('OK');
+        return new JsonResponse([
+            'jobTemplate' => get_values($jobTemplate),
+        ]);
     }
 
     /**

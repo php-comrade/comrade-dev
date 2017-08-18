@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import { JobTemplate } from './job-template';
-import {Headers, Http, Response} from '@angular/http';
+import {Headers, Http, Response } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/throw';
 import {CreateJob} from "./messages/create-job";
 import {Observable} from "rxjs/Observable";
 import {AddTrigger} from "./messages/add-trigger";
 import {SimpleTrigger} from "./simple-trigger";
 import {Date} from "./date";
+import "rxjs/add/operator/share";
 
 @Injectable()
 export class JobTemplateService {
@@ -33,7 +36,7 @@ export class JobTemplateService {
             .catch(this.handleError);
     }
 
-    runNow(jobTemplate: JobTemplate): Observable<Response> {
+    runNow(jobTemplate: JobTemplate): Observable<JobTemplate> {
         const url = 'http://jm.loc/api/add-trigger';
 
         let moment = require('moment');
@@ -46,13 +49,9 @@ export class JobTemplateService {
 
         const addTrigger = new AddTrigger(jobTemplate.templateId, simpleTrigger);
 
-        let observable = this.http.post(url, JSON.stringify(addTrigger), {headers: this.headers});
-
-        // observable.subscribe(() => {
-        //     jobTemplate.addTrigger(simpleTrigger)
-        // });
-
-        return observable;
+        return this.http.post(url, JSON.stringify(addTrigger), {headers: this.headers})
+            .map((response: Response) => response.json().jobTemplate as JobTemplate)
+            .catch((response: Response) => Observable.throw(response));
     }
 
     create(jobTemplate: JobTemplate): Observable<Response> {

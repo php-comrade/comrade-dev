@@ -12,7 +12,7 @@
   </li>
 </ul>
 
-<job-run-now [jobTemplate]="jobTemplate" (onRunFailed)="onRunFailed($event)"></job-run-now>
+<job-run-now [jobTemplate]="jobTemplate" (onRunFailed)="onRunFailed($event)" (onRunSucceeded)="onRunSucceeded($event)"></job-run-now>
 
 <div *ngIf="tab == 'summary' && jobTemplate">
   <p>Template Id: {{jobTemplate.templateId}}</p>
