@@ -73,7 +73,7 @@ class JobTemplate
     /**
      * @param array $details
      */
-    public function setDetails(array $details)
+    public function setDetails($details)
     {
         set_value($this, 'details', $details);
     }

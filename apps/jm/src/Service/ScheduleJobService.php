@@ -34,7 +34,7 @@ class ScheduleJobService
      * @param JobTemplate $jobTemplate
      * @param Trigger[] $triggers
      */
-    public function schedule(JobTemplate $jobTemplate, array $triggers):void
+    public function schedule(JobTemplate $jobTemplate, \Traversable $triggers):void
     {
         foreach ($triggers as $trigger) {
             if ($trigger instanceof SimpleTrigger) {
@@ -79,7 +79,7 @@ class ScheduleJobService
                     CronTrigger::MISFIRE_INSTRUCTION_IGNORE_MISFIRE_POLICY => QuartzCronTrigger::MISFIRE_INSTRUCTION_IGNORE_MISFIRE_POLICY,
                 ];
 
-                $quartzScheduleBuilder = CronScheduleBuilder::cronSchedule($trigger->getExpression());
+                $quartzScheduleBuilder = CronScheduleBuilder::cronSchedule($trigger->getQuartzExpression());
 
                 $job = JobBuilder::newJob(EnqueueResponseJob::class)->build();
                 $quartzTrigger = TriggerBuilder::newTrigger()

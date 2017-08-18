@@ -15,6 +15,9 @@ import { JsonInputComponent } from './json-input/json-input.component';
 import { MomentModule } from "angular2-moment";
 import { JobService } from "./shared/job.service";
 import { JobStatusComponent } from "./job/status.component";
+import {NewCronTriggerComponent} from "./trigger/new-cron-trigger.component";
+import {DatePickerModule} from "ng2-datepicker";
+import {PrettycronPipe} from "./prettycron.pipe";
 
 
 @NgModule({
@@ -26,6 +29,8 @@ import { JobStatusComponent } from "./job/status.component";
     JsonInputComponent,
     DetailsComponent,
     JobStatusComponent,
+    NewCronTriggerComponent,
+    PrettycronPipe,
   ],
   imports: [
     BrowserModule,
@@ -33,7 +38,8 @@ import { JobStatusComponent } from "./job/status.component";
     AppRoutingModule,
     HttpModule,
     NgbModule.forRoot(),
-    MomentModule
+    MomentModule,
+    DatePickerModule,
   ],
   providers: [
       JobTemplateService,

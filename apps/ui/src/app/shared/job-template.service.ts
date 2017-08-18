@@ -5,6 +5,7 @@ import {Headers, Http, Response} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {CreateJob} from "./messages/create-job";
 import {Observable} from "rxjs/Observable";
+import {CronTrigger} from "./cron-trigger";
 
 @Injectable()
 export class JobTemplateService {

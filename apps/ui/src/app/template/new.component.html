@@ -9,7 +9,7 @@
            required
            [(ngModel)]="model.name" name="name"
            #name="ngModel"
-          >
+    >
     <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
       Name is required
     </div>
@@ -18,6 +18,22 @@
   <div class="form-group">
     <label for="details">Details</label>
     <json-input [(ngModel)]="model.details" name="details" id="details"></json-input>
+  </div>
+
+  <h3>Triggers: </h3>
+  <div *ngFor="let trigger of model.triggers">
+    <p *ngIf="isCronTriggers(trigger)">
+      Start at
+      <time [attr.datetime]="trigger.startAt.unix" [attr.title]="trigger.startAt.iso">{{ (trigger.startAt.unix | amFromUnix) | amCalendar }}</time>
+      and run {{ trigger.expression | prettycron }} ({{ trigger.expression }})
+      <a (click)="removeTrigger(trigger)" href="javascript:void(0)">Remove</a>
+    </p>
+
+  </div>
+  <a class="nav-link" *ngIf="!addCronTrigger" (click)="triggerCronTrigger()" href="javascript:void(0)">Add cron trigger</a>
+  <div *ngIf="addCronTrigger">
+    <new-cron-trigger (onTriggerAdded)="onTriggerAdded($event)"></new-cron-trigger>
+    <a (click)="triggerCronTrigger()" href="javascript:void(0)">Cancel</a>
   </div>
 
   <button type="submit" class="btn btn-success" [disabled]="!jobTemplateForm.form.valid || submitted">Create job template</button>
