@@ -1,4 +1,5 @@
 import {Trigger} from "./trigger";
+import {Runner} from "./runner";
 
 export class JobTemplate {
     schema: string = "http://jm.forma-pro.com/schemas/JobTemplate.json";
@@ -8,6 +9,7 @@ export class JobTemplate {
     createdAt: Date;
     details: any;
     triggers: Trigger[] = [];
+    runner: Runner;
 
     addTrigger(trigger: Trigger)
     {

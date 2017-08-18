@@ -11,6 +11,7 @@ import {AddTrigger} from "./messages/add-trigger";
 import {SimpleTrigger} from "./simple-trigger";
 import {Date} from "./date";
 import "rxjs/add/operator/share";
+import {QueueRunner} from "./queue-runner";
 
 @Injectable()
 export class JobTemplateService {
@@ -55,6 +56,11 @@ export class JobTemplateService {
     }
 
     create(jobTemplate: JobTemplate): Observable<Response> {
+        // TODO tmp till the ui is updated
+        let runner = new QueueRunner();
+        runner.queue = 'demo_job';
+        jobTemplate.runner = runner;
+
         let createJob = new CreateJob(jobTemplate);
 
         return this.http.post(
