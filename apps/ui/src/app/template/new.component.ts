@@ -14,7 +14,7 @@ import {SimpleTrigger} from "../shared/simple-trigger";
   styleUrls: ['./new.component.css']
 })
 export class NewComponent {
-  model: JobTemplate;
+  jobTemplate: JobTemplate;
 
   submitted: boolean;
 
@@ -25,9 +25,9 @@ export class NewComponent {
   addSimpleTrigger: boolean = false;
 
   constructor(private jobTemplateService: JobTemplateService, private router: Router) {
-    this.model = new JobTemplate();
-    this.model.templateId = uuid.v4();
-    this.model.processTemplateId = uuid.v4();
+    this.jobTemplate = new JobTemplate();
+    this.jobTemplate.templateId = uuid.v4();
+    this.jobTemplate.processTemplateId = uuid.v4();
     this.submitted = false;
     this.message = '';
   }
@@ -39,10 +39,10 @@ export class NewComponent {
   onSubmit() {
     this.submitted = true;
 
-    this.jobTemplateService.create(this.model)
+    this.jobTemplateService.create(this.jobTemplate)
         .catch(res => { throw res })
         .subscribe(
-            res => this.router.navigate(['job-template', this.model.templateId]),
+            res => this.router.navigate(['job-template', this.jobTemplate.templateId]),
             err => this.message = err
         );
 
@@ -58,7 +58,7 @@ export class NewComponent {
   }
 
   onTriggerAdded(trigger: Trigger) {
-    this.model.addTrigger(trigger);
+    this.jobTemplate.addTrigger(trigger);
 
     if (trigger instanceof CronTrigger) {
       this.addCronTrigger = false;
@@ -68,19 +68,11 @@ export class NewComponent {
     }
   }
 
-  isCronTrigger(trigger: Trigger): boolean {
-    return trigger instanceof CronTrigger;
-  }
-
-  isSimpleTrigger(trigger: Trigger): boolean {
-      return trigger instanceof SimpleTrigger;
-  }
-
-  removeTrigger(trigger: Trigger)
+  onRemoveTrigger(trigger: Trigger)
   {
-    this.model.removeTrigger(trigger);
+    this.jobTemplate.removeTrigger(trigger);
   }
 
   // TODO: Remove this when we're done
-  get diagnostic() { return JSON.stringify(this.model); }
+  get diagnostic() { return JSON.stringify(this.jobTemplate); }
 }

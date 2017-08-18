@@ -20,6 +20,7 @@ import {DatePickerModule} from "ng2-datepicker";
 import {PrettycronPipe} from "./prettycron.pipe";
 import {NewSimpleTriggerComponent} from "./trigger/new-simple-trigger.component";
 import {RunNowJobComponent} from "./job/run-now.component";
+import {ListTriggersComponent} from "./trigger/list-triggers.component";
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import {RunNowJobComponent} from "./job/run-now.component";
     NewCronTriggerComponent,
     NewSimpleTriggerComponent,
     RunNowJobComponent,
+    ListTriggersComponent,
     PrettycronPipe,
   ],
   imports: [

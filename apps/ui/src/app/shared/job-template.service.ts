@@ -5,9 +5,9 @@ import {Headers, Http, Response} from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import {CreateJob} from "./messages/create-job";
 import {Observable} from "rxjs/Observable";
-import {CronTrigger} from "./cron-trigger";
 import {AddTrigger} from "./messages/add-trigger";
 import {SimpleTrigger} from "./simple-trigger";
+import {Date} from "./date";
 
 @Injectable()
 export class JobTemplateService {
@@ -36,12 +36,23 @@ export class JobTemplateService {
     runNow(jobTemplate: JobTemplate): Observable<Response> {
         const url = 'http://jm.loc/api/add-trigger';
 
+        let moment = require('moment');
+
         const simpleTrigger = new SimpleTrigger();
         simpleTrigger.misfireInstruction = 'fire_now';
+        simpleTrigger.startAt = Date.fromMoment(moment());
+        simpleTrigger.repeatCount = 0;
+        simpleTrigger.intervalInSeconds = 0;
 
         const addTrigger = new AddTrigger(jobTemplate.templateId, simpleTrigger);
 
-        return this.http.post(url, JSON.stringify(addTrigger), {headers: this.headers});
+        let observable = this.http.post(url, JSON.stringify(addTrigger), {headers: this.headers});
+
+        // observable.subscribe(() => {
+        //     jobTemplate.addTrigger(simpleTrigger)
+        // });
+
+        return observable;
     }
 
     create(jobTemplate: JobTemplate): Observable<Response> {

@@ -7,7 +7,7 @@
     <label for="name">Name</label>
     <input type="text" class="form-control" id="name"
            required
-           [(ngModel)]="model.name" name="name"
+           [(ngModel)]="jobTemplate.name" name="name"
            #name="ngModel"
     >
     <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
@@ -17,27 +17,11 @@
 
   <div class="form-group">
     <label for="details">Details</label>
-    <json-input [(ngModel)]="model.details" name="details" id="details"></json-input>
+    <json-input [(ngModel)]="jobTemplate.details" name="details" id="details"></json-input>
   </div>
 
   <h3>Triggers: </h3>
-  <div *ngFor="let trigger of model.triggers">
-    <p *ngIf="isCronTrigger(trigger)">
-      Start at
-      <time [attr.datetime]="trigger.startAt.unix" [attr.title]="trigger.startAt.iso">{{ (trigger.startAt.unix | amFromUnix) | amCalendar }}</time>
-      and run {{ trigger.expression | prettycron }} ({{ trigger.expression }})
-      <a (click)="removeTrigger(trigger)" href="javascript:void(0)">Remove</a>
-    </p>
-    <p *ngIf="isSimpleTrigger(trigger)">
-      Start at
-      <time [attr.datetime]="trigger.startAt.unix" [attr.title]="trigger.startAt.iso">{{ (trigger.startAt.unix | amFromUnix) | amCalendar }}</time>
-      <span *ngIf="trigger.repeatCount == 0">and run one time</span>
-      <span *ngIf="trigger.repeatCount == -1">and run endlessly every {{ trigger.intervalInSeconds }} seconds</span>
-      <span *ngIf="trigger.repeatCount > 0">and run {{ trigger.repeatCount }} times every {{ trigger.intervalInSeconds }} seconds</span>
-      <a (click)="removeTrigger(trigger)" href="javascript:void(0)">Remove</a>
-    </p>
-
-  </div>
+  <list-triggers (onRemoveTrigger)="onRemoveTrigger($event)" [triggers]="jobTemplate.triggers" [showRemove]="true"></list-triggers>
 
   <a class="nav-link" *ngIf="!addCronTrigger" (click)="triggerCronTrigger()" href="javascript:void(0)">Add cron trigger</a>
   <div *ngIf="addCronTrigger">

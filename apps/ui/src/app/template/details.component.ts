@@ -14,6 +14,7 @@ import {JobService} from "../shared/job.service";
 export class DetailsComponent implements OnInit {
   jobTemplate: JobTemplate;
   jobs: Job[];
+  error: Error;
 
   tab: string = 'summary';
 
@@ -38,6 +39,10 @@ export class DetailsComponent implements OnInit {
     event.stopPropagation();
 
     this.tab = newTab;
+  }
+
+  onRunFailed(error: Error):void {
+    this.error = error;
   }
 
   // TODO: Remove this when we're done

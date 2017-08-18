@@ -129,6 +129,7 @@ class JobTemplateController
 
         $trigger = $addTrigger->getTrigger();
         $jobTemplate->addTrigger($trigger);
+        $jobTemplateStorage->update($jobTemplate);
 
         $scheduleJobService->schedule($jobTemplate, new \ArrayIterator([$trigger]));
 
