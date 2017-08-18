@@ -70,6 +70,7 @@ class BuildAndExecuteProcessService
 
             $job = Job::createFromTemplate($jobTemplate);
             $job->setId(Uuid::generate());
+            $job->setCreatedAt(new \DateTime('now'));
             $job->setProcessId($process->getId());
 
             $result = JobResult::createFor(JobStatus::STATUS_NEW);
