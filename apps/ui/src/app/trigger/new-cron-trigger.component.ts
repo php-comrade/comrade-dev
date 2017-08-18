@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {JobTemplate} from "../shared/job-template";
 import {CronTrigger} from "../shared/cron-trigger";
 import { DatePickerOptions, DateModel } from 'ng2-datepicker';
 import {Date} from "../shared/date";
@@ -10,7 +9,6 @@ import {Trigger} from "../shared/trigger";
   templateUrl: './new-cron-trigger.component.html',
 })
 export class NewCronTriggerComponent {
-    @Input() jobTemplate: JobTemplate;
     @Output() onTriggerAdded = new EventEmitter<Trigger>();
 
     date: DateModel;

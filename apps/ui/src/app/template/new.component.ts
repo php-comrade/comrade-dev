@@ -7,6 +7,7 @@ import 'rxjs/add/operator/catch';
 import {Trigger} from "../shared/trigger";
 import {CronTrigger} from "../shared/cron-trigger";
 import {SimpleTrigger} from "../shared/simple-trigger";
+import {Runner} from "../shared/runner";
 
 @Component({
   selector: 'app-new',
@@ -23,6 +24,8 @@ export class NewComponent {
   addCronTrigger: boolean = false;
 
   addSimpleTrigger: boolean = false;
+
+  addQueueRunner: boolean = false;
 
   constructor(private jobTemplateService: JobTemplateService, private router: Router) {
     this.jobTemplate = new JobTemplate();
@@ -57,6 +60,10 @@ export class NewComponent {
       this.addSimpleTrigger = !this.addSimpleTrigger;
   }
 
+  triggerQueueRunner(): void {
+      this.addQueueRunner = !this.addQueueRunner;
+  }
+
   onTriggerAdded(trigger: Trigger) {
     this.jobTemplate.addTrigger(trigger);
 
@@ -66,6 +73,12 @@ export class NewComponent {
     if (trigger instanceof SimpleTrigger) {
         this.addSimpleTrigger = false;
     }
+  }
+
+  onRunnerAdded(runner: Runner) {
+    this.jobTemplate.runner = runner;
+
+    this.addQueueRunner = false;
   }
 
   onRemoveTrigger(trigger: Trigger)

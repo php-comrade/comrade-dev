@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {JobTemplate} from "../shared/job-template";
 import { DatePickerOptions, DateModel } from 'ng2-datepicker';
 import {Trigger} from "../shared/trigger";
 import {SimpleTrigger} from "../shared/simple-trigger";
@@ -10,7 +9,6 @@ import {Date} from "../shared/date";
   templateUrl: './new-simple-trigger.component.html',
 })
 export class NewSimpleTriggerComponent {
-    @Input() jobTemplate: JobTemplate;
     @Output() onTriggerAdded = new EventEmitter<Trigger>();
 
     date: DateModel;

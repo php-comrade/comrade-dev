@@ -21,6 +21,7 @@ import {PrettycronPipe} from "./prettycron.pipe";
 import {NewSimpleTriggerComponent} from "./trigger/new-simple-trigger.component";
 import {RunNowJobComponent} from "./job/run-now.component";
 import {ListTriggersComponent} from "./trigger/list-triggers.component";
+import {NewQueueRunnerComponent} from "./runner/new-queue-runner.component";
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import {ListTriggersComponent} from "./trigger/list-triggers.component";
     JobStatusComponent,
     NewCronTriggerComponent,
     NewSimpleTriggerComponent,
+    NewQueueRunnerComponent,
     RunNowJobComponent,
     ListTriggersComponent,
     PrettycronPipe,

@@ -28,11 +28,11 @@ class QueueRunner implements Runner
 
     public function setConnectionDsn(string $connectionDsn = null):void
     {
-        set_value($this, 'connection_dsn', $connectionDsn);
+        set_value($this, 'connectionDsn', $connectionDsn);
     }
 
     public function getConnectionDsn():?string
     {
-        return get_value($this, 'connection_dsn');
+        return get_value($this, 'connectionDsn');
     }
 }

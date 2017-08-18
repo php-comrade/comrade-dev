@@ -35,5 +35,12 @@
     <a (click)="triggerSimpleTrigger()" href="javascript:void(0)">Cancel</a>
   </div>
 
+  <h3>Runners: </h3>
+  <a class="nav-link" *ngIf="!addQueueRunner" (click)="triggerQueueRunner()" href="javascript:void(0)">Add queue runner</a>
+  <div *ngIf="addQueueRunner">
+    <new-queue-runner (onRunnerAdded)="onRunnerAdded($event)"></new-queue-runner>
+    <a (click)="triggerQueueRunner()" href="javascript:void(0)">Cancel</a>
+  </div>
+
   <button type="submit" class="btn btn-success" [disabled]="!jobTemplateForm.form.valid || submitted">Create job template</button>
 </form>
