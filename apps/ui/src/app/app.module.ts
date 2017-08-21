@@ -6,11 +6,8 @@ import { HttpModule }   from '@angular/http';
 
 import { AppRoutingModule }     from './app-routing.module';
 import { AppComponent }  from './app.component';
-import { GridComponent } from "./template/grid.component";
 import { JobTemplateService } from "./shared/job-template.service";
 import { NavbarComponent } from './navbar/navbar.component';
-import { NewComponent } from './template/new.component';
-import { DetailsComponent } from './template/details.component';
 import { JsonInputComponent } from './json-input/json-input.component';
 import { MomentModule } from "angular2-moment";
 import { JobService } from "./shared/job.service";
@@ -24,16 +21,20 @@ import {ListTriggersComponent} from "./trigger/list-triggers.component";
 import {NewQueueRunnerComponent} from "./runner/new-queue-runner.component";
 import {ListRunnerComponent} from "./runner/list-trigger.component";
 import {TimelineService} from "./shared/timeline.service";
+import {TimelineComponent} from "./timeline/timeline.component";
+import {JobDetailsComponent} from "./page/job-details.component";
+import {JobGridComponent} from "./page/job-grid.component";
+import {JobNewComponent} from "./page/job-new.component";
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    GridComponent,
+    JobGridComponent,
     NavbarComponent,
-    NewComponent,
+    JobNewComponent,
     JsonInputComponent,
-    DetailsComponent,
+    JobDetailsComponent,
     JobStatusComponent,
     NewCronTriggerComponent,
     NewSimpleTriggerComponent,
@@ -41,6 +42,7 @@ import {TimelineService} from "./shared/timeline.service";
     RunNowJobComponent,
     ListTriggersComponent,
     ListRunnerComponent,
+    TimelineComponent,
     PrettycronPipe,
   ],
   imports: [

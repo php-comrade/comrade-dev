@@ -1,0 +1,33 @@
+<div *ngIf="error" class="alert alert-danger" role="alert">{{ error }}</div>
+
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="{ 'active': tab == 'summary' }" (click)="switchTab('summary', $event)">Summary</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="{ 'active': tab == 'graph' }" (click)="switchTab('graph', $event)">Graph</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="{ 'active': tab == 'timeline' }" (click)="switchTab('timeline', $event)">Time line</a>
+  </li>
+</ul>
+
+<job-run-now [jobTemplate]="jobTemplate" (onRunFailed)="onRunFailed($event)" (onRunSucceeded)="onRunSucceeded($event)"></job-run-now>
+
+<div *ngIf="tab == 'summary' && jobTemplate">
+  <p>Template Id: {{jobTemplate.templateId}}</p>
+  <p>Process Template Id: {{jobTemplate.processTemplateId}}</p>
+  <p>Name: {{jobTemplate.name}}</p>
+  <p>Details: {{jobTemplate.details | json }}</p>
+  <p>Created At: <time [attr.datetime]="jobTemplate.createdAt.unix" [attr.title]="jobTemplate.createdAt.iso">{{ (jobTemplate.createdAt.unix | amFromUnix) | amTimeAgo }}</time></p>
+
+  <h3>Triggers: </h3>
+  <list-triggers [triggers]="jobTemplate.triggers" [showRemove]="false"></list-triggers>
+</div>
+<div *ngIf="tab == 'graph' && jobTemplate">
+  <img src="http://jm.loc/api/job-templates/{{ jobTemplate.templateId }}/graph" />
+</div>
+
+<div *ngIf="tab === 'timeline' && jobTemplate">
+  <timeline [jobTemplateId]="jobTemplate.templateId"></timeline>
+</div>

@@ -5,7 +5,7 @@
 <div *ngIf="jobTemplates">
     <ul class="nav justify-content-end">
         <li class="nav-item">
-            <a class="nav-link" routerLink="/job-templates/new" routerLinkActive="active">Create new</a>
+            <a class="nav-link" routerLink="/job/new" routerLinkActive="active">Create new</a>
         </li>
     </ul>
 
@@ -27,7 +27,7 @@
             </td>
             <td>
                 <job-run-now [jobTemplate]="jobTemplate" (onRunFailed)="onRunFailed($event)"></job-run-now>
-                <button type="button" class="btn btn-primary btn-sm" [routerLink]="['/job-template', jobTemplate.templateId ]">View</button>
+                <button type="button" class="btn btn-primary btn-sm" [routerLink]="['/job', jobTemplate.templateId ]">View</button>
             </td>
         </tr>
         </tbody>

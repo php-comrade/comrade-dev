@@ -10,11 +10,10 @@ import {SimpleTrigger} from "../shared/simple-trigger";
 import {Runner} from "../shared/runner";
 
 @Component({
-  selector: 'app-new',
-  templateUrl: './new.component.html',
-  styleUrls: ['./new.component.css']
+  selector: 'job-new',
+  templateUrl: './job-new.component.html',
 })
-export class NewComponent {
+export class JobNewComponent {
   jobTemplate: JobTemplate;
 
   submitted: boolean;

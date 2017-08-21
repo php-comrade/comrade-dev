@@ -20,7 +20,7 @@ class GetTimeline implements \JsonSerializable
     /**
      * @return string
      */
-    public function getJobTemplateId(): string
+    public function getJobTemplateId():? string
     {
         return get_value($this,'jobTemplateId');
     }
