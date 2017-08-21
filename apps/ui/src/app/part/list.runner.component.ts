@@ -3,7 +3,7 @@ import {Runner} from "../shared/runner";
 
 @Component({
   selector: 'list-runner',
-  templateUrl: './list-runner.component.html',
+  templateUrl: './list.runner.component.html',
 })
 export class ListRunnerComponent {
     @Input() runner: Runner;

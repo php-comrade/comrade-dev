@@ -7,24 +7,24 @@ import { HttpModule }   from '@angular/http';
 import { AppRoutingModule }     from './app-routing.module';
 import { AppComponent }  from './app.component';
 import { JobTemplateService } from "./shared/job-template.service";
-import { NavbarComponent } from './navbar/navbar.component';
-import { JsonInputComponent } from './json-input/json-input.component';
+import { JsonInputComponent } from './infra/json-input.component';
 import { MomentModule } from "angular2-moment";
 import { JobService } from "./shared/job.service";
-import { JobStatusComponent } from "./job/status.component";
-import {NewCronTriggerComponent} from "./trigger/new-cron-trigger.component";
+import {NewCronTriggerComponent} from "./part/new-cron.trigger.component";
 import {DatePickerModule} from "ng2-datepicker";
 import {PrettycronPipe} from "./prettycron.pipe";
-import {NewSimpleTriggerComponent} from "./trigger/new-simple-trigger.component";
-import {RunNowJobComponent} from "./job/run-now.component";
-import {ListTriggersComponent} from "./trigger/list-triggers.component";
-import {NewQueueRunnerComponent} from "./runner/new-queue-runner.component";
-import {ListRunnerComponent} from "./runner/list-trigger.component";
+import {NewSimpleTriggerComponent} from "./part/new-simple.trigger.component";
 import {TimelineService} from "./shared/timeline.service";
-import {TimelineComponent} from "./timeline/timeline.component";
+import {TimelineComponent} from "./page/timeline.component";
 import {JobDetailsComponent} from "./page/job-details.component";
 import {JobGridComponent} from "./page/job-grid.component";
 import {JobNewComponent} from "./page/job-new.component";
+import {ListTriggersComponent} from "./part/list.triggers.component";
+import { NavbarComponent } from './part/navbar.component';
+import {StatusJobComponent} from "./part/status.job.component";
+import {RunNowJobComponent} from "./part/run-now.job.component";
+import {NewQueueRunnerComponent} from "./part/new-queue.runner.component";
+import {ListRunnerComponent} from "./part/list.runner.component";
 
 
 @NgModule({
@@ -35,15 +35,16 @@ import {JobNewComponent} from "./page/job-new.component";
     JobNewComponent,
     JsonInputComponent,
     JobDetailsComponent,
-    JobStatusComponent,
     NewCronTriggerComponent,
     NewSimpleTriggerComponent,
-    NewQueueRunnerComponent,
-    RunNowJobComponent,
     ListTriggersComponent,
-    ListRunnerComponent,
     TimelineComponent,
     PrettycronPipe,
+    StatusJobComponent,
+    RunNowJobComponent,
+    NewQueueRunnerComponent,
+    ListRunnerComponent
+
   ],
   imports: [
     BrowserModule,

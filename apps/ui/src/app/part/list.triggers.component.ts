@@ -3,7 +3,7 @@ import {Trigger} from "../shared/trigger";
 
 @Component({
   selector: 'list-triggers',
-  templateUrl: './list-triggers.component.html',
+  templateUrl: './list.triggers.component.html',
 })
 export class ListTriggersComponent {
     @Input() triggers: Trigger[];

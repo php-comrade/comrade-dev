@@ -1,7 +1,7 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import {TimelineComponent} from "./timeline/timeline.component";
+import {TimelineComponent} from "./page/timeline.component";
 import {JobDetailsComponent} from "./page/job-details.component";
 import {JobGridComponent} from "./page/job-grid.component";
 import {JobNewComponent} from "./page/job-new.component";

@@ -33,7 +33,7 @@ const statuses = {
   selector: 'job-status',
   template: `<span class="badge {{ statusObj.badgeModifier }}">{{ statusObj.title }}</span>`,
 })
-export class JobStatusComponent implements OnChanges {
+export class StatusJobComponent implements OnChanges {
     @Input() status: number;
     statusObj: Status;
 

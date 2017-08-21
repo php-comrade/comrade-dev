@@ -56,11 +56,6 @@ export class JobTemplateService {
     }
 
     create(jobTemplate: JobTemplate): Observable<Response> {
-        // TODO tmp till the ui is updated
-        let runner = new QueueRunner();
-        runner.queue = 'demo_job';
-        jobTemplate.runner = runner;
-
         let createJob = new CreateJob(jobTemplate);
 
         return this.http.post(

@@ -6,7 +6,7 @@ import {Date} from "../shared/date";
 
 @Component({
   selector: 'new-simple-trigger',
-  templateUrl: './new-simple-trigger.component.html',
+  templateUrl: './new-simple.trigger.component.html',
 })
 export class NewSimpleTriggerComponent {
     @Output() onTriggerAdded = new EventEmitter<Trigger>();

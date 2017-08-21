@@ -4,21 +4,18 @@
   </button>
   <a class="navbar-brand" href="#">Job manager</a>
 
-  <div class="collapse navbar-collapse">
-    <ul class="navbar-nav">
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-
-        <a routerLink="/timeline" routerLinkActive="active">Timeline</a>
+        <a class="nav-link" routerLink="/timeline" routerLinkActive="active">Timeline</a>
       </li>
-
       <li class="nav-item">
-
-        <a routerLink="/job" routerLinkActive="active">Jobs</a>
+        <a class="nav-link" routerLink="/job" routerLinkActive="active">Jobs</a>
+      </li>
+      <li class="nav-item navbar-toggler-right">
+        <a class="nav-link"  routerLink="/job/new" routerLinkActive="active">New Job</a>
       </li>
     </ul>
 
-  </div>
-  <div class="pull-right">
-    <button class="btn btn-success  my-2 my-sm-0" (click)="navigateToNewJob()">New Job</button>
   </div>
 </nav>

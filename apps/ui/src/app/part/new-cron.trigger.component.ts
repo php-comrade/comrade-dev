@@ -6,7 +6,7 @@ import {Trigger} from "../shared/trigger";
 
 @Component({
   selector: 'new-cron-trigger',
-  templateUrl: './new-cron-trigger.component.html',
+  templateUrl: './new-cron.trigger.component.html',
 })
 export class NewCronTriggerComponent {
     @Output() onTriggerAdded = new EventEmitter<Trigger>();
