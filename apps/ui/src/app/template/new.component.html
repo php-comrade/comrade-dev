@@ -1,4 +1,4 @@
-<h1>New job template</h1>
+<h1>New job</h1>
 
 <div *ngIf="message" class="alert alert-danger" role="alert">{{ message }}</div>
 
@@ -36,6 +36,8 @@
   </div>
 
   <h3>Runners: </h3>
+  <list-runner *ngIf="jobTemplate.runner" [runner]="jobTemplate.runner"></list-runner>
+
   <a class="nav-link" *ngIf="!addQueueRunner" (click)="triggerQueueRunner()" href="javascript:void(0)">Add queue runner</a>
   <div *ngIf="addQueueRunner">
     <new-queue-runner (onRunnerAdded)="onRunnerAdded($event)"></new-queue-runner>
