@@ -4,7 +4,8 @@ import {JobTemplateService} from "../shared/job-template.service";
 import {ActivatedRoute, Params} from "@angular/router";
 import 'rxjs/add/operator/switchMap';
 import {Job} from "../shared/job";
-import {JobService} from "../shared/job.service";
+import {TimelineService} from "../shared/timeline.service";
+import {GetTimeline} from "../shared/messages/get-timeline";
 
 @Component({
   selector: 'app-details',
@@ -13,14 +14,15 @@ import {JobService} from "../shared/job.service";
 })
 export class DetailsComponent implements OnInit {
   jobTemplate: JobTemplate;
-  jobs: Job[];
+  doneJobs: Job[];
+  futureJobs: Job[];
   error: Error;
 
   tab: string = 'summary';
 
   constructor(
-      private jobService: JobService,
       private jobTemplateService: JobTemplateService,
+      private timelineService: TimelineService,
       private route: ActivatedRoute
   ) { }
 
@@ -29,9 +31,14 @@ export class DetailsComponent implements OnInit {
         .switchMap((params: Params) => this.jobTemplateService.getJobTemplate(params['id']))
         .subscribe(jobTemplate => {
           this.jobTemplate = jobTemplate;
-          this.jobService.getJobs(this.jobTemplate).then(jobs => {
-              this.jobs = jobs;
-          });
+          this.timelineService.getTimelineDone(new GetTimeline(this.jobTemplate.templateId))
+            .subscribe(jobs => {
+                this.doneJobs = jobs;
+            });
+          this.timelineService.getTimelineFuture(new GetTimeline(this.jobTemplate.templateId))
+              .subscribe(jobs => {
+               this.futureJobs = jobs;
+            });
         });
   }
 

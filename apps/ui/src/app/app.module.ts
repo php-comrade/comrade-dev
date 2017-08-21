@@ -23,6 +23,7 @@ import {RunNowJobComponent} from "./job/run-now.component";
 import {ListTriggersComponent} from "./trigger/list-triggers.component";
 import {NewQueueRunnerComponent} from "./runner/new-queue-runner.component";
 import {ListRunnerComponent} from "./runner/list-trigger.component";
+import {TimelineService} from "./shared/timeline.service";
 
 
 @NgModule({
@@ -54,6 +55,7 @@ import {ListRunnerComponent} from "./runner/list-trigger.component";
   providers: [
       JobTemplateService,
       JobService,
+      TimelineService,
   ],
   bootstrap: [AppComponent]
 })
