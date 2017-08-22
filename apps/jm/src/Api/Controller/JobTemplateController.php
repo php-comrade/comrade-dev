@@ -7,10 +7,7 @@ use App\Infra\JsonSchema\SchemaValidator;
 use App\Service\CreateJobTemplateService;
 use App\Service\ScheduleJobService;
 use App\Storage\JobTemplateStorage;
-use App\Storage\ProcessStorage;
 use Enqueue\Util\JSON;
-use Formapro\Pvm\Visual\GraphVizVisual;
-use Graphp\GraphViz\GraphViz;
 use function Makasim\Values\get_values;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -66,35 +63,6 @@ class JobTemplateController
         }
 
         return new JsonResponse(['data' => get_values($jobTemplate)]);
-    }
-
-    /**
-     * @Extra\Route("/job-templates/{id}/graph")
-     * @Extra\Method("GET")
-     *
-     * @param $id
-     * @param JobTemplateStorage $jobTemplateStorage
-     * @param ProcessStorage $processStorage
-     * @return Response
-     */
-    public function getGraphAction($id, JobTemplateStorage $jobTemplateStorage, ProcessStorage $processStorage)
-    {
-        if (false == $jobTemplate = $jobTemplateStorage->findOne(['templateId' => $id])) {
-            throw new NotFoundHttpException(sprintf('The job template with id "%s" could not be found', $id));
-        }
-
-        $process = $processStorage->findOne(['id' => $jobTemplate->getProcessTemplateId()]);
-        if (false == $process) {
-            throw new NotFoundHttpException(sprintf('Process %s was not found', $id));
-        }
-
-        $graph = (new GraphVizVisual())->createGraph($process);
-
-        return new Response(
-            (new GraphViz())->createImageData($graph),
-            200,
-            ['Content-Type' => 'image/png']
-        );
     }
 
     /**

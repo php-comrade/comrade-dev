@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { JobTemplate } from './job-template';
 import { Headers, Http } from '@angular/http';
 import {Job} from "./job";
-
-import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import {Observable} from "rxjs/Observable";
+import {GetJob} from "./messages/get-job";
 
 @Injectable()
 export class JobService {
@@ -18,6 +20,12 @@ export class JobService {
             .toPromise()
             .then(response => response.json().jobs as Job[])
             .catch(this.handleError);
+    }
+
+    getJob(getJob: GetJob): Observable<Job> {
+        return this.http.post(`http://jm.loc/api/get-job`, JSON.stringify(getJob), {headers: this.headers})
+            .map(response => response.json().job as Job)
+            .catch((response: Response) => Observable.throw(response));
     }
 
     private handleError(error: any): Promise<any> {

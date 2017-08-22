@@ -1,28 +1,21 @@
 <?php
 namespace App\Api\Controller;
 
-use App\Async\CreateJob;
+use App\Async\GetJob;
 use App\Async\GetTimeline;
 use App\Infra\JsonSchema\SchemaValidator;
 use App\JobStatus;
 use App\Model\Job;
 use App\Model\JobResult;
-use App\Model\SimpleTrigger;
-use App\Service\CreateJobTemplateService;
-use App\Service\ScheduleJobService;
 use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
-use App\Storage\ProcessStorage;
 use Enqueue\Util\JSON;
-use Formapro\Pvm\Visual\GraphVizVisual;
-use Graphp\GraphViz\GraphViz;
 use function Makasim\Values\get_values;
 use Quartz\Core\Trigger;
 use Quartz\Scheduler\Store\YadmStoreResource;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -35,9 +28,9 @@ class JobController
      * @Extra\Route("/job-templates/{templateId}/jobs")
      * @Extra\Method("GET")
      *
-     * @param Request $request
-     * @param SchemaValidator $schemaValidator
-     * @param CreateJobTemplateService $createJobTemplateService
+     * @param string $templateId
+     * @param JobTemplateStorage $jobTemplateStorage
+     * @param JobStorage $jobStorage
      *
      * @return JsonResponse
      */
@@ -60,6 +53,44 @@ class JobController
 
         $response = new JsonResponse([
             'jobs' => $rawJobs
+        ]);
+        $response->setEncodingOptions(JsonResponse::DEFAULT_ENCODING_OPTIONS | JSON_PRETTY_PRINT);
+
+        return $response;
+    }
+
+    /**
+     * @Extra\Route("/get-job")
+     * @Extra\Method("POST")
+     *
+     * @param Request $request
+     * @param JobStorage $jobStorage
+     * @param SchemaValidator $schemaValidator
+     *
+     * @return JsonResponse
+     */
+    public function getJobAction(Request $request, JobStorage $jobStorage, SchemaValidator $schemaValidator)
+    {
+        try {
+            $data = JSON::decode($request->getContent());
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException('The content is not valid json.', null, $e);
+        }
+
+        if ($errors = $schemaValidator->validate($data, GetJob::SCHEMA)) {
+            return new JsonResponse($errors, 400);
+        }
+
+        $getJob = GetJob::create($data);
+
+        try {
+            $job = $jobStorage->getOneById($getJob->getJobId());
+        } catch (\Exception $e) {
+            throw new NotFoundHttpException(sprintf('The job with id "%s" could not be found', $getJob->getJobId()), null, $e);
+        }
+
+        $response = new JsonResponse([
+            'job' => get_values($job),
         ]);
         $response->setEncodingOptions(JsonResponse::DEFAULT_ENCODING_OPTIONS | JSON_PRETTY_PRINT);
 

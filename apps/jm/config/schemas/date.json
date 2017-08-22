@@ -6,5 +6,5 @@
     "iso": { "type": "string" },
     "unix": { "$ref": "timestamp.json" }
   },
-  "required": [ "schema" ]
+  "required": []
 }

@@ -1,8 +1,8 @@
 <?php
 namespace App\Async\Processor;
 
+use App\Async\Commands;
 use App\Async\JobResult;
-use App\Async\Topics;
 use App\Async\RunSubJobsResult;
 use App\Infra\JsonSchema\Errors;
 use App\Infra\JsonSchema\SchemaValidator;
@@ -12,21 +12,16 @@ use App\Service\CreateProcessForSubJobsService;
 use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessExecutionStorage;
-use Enqueue\Client\TopicSubscriberInterface;
+use Enqueue\Client\CommandSubscriberInterface;
+use Enqueue\Consumption\QueueSubscriberInterface;
 use Enqueue\Consumption\Result;
 use Interop\Queue\PsrContext;
 use Interop\Queue\PsrMessage;
 use Interop\Queue\PsrProcessor;
 use Enqueue\Util\JSON;
 use Formapro\Pvm\ProcessEngine;
-use function Makasim\Values\add_object;
-use function Makasim\Values\build_object;
-use function Makasim\Values\set_object;
-use function Makasim\Values\set_value;
-use function Makasim\Yadm\get_object_id;
-use Psr\Log\NullLogger;
 
-class JobResultProcessor implements PsrProcessor, TopicSubscriberInterface
+class JobResultProcessor implements PsrProcessor, CommandSubscriberInterface, QueueSubscriberInterface
 {
     /**
      * @var SchemaValidator
@@ -52,6 +47,7 @@ class JobResultProcessor implements PsrProcessor, TopicSubscriberInterface
      * @var CreateProcessForSubJobsService
      */
     private $createProcessForSubJobsService;
+
     /**
      * @var JobTemplateStorage
      */
@@ -140,8 +136,21 @@ class JobResultProcessor implements PsrProcessor, TopicSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedTopics()
+    public static function getSubscribedCommand()
     {
-        return [Topics::JOB_RESULT];
+        return [
+            'processorName' => Commands::JOB_RESULT,
+            'queueName' => Commands::JOB_RESULT,
+            'queueNameHardcoded' => true,
+            'exclusive' => true,
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedQueues()
+    {
+        return [Commands::JOB_RESULT];
     }
 }

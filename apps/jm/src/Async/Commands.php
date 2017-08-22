@@ -10,4 +10,6 @@ final class Commands
     const SCHEDULE_JOB = 'schedule_job';
 
     const EXECUTE_JOB = 'execute_job';
+
+    const JOB_RESULT = 'job_result';
 }

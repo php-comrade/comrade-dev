@@ -1,9 +1,9 @@
 <?php
 namespace DemoApp;
 
+use App\Async\Commands;
 use App\Async\RunSubJobsResult;
 use App\Async\RunJob;
-use App\Async\Topics;
 use App\Infra\Uuid;
 use App\Infra\Yadm\ObjectBuilderHook;
 use App\JobStatus;
@@ -11,6 +11,7 @@ use App\Model\Job;
 use App\Async\JobResult as JobResultMessage;
 use App\Model\JobResult;
 use App\Model\JobTemplate;
+use App\Model\QueueRunner;
 use Enqueue\Consumption\ChainExtension;
 use Enqueue\Consumption\Extension\LoggerExtension;
 use Enqueue\Consumption\Extension\SignalExtension;
@@ -20,9 +21,9 @@ use function Enqueue\dsn_to_context;
 use Interop\Queue\PsrContext;
 use Interop\Queue\PsrMessage;
 use Enqueue\Util\JSON;
+use function Makasim\Values\get_values;
 use function Makasim\Values\register_cast_hooks;
 use function Makasim\Values\register_object_hooks;
-use function Makasim\Values\set_value;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -45,19 +46,71 @@ register_object_hooks();
     RunSubJobsResult::SCHEMA => RunSubJobsResult::class,
 ]))->register();
 
-function createSubTasks(Job $job, PsrContext $context, array $data):RunSubJobsResult
-{
-    $jobResultMessage = RunSubJobsResult::create();
-    $jobResultMessage->setToken($data['token']);
-    $jobResultMessage->setJobId($job->getId());
-    $jobResultMessage->setResult(JobResult::createFor(JobStatus::STATUS_RUN_SUB_JOBS));
+/** @var \Enqueue\AmqpExt\AmqpContext $c */
+$c = dsn_to_context('amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume');
+
+foreach (['demo_success_job', 'demo_failed_job', 'demo_success_sub_job', 'demo_run_sub_tasks', 'demo_intermediate_status', 'demo_random_job'] as $queueName) {
+    $q = $c->createQueue($queueName);
+    $q->addFlag(AMQP_DURABLE);
+    $c->declareQueue($q);
+}
+
+$queueConsumer = new QueueConsumer($c, new ChainExtension([
+    new LoggerExtension($logger),
+    new SignalExtension(),
+]));
+
+$queueConsumer->bind('demo_success_job', function(PsrMessage $message, PsrContext $context) {
+    if ($message->isRedelivered()) {
+        return Result::reject('The message was redelivered. Reject it');
+    }
+
+    $runJob = RunJob::create(JSON::decode($message->getBody()));
+
+    $result = JobResult::createFor(JobStatus::STATUS_COMPLETED);
+
+    sleep(10);
+
+    send_result(convert($runJob, $result));
+
+    return Result::ACK;
+});
+
+$queueConsumer->bind('demo_random_job', function(PsrMessage $message, PsrContext $context) {
+    if ($message->isRedelivered()) {
+        return Result::reject('The message was redelivered. Reject it');
+    }
+
+    $runJob = RunJob::create(JSON::decode($message->getBody()));
+
+    $statuses = [JobStatus::STATUS_FAILED, JobStatus::STATUS_COMPLETED, JobStatus::STATUS_COMPLETED, JobStatus::STATUS_COMPLETED];
+    $result = JobResult::createFor($statuses[rand(0, 3)]);
+
+    sleep(10);
+
+    send_result(convert($runJob, $result));
+
+    return Result::ACK;
+});
+
+$queueConsumer->bind('demo_run_sub_tasks', function(PsrMessage $message, PsrContext $context) {
+    if ($message->isRedelivered()) {
+        return Result::reject('The message was redelivered. Reject it');
+    }
+
+    $runJob = RunJob::create(JSON::decode($message->getBody()));
+
+    $result = JobResult::createFor(JobStatus::STATUS_RUN_SUB_JOBS);
+
+    $jobResultMessage = convert($runJob, $result);
+    $jobResultMessage = RunSubJobsResult::create(get_values($jobResultMessage));
 
     $jobTemplate = JobTemplate::create();
     $jobTemplate->setName('testSubJob1');
     $jobTemplate->setTemplateId(Uuid::generate());
     $jobTemplate->setProcessTemplateId(Uuid::generate());
     $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
-    set_value($jobTemplate, 'enqueue.queue', 'demo_sub_job');
+    $jobTemplate->setRunner(QueueRunner::createFor('demo_random_job'));
     $jobResultMessage->addJobTemplate($jobTemplate);
 
     $jobTemplate = JobTemplate::create();
@@ -65,7 +118,7 @@ function createSubTasks(Job $job, PsrContext $context, array $data):RunSubJobsRe
     $jobTemplate->setTemplateId(Uuid::generate());
     $jobTemplate->setProcessTemplateId(Uuid::generate());
     $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
-    set_value($jobTemplate, 'enqueue.queue', 'demo_sub_job');
+    $jobTemplate->setRunner(QueueRunner::createFor('demo_random_job'));
     $jobResultMessage->addJobTemplate($jobTemplate);
 
     $jobTemplate = JobTemplate::create();
@@ -73,7 +126,7 @@ function createSubTasks(Job $job, PsrContext $context, array $data):RunSubJobsRe
     $jobTemplate->setTemplateId(Uuid::generate());
     $jobTemplate->setProcessTemplateId(Uuid::generate());
     $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
-    set_value($jobTemplate, 'enqueue.queue', 'demo_sub_job');
+    $jobTemplate->setRunner(QueueRunner::createFor('demo_random_job'));
     $jobResultMessage->addJobTemplate($jobTemplate);
 
     $jobTemplate = JobTemplate::create();
@@ -81,97 +134,74 @@ function createSubTasks(Job $job, PsrContext $context, array $data):RunSubJobsRe
     $jobTemplate->setTemplateId(Uuid::generate());
     $jobTemplate->setProcessTemplateId(Uuid::generate());
     $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
-    set_value($jobTemplate, 'enqueue.queue', 'demo_sub_job');
+    $jobTemplate->setRunner(QueueRunner::createFor('demo_random_job'));
     $jobResultMessage->addJobTemplate($jobTemplate);
 
-    return $jobResultMessage;
-}
+    sleep(5);
 
-/** @var \Enqueue\AmqpExt\AmqpContext $c */
-$c = dsn_to_context('amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume');
-
-$queue = $c->createQueue('demo_job');
-$queue->addFlag(AMQP_DURABLE);
-$c->declareQueue($queue);
-
-$subJobQueue = $c->createQueue('demo_sub_job');
-$subJobQueue->addFlag(AMQP_DURABLE);
-$c->declareQueue($subJobQueue);
-
-$queueConsumer = new QueueConsumer($c, new ChainExtension([
-    new LoggerExtension($logger),
-    new SignalExtension(),
-]));
-
-$queueConsumer->bind($queue, function(PsrMessage $message, PsrContext $context) {
-    if ($message->isRedelivered()) {
-        return Result::reject('The message was redelivered. Reject it');
-    }
-
-    $data = JSON::decode($message->getBody());
-
-    $doJob = RunJob::create($data);
-
-    $job = $doJob->getJob();
-
-//    if (get_value($job, 'retryAttempts', 0) > 2) {
-        $result = JobResult::createFor(JobStatus::STATUS_COMPLETED);
-//    } else {
-//        $result = JobResult::createFor(JobStatus::STATUS_FAILED);
-//    }
-
-    sleep(10);
-
-//    $jobResultMessage = createSubTasks($job, $context, $data);
-    $jobResultMessage = JobResultMessage::create();
-    $jobResultMessage->setToken($data['token']);
-    $jobResultMessage->setJobId($job->getId());
-    $jobResultMessage->setResult($result);
-
-    $feedbackQueue = $context->createQueue('enqueue.app.default');
-    $message = $context->createMessage(JSON::encode($jobResultMessage), [
-        'enqueue.topic_name' => Topics::JOB_RESULT,
-        'enqueue.processor_queue_name' => 'enqueue.app.default',
-    ]);
-
-    $context->createProducer()->send($feedbackQueue, $message);
+    send_result($jobResultMessage);
 
     return Result::ACK;
 });
 
-$queueConsumer->bind($subJobQueue, function(PsrMessage $message, PsrContext $context) {
+$queueConsumer->bind('demo_failed_job', function(PsrMessage $message, PsrContext $context) {
     if ($message->isRedelivered()) {
         return Result::reject('The message was redelivered. Reject it');
     }
 
-    $data = JSON::decode($message->getBody());
+    $runJob = RunJob::create(JSON::decode($message->getBody()));
 
-    $doJob = RunJob::create($data);
+    $result = JobResult::createFor(JobStatus::STATUS_FAILED);
 
-    $job = $doJob->getJob();
+    sleep(5);
 
-    $statuses = [JobStatus::STATUS_FAILED, JobStatus::STATUS_COMPLETED, JobStatus::STATUS_COMPLETED, JobStatus::STATUS_COMPLETED];
+    send_result(convert($runJob, $result));
 
-//    if (get_value($job, 'retryAttempts', 0) > 2) {
-    $result = JobResult::createFor($statuses[rand(0, 3)]);
-//    } else {
-//        $result = JobResult::createFor(Job::STATUS_FAILED);
-//    }
+    return Result::ACK;
+});
 
-    $jobResultMessage = JobResultMessage::create();
-    $jobResultMessage->setToken($data['token']);
-    $jobResultMessage->setJobId($job->getId());
-    $jobResultMessage->setResult($result);
+$queueConsumer->bind('demo_intermediate_status', function(PsrMessage $message, PsrContext $context) {
+    if ($message->isRedelivered()) {
+        return Result::reject('The message was redelivered. Reject it');
+    }
 
-    $feedbackQueue = $context->createQueue('enqueue.app.default');
-    $message = $context->createMessage(JSON::encode($jobResultMessage), [
-        'enqueue.topic_name' => Topics::JOB_RESULT,
-        'enqueue.processor_queue_name' => 'enqueue.app.default',
-    ]);
+    $runJob = RunJob::create(JSON::decode($message->getBody()));
+    $result = JobResult::createFor(JobStatus::STATUS_RUNNING);
 
-    $context->createProducer()->send($feedbackQueue, $message);
+    sleep(5);
+
+    send_result(convert($runJob, $result));
+
+    sleep(5);
+
+    $result = JobResult::createFor(JobStatus::STATUS_COMPLETED);
+    send_result(convert($runJob, $result));
 
     return Result::ACK;
 });
 
 $queueConsumer->consume();
+
+function send_result(JobResultMessage $message) {
+    global $c;
+
+    $c->createProducer()->send(
+        $c->createQueue(Commands::JOB_RESULT),
+        $c->createMessage(JSON::encode($message))
+    );
+}
+
+/**
+ * @param RunJob $runJob
+ * @param JobResult $result
+ *
+ * @return JobResultMessage
+ */
+function convert(RunJob $runJob, JobResult $result) {
+    $jobResultMessage = JobResultMessage::create();
+    $jobResultMessage->setToken($runJob->getToken());
+    $jobResultMessage->setJobId($runJob->getJob()->getId());
+    $jobResultMessage->setResult($result);
+
+    return $jobResultMessage;
+}

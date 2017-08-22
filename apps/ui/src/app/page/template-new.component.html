@@ -48,6 +48,7 @@
   <show-exclusive-policy *ngIf="jobTemplate.exclusivePolicy" [policy]="jobTemplate.exclusivePolicy" (onRemovePolicy)="onRemoveExclusivePolicy()"></show-exclusive-policy>
   <show-grace-period-policy *ngIf="jobTemplate.gracePeriodPolicy" [policy]="jobTemplate.gracePeriodPolicy" (onRemovePolicy)="onRemoveGracePeriodPolicy()"></show-grace-period-policy>
   <show-retry-failed-policy *ngIf="jobTemplate.retryFailedPolicy" [policy]="jobTemplate.retryFailedPolicy" (onRemovePolicy)="onRemoveRetryFailedPolicy()"></show-retry-failed-policy>
+  <show-run-sub-jobs-policy *ngIf="jobTemplate.runSubJobsPolicy" [policy]="jobTemplate.runSubJobsPolicy" (onRemovePolicy)="onRemoveRunSubJobsPolicy()"></show-run-sub-jobs-policy>
 
   <a class="nav-link" *ngIf="!addExclusivePolicy && !jobTemplate.exclusivePolicy" (click)="triggerExclusivePolicy()" href="javascript:void(0)">Add exclusive policy</a>
   <div *ngIf="addExclusivePolicy">
@@ -65,6 +66,12 @@
   <div *ngIf="addRetryFailedPolicy">
     <new-retry-failed-policy (onPolicyAdded)="onRetryFailedPolicyAdded($event)"></new-retry-failed-policy>
     <a (click)="triggerRetryFailedPolicy()" href="javascript:void(0)">Cancel</a>
+  </div>
+
+  <a class="nav-link" *ngIf="!addRunSubJobsPolicy && !jobTemplate.runSubJobsPolicy" (click)="triggerRunSubJobsPolicy()" href="javascript:void(0)">Add run sub jobs policy</a>
+  <div *ngIf="addRunSubJobsPolicy">
+    <new-run-sub-jobs-policy (onPolicyAdded)="onRunSubJobsPolicyAdded($event)"></new-run-sub-jobs-policy>
+    <a (click)="triggerRunSubJobsPolicy()" href="javascript:void(0)">Cancel</a>
   </div>
 
   <button type="submit" class="btn btn-success" [disabled]="!jobTemplateForm.form.valid || submitted">Create job template</button>

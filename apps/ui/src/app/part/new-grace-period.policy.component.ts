@@ -20,6 +20,7 @@ export class NewGracePeriodPolicyComponent {
 
     constructor() {
         this.policy = new GracePeriodPolicy();
+        this.policy.period = 180;
     }
 
     add() {

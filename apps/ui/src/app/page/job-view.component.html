@@ -1,0 +1,27 @@
+<h2 *ngIf="job">Job {{ job.name }}</h2>
+
+<div *ngIf="error" class="alert alert-danger" role="alert">{{ error }}</div>
+
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="{ 'active': tab == 'summary' }" (click)="switchTab('summary', $event)">Summary</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="{ 'active': tab == 'graph' }" (click)="switchTab('graph', $event)">Graph</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" [ngClass]="{ 'active': tab == 'timeline' }" (click)="switchTab('timeline', $event)">Time line</a>
+  </li>
+</ul>
+
+<div *ngIf="tab == 'summary' && job">
+  <div style="height: 35px" *ngFor="let result of job.results; let index = index">
+    <time-cal [date]="result.createdAt"></time-cal>(<time-ago [date]="result.createdAt"></time-ago>)<job-status [status]="result.status"></job-status>
+  </div>
+</div>
+<div *ngIf="tab == 'graph' && job">
+  Fuck
+</div>
+<div *ngIf="tab === 'timeline' && job">
+  Fuck
+</div>

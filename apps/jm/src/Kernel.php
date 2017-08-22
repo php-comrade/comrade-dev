@@ -4,6 +4,8 @@ namespace App;
 
 use App\Async\AddTrigger;
 use App\Async\CreateJob;
+use App\Async\GetJob;
+use App\Async\GetProcessGraph;
 use App\Async\GetTimeline;
 use App\Async\RunSubJobsResult;
 use App\Async\RunJob;
@@ -110,7 +112,7 @@ final class Kernel extends BaseKernel
             SubJobTemplate::SCHEMA => SubJobTemplate::class,
             SubJob::SCHEMA => SubJob::class,
             RunSubJobsResult::SCHEMA => RunSubJobsResult::class,
-            QueueRunner::SCHEMA => QueueRunner::class,
+            GetJob::SCHEMA => GetJob::class,
 
             JobResultModel::SCHEMA => JobResultModel::class,
             CreateJob::SCHEMA => CreateJob::class,
@@ -122,6 +124,8 @@ final class Kernel extends BaseKernel
             RetryFailedPolicy::SCHEMA => RetryFailedPolicy::class,
             RunSubJobsPolicy::SCHEMA => RunSubJobsPolicy::class,
             ExclusivePolicy::SCHEMA => ExclusivePolicy::class,
+
+            QueueRunner::SCHEMA => QueueRunner::class,
 
             CronTrigger::SCHEMA => CronTrigger::class,
             SimpleTrigger::SCHEMA => SimpleTrigger::class,

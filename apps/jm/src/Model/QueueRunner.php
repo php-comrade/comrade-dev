@@ -35,4 +35,16 @@ class QueueRunner implements Runner
     {
         return get_value($this, 'connectionDsn');
     }
+
+    /**
+     * @param string $queueName
+     *
+     * @return static
+     */
+    public static function createFor(string $queueName)
+    {
+        return static::create([
+            'queue' => $queueName,
+        ]);
+    }
 }

@@ -16,9 +16,6 @@ import {PrettycronPipe} from "./prettycron.pipe";
 import {NewSimpleTriggerComponent} from "./part/new-simple.trigger.component";
 import {TimelineService} from "./shared/timeline.service";
 import {TimelineComponent} from "./page/timeline.component";
-import {JobDetailsComponent} from "./page/job-details.component";
-import {JobGridComponent} from "./page/job-grid.component";
-import {JobNewComponent} from "./page/job-new.component";
 import {ListTriggersComponent} from "./part/list.triggers.component";
 import { NavbarComponent } from './part/navbar.component';
 import {StatusJobComponent} from "./part/status.job.component";
@@ -31,16 +28,25 @@ import {NewGracePeriodPolicyComponent} from "./part/new-grace-period.policy.comp
 import {ShowGracePeriodPolicyComponent} from "./part/show-grace-period.policy.component";
 import {NewRetryFailedPolicyComponent} from "./part/new-retry-failed.policy.component";
 import {ShowRetryFailedPolicyComponent} from "./part/show-retry-failed.policy.component";
+import {NewRunSubJobsPolicyComponent} from "./part/new-run-sub-jobs.policy.component";
+import {ShowRunSubJobsPolicyComponent} from "./part/show-run-sub-jobs.policy.component";
+import {TemplateViewComponent} from "./page/template-view.component";
+import {TemplateListComponent} from "./page/template-list.component";
+import {TemplateNewComponent} from "./page/template-new.component";
+import {JobViewComponent} from "./page/job-view.component";
+import {TimeAgoComponent} from "./part/time-ago.component";
+import {TimeCalComponent} from "./part/time-cal.component";
+import {ProcessGraphImageComponent} from "./part/process-graph-image.component";
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    JobGridComponent,
+    TemplateListComponent,
     NavbarComponent,
-    JobNewComponent,
+    TemplateNewComponent,
     JsonInputComponent,
-    JobDetailsComponent,
+    TemplateViewComponent,
     NewCronTriggerComponent,
     NewSimpleTriggerComponent,
     ListTriggersComponent,
@@ -56,6 +62,12 @@ import {ShowRetryFailedPolicyComponent} from "./part/show-retry-failed.policy.co
     ShowGracePeriodPolicyComponent,
     NewRetryFailedPolicyComponent,
     ShowRetryFailedPolicyComponent,
+    NewRunSubJobsPolicyComponent,
+    ShowRunSubJobsPolicyComponent,
+    JobViewComponent,
+    TimeAgoComponent,
+    TimeCalComponent,
+    ProcessGraphImageComponent,
   ],
   imports: [
     BrowserModule,

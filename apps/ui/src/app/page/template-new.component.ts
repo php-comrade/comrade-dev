@@ -14,10 +14,10 @@ import {RetryFailedPolicy} from "../shared/retry-failed-policy";
 import {RunSubJobsPolicy} from "../shared/run-sub-jobs-policy";
 
 @Component({
-  selector: 'job-new',
-  templateUrl: './job-new.component.html',
+  selector: 'template-new',
+  templateUrl: './template-new.component.html',
 })
-export class JobNewComponent {
+export class TemplateNewComponent {
   jobTemplate: JobTemplate;
   submitted: boolean;
   message: string;
@@ -47,7 +47,7 @@ export class JobNewComponent {
     this.jobTemplateService.create(this.jobTemplate)
         .catch(res => { throw res })
         .subscribe(
-            res => this.router.navigate(['job', this.jobTemplate.templateId]),
+            res => this.router.navigate(['/template', this.jobTemplate.templateId, 'view', 'summary']),
             err => this.message = err
         );
 

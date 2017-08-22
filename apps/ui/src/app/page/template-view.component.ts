@@ -3,12 +3,13 @@ import {JobTemplate} from "../shared/job-template";
 import {JobTemplateService} from "../shared/job-template.service";
 import {ActivatedRoute, Params} from "@angular/router";
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/operator/do';
 
 @Component({
-  selector: 'job-details',
-  templateUrl: './job-details.component.html',
+  selector: 'template-view',
+  templateUrl: './template-view.component.html',
 })
-export class JobDetailsComponent implements OnInit {
+export class TemplateViewComponent implements OnInit {
   jobTemplate: JobTemplate;
   error: Error;
 
@@ -21,16 +22,12 @@ export class JobDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params
+        .do((params: Params) => this.tab = params['tab'] || 'summary')
         .switchMap((params: Params) => this.jobTemplateService.getJobTemplate(params['id']))
+
         .subscribe(jobTemplate => {
           this.jobTemplate = jobTemplate;
         });
-  }
-
-  switchTab(newTab: string, event):void {
-    event.stopPropagation();
-
-    this.tab = newTab;
   }
 
   onRunFailed(error: Error):void {
@@ -40,7 +37,4 @@ export class JobDetailsComponent implements OnInit {
   onRunSucceeded(jobTemplate: JobTemplate):void {
     this.jobTemplate = jobTemplate;
   }
-
-  // TODO: Remove this when we're done
-  get diagnostic() { return JSON.stringify(this.jobTemplate); }
 }

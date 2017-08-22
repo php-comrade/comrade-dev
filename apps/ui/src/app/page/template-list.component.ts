@@ -3,11 +3,11 @@ import {JobTemplate} from "../shared/job-template";
 import {JobTemplateService} from "../shared/job-template.service";
 
 @Component({
-  selector: 'job-grid',
-  templateUrl: './job-grid.component.html',
+  selector: 'template-list',
+  templateUrl: './template-list.component.html',
 })
 
-export class JobGridComponent implements OnInit {
+export class TemplateListComponent implements OnInit {
   jobTemplates: JobTemplate[];
   error: Error;
 
