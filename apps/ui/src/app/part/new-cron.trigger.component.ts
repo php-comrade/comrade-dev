@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {CronTrigger} from "../shared/cron-trigger";
 import { DatePickerOptions, DateModel } from 'ng2-datepicker';
 import {Date} from "../shared/date";

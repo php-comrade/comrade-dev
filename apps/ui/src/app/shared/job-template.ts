@@ -1,6 +1,7 @@
 import {Trigger} from "./trigger";
 import {Runner} from "./runner";
 import {Date} from "./date";
+import {ExclusivePolicy} from "./exclusive-policy";
 
 export class JobTemplate {
     schema: string = "http://jm.forma-pro.com/schemas/JobTemplate.json";
@@ -11,6 +12,7 @@ export class JobTemplate {
     details: any;
     triggers: Trigger[] = [];
     runner: Runner;
+    exclusivePolicy: ExclusivePolicy;
 
     addTrigger(trigger: Trigger)
     {

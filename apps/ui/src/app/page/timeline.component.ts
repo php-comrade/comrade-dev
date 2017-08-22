@@ -28,9 +28,6 @@ export class TimelineComponent implements OnInit {
 
     private refreshGrid():void
     {
-        this.futureJobs = [];
-        this.doneJobs = [];
-
         this.timelineService.getTimelineDone(new GetTimeline(this.jobTemplateId, this.limit))
             .subscribe(jobs => {
                 this.doneJobs = jobs;
@@ -43,6 +40,10 @@ export class TimelineComponent implements OnInit {
 
     private filterOutdatedFutureJobs():void
     {
+        if (!this.futureJobs) {
+            return;
+        }
+
         const previousLength: number = this.futureJobs.length;
 
         this.futureJobs = this.futureJobs.filter((job: Job) => {

@@ -25,6 +25,8 @@ import {StatusJobComponent} from "./part/status.job.component";
 import {RunNowJobComponent} from "./part/run-now.job.component";
 import {NewQueueRunnerComponent} from "./part/new-queue.runner.component";
 import {ListRunnerComponent} from "./part/list.runner.component";
+import {NewExclusivePolicyComponent} from "./part/new-exclusive.policy.component";
+import {ShowExclusivePolicyComponent} from "./part/show-exclusive.policy.component";
 
 
 @NgModule({
@@ -43,7 +45,9 @@ import {ListRunnerComponent} from "./part/list.runner.component";
     StatusJobComponent,
     RunNowJobComponent,
     NewQueueRunnerComponent,
-    ListRunnerComponent
+    ListRunnerComponent,
+    ShowExclusivePolicyComponent,
+    NewExclusivePolicyComponent,
 
   ],
   imports: [

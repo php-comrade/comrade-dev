@@ -8,6 +8,7 @@ import {Trigger} from "../shared/trigger";
 import {CronTrigger} from "../shared/cron-trigger";
 import {SimpleTrigger} from "../shared/simple-trigger";
 import {Runner} from "../shared/runner";
+import {ExclusivePolicy} from "../shared/exclusive-policy";
 
 @Component({
   selector: 'job-new',
@@ -15,16 +16,12 @@ import {Runner} from "../shared/runner";
 })
 export class JobNewComponent {
   jobTemplate: JobTemplate;
-
   submitted: boolean;
-
   message: string;
-
   addCronTrigger: boolean = false;
-
   addSimpleTrigger: boolean = false;
-
   addQueueRunner: boolean = false;
+  addExclusivePolicy: boolean = false;
 
   constructor(private jobTemplateService: JobTemplateService, private router: Router) {
     this.jobTemplate = new JobTemplate();
@@ -63,6 +60,10 @@ export class JobNewComponent {
       this.addQueueRunner = !this.addQueueRunner;
   }
 
+  triggerExclusivePolicy(): void {
+      this.addExclusivePolicy = !this.addExclusivePolicy;
+  }
+
   onTriggerAdded(trigger: Trigger) {
     this.jobTemplate.addTrigger(trigger);
 
@@ -74,6 +75,12 @@ export class JobNewComponent {
     }
   }
 
+  onExclusivePolicyAdded(policy: ExclusivePolicy) {
+    this.jobTemplate.exclusivePolicy = policy;
+
+    this.addExclusivePolicy = false;
+  }
+
   onRunnerAdded(runner: Runner) {
     this.jobTemplate.runner = runner;
 
@@ -83,6 +90,14 @@ export class JobNewComponent {
   onRemoveTrigger(trigger: Trigger)
   {
     this.jobTemplate.removeTrigger(trigger);
+  }
+
+  onRemoveExclusivePolicy() {
+    this.jobTemplate.exclusivePolicy = null;
+  }
+
+  onRemoveRunner() {
+    this.jobTemplate.runner = null;
   }
 
   // TODO: Remove this when we're done
