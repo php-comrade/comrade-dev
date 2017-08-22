@@ -60,11 +60,8 @@ class CreateProcessForJobService
         }
 
         if ($policy = $jobTemplate->getGracePeriodPolicy()) {
-            $now = new \DateTime('now');
-            $diff = $now->diff($policy->getPeriodEndsAt());
-
             $policyTask = $process->createNode();
-            $policyTask->setLabel('Grace period '.$diff->s.' seconds');
+            $policyTask->setLabel('Grace period '.$jobTemplate->getGracePeriodPolicy()->getPeriod().' seconds');
             $policyTask->setBehavior(GracePeriodPolicyBehavior::class);
             $process->addNodeJobTemplate($policyTask, $jobTemplate);
 

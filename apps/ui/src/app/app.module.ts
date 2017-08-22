@@ -27,6 +27,8 @@ import {NewQueueRunnerComponent} from "./part/new-queue.runner.component";
 import {ListRunnerComponent} from "./part/list.runner.component";
 import {NewExclusivePolicyComponent} from "./part/new-exclusive.policy.component";
 import {ShowExclusivePolicyComponent} from "./part/show-exclusive.policy.component";
+import {NewGracePeriodPolicyComponent} from "./part/new-grace-period.policy.component";
+import {ShowGracePeriodPolicyComponent} from "./part/show-grace-period.policy.component";
 
 
 @NgModule({
@@ -48,7 +50,8 @@ import {ShowExclusivePolicyComponent} from "./part/show-exclusive.policy.compone
     ListRunnerComponent,
     ShowExclusivePolicyComponent,
     NewExclusivePolicyComponent,
-
+    NewGracePeriodPolicyComponent,
+    ShowGracePeriodPolicyComponent,
   ],
   imports: [
     BrowserModule,

@@ -68,7 +68,7 @@ class FooCommand extends Command implements ContainerAwareInterface
         $jobTemplate->setExclusivePolicy($exclusivePolicy);
 
 //        $gracePeriodPolicy = GracePeriodPolicy::create();
-//        $gracePeriodPolicy->setPeriodEndsAt(new \DateTime('now + 30 seconds'));
+//        $gracePeriodPolicy->setPeriod(30);
 //        $jobTemplate->setGracePeriodPolicy($gracePeriodPolicy);
 
         $message = CreateJob::create();

@@ -9,6 +9,7 @@ import {CronTrigger} from "../shared/cron-trigger";
 import {SimpleTrigger} from "../shared/simple-trigger";
 import {Runner} from "../shared/runner";
 import {ExclusivePolicy} from "../shared/exclusive-policy";
+import {GracePeriodPolicy} from "../shared/grace-period-policy";
 
 @Component({
   selector: 'job-new',
@@ -22,6 +23,7 @@ export class JobNewComponent {
   addSimpleTrigger: boolean = false;
   addQueueRunner: boolean = false;
   addExclusivePolicy: boolean = false;
+  addGracePeriodPolicy: boolean = false;
 
   constructor(private jobTemplateService: JobTemplateService, private router: Router) {
     this.jobTemplate = new JobTemplate();
@@ -41,7 +43,7 @@ export class JobNewComponent {
     this.jobTemplateService.create(this.jobTemplate)
         .catch(res => { throw res })
         .subscribe(
-            res => this.router.navigate(['job-template', this.jobTemplate.templateId]),
+            res => this.router.navigate(['job', this.jobTemplate.templateId]),
             err => this.message = err
         );
 
@@ -64,6 +66,10 @@ export class JobNewComponent {
       this.addExclusivePolicy = !this.addExclusivePolicy;
   }
 
+  triggerGracePeriodPolicy(): void {
+      this.addGracePeriodPolicy = !this.addGracePeriodPolicy;
+  }
+
   onTriggerAdded(trigger: Trigger) {
     this.jobTemplate.addTrigger(trigger);
 
@@ -81,6 +87,12 @@ export class JobNewComponent {
     this.addExclusivePolicy = false;
   }
 
+  onGracePeriodPolicyAdded(policy: GracePeriodPolicy) {
+      this.jobTemplate.gracePeriodPolicy = policy;
+
+      this.addGracePeriodPolicy = false;
+  }
+
   onRunnerAdded(runner: Runner) {
     this.jobTemplate.runner = runner;
 
@@ -94,6 +106,10 @@ export class JobNewComponent {
 
   onRemoveExclusivePolicy() {
     this.jobTemplate.exclusivePolicy = null;
+  }
+
+  onRemoveGracePeriodPolicy() {
+      this.jobTemplate.gracePeriodPolicy = null;
   }
 
   onRemoveRunner() {

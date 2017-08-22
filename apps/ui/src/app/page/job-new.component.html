@@ -36,7 +36,7 @@
   </div>
 
   <h3>Runner: </h3>
-  <list-runner *ngIf="jobTemplate.runner" [runner]="jobTemplate.runner" (onRemoveRunner)="onRemoveRunner()"></list-runner>
+  <list-runner *ngIf="jobTemplate.runner" [runner]="jobTemplate.runner" (onRemoveRunner)="onRemoveRunner"></list-runner>
 
   <a class="nav-link" *ngIf="!addQueueRunner && !jobTemplate.runner" (click)="triggerQueueRunner()" href="javascript:void(0)">Add queue runner</a>
   <div *ngIf="addQueueRunner">
@@ -46,12 +46,18 @@
 
   <h3>Polices: </h3>
   <show-exclusive-policy *ngIf="jobTemplate.exclusivePolicy" [policy]="jobTemplate.exclusivePolicy" (onRemovePolicy)="onRemoveExclusivePolicy()"></show-exclusive-policy>
-
+  <show-grace-period-policy *ngIf="jobTemplate.gracePeriodPolicy" [policy]="jobTemplate.gracePeriodPolicy" (onRemovePolicy)="onRemoveGracePeriodPolicy()"></show-grace-period-policy>
 
   <a class="nav-link" *ngIf="!addExclusivePolicy && !jobTemplate.exclusivePolicy" (click)="triggerExclusivePolicy()" href="javascript:void(0)">Add exclusive policy</a>
   <div *ngIf="addExclusivePolicy">
-    <new-exclusive-policy (onExclusivePolicyAdded)="onExclusivePolicyAdded($event)"></new-exclusive-policy>
+    <new-exclusive-policy (onPolicyAdded)="onExclusivePolicyAdded($event)"></new-exclusive-policy>
     <a (click)="triggerExclusivePolicy()" href="javascript:void(0)">Cancel</a>
+  </div>
+
+  <a class="nav-link" *ngIf="!addGracePeriodPolicy && !jobTemplate.gracePeriodPolicy" (click)="triggerGracePeriodPolicy()" href="javascript:void(0)">Add grace period policy</a>
+  <div *ngIf="addGracePeriodPolicy">
+    <new-grace-period-policy (onPolicyAdded)="onGracePeriodPolicyAdded($event)"></new-grace-period-policy>
+    <a (click)="triggerGracePeriodPolicy()" href="javascript:void(0)">Cancel</a>
   </div>
 
   <button type="submit" class="btn btn-success" [disabled]="!jobTemplateForm.form.valid || submitted">Create job template</button>

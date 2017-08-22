@@ -6,7 +6,7 @@ import {ExclusivePolicy} from "../shared/exclusive-policy";
   templateUrl: './new-exclusive.policy.component.html',
 })
 export class NewExclusivePolicyComponent {
-    @Output() onExclusivePolicyAdded = new EventEmitter<ExclusivePolicy>();
+    @Output() onPolicyAdded = new EventEmitter<ExclusivePolicy>();
 
     policy: ExclusivePolicy;
 
@@ -16,6 +16,6 @@ export class NewExclusivePolicyComponent {
     }
 
     add() {
-        this.onExclusivePolicyAdded.emit(this.policy);
+        this.onPolicyAdded.emit(this.policy);
     }
 }
