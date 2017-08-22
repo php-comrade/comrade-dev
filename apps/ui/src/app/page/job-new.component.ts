@@ -10,6 +10,8 @@ import {SimpleTrigger} from "../shared/simple-trigger";
 import {Runner} from "../shared/runner";
 import {ExclusivePolicy} from "../shared/exclusive-policy";
 import {GracePeriodPolicy} from "../shared/grace-period-policy";
+import {RetryFailedPolicy} from "../shared/retry-failed-policy";
+import {RunSubJobsPolicy} from "../shared/run-sub-jobs-policy";
 
 @Component({
   selector: 'job-new',
@@ -24,6 +26,8 @@ export class JobNewComponent {
   addQueueRunner: boolean = false;
   addExclusivePolicy: boolean = false;
   addGracePeriodPolicy: boolean = false;
+  addRetryFailedPolicy: boolean = false;
+  addRunSubJobsPolicy: boolean = false;
 
   constructor(private jobTemplateService: JobTemplateService, private router: Router) {
     this.jobTemplate = new JobTemplate();
@@ -70,6 +74,14 @@ export class JobNewComponent {
       this.addGracePeriodPolicy = !this.addGracePeriodPolicy;
   }
 
+  triggerRetryFailedPolicy(): void {
+      this.addRetryFailedPolicy = !this.addRetryFailedPolicy;
+  }
+
+  triggerRunSubJobsPolicy(): void {
+      this.addRunSubJobsPolicy = !this.addRunSubJobsPolicy;
+  }
+
   onTriggerAdded(trigger: Trigger) {
     this.jobTemplate.addTrigger(trigger);
 
@@ -93,6 +105,18 @@ export class JobNewComponent {
       this.addGracePeriodPolicy = false;
   }
 
+  onRetryFailedPolicyAdded(policy: RetryFailedPolicy) {
+      this.jobTemplate.retryFailedPolicy = policy;
+
+      this.addRetryFailedPolicy = false;
+  }
+
+  onRunSubJobsPolicyAdded(policy: RunSubJobsPolicy) {
+      this.jobTemplate.runSubJobsPolicy = policy;
+
+      this.addRunSubJobsPolicy = false;
+  }
+
   onRunnerAdded(runner: Runner) {
     this.jobTemplate.runner = runner;
 
@@ -110,6 +134,14 @@ export class JobNewComponent {
 
   onRemoveGracePeriodPolicy() {
       this.jobTemplate.gracePeriodPolicy = null;
+  }
+
+  onRemoveRetryFailedPolicy() {
+      this.jobTemplate.retryFailedPolicy = null;
+  }
+
+  onRemoveRunSubJobsPolicy() {
+      this.jobTemplate.runSubJobsPolicy = null;
   }
 
   onRemoveRunner() {

@@ -4,6 +4,7 @@ import {GracePeriodPolicy} from "../shared/grace-period-policy";
 @Component({
   selector: 'new-grace-period-policy',
   template: `
+      <h6>New grace period policy:</h6>
       <div class="form-group">
           <label for="on-duplicate-run">Period (sec):</label>
           <input type="number" class="form-control" min="1" id="period" required [(ngModel)]="policy.period" name="period">

@@ -29,6 +29,8 @@ import {NewExclusivePolicyComponent} from "./part/new-exclusive.policy.component
 import {ShowExclusivePolicyComponent} from "./part/show-exclusive.policy.component";
 import {NewGracePeriodPolicyComponent} from "./part/new-grace-period.policy.component";
 import {ShowGracePeriodPolicyComponent} from "./part/show-grace-period.policy.component";
+import {NewRetryFailedPolicyComponent} from "./part/new-retry-failed.policy.component";
+import {ShowRetryFailedPolicyComponent} from "./part/show-retry-failed.policy.component";
 
 
 @NgModule({
@@ -52,6 +54,8 @@ import {ShowGracePeriodPolicyComponent} from "./part/show-grace-period.policy.co
     NewExclusivePolicyComponent,
     NewGracePeriodPolicyComponent,
     ShowGracePeriodPolicyComponent,
+    NewRetryFailedPolicyComponent,
+    ShowRetryFailedPolicyComponent,
   ],
   imports: [
     BrowserModule,

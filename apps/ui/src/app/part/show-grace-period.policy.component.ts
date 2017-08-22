@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
-import {ExclusivePolicy} from "../shared/exclusive-policy";
 import {GracePeriodPolicy} from "../shared/grace-period-policy";
 
 @Component({
