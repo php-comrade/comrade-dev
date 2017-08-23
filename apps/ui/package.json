@@ -26,12 +26,13 @@
     "angular2-moment": "^1.4.0",
     "angular2-uuid": "^1.1.1",
     "core-js": "^2.4.1",
+    "jsonformatter": "^0.6.0",
+    "later": "RickCarlino/later",
     "ng2-date-picker": "^2.3.1",
     "ng2-datepicker": "^1.8.3",
-    "rxjs": "^5.1.0",
-    "zone.js": "^0.8.4",
     "prettycron": "^0.10.0",
-    "later": "RickCarlino/later"
+    "rxjs": "^5.1.0",
+    "zone.js": "^0.8.4"
   },
   "devDependencies": {
     "@angular/cli": "1.1.2",

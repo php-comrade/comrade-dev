@@ -15,6 +15,9 @@
     <li class="nav-item">
       <a class="nav-link" [routerLink]="['/template', jobTemplate.templateId, 'view', 'timeline' ]">Timeline</a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link" [routerLink]="['/template', jobTemplate.templateId, 'view', 'raw' ]">Raw</a>
+    </li>
   </ul>
 
   <job-run-now [jobTemplate]="jobTemplate" (onRunFailed)="onRunFailed($event)" (onRunSucceeded)="onRunSucceeded($event)"></job-run-now>
@@ -45,5 +48,9 @@
 
   <div *ngIf="tab === 'timeline'">
     <timeline [jobTemplateId]="jobTemplate.templateId"></timeline>
+  </div>
+
+  <div *ngIf="tab == 'raw'">
+    <prettyjson [obj]="jobTemplate"></prettyjson>
   </div>
 </div>

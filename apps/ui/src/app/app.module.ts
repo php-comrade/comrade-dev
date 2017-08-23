@@ -37,6 +37,7 @@ import {JobViewComponent} from "./page/job-view.component";
 import {TimeAgoComponent} from "./part/time-ago.component";
 import {TimeCalComponent} from "./part/time-cal.component";
 import {ProcessGraphImageComponent} from "./part/process-graph-image.component";
+import {PrettyJsonModule} from 'angular2-prettyjson';
 
 
 @NgModule({
@@ -77,6 +78,7 @@ import {ProcessGraphImageComponent} from "./part/process-graph-image.component";
     NgbModule.forRoot(),
     MomentModule,
     DatePickerModule,
+    PrettyJsonModule,
   ],
   providers: [
       JobTemplateService,

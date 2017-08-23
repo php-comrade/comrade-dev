@@ -20,7 +20,7 @@
   </div>
 </div>
 <div *ngIf="tab == 'graph' && job">
-  Fuck
+  <process-graph-image [processId]="job.processId"></process-graph-image>
 </div>
 <div *ngIf="tab === 'timeline' && job">
   Fuck
