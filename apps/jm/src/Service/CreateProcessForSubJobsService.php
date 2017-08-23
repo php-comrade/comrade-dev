@@ -1,7 +1,6 @@
 <?php
 namespace App\Service;
 
-use App\Infra\Uuid;
 use App\Model\JobTemplate;
 use App\Model\Process;
 use App\Pvm\Behavior\IdleBehavior;
@@ -14,14 +13,14 @@ class CreateProcessForSubJobsService
 {
     /**
      * @param Token $parentProcessToken
-     * @param JobTemplate[] $jobTemplates
+     * @param \Traversable|JobTemplate[] $jobTemplates
      *
      * @return Process
      */
-    public function createProcess(Token $parentProcessToken, array $jobTemplates) : Process
+    public function createProcess(Token $parentProcessToken, \Traversable $jobTemplates, string $processTemplateId) : Process
     {
         $process = new Process();
-        $process->setId(Uuid::generate());
+        $process->setId($processTemplateId);
 
         $startTask = $process->createNode();
         $startTask->setLabel('Start process');

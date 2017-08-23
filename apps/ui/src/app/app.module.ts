@@ -38,6 +38,9 @@ import {TimeAgoComponent} from "./part/time-ago.component";
 import {TimeCalComponent} from "./part/time-cal.component";
 import {ProcessGraphImageComponent} from "./part/process-graph-image.component";
 import {PrettyJsonModule} from 'angular2-prettyjson';
+import {JobListComponent} from "./part/job-list.component";
+import {JobListRowComponent} from "./part/job-list-row.component";
+import {JobListHeaderRowComponent} from "./part/job-list-header-row.component";
 
 
 @NgModule({
@@ -69,6 +72,9 @@ import {PrettyJsonModule} from 'angular2-prettyjson';
     TimeAgoComponent,
     TimeCalComponent,
     ProcessGraphImageComponent,
+    JobListComponent,
+    JobListRowComponent,
+    JobListHeaderRowComponent,
   ],
   imports: [
     BrowserModule,

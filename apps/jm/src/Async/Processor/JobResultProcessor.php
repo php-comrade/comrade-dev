@@ -8,7 +8,6 @@ use App\Infra\JsonSchema\Errors;
 use App\Infra\JsonSchema\SchemaValidator;
 use App\Model\Job;
 use App\Model\SubJobTemplate;
-use App\Service\CreateProcessForSubJobsService;
 use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessExecutionStorage;
@@ -44,11 +43,6 @@ class JobResultProcessor implements PsrProcessor, CommandSubscriberInterface, Qu
     private $jobStorage;
 
     /**
-     * @var CreateProcessForSubJobsService
-     */
-    private $createProcessForSubJobsService;
-
-    /**
      * @var JobTemplateStorage
      */
     private $jobTemplateStorage;
@@ -59,22 +53,19 @@ class JobResultProcessor implements PsrProcessor, CommandSubscriberInterface, Qu
      * @param ProcessEngine $processEngine
      * @param JobStorage $jobStorage
      * @param JobTemplateStorage $jobTemplateStorage
-     * @param CreateProcessForSubJobsService $createProcessForSubJobsService
      */
     public function __construct(
         SchemaValidator $schemaValidator,
         ProcessExecutionStorage $processExecutionStorage,
         ProcessEngine $processEngine,
         JobStorage $jobStorage,
-        JobTemplateStorage $jobTemplateStorage,
-        CreateProcessForSubJobsService $createProcessForSubJobsService
+        JobTemplateStorage $jobTemplateStorage
     ) {
         $this->schemaValidator = $schemaValidator;
         $this->processExecutionStorage = $processExecutionStorage;
         $this->processEngine = $processEngine;
         $this->jobStorage = $jobStorage;
         $this->jobTemplateStorage = $jobTemplateStorage;
-        $this->createProcessForSubJobsService = $createProcessForSubJobsService;
     }
 
     /**
@@ -98,8 +89,6 @@ class JobResultProcessor implements PsrProcessor, CommandSubscriberInterface, Qu
             return Result::reject(Errors::toString($errors, 'Message schema validation has failed.'));
         }
 
-
-
         $message = JobResult::create($data);
         $token = $message->getToken();
 
@@ -112,11 +101,11 @@ class JobResultProcessor implements PsrProcessor, CommandSubscriberInterface, Qu
             $job->setCurrentResult($message->getResult());
 
             if ($message instanceof RunSubJobsResult) {
-                $jobTemplates = iterator_to_array($message->getJobTemplates());
-                foreach ($jobTemplates as $jobTemplate) {
-                    $jobTemplate = SubJobTemplate::createFromJobTemplate($job->getId(), $jobTemplate);
+                foreach ($message->getJobTemplates() as $subJobTemplate) {
+                    $subJobTemplate = SubJobTemplate::createFromJobTemplate($job->getId(), $subJobTemplate);
+                    $subJobTemplate->setProcessTemplateId($message->getProcessTemplateId());
 
-                    $this->jobTemplateStorage->insert($jobTemplate);
+                    $this->jobTemplateStorage->insert($subJobTemplate);
                 }
             }
 

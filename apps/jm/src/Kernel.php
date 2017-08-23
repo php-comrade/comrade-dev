@@ -5,11 +5,12 @@ namespace App;
 use App\Async\AddTrigger;
 use App\Async\CreateJob;
 use App\Async\GetJob;
-use App\Async\GetProcessGraph;
+use App\Async\GetSubJobs;
 use App\Async\GetTimeline;
 use App\Async\RunSubJobsResult;
 use App\Async\RunJob;
 use App\Async\JobResult;
+use App\Async\ScheduleJob;
 use App\Infra\DependencyInjection\RegisterPvmBehaviorPass;
 use App\Infra\Yadm\ObjectBuilderHook;
 use App\Model\CronTrigger;
@@ -18,6 +19,7 @@ use App\Model\GracePeriodPolicy;
 use App\Model\Job;
 use App\Model\JobResult as JobResultModel;
 use App\Model\JobTemplate;
+use App\Model\NowTrigger;
 use App\Model\QueueRunner;
 use App\Model\Process;
 use App\Model\RetryFailedPolicy;
@@ -112,13 +114,15 @@ final class Kernel extends BaseKernel
             SubJobTemplate::SCHEMA => SubJobTemplate::class,
             SubJob::SCHEMA => SubJob::class,
             RunSubJobsResult::SCHEMA => RunSubJobsResult::class,
-            GetJob::SCHEMA => GetJob::class,
 
             JobResultModel::SCHEMA => JobResultModel::class,
             CreateJob::SCHEMA => CreateJob::class,
             RunJob::SCHEMA => RunJob::class,
             AddTrigger::SCHEMA => AddTrigger::class,
             GetTimeline::SCHEMA => GetTimeline::class,
+            ScheduleJob::SCHEMA => ScheduleJob::class,
+            GetJob::SCHEMA => GetJob::class,
+            GetSubJobs::SCHEMA => GetSubJobs::class,
 
             GracePeriodPolicy::SCHEMA => GracePeriodPolicy::class,
             RetryFailedPolicy::SCHEMA => RetryFailedPolicy::class,
@@ -129,6 +133,7 @@ final class Kernel extends BaseKernel
 
             CronTrigger::SCHEMA => CronTrigger::class,
             SimpleTrigger::SCHEMA => SimpleTrigger::class,
+            NowTrigger::SCHEMA => NowTrigger::class,
         ]))->register();
     }
 }

@@ -163,6 +163,14 @@ class JobTemplate
         return get_objects($this, 'triggers');
     }
 
+    /**
+     * @return void
+     */
+    public function removeTriggers():void
+    {
+        set_value($this, 'triggers', null);
+    }
+
     public function setRunner(Runner $executor): void
     {
         set_object($this, 'runner', $executor);

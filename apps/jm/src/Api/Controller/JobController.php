@@ -2,6 +2,7 @@
 namespace App\Api\Controller;
 
 use App\Async\GetJob;
+use App\Async\GetSubJobs;
 use App\Async\GetTimeline;
 use App\Infra\JsonSchema\SchemaValidator;
 use App\JobStatus;
@@ -57,6 +58,44 @@ class JobController
         $response->setEncodingOptions(JsonResponse::DEFAULT_ENCODING_OPTIONS | JSON_PRETTY_PRINT);
 
         return $response;
+    }
+
+    /**
+     * @Extra\Route("/get-sub-jobs")
+     * @Extra\Method("POST")
+     *
+     * @param Request $request
+     * @param JobStorage $jobStorage
+     * @param SchemaValidator $schemaValidator
+     *
+     * @return JsonResponse
+     */
+    public function getSubJobsAction(Request $request, JobStorage $jobStorage, SchemaValidator $schemaValidator)
+    {
+        try {
+            $data = JSON::decode($request->getContent());
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException('The content is not valid json.', null, $e);
+        }
+
+        if ($errors = $schemaValidator->validate($data, GetSubJobs::SCHEMA)) {
+            return new JsonResponse($errors, 400);
+        }
+
+        $getSubJobs = GetSubJobs::create($data);
+
+        if (false == $job = $jobStorage->findOne(['id' => $getSubJobs->getJobId()])) {
+            throw new NotFoundHttpException(sprintf('The job with id "%s" could not be found', $getSubJobs->getJobId()));
+        }
+
+        $rawSubJobs = [];
+        foreach ($jobStorage->find(['parentId' => $getSubJobs->getJobId()]) as $subJob) {
+            $rawSubJobs[] = get_values($subJob);
+        }
+
+        return new JsonResponse([
+            'subJobs' => $rawSubJobs,
+        ]);
     }
 
     /**

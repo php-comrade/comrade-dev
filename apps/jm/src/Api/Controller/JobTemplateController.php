@@ -2,11 +2,14 @@
 namespace App\Api\Controller;
 
 use App\Async\AddTrigger;
+use App\Async\Commands;
 use App\Async\CreateJob;
+use App\Async\ScheduleJob;
 use App\Infra\JsonSchema\SchemaValidator;
 use App\Service\CreateJobTemplateService;
 use App\Service\ScheduleJobService;
 use App\Storage\JobTemplateStorage;
+use Enqueue\Client\ProducerInterface;
 use Enqueue\Util\JSON;
 use function Makasim\Values\get_values;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
@@ -76,7 +79,7 @@ class JobTemplateController
      *
      * @return Response
      */
-    public function addTriggerAction(Request $request, SchemaValidator $schemaValidator, JobTemplateStorage $jobTemplateStorage, ScheduleJobService $scheduleJobService)
+    public function addTriggerAction(Request $request, SchemaValidator $schemaValidator, JobTemplateStorage $jobTemplateStorage, ProducerInterface $producer)
     {
         try {
             $data = JSON::decode($request->getContent());
@@ -99,7 +102,7 @@ class JobTemplateController
         $jobTemplate->addTrigger($trigger);
         $jobTemplateStorage->update($jobTemplate);
 
-        $scheduleJobService->schedule($jobTemplate, new \ArrayIterator([$trigger]));
+        $producer->sendCommand(Commands::SCHEDULE_JOB, ScheduleJob::createForSingle($jobTemplate, $trigger));
 
         return new JsonResponse([
             'jobTemplate' => get_values($jobTemplate),

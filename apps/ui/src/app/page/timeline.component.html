@@ -3,41 +3,12 @@
 <div *ngIf="futureJobs && doneJobs">
     <table class="table table-striped table-hover table-bordered">
         <thead>
-            <tr>
-                <th>Id:</th>
-                <th>Name:</th>
-                <th>Created at</th>
-                <th>Updated at</th>
-                <th>Status</th>
-                <th></th>
-            </tr>
+            <tr job-list-header-row></tr>
         </thead>
         <tbody>
-            <tr *ngFor="let job of futureJobs">
-                <td>{{job.id}}</td>
-                <td>{{job.name}}</td>
-                <td><time-ago [date]="job.createdAt"></time-ago></td>
-                <td>
-                    <time-ago [date]="job.currentResult.createdAt"></time-ago>
-                </td>
-                <td>
-                    <job-status [status]="job.currentResult.status"></job-status>
-                </td>
-                <td></td>
-            </tr>
+            <tr job-list-row *ngFor="let job of futureJobs" [viewButton]="false" [job]="job"></tr>
             <tr><td colspan="6" class="text-center">Now</td></tr>
-            <tr *ngFor="let job of doneJobs">
-                <td>{{job.id}}</td>
-                <td>{{job.name}}</td>
-                <td><time-ago [date]="job.createdAt"></time-ago></td>
-                <td><time-ago [date]="job.currentResult.createdAt"></time-ago></td>
-                <td>
-                    <job-status [status]="job.currentResult.status"></job-status>
-                </td>
-                <td>
-                    <button type="button" class="btn btn-primary btn-sm" [routerLink]="['/job', job.id, 'view' ]">View</button>
-                </td>
-            </tr>
+            <tr job-list-row *ngFor="let job of doneJobs" [viewButton]="true" [job]="job"></tr>
         </tbody>
     </table>
 </div>

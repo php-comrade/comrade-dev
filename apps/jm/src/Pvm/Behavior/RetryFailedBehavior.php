@@ -52,7 +52,7 @@ class RetryFailedBehavior implements Behavior
             $retryLimit = $job->getRetryFailedPolicy()->getRetryLimit();
 
             $retryAttempts = get_value($job, 'retryAttempts', 0);
-            if ($retryAttempts >= $retryLimit) {
+            if ($retryAttempts > $retryLimit) {
                 return ['failed'];
             }
 

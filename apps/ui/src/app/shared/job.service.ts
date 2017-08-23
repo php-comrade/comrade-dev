@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Observable} from "rxjs/Observable";
 import {GetJob} from "./messages/get-job";
+import {GetSubJobs} from "./messages/get-sub-jobs";
 
 @Injectable()
 export class JobService {
@@ -20,6 +21,12 @@ export class JobService {
             .toPromise()
             .then(response => response.json().jobs as Job[])
             .catch(this.handleError);
+    }
+
+    getSubJobs(getSubJobs: GetSubJobs): Observable<Job[]> {
+        return this.http.post(`http://jm.loc/api/get-sub-jobs`, JSON.stringify(getSubJobs), {headers: this.headers})
+            .map(response => response.json().subJob as Job[])
+            .catch((response: Response) => Observable.throw(response));
     }
 
     getJob(getJob: GetJob): Observable<Job> {

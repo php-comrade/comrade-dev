@@ -20,9 +20,12 @@
         <li class="nav-item">
             <a class="nav-link" [ngClass]="{ 'active': tab == 'raw' }" [routerLink]="['/job', job.id, 'view', 'raw' ]">Raw</a>
         </li>
+        <li *ngIf="job.runSubJobsPolicy" class="nav-item">
+            <a class="nav-link" [ngClass]="{ 'active': tab == 'sub-jobs' }" [routerLink]="['/job', job.id, 'view', 'sub-jobs' ]">Sub jobs</a>
+        </li>
     </ul>
 
-    <div *ngIf="tab == 'summary' && job">
+    <div *ngIf="tab == 'summary'">
         <p>Template Id: <a [routerLink]="['/template', job.templateId, 'view' ]">{{job.templateId}}</a></p>
         <p>Process Template Id: {{job.processTemplateId}}</p>
         <p>Name: {{job.name}}</p>
@@ -42,15 +45,19 @@
         <show-run-sub-jobs-policy *ngIf="job.runSubJobsPolicy" [policy]="job.runSubJobsPolicy"></show-run-sub-jobs-policy>
     </div>
 
-    <div *ngIf="tab == 'execution' && job">
+    <div *ngIf="tab == 'execution'">
         <div style="height: 35px" *ngFor="let result of job.results; let index = index">
             <time-cal [date]="result.createdAt"></time-cal>(<time-ago [date]="result.createdAt"></time-ago>)<job-status [status]="result.status"></job-status>
         </div>
     </div>
-    <div *ngIf="tab == 'graph' && job">
+    <div *ngIf="tab == 'graph'">
         <process-graph-image [processId]="job.processId"></process-graph-image>
     </div>
-    <div *ngIf="tab === 'raw' && job">
+    <div *ngIf="tab === 'raw'">
         <prettyjson [obj]="job"></prettyjson>
+    </div>
+
+    <div *ngIf="tab === 'sub-jobs'">
+        <job-list [jobs]="subJobs" [viewButton]="true"></job-list>
     </div>
 </div>

@@ -7,16 +7,16 @@
 
   <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link" [routerLink]="['/template', jobTemplate.templateId, 'view', 'summary' ]">Summary</a>
+      <a class="nav-link" [ngClass]="{ 'active': tab == 'summary' }" [routerLink]="['/template', jobTemplate.templateId, 'view', 'summary' ]">Summary</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" [routerLink]="['/template', jobTemplate.templateId, 'view', 'graph' ]">Graph</a>
+      <a class="nav-link" [ngClass]="{ 'active': tab == 'graph' }" [routerLink]="['/template', jobTemplate.templateId, 'view', 'graph' ]">Graph</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" [routerLink]="['/template', jobTemplate.templateId, 'view', 'timeline' ]">Timeline</a>
+      <a class="nav-link" [ngClass]="{ 'active': tab == 'timeline' }" [routerLink]="['/template', jobTemplate.templateId, 'view', 'timeline' ]">Timeline</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" [routerLink]="['/template', jobTemplate.templateId, 'view', 'raw' ]">Raw</a>
+      <a class="nav-link" [ngClass]="{ 'active': tab == 'raw' }" [routerLink]="['/template', jobTemplate.templateId, 'view', 'raw' ]">Raw</a>
     </li>
   </ul>
 
