@@ -1,6 +1,7 @@
 <?php
 namespace App\Pvm\Behavior;
 
+use App\Async\Commands;
 use App\Async\Topics;
 use App\JobStatus;
 use App\Model\Job;
@@ -55,9 +56,9 @@ class GracePeriodPolicyBehavior implements Behavior, SignalBehavior
         $quartzJob = JobBuilder::newJob(EnqueueResponseJob::class)->build();
         $trigger = TriggerBuilder::newTrigger()
             ->forJobDetail($quartzJob)
-            ->withSchedule(SimpleScheduleBuilder::simpleSchedule()->repeatForever())
+            ->withSchedule(SimpleScheduleBuilder::simpleSchedule())
             ->setJobData([
-                'topic' => Topics::PVM_HANDLE_ASYNC_TRANSITION,
+                'command' => Commands::PVM_HANDLE_ASYNC_TRANSITION,
                 'process' => $process->getId(),
                 'token' => $token->getId(),
             ])
