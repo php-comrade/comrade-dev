@@ -43,7 +43,8 @@ class RetryFailedBehavior implements Behavior
     {
         /** @var Process $process */
         $process = $token->getProcess();
-        $this->jobStorage->lockByJobId($process->getTokenJobId($token), function(Job $job) use ($token) {
+
+        return $this->jobStorage->lockByJobId($process->getTokenJobId($token), function(Job $job) use ($token) {
             if (false == $job->getCurrentResult()->isFailed()) {
                 return ['complete'];
             }
