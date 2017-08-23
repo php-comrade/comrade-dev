@@ -22,8 +22,12 @@ export class JobViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params
-        .switchMap((params: Params) => this.jobService.getJob(new GetJob(params['id'])))
-        .subscribe((job: Job) => this.job = job);
+
+
+      this.route.params
+          .do((params: Params) => this.tab = params['tab'] || 'summary')
+          .switchMap((params: Params) => this.jobService.getJob(new GetJob(params['id'])))
+          .subscribe((job: Job) => this.job = job);
   }
 
   switchTab(newTab: string, event):void {

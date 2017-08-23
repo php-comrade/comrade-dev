@@ -15,6 +15,7 @@ const routes: Routes = [
     { path: 'template/:id/view', component: TemplateViewComponent },
     { path: 'template/:id/view/:tab', component: TemplateViewComponent },
     { path: 'job/:id/view', component: JobViewComponent },
+    { path: 'job/:id/view/:tab', component: JobViewComponent },
 ];
 
 @NgModule({

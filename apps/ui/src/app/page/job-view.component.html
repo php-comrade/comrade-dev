@@ -1,27 +1,56 @@
-<h2 *ngIf="job">Job {{ job.name }}</h2>
-
 <div *ngIf="error" class="alert alert-danger" role="alert">{{ error }}</div>
 
-<ul class="nav nav-tabs">
-  <li class="nav-item">
-    <a class="nav-link" [ngClass]="{ 'active': tab == 'summary' }" (click)="switchTab('summary', $event)">Summary</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" [ngClass]="{ 'active': tab == 'graph' }" (click)="switchTab('graph', $event)">Graph</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" [ngClass]="{ 'active': tab == 'timeline' }" (click)="switchTab('timeline', $event)">Time line</a>
-  </li>
-</ul>
+<div *ngIf="!job">Loading</div>
 
-<div *ngIf="tab == 'summary' && job">
-  <div style="height: 35px" *ngFor="let result of job.results; let index = index">
-    <time-cal [date]="result.createdAt"></time-cal>(<time-ago [date]="result.createdAt"></time-ago>)<job-status [status]="result.status"></job-status>
-  </div>
-</div>
-<div *ngIf="tab == 'graph' && job">
-  <process-graph-image [processId]="job.processId"></process-graph-image>
-</div>
-<div *ngIf="tab === 'timeline' && job">
-  Fuck
+<div *ngIf="job">
+    <h2 *ngIf="job">Job {{ job.name }}</h2>
+
+    <div *ngIf="error" class="alert alert-danger" role="alert">{{ error }}</div>
+
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link" [ngClass]="{ 'active': tab == 'summary' }" [routerLink]="['/job', job.id, 'view', 'summary' ]">Summary</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [ngClass]="{ 'active': tab == 'execution' }" [routerLink]="['/job', job.id, 'view', 'execution' ]">Execution</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [ngClass]="{ 'active': tab == 'graph' }" [routerLink]="['/job', job.id, 'view', 'graph' ]">Graph</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" [ngClass]="{ 'active': tab == 'raw' }" [routerLink]="['/job', job.id, 'view', 'raw' ]">Raw</a>
+        </li>
+    </ul>
+
+    <div *ngIf="tab == 'summary' && job">
+        <p>Template Id: <a [routerLink]="['/template', job.templateId, 'view' ]">{{job.templateId}}</a></p>
+        <p>Process Template Id: {{job.processTemplateId}}</p>
+        <p>Name: {{job.name}}</p>
+        <p>Details: {{job.details | json }}</p>
+        <p>Created At: <time-ago [date]="job.createdAt"></time-ago>
+
+        <h3>Triggers: </h3>
+        <list-triggers [triggers]="job.triggers" [showRemove]="false"></list-triggers>
+
+        <h3>Runner: </h3>
+        <list-runner *ngIf="job.runner" [runner]="job.runner"></list-runner>
+
+        <h3>Polices: </h3>
+        <show-exclusive-policy *ngIf="job.exclusivePolicy" [policy]="job.exclusivePolicy"></show-exclusive-policy>
+        <show-grace-period-policy *ngIf="job.gracePeriodPolicy" [policy]="job.gracePeriodPolicy"></show-grace-period-policy>
+        <show-retry-failed-policy *ngIf="job.retryFailedPolicy" [policy]="job.retryFailedPolicy"></show-retry-failed-policy>
+        <show-run-sub-jobs-policy *ngIf="job.runSubJobsPolicy" [policy]="job.runSubJobsPolicy"></show-run-sub-jobs-policy>
+    </div>
+
+    <div *ngIf="tab == 'execution' && job">
+        <div style="height: 35px" *ngFor="let result of job.results; let index = index">
+            <time-cal [date]="result.createdAt"></time-cal>(<time-ago [date]="result.createdAt"></time-ago>)<job-status [status]="result.status"></job-status>
+        </div>
+    </div>
+    <div *ngIf="tab == 'graph' && job">
+        <process-graph-image [processId]="job.processId"></process-graph-image>
+    </div>
+    <div *ngIf="tab === 'raw' && job">
+        <prettyjson [obj]="job"></prettyjson>
+    </div>
 </div>
