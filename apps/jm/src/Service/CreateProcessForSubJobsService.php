@@ -1,7 +1,8 @@
 <?php
 namespace App\Service;
 
-use App\Model\JobTemplate;
+use App\Infra\Uuid;
+use App\Model\Job;
 use App\Model\Process;
 use App\Pvm\Behavior\IdleBehavior;
 use App\Pvm\Behavior\NotifyParentProcessBehavior;
@@ -13,14 +14,14 @@ class CreateProcessForSubJobsService
 {
     /**
      * @param Token $parentProcessToken
-     * @param \Traversable|JobTemplate[] $jobTemplates
+     * @param \Traversable|Job[] $jobs
      *
      * @return Process
      */
-    public function createProcess(Token $parentProcessToken, \Traversable $jobTemplates, string $processTemplateId) : Process
+    public function createProcess(Token $parentProcessToken, \Traversable $jobs) : Process
     {
         $process = new Process();
-        $process->setId($processTemplateId);
+        $process->setId(Uuid::generate());
 
         $startTask = $process->createNode();
         $startTask->setLabel('Start process');
@@ -30,11 +31,11 @@ class CreateProcessForSubJobsService
         $failedTasks = [];
         $completedTasks = [];
 
-        foreach ($jobTemplates as $jobTemplate) {
+        foreach ($jobs as $job) {
             $runJobTask = $process->createNode();
-            $runJobTask->setLabel('Run job: '.$jobTemplate->getName());
+            $runJobTask->setLabel('Run job: '.$job->getName());
             $runJobTask->setBehavior(QueueRunnerBehavior::class);
-            $process->addNodeJobTemplate($runJobTask, $jobTemplate);
+            $process->addNodeJob($runJobTask, $job);
             $transition = $process->createTransition($startTask, $runJobTask);
             $transition->setAsync(true);
 

@@ -77,7 +77,18 @@ class BuildAndExecuteProcessService
             $job->addResult($result);
             $job->setCurrentResult($result);
 
-            $process->addJob($job);
+            $process->map($job->getId(), $job->getTemplateId());
+
+            $this->jobStorage->insert($job);
+        }
+
+        foreach (get_value($process, 'jobIds') as $jobId) {
+            $job = $this->jobStorage->findOne(['id' => $jobId]);
+            $job->setProcessId($process->getId());
+
+            $result = JobResult::createFor(JobStatus::STATUS_NEW);
+            $job->addResult($result);
+            $job->setCurrentResult($result);
 
             $this->jobStorage->insert($job);
         }

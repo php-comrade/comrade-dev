@@ -67,8 +67,8 @@ class ScheduleJobService
                     ->forJobDetail($job)
                     ->withSchedule($quartzScheduleBuilder)
                     ->setJobData([
-                        'command' => Commands::EXECUTE_JOB,
-                        'jobTemplate' => $jobTemplate->getTemplateId(),
+                        'command' => Commands::EXECUTE_PROCESS,
+                        'processTemplateId' => $jobTemplate->getProcessTemplateId(),
                     ])
                     ->build();
 
@@ -97,8 +97,8 @@ class ScheduleJobService
                     ->forJobDetail($job)
                     ->withSchedule($quartzScheduleBuilder)
                     ->setJobData([
-                        'command' => Commands::EXECUTE_JOB,
-                        'jobTemplate' => $jobTemplate->getTemplateId(),
+                        'command' => Commands::EXECUTE_PROCESS,
+                        'processTemplateId' => $jobTemplate->getProcessTemplateId(),
                     ])
                     ->build();
 
@@ -113,7 +113,10 @@ class ScheduleJobService
             }
 
             if ($trigger instanceof NowTrigger) {
-                $this->producer->sendCommand(Commands::EXECUTE_JOB, ['jobTemplate' => $jobTemplate->getTemplateId()]);
+                $this->producer->sendCommand(
+                    Commands::EXECUTE_PROCESS,
+                    ['processTemplateId' => $jobTemplate->getProcessTemplateId()]
+                );
 
                 return;
             }

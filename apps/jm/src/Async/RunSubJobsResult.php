@@ -25,9 +25,12 @@ class RunSubJobsResult extends JobResult
      */
     public function addJobTemplate(JobTemplate $jobTemplate):void
     {
-        // the message's process template id must be used at server. 
-        $jobTemplate->setProcessTemplateId('ffffffff-ffff-ffff-ffff-ffffffffffff');
-        
+        if (false == $processTemplateId = $this->getProcessTemplateId()) {
+            throw new \LogicException('The process template id must be set before calling this method');
+        }
+
+        $jobTemplate->setProcessTemplateId($processTemplateId);
+
         add_object($this, 'jobTemplates', $jobTemplate);
     }
     

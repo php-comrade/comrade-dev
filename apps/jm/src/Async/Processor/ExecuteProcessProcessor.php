@@ -12,7 +12,7 @@ use Interop\Queue\PsrMessage;
 use Interop\Queue\PsrProcessor;
 use Enqueue\Util\JSON;
 
-class ExecuteJobProcessor implements PsrProcessor, CommandSubscriberInterface
+class ExecuteProcessProcessor implements PsrProcessor, CommandSubscriberInterface
 {
     /**
      * @var JobTemplateStorage
@@ -54,12 +54,13 @@ class ExecuteJobProcessor implements PsrProcessor, CommandSubscriberInterface
         }
 
         $data = JSON::decode($psrMessage->getBody());
-        if (false == $jobTemplate = $this->jobTemplateStorage->findOne(['templateId' => $data['jobTemplate']])) {
-            return Result::reject(sprintf('The job template with id "%s" could not be found', $data['jobTemplate']));
+
+        if (false == array_key_exists('templateProcessId', $data)) {
+            return Result::reject('The message does not contain required field "templateProcessId"');
         }
 
-        if (false == $processTemplate = $this->processStorage->findOne(['id' => $jobTemplate->getProcessTemplateId()])) {
-            return Result::reject(sprintf('The process template with id "%s" could not be found', $jobTemplate->getProcessTemplateId()));
+        if (false == $processTemplate = $this->processStorage->findOne(['id' => $data['templateProcessId']])) {
+            return Result::reject(sprintf('The process template with id "%s" could not be found', $data['templateProcessId']));
         }
 
         $this->buildAndExecuteProcessService->buildAndRun($processTemplate);
@@ -72,6 +73,6 @@ class ExecuteJobProcessor implements PsrProcessor, CommandSubscriberInterface
      */
     public static function getSubscribedCommand()
     {
-        return Commands::EXECUTE_JOB;
+        return Commands::EXECUTE_PROCESS;
     }
 }

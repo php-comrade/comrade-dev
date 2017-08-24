@@ -6,6 +6,7 @@ use App\Async\JobResult;
 use App\Async\RunSubJobsResult;
 use App\Infra\JsonSchema\Errors;
 use App\Infra\JsonSchema\SchemaValidator;
+use App\Infra\Uuid;
 use App\Model\Job;
 use App\Model\SubJobTemplate;
 use App\Storage\JobStorage;
@@ -105,7 +106,11 @@ class JobResultProcessor implements PsrProcessor, CommandSubscriberInterface, Qu
                     $subJobTemplate = SubJobTemplate::createFromJobTemplate($job->getId(), $subJobTemplate);
                     $subJobTemplate->setProcessTemplateId($message->getProcessTemplateId());
 
-                    $this->jobTemplateStorage->insert($subJobTemplate);
+                    $job = Job::createFromTemplate($subJobTemplate);
+                    $job->setId(Uuid::generate());
+                    $job->setCreatedAt(new \DateTime('now'));
+
+                    $this->jobStorage->insert($job);
                 }
             }
 

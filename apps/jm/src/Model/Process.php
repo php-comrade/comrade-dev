@@ -29,9 +29,22 @@ class Process extends PvmProcess
         set_value($this, 'jobTemplateIds', $jobTemplateIds);
     }
 
-    public function addJob(Job $job)
+    /**
+     * @param Node $node
+     * @param Job $job
+     */
+    public function addNodeJob(Node $node, Job $job):void
     {
-        add_value($this, 'jobIds', $job->getId(), $job->getTemplateId());
+        if ($node->getProcess() !== $this) {
+            throw new \LogicException('The node is not from this processes');
+        }
+
+        set_value($node, 'jobId', $job->getId());
+    }
+
+    public function map(string $jobTemplateId, string $jobId):void
+    {
+        add_value($this, 'jobIds', $jobId, $jobTemplateId);
     }
 
     /**
@@ -51,6 +64,10 @@ class Process extends PvmProcess
      */
     public function getNodeJobId(Node $node):string
     {
+        if ($jobId = get_value($node, 'jobId', false)) {
+            return $jobId;
+        }
+
         $jobTemplateId = get_value($node, 'jobTemplateId');
 
         return get_value($node->getProcess(), 'jobIds.'.$jobTemplateId);
