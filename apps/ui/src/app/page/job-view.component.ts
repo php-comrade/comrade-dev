@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute, Params} from "@angular/router";
+import { Title }     from '@angular/platform-browser';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/filter';
 import {JobService} from "../shared/job.service";
@@ -21,10 +22,13 @@ export class JobViewComponent implements OnInit {
 
   constructor(
       private jobService: JobService,
-      private route: ActivatedRoute
+      private route: ActivatedRoute,
+      private titleService: Title,
   ) { }
 
   ngOnInit(): void {
+      this.titleService.setTitle('JM. Job view');
+
       this.route.params
           .do((params: Params) => this.tab = params['tab'] || 'summary')
           .switchMap((params: Params) => this.jobService.getJob(new GetJob(params['id'])))

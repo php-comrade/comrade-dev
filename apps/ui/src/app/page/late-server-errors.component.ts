@@ -4,6 +4,7 @@ import {ErrorService} from "../shared/error.service";
 import {ServerError} from "../shared/server-error";
 import {Date as MyDate} from "../shared/date";
 import {Observable} from "rxjs/Observable";
+import {Title} from "@angular/platform-browser";
 
 
 @Component({
@@ -31,9 +32,14 @@ export class LateServerErrorsComponent implements OnInit {
     triggerRequestRaw: boolean[] = [];
     triggerQueueRaw: boolean[] = [];
 
-    constructor(private errorService: ErrorService) { }
+    constructor(
+        private errorService: ErrorService,
+        private titleService: Title,
+    ) { }
 
     ngOnInit(): void {
+        this.titleService.setTitle('JM. Server errors');
+
         this.refresh();
 
         Observable.interval(2000).subscribe(() => this.reorderErrors());

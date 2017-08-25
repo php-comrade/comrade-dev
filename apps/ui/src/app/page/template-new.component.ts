@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {JobTemplate} from "../shared/job-template";
 import {JobTemplateService} from "../shared/job-template.service";
 import * as uuid from "uuid";
@@ -12,12 +12,13 @@ import {ExclusivePolicy} from "../shared/exclusive-policy";
 import {GracePeriodPolicy} from "../shared/grace-period-policy";
 import {RetryFailedPolicy} from "../shared/retry-failed-policy";
 import {RunSubJobsPolicy} from "../shared/run-sub-jobs-policy";
+import {Title} from "@angular/platform-browser";
 
 @Component({
   selector: 'template-new',
   templateUrl: './template-new.component.html',
 })
-export class TemplateNewComponent {
+export class TemplateNewComponent implements OnInit {
   jobTemplate: JobTemplate;
   submitted: boolean;
   message: string;
@@ -29,12 +30,16 @@ export class TemplateNewComponent {
   addRetryFailedPolicy: boolean = false;
   addRunSubJobsPolicy: boolean = false;
 
-  constructor(private jobTemplateService: JobTemplateService, private router: Router) {
+  constructor(private jobTemplateService: JobTemplateService, private router: Router, private titleService: Title) {
     this.jobTemplate = new JobTemplate();
     this.jobTemplate.templateId = uuid.v4();
     this.jobTemplate.processTemplateId = uuid.v4();
     this.submitted = false;
     this.message = '';
+  }
+
+  ngOnInit():void {
+      this.titleService.setTitle('JM. New template');
   }
 
   onFormChange(): void {
