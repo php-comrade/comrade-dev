@@ -3,6 +3,7 @@ namespace App\Infra\Error;
 
 use App\Async\Processor\StoreInternalErrorProcessor;
 use App\Async\Topics;
+use App\Infra\Uuid;
 use Enqueue\Client\Config;
 use Enqueue\Client\ProducerInterface;
 use Enqueue\Consumption\Context;
@@ -41,8 +42,7 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
         $request = $event->getRequest();
         $exception = $event->getException();
 
-        $error = new Error();
-        $error->setValue('createdAt', $this->now());
+        $error = $this->createNewError();
         $error->setValue('request', $this->convertRequest($request, $event->getRequestType()));
         $error->setValue('error', $this->convertThrowable($exception));
 
@@ -55,10 +55,10 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
 
     public function onCliException(ConsoleErrorEvent $event):void
     {
-        $error = new Error();
-        $error->setValue('createdAt', $this->now());
+        $error = $this->createNewError();
         $error->setValue('error', $this->convertThrowable($event->getError()));
-        $error->setValue('cli.argv', isset($_SERVER['argv']) ?: $_SERVER['argv']);
+        $error->setValue('cli.argv', array_key_exists('argv', $_SERVER) ? $_SERVER['argv'] : []);
+        $error->setValue('cli.command', implode(' ', $error->getValue('cli.argv')));
 
         $this->producer->sendEvent(Topics::INTERNAL_ERROR, $error);
     }
@@ -69,13 +69,12 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
             return;
         }
 
-        $error = new Error();
-        $error->setValue('createdAt', $this->now());
+        $error = $this->createNewError();
         $error->setValue('queue.message', $this->convertQueueMessage($context->getPsrMessage()));
 
         $result = $context->getResult();
         $error->setValue('queue.result.status', (string) $result);
-        $error->setValue('queue.result.reason', $result instanceof Result ?: $result->getReason());
+        $error->setValue('queue.result.reason', $result instanceof Result ? $result->getReason() : '');
 
         $this->producer->sendEvent(Topics::INTERNAL_ERROR, $error);
     }
@@ -91,10 +90,10 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
             return;
         }
 
-        $error = new Error();
-        $error->setValue('createdAt', $this->now());
+
+        $error = $this->createNewError();
         $error->setValue('error', $this->convertThrowable($context->getException()));
-        $error->setValue('queue_message', $this->convertQueueMessage($context->getPsrMessage()));
+        $error->setValue('queue.message', $this->convertQueueMessage($context->getPsrMessage()));
 
         $this->producer->sendEvent(Topics::INTERNAL_ERROR, $error);
     }
@@ -108,11 +107,6 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
             KernelEvents::EXCEPTION => 'onHttpException',
             ConsoleEvents::ERROR => 'onCliException'
         ];
-    }
-
-    private function now():int
-    {
-        return (int) (new \DateTime('now'))->format('Uu');
     }
 
     private function convertRequest(Request $request, $requestType):array
@@ -161,6 +155,21 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
             'headers' => $message->getHeaders(),
             'body' => $message->getBody(),
             'isRedelivered' => $message->isRedelivered(),
+            'topicName' => $message->getProperty(Config::PARAMETER_TOPIC_NAME),
+            'processorName' => $message->getProperty(Config::PARAMETER_PROCESSOR_NAME),
+            'processorQueueName' => $message->getProperty(Config::PARAMETER_PROCESSOR_QUEUE_NAME),
+            'commandName' => $message->getProperty(Config::PARAMETER_COMMAND_NAME),
         ];
+    }
+
+    private function createNewError():Error
+    {
+        $nowMicrotime = (int) (new \DateTime('now'))->format('Uu');
+
+        $error = new Error();
+        $error->setValue('createdAt', $nowMicrotime);
+        $error->setValue('id', Uuid::generate());
+
+        return $error;
     }
 }

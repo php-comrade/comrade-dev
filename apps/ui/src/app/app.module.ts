@@ -41,6 +41,8 @@ import {PrettyJsonModule} from 'angular2-prettyjson';
 import {JobListComponent} from "./part/job-list.component";
 import {JobListRowComponent} from "./part/job-list-row.component";
 import {JobListHeaderRowComponent} from "./part/job-list-header-row.component";
+import {ErrorService} from "./shared/error.service";
+import {LateServerErrorsComponent} from "./page/late-server-errors.component";
 
 
 @NgModule({
@@ -75,6 +77,7 @@ import {JobListHeaderRowComponent} from "./part/job-list-header-row.component";
     JobListComponent,
     JobListRowComponent,
     JobListHeaderRowComponent,
+    LateServerErrorsComponent,
   ],
   imports: [
     BrowserModule,
@@ -90,6 +93,7 @@ import {JobListHeaderRowComponent} from "./part/job-list-header-row.component";
       JobTemplateService,
       JobService,
       TimelineService,
+      ErrorService,
   ],
   bootstrap: [AppComponent]
 })

@@ -6,6 +6,7 @@ import {TemplateViewComponent} from "./page/template-view.component";
 import {TemplateListComponent} from "./page/template-list.component";
 import {TemplateNewComponent} from "./page/template-new.component";
 import {JobViewComponent} from "./page/job-view.component";
+import {LateServerErrorsComponent} from "./page/late-server-errors.component";
 
 const routes: Routes = [
     { path: '', redirectTo: '/timeline', pathMatch: 'full' },
@@ -16,6 +17,7 @@ const routes: Routes = [
     { path: 'template/:id/view/:tab', component: TemplateViewComponent },
     { path: 'job/:id/view', component: JobViewComponent },
     { path: 'job/:id/view/:tab', component: JobViewComponent },
+    { path: 'errors/late', component: LateServerErrorsComponent },
 ];
 
 @NgModule({

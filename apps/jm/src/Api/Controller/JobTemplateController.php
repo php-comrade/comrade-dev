@@ -6,7 +6,6 @@ use App\Async\Commands;
 use App\Async\CreateJob;
 use App\Async\ScheduleJob;
 use App\Infra\JsonSchema\SchemaValidator;
-use App\Service\CreateJobTemplateService;
 use App\Service\ScheduleJobService;
 use App\Storage\JobTemplateStorage;
 use Enqueue\Client\ProducerInterface;
@@ -30,11 +29,11 @@ class JobTemplateController
      *
      * @param Request $request
      * @param SchemaValidator $schemaValidator
-     * @param CreateJobTemplateService $createJobTemplateService
+     * @param ProducerInterface $producer
      *
      * @return JsonResponse
      */
-    public function createAction(Request $request, SchemaValidator $schemaValidator, CreateJobTemplateService $createJobTemplateService)
+    public function createAction(Request $request, SchemaValidator $schemaValidator, ProducerInterface $producer)
     {
         try {
             $data = JSON::decode($request->getContent());
@@ -46,7 +45,7 @@ class JobTemplateController
             return new JsonResponse($errors, 400);
         }
 
-        $createJobTemplateService->create(CreateJob::create($data)->getJobTemplate());
+        $producer->sendCommand(Commands::CREATE_JOB, $data);
 
         return new JsonResponse('OK');
     }
