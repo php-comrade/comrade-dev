@@ -15,7 +15,7 @@ class CheckMasterProcessExtension implements ExtensionInterface
             throw new \LogicException('The extension rely on MASTER_PROCESS_PID env var set but it is not set.');
         }
 
-        if(false == \swoole_process::kill($mPid,0)){
+        if (false == posix_kill($mPid, 0)) {
             $context->setExecutionInterrupted(true);
 
             $context->getLogger()->info('[CheckMasterProcessExtension] The master process exited. So do I');

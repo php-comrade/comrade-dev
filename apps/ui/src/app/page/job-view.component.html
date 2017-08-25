@@ -26,7 +26,9 @@
     </ul>
 
     <div *ngIf="tab == 'summary'">
-        <p>Template Id: <a [routerLink]="['/template', job.templateId, 'view' ]">{{job.templateId}}</a></p>
+        <p>Id: {{job.id}}</p>
+        <p *ngIf="job?.parentId">Parent Id: <a [routerLink]="['/job', job.parentId, 'view' ]">{{job.parentId}}</a></p>
+        <p *ngIf="!job?.parentId">Template Id: <a [routerLink]="['/template', job.templateId, 'view' ]">{{job.templateId}}</a></p>
         <p>Process Template Id: {{job.processTemplateId}}</p>
         <p>Name: {{job.name}}</p>
         <p>Details: {{job.details | json }}</p>

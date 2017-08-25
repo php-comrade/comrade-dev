@@ -47,7 +47,7 @@ class BuildMongoIndexesService
 
         $db->selectCollection('job')->createIndex([
             'processId' => 1,
-        ], ['unique' => true]);
+        ]);
 
         $db->selectCollection('pvm_process')->createIndex([
             'templateId' => 1,

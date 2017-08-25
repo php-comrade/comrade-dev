@@ -42,6 +42,41 @@ class FooCommand extends Command implements ContainerAwareInterface
 
         $this->getBuildMongoIndexesService()->build();
 
+        $jobTemplate = $this->createDemoSuccessJob();
+//        $jobTemplate = $this->createFooJob();
+
+        $message = CreateJob::create();
+        $message->setJobTemplate($jobTemplate);
+
+        $output->writeln(json_encode(get_values($jobTemplate), JSON_PRETTY_PRINT));
+        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $message);
+
+        $output->writeln('');
+    }
+
+    protected function createDemoSuccessJob():JobTemplate
+    {
+        $template = JobTemplate::create();
+        $template->setName('demo_success_job');
+        $template->setTemplateId(Uuid::generate());
+        $template->setProcessTemplateId(Uuid::generate());
+        $template->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
+
+        $runner = QueueRunner::create();
+        $runner->setQueue('demo_success_job');
+        $template->setRunner($runner);
+
+        $simpleTrigger = SimpleTrigger::create();
+        $simpleTrigger->setIntervalInSeconds(0);
+        $simpleTrigger->setRepeatCount(0);
+        $simpleTrigger->setMisfireInstruction(SimpleTrigger::MISFIRE_INSTRUCTION_FIRE_NOW);
+        $template->addTrigger($simpleTrigger);
+
+        return $template;
+    }
+
+    private function createFooJob():JobTemplate
+    {
         $jobTemplate = JobTemplate::create();
         $jobTemplate->setName('testJob');
         $jobTemplate->setTemplateId(Uuid::generate());
@@ -71,20 +106,13 @@ class FooCommand extends Command implements ContainerAwareInterface
 //        $gracePeriodPolicy->setPeriod(30);
 //        $jobTemplate->setGracePeriodPolicy($gracePeriodPolicy);
 
-        $message = CreateJob::create();
-        $message->setJobTemplate($jobTemplate);
-
-        $output->writeln(json_encode(get_values($jobTemplate), JSON_PRETTY_PRINT));
-        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $message);
-
-        $output->writeln('');
+        return $jobTemplate;
     }
 
     private function getProducer():ProducerInterface
     {
         return $this->container->get(ProducerInterface::class);
     }
-
     private function getYadmRegistry():Registry
     {
         return $this->container->get('yadm');

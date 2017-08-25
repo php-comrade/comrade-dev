@@ -75,7 +75,7 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
 
         /** @var Job[] $subJobs */
         $subJobs = $this->jobStorage->find(['parentId' => $job->getId()]);
-        $process = $this->createProcessForSubJobsService->createProcess($process->getId(), $subJobs);
+        $process = $this->createProcessForSubJobsService->createProcess($token, $subJobs);
         $this->processStorage->insert($process);
 
         $this->producer->sendCommand(Commands::EXECUTE_PROCESS, ['processTemplateId' => $process->getId()]);

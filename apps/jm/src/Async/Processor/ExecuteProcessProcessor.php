@@ -55,12 +55,12 @@ class ExecuteProcessProcessor implements PsrProcessor, CommandSubscriberInterfac
 
         $data = JSON::decode($psrMessage->getBody());
 
-        if (false == array_key_exists('templateProcessId', $data)) {
-            return Result::reject('The message does not contain required field "templateProcessId"');
+        if (false == array_key_exists('processTemplateId', $data)) {
+            return Result::reject('The message does not contain required field "processTemplateId"');
         }
 
-        if (false == $processTemplate = $this->processStorage->findOne(['id' => $data['templateProcessId']])) {
-            return Result::reject(sprintf('The process template with id "%s" could not be found', $data['templateProcessId']));
+        if (false == $processTemplate = $this->processStorage->findOne(['id' => $data['processTemplateId']])) {
+            return Result::reject(sprintf('The process template with id "%s" could not be found', $data['processTemplateId']));
         }
 
         $this->buildAndExecuteProcessService->buildAndRun($processTemplate);

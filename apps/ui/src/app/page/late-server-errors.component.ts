@@ -73,7 +73,7 @@ export class LateServerErrorsComponent implements OnInit {
     }
 
     refresh():void {
-        this.lateErrors = [];
+        this.resetErrors();
 
         this.errorService.getLateErrors().subscribe((errors: ServerError[]) => {
             this.lateErrors = errors.map((error: ServerError) => {
@@ -86,19 +86,25 @@ export class LateServerErrorsComponent implements OnInit {
         });
     }
 
-    deleteOlder(olderSeconds: number):void
-    {
+    deleteOlder(olderSeconds: number):void {
         this.errorService.deleteOlderThan(Date.now() - (olderSeconds * 1000)).subscribe(
         () => this.refresh(),
         err => this.error = err
         );
     }
 
-    deleteAll():void
-    {
+    deleteAll():void {
         this.errorService.deleteAll().subscribe(
             () => this.refresh(),
             err => this.error = err
         );
+    }
+
+    resetErrors(): void {
+        this.lateErrors = null;
+        this.lastMinuteErrors = [];
+        this.lastFiveMinutesErrors = [];
+        this.lastHourErrors = [];
+        this.olderErrors = [];
     }
 }

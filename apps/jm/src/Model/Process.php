@@ -40,11 +40,29 @@ class Process extends PvmProcess
         }
 
         set_value($node, 'jobId', $job->getId());
+        add_value($this, 'jobIds', $job->getId(), $job->getId());
     }
 
     public function map(string $jobTemplateId, string $jobId):void
     {
-        add_value($this, 'jobIds', $jobId, $jobTemplateId);
+        add_value($this, 'templateToJobIds', $jobId, $jobTemplateId);
+        add_value($this, 'jobIds', $jobId, $jobId);
+    }
+
+    /**
+     * @return \Traversable|string[]
+     */
+    public function getJobIds()
+    {
+        return get_value($this, 'jobIds', []);
+    }
+
+    /**
+     * @return \Traversable|string[]
+     */
+    public function getJobTemplateIds()
+    {
+        return get_value($this, 'jobTemplateIds', []);
     }
 
     /**
@@ -70,6 +88,6 @@ class Process extends PvmProcess
 
         $jobTemplateId = get_value($node, 'jobTemplateId');
 
-        return get_value($node->getProcess(), 'jobIds.'.$jobTemplateId);
+        return get_value($node->getProcess(), 'templateToJobIds.'.$jobTemplateId);
     }
 }

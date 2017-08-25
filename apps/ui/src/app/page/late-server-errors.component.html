@@ -4,13 +4,14 @@
 
 <div class="float-right">
     <a *ngIf="lateErrors" (click)="refresh()" href="javascript:void(0)">Refresh</a>
-    <a *ngIf="lateErrors" (click)="deleteAll()" href="javascript:void(0)">Delete All</a>
+    Delete:
+    <a *ngIf="lateErrors" (click)="deleteOlder(60)" href="javascript:void(0)">1m ago,</a>
+    <a *ngIf="lateErrors" (click)="deleteOlder(60)" href="javascript:void(0)">5m ago,</a>
+    <a *ngIf="lateErrors" (click)="deleteAll()" href="javascript:void(0)">all</a>
 </div>
 
-<p *ngIf="lastMinuteErrors.length">
-    Last minute errors
-    (<a *ngIf="lateErrors" (click)="deleteOlder(60)" href="javascript:void(0)">Remove older</a>):
-</p>
+<p *ngIf="lateErrors && !lateErrors.length">No errors</p>
+<p *ngIf="lastMinuteErrors.length">Last minute errors:</p>
 <ul *ngIf="lastMinuteErrors.length" class="list-group">
     <li *ngFor="let error of lastMinuteErrors" class="list-group-item row">
         <div class="col-10">
@@ -52,10 +53,7 @@
     </li>
 </ul>
 
-<p *ngIf="lastFiveMinutesErrors.length">
-    Last 5 minutes errors
-    (<a *ngIf="lateErrors" (click)="deleteOlder(300)" href="javascript:void(0)">Remove older</a>):
-</p>
+<p *ngIf="lastFiveMinutesErrors.length">Last 5 minutes errors:</p>
 <ul *ngIf="lastFiveMinutesErrors.length" class="list-group">
     <li *ngFor="let error of lastFiveMinutesErrors" class="list-group-item row">
         <div class="col-10">
@@ -180,5 +178,3 @@
         <prettyjson *ngIf="triggerQueueRaw[error.id]" [obj]="error.queue"></prettyjson>
     </li>
 </ul>
-
-<p *ngIf="!lateErrors.length">No errors</p>

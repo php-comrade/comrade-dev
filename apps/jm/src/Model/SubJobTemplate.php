@@ -41,7 +41,7 @@ class SubJobTemplate extends JobTemplate
     public static function createFromJobTemplate(string $parentId, JobTemplate $jobTemplate):SubJobTemplate
     {
         $values = get_values($jobTemplate);
-        $values['schema'] = static::SCHEMA;
+        unset($values['schema']);
         $values['parentId'] = $parentId;
 
         return self::create($values);

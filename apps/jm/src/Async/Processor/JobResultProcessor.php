@@ -7,19 +7,20 @@ use App\Async\RunSubJobsResult;
 use App\Infra\JsonSchema\Errors;
 use App\Infra\JsonSchema\SchemaValidator;
 use App\Infra\Uuid;
+use App\JobStatus;
 use App\Model\Job;
 use App\Model\SubJobTemplate;
 use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessExecutionStorage;
 use Enqueue\Client\CommandSubscriberInterface;
+use Enqueue\Client\ProducerInterface;
 use Enqueue\Consumption\QueueSubscriberInterface;
 use Enqueue\Consumption\Result;
 use Interop\Queue\PsrContext;
 use Interop\Queue\PsrMessage;
 use Interop\Queue\PsrProcessor;
 use Enqueue\Util\JSON;
-use Formapro\Pvm\ProcessEngine;
 
 class JobResultProcessor implements PsrProcessor, CommandSubscriberInterface, QueueSubscriberInterface
 {
@@ -34,11 +35,6 @@ class JobResultProcessor implements PsrProcessor, CommandSubscriberInterface, Qu
     private $processExecutionStorage;
 
     /**
-     * @var ProcessEngine
-     */
-    private $processEngine;
-
-    /**
      * @var JobStorage
      */
     private $jobStorage;
@@ -49,24 +45,29 @@ class JobResultProcessor implements PsrProcessor, CommandSubscriberInterface, Qu
     private $jobTemplateStorage;
 
     /**
+     * @var ProducerInterface
+     */
+    private $producer;
+
+    /**
      * @param SchemaValidator $schemaValidator
      * @param ProcessExecutionStorage $processExecutionStorage
-     * @param ProcessEngine $processEngine
      * @param JobStorage $jobStorage
      * @param JobTemplateStorage $jobTemplateStorage
+     * @param ProducerInterface $producer
      */
     public function __construct(
         SchemaValidator $schemaValidator,
         ProcessExecutionStorage $processExecutionStorage,
-        ProcessEngine $processEngine,
         JobStorage $jobStorage,
-        JobTemplateStorage $jobTemplateStorage
+        JobTemplateStorage $jobTemplateStorage,
+        ProducerInterface $producer
     ) {
         $this->schemaValidator = $schemaValidator;
         $this->processExecutionStorage = $processExecutionStorage;
-        $this->processEngine = $processEngine;
         $this->jobStorage = $jobStorage;
         $this->jobTemplateStorage = $jobTemplateStorage;
+        $this->producer = $producer;
     }
 
     /**
@@ -93,36 +94,47 @@ class JobResultProcessor implements PsrProcessor, CommandSubscriberInterface, Qu
         $message = JobResult::create($data);
         $token = $message->getToken();
 
-        if (false == $process = $this->processExecutionStorage->getOneByToken($message->getToken())) {
-            return self::REJECT;
-        }
-
         $this->jobStorage->lockByJobId($message->getJobId(), function(Job $job) use($message) {
             $job->addResult($message->getResult());
             $job->setCurrentResult($message->getResult());
-
-            if ($message instanceof RunSubJobsResult) {
-                foreach ($message->getJobTemplates() as $subJobTemplate) {
-                    $subJobTemplate = SubJobTemplate::createFromJobTemplate($job->getId(), $subJobTemplate);
-                    $subJobTemplate->setProcessTemplateId($message->getProcessTemplateId());
-
-                    $job = Job::createFromTemplate($subJobTemplate);
-                    $job->setId(Uuid::generate());
-                    $job->setCreatedAt(new \DateTime('now'));
-
-                    $this->jobStorage->insert($job);
-                }
-            }
-
             $this->jobStorage->update($job);
         });
 
-        try {
-            $token = $process->getToken($token);
-            $this->processEngine->proceed($token);
-        } finally {
-            $this->processExecutionStorage->update($process);
+        $job = $this->jobStorage->getOneById($message->getJobId());
+        if ($message instanceof RunSubJobsResult) {
+            if (false == $job->getRunSubJobsPolicy()) {
+                $this->jobStorage->lockByJobId($message->getJobId(), function(Job $job) use($message) {
+                    $result = \App\Model\JobResult::createFor(JobStatus::STATUS_FAILED);
+                    $job->addResult($result);
+                    $job->setCurrentResult($result);
+                    $this->jobStorage->update($job);
+                });
+
+                return self::ACK;
+            }
+
+            $processId = Uuid::generate();
+            foreach ($message->getJobTemplates() as $subJobTemplate) {
+                $subJobTemplate = SubJobTemplate::createFromJobTemplate($job->getId(), $subJobTemplate);
+                $subJobTemplate->setProcessTemplateId($message->getProcessTemplateId());
+
+                $subJob = Job::createFromTemplate($subJobTemplate);
+                $subJob->setId(Uuid::generate());
+                $subJob->setProcessId($processId);
+                $subJob->setCreatedAt(new \DateTime('now'));
+
+                $this->jobStorage->insert($subJob);
+            }
         }
+
+        if (false == $process = $this->processExecutionStorage->getOneByToken($message->getToken())) {
+            return Result::reject(sprintf('The process assoc with the token "%s" could not be found', $token));
+        }
+
+        $this->producer->sendCommand(Commands::PVM_HANDLE_ASYNC_TRANSITION, [
+            'process' => $process->getId(),
+            'token' => $token,
+        ]);
 
         return self::ACK;
     }
