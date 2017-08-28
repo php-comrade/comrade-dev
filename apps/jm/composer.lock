@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "38384302635f58bd26de7b063fe84949",
+    "content-hash": "a0f86c770a2fe75f05d6266b56553164",
     "packages": [
         {
             "name": "clue/graph",
@@ -687,12 +687,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/enqueue.git",
-                "reference": "8fec1008362308be40e8969cc967ad9483bba481"
+                "reference": "020ff9cf2defa1a06da0c7627470f020a6147219"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/8fec1008362308be40e8969cc967ad9483bba481",
-                "reference": "8fec1008362308be40e8969cc967ad9483bba481",
+                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/020ff9cf2defa1a06da0c7627470f020a6147219",
+                "reference": "020ff9cf2defa1a06da0c7627470f020a6147219",
                 "shasum": ""
             },
             "require": {
@@ -758,7 +758,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2017-08-16T07:51:08+00:00"
+            "time": "2017-08-28T11:05:15+00:00"
         },
         {
             "name": "enqueue/enqueue-bundle",
@@ -766,12 +766,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/enqueue-bundle.git",
-                "reference": "d6d0ad11330926f097c458643c618ce1b3b724bc"
+                "reference": "3f79ba754c05e1223f4b47d9a2e09e0a9af1e2a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/enqueue-bundle/zipball/d6d0ad11330926f097c458643c618ce1b3b724bc",
-                "reference": "d6d0ad11330926f097c458643c618ce1b3b724bc",
+                "url": "https://api.github.com/repos/php-enqueue/enqueue-bundle/zipball/3f79ba754c05e1223f4b47d9a2e09e0a9af1e2a6",
+                "reference": "3f79ba754c05e1223f4b47d9a2e09e0a9af1e2a6",
                 "shasum": ""
             },
             "require": {
@@ -824,7 +824,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2017-08-16T07:02:40+00:00"
+            "time": "2017-08-28T09:14:44+00:00"
         },
         {
             "name": "enqueue/null",
@@ -884,12 +884,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/formapro/pvm.git",
-                "reference": "bdcab506423ee9b28083865f66c01caceabfde27"
+                "reference": "046dec4bc838e369787f646aa167b2f50d10b053"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/formapro/pvm/zipball/bdcab506423ee9b28083865f66c01caceabfde27",
-                "reference": "bdcab506423ee9b28083865f66c01caceabfde27",
+                "url": "https://api.github.com/repos/formapro/pvm/zipball/046dec4bc838e369787f646aa167b2f50d10b053",
+                "reference": "046dec4bc838e369787f646aa167b2f50d10b053",
                 "shasum": ""
             },
             "require": {
@@ -926,7 +926,7 @@
                 "process",
                 "workflow"
             ],
-            "time": "2017-08-16T10:03:57+00:00"
+            "time": "2017-08-25T13:57:03+00:00"
         },
         {
             "name": "g4/cron",
@@ -1897,12 +1897,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/queue-interop/queue-interop.git",
-                "reference": "38579005c0492c0275bbae31170edf30a7e740fa"
+                "reference": "1c6e5b54811ebd9b53838195d80e1a9262a5d205"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/queue-interop/queue-interop/zipball/38579005c0492c0275bbae31170edf30a7e740fa",
-                "reference": "38579005c0492c0275bbae31170edf30a7e740fa",
+                "url": "https://api.github.com/repos/queue-interop/queue-interop/zipball/1c6e5b54811ebd9b53838195d80e1a9262a5d205",
+                "reference": "1c6e5b54811ebd9b53838195d80e1a9262a5d205",
                 "shasum": ""
             },
             "require": {
@@ -1932,7 +1932,7 @@
                 "messaging",
                 "queue"
             ],
-            "time": "2017-08-10T11:24:15+00:00"
+            "time": "2017-08-28T10:34:40+00:00"
         },
         {
             "name": "ramsey/uuid",
