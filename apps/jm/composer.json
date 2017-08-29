@@ -26,10 +26,10 @@
         "symfony/framework-bundle": "^3.3",
         "symfony/process": "^3.3",
         "symfony/twig-bundle": "^3.3",
-        "symfony/yaml": "^3.3"
+        "symfony/yaml": "^3.3",
+        "symfony/dotenv": "^3.3"
     },
     "require-dev": {
-        "symfony/dotenv": "^3.3",
         "enqueue/null": "^0.7@dev"
     },
     "config": {
@@ -50,18 +50,6 @@
         "psr-4": {
             "App\\Tests\\": "tests/"
         }
-    },
-    "scripts": {
-        "auto-scripts": {
-            "make cache-warmup": "script",
-            "assets:install --symlink --relative %WEB_DIR%": "symfony-cmd"
-        },
-        "post-install-cmd": [
-            "@auto-scripts"
-        ],
-        "post-update-cmd": [
-            "@auto-scripts"
-        ]
     },
     "conflict": {
         "symfony/symfony": "<3.3",
