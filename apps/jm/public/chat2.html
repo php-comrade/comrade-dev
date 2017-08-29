@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="msg"></div>
+
+<input type="text" id="text">
+<input type="submit" value="Subscribe" onclick="subscribe()">
+<input type="submit" value="Send" onclick="song()">
+</body>
+<script src="https://rawgit.com/cboden/fcae978cfc016d506639c5241f94e772/raw/e974ce895df527c83b8e010124a034cfcf6c9f4b/autobahn.js"></script>
+<script>
+    var conn = new ab.Session('ws://jm.loc:9502',
+        function() {
+            conn.subscribe('events', function(topic, data) {
+                // This is where you would add the new article to the DOM (beyond the scope of this tutorial)
+//                console.log('New article published to category "' + topic + '" : ' + data.title);
+                console.log(data);
+            });
+        },
+        function() {
+            console.warn('WebSocket connection closed');
+        },
+        {'skipSubprotocolCheck': true}
+    );
+</script>
+
+</html>

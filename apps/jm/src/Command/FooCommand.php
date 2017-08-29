@@ -7,6 +7,7 @@ use App\Infra\Uuid;
 use App\Model\ExclusivePolicy;
 use App\Model\JobTemplate;
 use App\Service\BuildMongoIndexesService;
+use App\Ws\Ratchet\AmqpPusher;
 use Enqueue\Client\ProducerInterface;
 use function Makasim\Values\set_value;
 use Makasim\Yadm\Registry;
@@ -31,6 +32,14 @@ class FooCommand extends Command implements ContainerAwareInterface
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        /** @var AmqpPusher $pusher */
+        $pusher = $this->container->get('gos_web_socket.amqp.pusher');
+        $pusher->push(['key' => 'value'], 'events');
+
+
+        return;
+
+
         if ($input->getOption('drop')) {
             foreach ($this->getYadmRegistry()->getStorages() as $name => $storage) {
                 $storage->getCollection()->drop();

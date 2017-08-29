@@ -22,6 +22,8 @@ services:
       - NGINX_PHP_FALLBACK=/index.php
       - NGINX_PHP_LOCATION=^/index\.php(/|$$)
       - APP_DEV_PERMITTED=1
+    ports:
+        - '9502:9502'
 
   jm_worker:
     image: 'formapro/nginx-php-fpm:latest-all-exts'
