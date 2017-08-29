@@ -12,4 +12,5 @@ if (false === $phpBin) {
 $daemon = new \App\Infra\Swoole\Daemon();
 $daemon->addWorker(1, $phpBin, [__DIR__ . '/console', 'quartz:scheduler', '-vvv']);
 $daemon->addWorker(3, $phpBin, [__DIR__ . '/console', 'enqueue:consume', '--setup-broker', '-vvv']);
+$daemon->addWorker(1, $phpBin, [__DIR__ . '/console', ' gos:websocket:server', '-vvv']);
 $daemon->run();

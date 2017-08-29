@@ -22,8 +22,6 @@ services:
       - NGINX_PHP_FALLBACK=/index.php
       - NGINX_PHP_LOCATION=^/index\.php(/|$$)
       - APP_DEV_PERMITTED=1
-    ports:
-        - '9502:9502'
 
   jm_worker:
     image: 'formapro/nginx-php-fpm:latest-all-exts'
@@ -40,6 +38,8 @@ services:
       - './shared/swoole.so:/usr/lib/php/20160303/swoole.so'
       - './docker/swoole.ini:/etc/php/7.1/cli/conf.d/20-swoole.ini'
     env_file: 'apps/jm/.env'
+    ports:
+        - '9502:9502'
 
   demo:
     image: 'formapro/nginx-php-fpm:latest-all-exts'
