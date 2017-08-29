@@ -73,7 +73,7 @@ class JobTemplate
     /**
      * @param array $details
      */
-    public function setDetails(array $details)
+    public function setDetails($details)
     {
         set_value($this, 'details', $details);
     }
@@ -161,6 +161,24 @@ class JobTemplate
     public function getTriggers():\Traversable
     {
         return get_objects($this, 'triggers');
+    }
+
+    /**
+     * @return void
+     */
+    public function removeTriggers():void
+    {
+        set_value($this, 'triggers', null);
+    }
+
+    public function setRunner(Runner $executor): void
+    {
+        set_object($this, 'runner', $executor);
+    }
+
+    public function getRunner():Runner
+    {
+        return get_object($this, 'runner');
     }
 
     public function setCreatedAt(\DateTime $date)

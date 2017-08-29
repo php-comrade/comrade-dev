@@ -35,7 +35,7 @@ class NotifyParentProcessBehavior implements Behavior
         $processId = get_value($node, 'parentProcessId');
         $token = get_value($node, 'parentProcessToken');
 
-        $this->producer->sendEvent(HandleAsyncTransitionProcessor::TOPIC, [
+        $this->producer->sendCommand(HandleAsyncTransitionProcessor::COMMAND, [
             'process' => $processId,
             'token' => $token
         ]);

@@ -1,0 +1,15 @@
+<div *ngFor="let trigger of triggers">
+    <p *ngIf="isCronTrigger(trigger)">
+        Start at
+        <time [attr.datetime]="trigger.startAt.unix" [attr.title]="trigger.startAt.iso">{{ (trigger.startAt.unix | amFromUnix) | amCalendar }}</time>
+        and run {{ trigger.expression | prettycron }} ({{ trigger.expression }})
+        <a *ngIf="showRemove" (click)="removeTrigger(trigger)" href="javascript:void(0)">Remove</a>
+    </p>
+    <p *ngIf="isSimpleTrigger(trigger)">
+        <span *ngIf="trigger.startAt">Start at <time [attr.datetime]="trigger.startAt.unix" [attr.title]="trigger.startAt.iso">{{ (trigger.startAt.unix | amFromUnix) | amCalendar }}</time></span>
+        <span *ngIf="trigger.repeatCount == 0">run one time</span>
+        <span *ngIf="trigger.repeatCount == -1">run endlessly every {{ trigger.intervalInSeconds }} seconds</span>
+        <span *ngIf="trigger.repeatCount > 0">run {{ trigger.repeatCount }} times every {{ trigger.intervalInSeconds }} seconds</span>
+        <a *ngIf="showRemove" (click)="removeTrigger(trigger)" href="javascript:void(0)">Remove</a>
+    </p>
+</div>

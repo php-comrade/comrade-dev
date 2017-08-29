@@ -3,7 +3,7 @@
   "id": "http://jm.forma-pro.com/schemas/policy/GracePeriodPolicy.json",
   "type": "object",
   "properties": {
-    "periodEndsAt": { "$ref" : "../date.json" }
+    "period": { "type": "integer" }
   },
-  "required": ["periodEndsAt"]
+  "required": ["period"]
 }

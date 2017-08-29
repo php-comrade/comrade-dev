@@ -23,7 +23,7 @@ services:
       - NGINX_PHP_LOCATION=^/index\.php(/|$$)
       - APP_DEV_PERMITTED=1
 
-  jm_worker:
+  jmw:
     image: 'formapro/nginx-php-fpm:latest-all-exts'
     restart: 'always'
     entrypoint: "php bin/workers.php"
@@ -111,6 +111,8 @@ services:
     restart: 'always'
     ports:
       - "27017:27017"
+    volumes:
+      - './shared:/shared'
 
   front:
     image: 'jwilder/nginx-proxy'

@@ -4,8 +4,10 @@ namespace App\Service;
 use App\Async\Commands;
 use App\Model\CronTrigger;
 use App\Model\JobTemplate;
+use App\Model\NowTrigger;
 use App\Model\SimpleTrigger;
 use App\Model\Trigger;
+use Enqueue\Client\ProducerInterface;
 use Quartz\Bridge\Enqueue\EnqueueResponseJob;
 use Quartz\Bridge\Scheduler\RemoteScheduler;
 use Quartz\Core\CronScheduleBuilder;
@@ -23,18 +25,25 @@ class ScheduleJobService
     private $remoteScheduler;
 
     /**
-     * @param RemoteScheduler $remoteScheduler
+     * @var ProducerInterface
      */
-    public function __construct(RemoteScheduler $remoteScheduler)
+    private $producer;
+
+    /**
+     * @param RemoteScheduler $remoteScheduler
+     * @param ProducerInterface $producer
+     */
+    public function __construct(RemoteScheduler $remoteScheduler, ProducerInterface $producer)
     {
         $this->remoteScheduler = $remoteScheduler;
+        $this->producer = $producer;
     }
 
     /**
      * @param JobTemplate $jobTemplate
      * @param Trigger[] $triggers
      */
-    public function schedule(JobTemplate $jobTemplate, array $triggers):void
+    public function schedule(JobTemplate $jobTemplate, \Traversable $triggers):void
     {
         foreach ($triggers as $trigger) {
             if ($trigger instanceof SimpleTrigger) {
@@ -58,8 +67,8 @@ class ScheduleJobService
                     ->forJobDetail($job)
                     ->withSchedule($quartzScheduleBuilder)
                     ->setJobData([
-                        'command' => Commands::EXECUTE_JOB,
-                        'jobTemplate' => $jobTemplate->getTemplateId(),
+                        'command' => Commands::EXECUTE_PROCESS,
+                        'processTemplateId' => $jobTemplate->getProcessTemplateId(),
                     ])
                     ->build();
 
@@ -69,6 +78,8 @@ class ScheduleJobService
                 }
 
                 $this->remoteScheduler->scheduleJob($quartzTrigger, $job);
+
+                return;
             }
 
             if ($trigger instanceof CronTrigger) {
@@ -79,15 +90,15 @@ class ScheduleJobService
                     CronTrigger::MISFIRE_INSTRUCTION_IGNORE_MISFIRE_POLICY => QuartzCronTrigger::MISFIRE_INSTRUCTION_IGNORE_MISFIRE_POLICY,
                 ];
 
-                $quartzScheduleBuilder = CronScheduleBuilder::cronSchedule($trigger->getExpression());
+                $quartzScheduleBuilder = CronScheduleBuilder::cronSchedule($trigger->getQuartzExpression());
 
                 $job = JobBuilder::newJob(EnqueueResponseJob::class)->build();
                 $quartzTrigger = TriggerBuilder::newTrigger()
                     ->forJobDetail($job)
                     ->withSchedule($quartzScheduleBuilder)
                     ->setJobData([
-                        'command' => Commands::EXECUTE_JOB,
-                        'jobTemplate' => $jobTemplate->getTemplateId(),
+                        'command' => Commands::EXECUTE_PROCESS,
+                        'processTemplateId' => $jobTemplate->getProcessTemplateId(),
                     ])
                     ->build();
 
@@ -97,7 +108,20 @@ class ScheduleJobService
                 }
 
                 $this->remoteScheduler->scheduleJob($quartzTrigger, $job);
+
+                return;
             }
+
+            if ($trigger instanceof NowTrigger) {
+                $this->producer->sendCommand(
+                    Commands::EXECUTE_PROCESS,
+                    ['processTemplateId' => $jobTemplate->getProcessTemplateId()]
+                );
+
+                return;
+            }
+
+            throw new \LogicException(sprintf('Trigger "%s" is not supported', get_class($trigger)));
         }
     }
 }

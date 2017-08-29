@@ -16,9 +16,15 @@
       "minItems": 1,
       "items": { "oneOf": [
         { "$ref": "trigger/SimpleTrigger.json" },
-        { "$ref": "trigger/CronTrigger.json" }
+        { "$ref": "trigger/CronTrigger.json" },
+        { "$ref": "trigger/NowTrigger.json" }
       ]}
+    },
+    "runner": {
+      "oneOf": [
+        { "$ref": "runner/QueueRunner.json" }
+      ]
     }
   },
-  "required": ["templateId", "processTemplateId", "name"]
+  "required": ["templateId", "processTemplateId", "name", "runner"]
 }

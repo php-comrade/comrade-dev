@@ -47,6 +47,21 @@ class CronTrigger implements Trigger
         return get_value($this, 'expression');
     }
 
+    /**
+     * Quartz uses extended cron format which includes seconds hence there are six * instead of five in original cron.
+     * The method adopts cron expression so it match quartz requirement.
+     */
+    public function getQuartzExpression():string
+    {
+        $expression = $this->getExpression();
+
+        if (preg_match('/^.*? .*? .*? .*? .*?$/', $expression)) {
+            $expression = "0 $expression";
+        }
+
+        return $expression;
+    }
+
     public function setMisfireInstruction(string $instruction):void
     {
         set_value($this, 'misfireInstruction', $instruction);

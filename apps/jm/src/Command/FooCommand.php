@@ -6,9 +6,12 @@ use App\Async\CreateJob;
 use App\Infra\Uuid;
 use App\Model\ExclusivePolicy;
 use App\Model\JobTemplate;
+use App\Model\QueueRunner;
+use App\Model\SimpleTrigger;
 use App\Service\BuildMongoIndexesService;
 use App\Ws\Ratchet\AmqpPusher;
 use Enqueue\Client\ProducerInterface;
+use function Makasim\Values\get_values;
 use function Makasim\Values\set_value;
 use Makasim\Yadm\Registry;
 use Symfony\Component\Console\Command\Command;
@@ -48,19 +51,57 @@ class FooCommand extends Command implements ContainerAwareInterface
 
         $this->getBuildMongoIndexesService()->build();
 
+        $jobTemplate = $this->createDemoSuccessJob();
+//        $jobTemplate = $this->createFooJob();
+
+        $message = CreateJob::create();
+        $message->setJobTemplate($jobTemplate);
+
+        $output->writeln(json_encode(get_values($jobTemplate), JSON_PRETTY_PRINT));
+        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $message);
+
+        $output->writeln('');
+    }
+
+    protected function createDemoSuccessJob():JobTemplate
+    {
+        $template = JobTemplate::create();
+        $template->setName('demo_success_job');
+        $template->setTemplateId(Uuid::generate());
+        $template->setProcessTemplateId(Uuid::generate());
+        $template->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
+
+        $runner = QueueRunner::create();
+        $runner->setQueue('demo_success_job');
+        $template->setRunner($runner);
+
+        $simpleTrigger = SimpleTrigger::create();
+        $simpleTrigger->setIntervalInSeconds(0);
+        $simpleTrigger->setRepeatCount(0);
+        $simpleTrigger->setMisfireInstruction(SimpleTrigger::MISFIRE_INSTRUCTION_FIRE_NOW);
+        $template->addTrigger($simpleTrigger);
+
+        return $template;
+    }
+
+    private function createFooJob():JobTemplate
+    {
         $jobTemplate = JobTemplate::create();
         $jobTemplate->setName('testJob');
         $jobTemplate->setTemplateId(Uuid::generate());
         $jobTemplate->setProcessTemplateId(Uuid::generate());
         $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
-        set_value($jobTemplate, 'enqueue.queue', 'demo_job');
 
-//        $simpleTrigger = SimpleTrigger::create();
-//        $simpleTrigger->setIntervalInSeconds(30);
-//        $simpleTrigger->setRepeatCount(3);
-//        $simpleTrigger->setMisfireInstruction(SimpleTrigger::MISFIRE_INSTRUCTION_FIRE_NOW);
-//        $jobTemplate->addTrigger($simpleTrigger);
-//
+        $runner = QueueRunner::create();
+        $runner->setQueue('demo_job');
+        $jobTemplate->setRunner($runner);
+
+        $simpleTrigger = SimpleTrigger::create();
+        $simpleTrigger->setIntervalInSeconds(0);
+        $simpleTrigger->setRepeatCount(0);
+        $simpleTrigger->setMisfireInstruction(SimpleTrigger::MISFIRE_INSTRUCTION_FIRE_NOW);
+        $jobTemplate->addTrigger($simpleTrigger);
+
 //        $cronTrigger = CronTrigger::create();
 //        $cronTrigger->setExpression('*/20 * * * * *');
 //        $cronTrigger->setMisfireInstruction(CronTrigger::MISFIRE_INSTRUCTION_FIRE_ONCE_NOW);
@@ -71,23 +112,16 @@ class FooCommand extends Command implements ContainerAwareInterface
         $jobTemplate->setExclusivePolicy($exclusivePolicy);
 
 //        $gracePeriodPolicy = GracePeriodPolicy::create();
-//        $gracePeriodPolicy->setPeriodEndsAt(new \DateTime('now + 30 seconds'));
+//        $gracePeriodPolicy->setPeriod(30);
 //        $jobTemplate->setGracePeriodPolicy($gracePeriodPolicy);
 
-        $message = CreateJob::create();
-        $message->setJobTemplate($jobTemplate);
-
-//        $output->writeln(json_encode(get_values($jobTemplate), JSON_PRETTY_PRINT));
-        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $message);
-
-        $output->writeln('');
+        return $jobTemplate;
     }
 
     private function getProducer():ProducerInterface
     {
         return $this->container->get(ProducerInterface::class);
     }
-
     private function getYadmRegistry():Registry
     {
         return $this->container->get('yadm');

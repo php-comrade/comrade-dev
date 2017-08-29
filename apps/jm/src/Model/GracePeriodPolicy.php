@@ -2,32 +2,24 @@
 namespace App\Model;
 
 use App\Infra\Yadm\CreateTrait;
-use Makasim\Values\CastTrait;
 use function Makasim\Values\get_value;
 use function Makasim\Values\set_value;
 
 class GracePeriodPolicy implements Policy
 {
-    use CastTrait;
     use CreateTrait;
 
     const SCHEMA = 'http://jm.forma-pro.com/schemas/policy/GracePeriodPolicy.json';
 
     private $values = [];
 
-    /**
-     * @param \DateTime $date
-     */
-    public function setPeriodEndsAt(\DateTime $date)
+    public function setPeriod(int $period):void
     {
-        set_value($this, 'periodEndsAt', $date);
+        set_value($this, 'period', $period);
     }
 
-    /**
-     * @return \DateTime|null
-     */
-    public function getPeriodEndsAt(): ?\DateTime
+    public function getPeriod(): int
     {
-        return get_value($this, 'periodEndsAt', null, \DateTime::class);
+        return get_value($this, 'period');
     }
 }

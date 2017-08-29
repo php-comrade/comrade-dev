@@ -29,9 +29,40 @@ class Process extends PvmProcess
         set_value($this, 'jobTemplateIds', $jobTemplateIds);
     }
 
-    public function addJob(Job $job)
+    /**
+     * @param Node $node
+     * @param Job $job
+     */
+    public function addNodeJob(Node $node, Job $job):void
     {
-        add_value($this, 'jobIds', $job->getId(), $job->getTemplateId());
+        if ($node->getProcess() !== $this) {
+            throw new \LogicException('The node is not from this processes');
+        }
+
+        set_value($node, 'jobId', $job->getId());
+        add_value($this, 'jobIds', $job->getId(), $job->getId());
+    }
+
+    public function map(string $jobTemplateId, string $jobId):void
+    {
+        add_value($this, 'templateToJobIds', $jobId, $jobTemplateId);
+        add_value($this, 'jobIds', $jobId, $jobId);
+    }
+
+    /**
+     * @return \Traversable|string[]
+     */
+    public function getJobIds()
+    {
+        return get_value($this, 'jobIds', []);
+    }
+
+    /**
+     * @return \Traversable|string[]
+     */
+    public function getJobTemplateIds()
+    {
+        return get_value($this, 'jobTemplateIds', []);
     }
 
     /**
@@ -51,8 +82,12 @@ class Process extends PvmProcess
      */
     public function getNodeJobId(Node $node):string
     {
+        if ($jobId = get_value($node, 'jobId', false)) {
+            return $jobId;
+        }
+
         $jobTemplateId = get_value($node, 'jobTemplateId');
 
-        return get_value($node->getProcess(), 'jobIds.'.$jobTemplateId);
+        return get_value($node->getProcess(), 'templateToJobIds.'.$jobTemplateId);
     }
 }

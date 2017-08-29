@@ -8,7 +8,6 @@ use App\Model\JobResult;
 use App\Model\Process;
 use App\Service\CreateProcessForSubJobsService;
 use App\Storage\JobStorage;
-use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessStorage;
 use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\Behavior;
@@ -24,9 +23,9 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
     private $jobStorage;
 
     /**
-     * @var JobTemplateStorage
+     * @var ProducerInterface
      */
-    private $jobTemplateStorage;
+    private $producer;
 
     /**
      * @var ProcessStorage
@@ -39,29 +38,21 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
     private $createProcessForSubJobsService;
 
     /**
-     * @var ProducerInterface
-     */
-    private $producer;
-
-    /**
      * @param JobStorage $jobStorage
-     * @param JobTemplateStorage $jobTemplateStorage
      * @param ProcessStorage $processStorage
      * @param CreateProcessForSubJobsService $createProcessForSubJobsService
      * @param ProducerInterface $producer
      */
     public function __construct(
         JobStorage $jobStorage,
-        JobTemplateStorage $jobTemplateStorage,
         ProcessStorage $processStorage,
-        CreateProcessForSubJobsService $createProcessForSubJobsService,
-        ProducerInterface $producer
+        ProducerInterface $producer,
+        CreateProcessForSubJobsService $createProcessForSubJobsService
     ) {
         $this->jobStorage = $jobStorage;
-        $this->jobTemplateStorage = $jobTemplateStorage;
         $this->processStorage = $processStorage;
-        $this->createProcessForSubJobsService = $createProcessForSubJobsService;
         $this->producer = $producer;
+        $this->createProcessForSubJobsService = $createProcessForSubJobsService;
     }
 
     /**
@@ -77,25 +68,17 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
             throw new \LogicException('The process comes to this task but its status is not "run_sub_jobs"');
         }
 
-        $jobTemplates = iterator_to_array($this->jobTemplateStorage->find(['parentId' => $job->getId()]));
-        if (false == $jobTemplates) {
-            $jobResult = JobResult::createFor(JobStatus::STATUS_COMPLETED);
-            $job->addResult($jobResult);
-            $job->setCurrentResult($jobResult);
-            $this->jobStorage->update($job);
-
-            return;
-        }
-
         $jobResult = JobResult::createFor(JobStatus::STATUS_RUNNING_SUB_JOBS);
         $job->addResult($jobResult);
         $job->setCurrentResult($jobResult);
         $this->jobStorage->update($job);
 
-        $subProcess = $this->createProcessForSubJobsService->createProcess($token, $jobTemplates);
-        $this->processStorage->insert($subProcess);
+        /** @var Job[] $subJobs */
+        $subJobs = $this->jobStorage->find(['parentId' => $job->getId()]);
+        $process = $this->createProcessForSubJobsService->createProcess($token, $subJobs);
+        $this->processStorage->insert($process);
 
-        $this->producer->sendCommand(Commands::SCHEDULE_JOB, $subProcess->getId());
+        $this->producer->sendCommand(Commands::EXECUTE_PROCESS, ['processTemplateId' => $process->getId()]);
 
         throw new WaitExecutionException();
     }

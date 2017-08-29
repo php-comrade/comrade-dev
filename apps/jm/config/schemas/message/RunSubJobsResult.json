@@ -11,11 +11,10 @@
           "items": {
             "$ref": "../JobTemplate.json"
           }
-        }
+        },
+        "processTemplateId": { "$ref" : "../uuid4.json" }
       },
-      "required": [
-        "jobTemplates"
-      ]
+      "required": ["jobTemplates", "processTemplateId"]
     }
   ]
 }

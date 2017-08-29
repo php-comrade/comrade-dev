@@ -7,13 +7,14 @@ use App\Infra\JsonSchema\Errors;
 use App\Infra\JsonSchema\SchemaValidator;
 use App\Service\CreateJobTemplateService;
 use Enqueue\Client\CommandSubscriberInterface;
+use Enqueue\Consumption\QueueSubscriberInterface;
 use Enqueue\Consumption\Result;
 use Interop\Queue\PsrContext;
 use Interop\Queue\PsrMessage;
 use Interop\Queue\PsrProcessor;
 use Enqueue\Util\JSON;
 
-class CreateJobProcessor implements PsrProcessor, CommandSubscriberInterface
+class CreateJobProcessor implements PsrProcessor, CommandSubscriberInterface, QueueSubscriberInterface
 {
     /**
      * @var SchemaValidator
@@ -67,5 +68,13 @@ class CreateJobProcessor implements PsrProcessor, CommandSubscriberInterface
             'queueNameHardcoded' => true,
             'exclusive' => true,
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getSubscribedQueues()
+    {
+        return [Commands::CREATE_JOB];
     }
 }

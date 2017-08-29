@@ -1,0 +1,78 @@
+<h1>New job</h1>
+
+<div *ngIf="message" class="alert alert-danger" role="alert">{{ message }}</div>
+
+<form (ngSubmit)="onSubmit()" #jobTemplateForm="ngForm" (change)="onFormChange()">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input type="text" class="form-control" id="name"
+           required
+           [(ngModel)]="jobTemplate.name" name="name"
+           #name="ngModel"
+    >
+    <div [hidden]="name.valid || name.pristine" class="alert alert-danger">
+      Name is required
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="details">Details</label>
+    <json-input [(ngModel)]="jobTemplate.details" name="details" id="details"></json-input>
+  </div>
+
+  <h3>Triggers: </h3>
+  <list-triggers (onRemoveTrigger)="onRemoveTrigger($event)" [triggers]="jobTemplate.triggers" [showRemove]="true"></list-triggers>
+
+  <a class="nav-link" *ngIf="!addCronTrigger" (click)="triggerCronTrigger()" href="javascript:void(0)">Add cron trigger</a>
+  <div *ngIf="addCronTrigger">
+    <new-cron-trigger (onTriggerAdded)="onTriggerAdded($event)"></new-cron-trigger>
+    <a (click)="triggerCronTrigger()" href="javascript:void(0)">Cancel</a>
+  </div>
+
+  <a class="nav-link" *ngIf="!addSimpleTrigger" (click)="triggerSimpleTrigger()" href="javascript:void(0)">Add simple trigger</a>
+  <div *ngIf="addSimpleTrigger">
+    <new-simple-trigger (onTriggerAdded)="onTriggerAdded($event)"></new-simple-trigger>
+    <a (click)="triggerSimpleTrigger()" href="javascript:void(0)">Cancel</a>
+  </div>
+
+  <h3>Runner: </h3>
+  <list-runner *ngIf="jobTemplate.runner" [runner]="jobTemplate.runner" (onRemoveRunner)="onRemoveRunner"></list-runner>
+
+  <a class="nav-link" *ngIf="!addQueueRunner && !jobTemplate.runner" (click)="triggerQueueRunner()" href="javascript:void(0)">Add queue runner</a>
+  <div *ngIf="addQueueRunner">
+    <new-queue-runner (onRunnerAdded)="onRunnerAdded($event)"></new-queue-runner>
+    <a (click)="triggerQueueRunner()" href="javascript:void(0)">Cancel</a>
+  </div>
+
+  <h3>Polices: </h3>
+  <show-exclusive-policy *ngIf="jobTemplate.exclusivePolicy" [policy]="jobTemplate.exclusivePolicy" (onRemovePolicy)="onRemoveExclusivePolicy()"></show-exclusive-policy>
+  <show-grace-period-policy *ngIf="jobTemplate.gracePeriodPolicy" [policy]="jobTemplate.gracePeriodPolicy" (onRemovePolicy)="onRemoveGracePeriodPolicy()"></show-grace-period-policy>
+  <show-retry-failed-policy *ngIf="jobTemplate.retryFailedPolicy" [policy]="jobTemplate.retryFailedPolicy" (onRemovePolicy)="onRemoveRetryFailedPolicy()"></show-retry-failed-policy>
+  <show-run-sub-jobs-policy *ngIf="jobTemplate.runSubJobsPolicy" [policy]="jobTemplate.runSubJobsPolicy" (onRemovePolicy)="onRemoveRunSubJobsPolicy()"></show-run-sub-jobs-policy>
+
+  <a class="nav-link" *ngIf="!addExclusivePolicy && !jobTemplate.exclusivePolicy" (click)="triggerExclusivePolicy()" href="javascript:void(0)">Add exclusive policy</a>
+  <div *ngIf="addExclusivePolicy">
+    <new-exclusive-policy (onPolicyAdded)="onExclusivePolicyAdded($event)"></new-exclusive-policy>
+    <a (click)="triggerExclusivePolicy()" href="javascript:void(0)">Cancel</a>
+  </div>
+
+  <a class="nav-link" *ngIf="!addGracePeriodPolicy && !jobTemplate.gracePeriodPolicy" (click)="triggerGracePeriodPolicy()" href="javascript:void(0)">Add grace period policy</a>
+  <div *ngIf="addGracePeriodPolicy">
+    <new-grace-period-policy (onPolicyAdded)="onGracePeriodPolicyAdded($event)"></new-grace-period-policy>
+    <a (click)="triggerGracePeriodPolicy()" href="javascript:void(0)">Cancel</a>
+  </div>
+
+  <a class="nav-link" *ngIf="!addRetryFailedPolicy && !jobTemplate.retryFailedPolicy" (click)="triggerRetryFailedPolicy()" href="javascript:void(0)">Add retry failed policy</a>
+  <div *ngIf="addRetryFailedPolicy">
+    <new-retry-failed-policy (onPolicyAdded)="onRetryFailedPolicyAdded($event)"></new-retry-failed-policy>
+    <a (click)="triggerRetryFailedPolicy()" href="javascript:void(0)">Cancel</a>
+  </div>
+
+  <a class="nav-link" *ngIf="!addRunSubJobsPolicy && !jobTemplate.runSubJobsPolicy" (click)="triggerRunSubJobsPolicy()" href="javascript:void(0)">Add run sub jobs policy</a>
+  <div *ngIf="addRunSubJobsPolicy">
+    <new-run-sub-jobs-policy (onPolicyAdded)="onRunSubJobsPolicyAdded($event)"></new-run-sub-jobs-policy>
+    <a (click)="triggerRunSubJobsPolicy()" href="javascript:void(0)">Cancel</a>
+  </div>
+
+  <button type="submit" class="btn btn-success" [disabled]="!jobTemplateForm.form.valid || submitted">Create job template</button>
+</form>

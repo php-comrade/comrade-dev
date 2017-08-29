@@ -1,15 +1,23 @@
 import { NgModule }             from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import {GridComponent} from "./template/grid.component";
-import {NewComponent} from "./template/new.component";
-import {DetailsComponent} from "./template/details.component";
+import {TimelineComponent} from "./page/timeline.component";
+import {TemplateViewComponent} from "./page/template-view.component";
+import {TemplateListComponent} from "./page/template-list.component";
+import {TemplateNewComponent} from "./page/template-new.component";
+import {JobViewComponent} from "./page/job-view.component";
+import {LateServerErrorsComponent} from "./page/late-server-errors.component";
 
 const routes: Routes = [
-    { path: '', redirectTo: '/job-templates', pathMatch: 'full' },
-    { path: 'job-templates',  component: GridComponent },
-    { path: 'job-templates/new',  component: NewComponent },
-    { path: 'job-template/:id', component: DetailsComponent },
+    { path: '', redirectTo: '/timeline', pathMatch: 'full' },
+    { path: 'timeline', component: TimelineComponent },
+    { path: 'template/list',  component: TemplateListComponent },
+    { path: 'template/new',  component: TemplateNewComponent },
+    { path: 'template/:id/view', component: TemplateViewComponent },
+    { path: 'template/:id/view/:tab', component: TemplateViewComponent },
+    { path: 'job/:id/view', component: JobViewComponent },
+    { path: 'job/:id/view/:tab', component: JobViewComponent },
+    { path: 'errors/late', component: LateServerErrorsComponent },
 ];
 
 @NgModule({

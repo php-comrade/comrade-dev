@@ -1,0 +1,33 @@
+<p *ngIf="!jobTemplates">Loading</p>
+
+<div *ngIf="error" class="alert alert-danger" role="alert">{{ error }}</div>
+
+<div *ngIf="jobTemplates">
+    <ul class="nav justify-content-end">
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/template/new" routerLinkActive="active">Create new</a>
+        </li>
+    </ul>
+
+    <table class="table table-striped table-hover table-bordered">
+        <thead>
+            <tr>
+                <th>Id:</th>
+                <th>Name:</th>
+                <th>Created at</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let jobTemplate of jobTemplates">
+                <td>{{jobTemplate.templateId}}</td>
+                <td>{{jobTemplate.name}}</td>
+                <td><time-ago [date]="jobTemplate.createdAt"></time-ago></td>
+                <td>
+                    <job-run-now [jobTemplate]="jobTemplate" (onRunFailed)="onRunFailed($event)"></job-run-now>
+                    <button type="button" class="btn btn-primary btn-sm" [routerLink]="['/template', jobTemplate.templateId, 'view' ]">View</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

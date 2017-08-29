@@ -1,0 +1,180 @@
+<div *ngIf="error" class="alert alert-danger" role="alert">{{ error }}</div>
+
+<p *ngIf="!lateErrors">Loading</p>
+
+<div class="float-right">
+    <a *ngIf="lateErrors" (click)="refresh()" href="javascript:void(0)">Refresh</a>
+    Delete:
+    <a *ngIf="lateErrors" (click)="deleteOlder(60)" href="javascript:void(0)">1m ago,</a>
+    <a *ngIf="lateErrors" (click)="deleteOlder(60)" href="javascript:void(0)">5m ago,</a>
+    <a *ngIf="lateErrors" (click)="deleteAll()" href="javascript:void(0)">all</a>
+</div>
+
+<p *ngIf="lateErrors && !lateErrors.length">No errors</p>
+<p *ngIf="lastMinuteErrors.length">Last minute errors:</p>
+<ul *ngIf="lastMinuteErrors.length" class="list-group">
+    <li *ngFor="let error of lastMinuteErrors" class="list-group-item row">
+        <div class="col-10">
+            <p *ngIf="error.error"><b>{{ error.error.message }}</b> in file <b>{{ error.error.file }}</b> at line <b>{{ error.error.line }}</b></p>
+
+            <p *ngIf="error.request">Request: <b>{{ error.request.method }} {{ error.request.requestUri }} {{ error.request.serverProtocol }}</b></p>
+            <p *ngIf="error.queue?.message">
+                Queue: processor <b>{{ error.queue.message.processorName }}</b> from <b>{{ error.queue.message.commandName || error.queue.message.topicName }}</b>
+            </p>
+            <p *ngIf="error.queue?.result">Queue message was <b>{{ error.queue.result.status }}</b> reason "<b>{{ error.queue.result.reason }}</b>"</p>
+            <p *ngIf="error.cli">Cli: command <b>{{ error.cli.command }}</b></p>
+            <p>
+                <a *ngIf="error.error" (click)="triggerErrorRaw[error.id] = !triggerErrorRaw[error.id]" href="javascript:void(0)">
+                    <span *ngIf="triggerErrorRaw[error.id]">Hide trace</span>
+                    <span *ngIf="!triggerErrorRaw[error.id]">Show trace</span>
+                </a>
+                <a (click)="triggerRaw[error.id] = !triggerRaw[error.id]" href="javascript:void(0)">
+                    <span *ngIf="triggerRaw[error.id]">Hide raw</span>
+                    <span *ngIf="!triggerRaw[error.id]">Show raw</span>
+                </a>
+                <a *ngIf="error.request" (click)="triggerRequestRaw[error.id] = !triggerRequestRaw[error.id]" href="javascript:void(0)">
+                    <span *ngIf="triggerRequestRaw[error.id]">Hide request raw</span>
+                    <span *ngIf="!triggerRequestRaw[error.id]">Show request raw</span>
+                </a>
+                <a *ngIf="error.queue?.message" (click)="triggerQueueRaw[error.id] = !triggerQueueRaw[error.id]" href="javascript:void(0)">
+                    <span *ngIf="triggerQueueRaw[error.id]">Hide queue raw</span>
+                    <span *ngIf="!triggerQueueRaw[error.id]">Show queue raw</span>
+                </a>
+            </p>
+        </div>
+        <div class="col-2 align-text-top">
+            {{ reorderedAt - error.createdAtAsDate.unix }} seconds ago
+        </div>
+        <div class="clearfix"></div>
+        <prettyjson *ngIf="triggerRaw[error.id]" [obj]="error"></prettyjson>
+        <pre *ngIf="triggerErrorRaw[error.id]" class="pre-scrollable">{{ error.error.raw }}</pre>
+        <pre *ngIf="triggerRequestRaw[error.id]" >{{error.request.raw}}</pre>
+        <prettyjson *ngIf="triggerQueueRaw[error.id]" [obj]="error.queue"></prettyjson>
+    </li>
+</ul>
+
+<p *ngIf="lastFiveMinutesErrors.length">Last 5 minutes errors:</p>
+<ul *ngIf="lastFiveMinutesErrors.length" class="list-group">
+    <li *ngFor="let error of lastFiveMinutesErrors" class="list-group-item row">
+        <div class="col-10">
+            <p *ngIf="error.error"><b>{{ error.error.message }}</b> in file <b>{{ error.error.file }}</b> at line <b>{{ error.error.line }}</b></p>
+
+            <p *ngIf="error.request">Request: <b>{{ error.request.method }} {{ error.request.requestUri }} {{ error.request.serverProtocol }}</b></p>
+            <p *ngIf="error.queue?.message">
+                Queue: processor <b>{{ error.queue.message.processorName }}</b> from <b>{{ error.queue.message.commandName || error.queue.message.topicName }}</b>
+            </p>
+            <p *ngIf="error.queue?.result">Queue message was <b>{{ error.queue.result.status }}</b> reason "<b>{{ error.queue.result.reason }}</b>"</p>
+            <p *ngIf="error.cli">Cli: command <b>{{ error.cli.command }}</b></p>
+            <p>
+                <a *ngIf="error.error" (click)="triggerErrorRaw[error.id] = !triggerErrorRaw[error.id]" href="javascript:void(0)">
+                    <span *ngIf="triggerErrorRaw[error.id]">Hide trace</span>
+                    <span *ngIf="!triggerErrorRaw[error.id]">Show trace</span>
+                </a>
+                <a (click)="triggerRaw[error.id] = !triggerRaw[error.id]" href="javascript:void(0)">
+                    <span *ngIf="triggerRaw[error.id]">Hide raw</span>
+                    <span *ngIf="!triggerRaw[error.id]">Show raw</span>
+                </a>
+                <a *ngIf="error.request" (click)="triggerRequestRaw[error.id] = !triggerRequestRaw[error.id]" href="javascript:void(0)">
+                    <span *ngIf="triggerRequestRaw[error.id]">Hide request raw</span>
+                    <span *ngIf="!triggerRequestRaw[error.id]">Show request raw</span>
+                </a>
+                <a *ngIf="error.queue?.message" (click)="triggerQueueRaw[error.id] = !triggerQueueRaw[error.id]" href="javascript:void(0)">
+                    <span *ngIf="triggerQueueRaw[error.id]">Hide queue raw</span>
+                    <span *ngIf="!triggerQueueRaw[error.id]">Show queue raw</span>
+                </a>
+            </p>
+        </div>
+        <div class="col-2 align-text-top">
+            <time-ago [date]="error.createdAtAsDate"></time-ago>
+        </div>
+        <div class="clearfix"></div>
+        <prettyjson *ngIf="triggerRaw[error.id]" [obj]="error"></prettyjson>
+        <pre *ngIf="triggerErrorRaw[error.id]" class="pre-scrollable">{{ error.error.raw }}</pre>
+        <pre *ngIf="triggerRequestRaw[error.id]" >{{error.request.raw}}</pre>
+        <prettyjson *ngIf="triggerQueueRaw[error.id]" [obj]="error.queue"></prettyjson>
+    </li>
+</ul>
+
+<p *ngIf="lastHourErrors.length">Last hour errors:</p>
+<ul *ngIf="lastHourErrors.length" class="list-group">
+    <li *ngFor="let error of lastHourErrors" class="list-group-item row">
+        <div class="col-10">
+            <p *ngIf="error.error"><b>{{ error.error.message }}</b> in file <b>{{ error.error.file }}</b> at line <b>{{ error.error.line }}</b></p>
+
+            <p *ngIf="error.request">Request: <b>{{ error.request.method }} {{ error.request.requestUri }} {{ error.request.serverProtocol }}</b></p>
+            <p *ngIf="error.queue?.message">
+                Queue: processor <b>{{ error.queue.message.processorName }}</b> from <b>{{ error.queue.message.commandName || error.queue.message.topicName }}</b>
+            </p>
+            <p *ngIf="error.queue?.result">Queue message was <b>{{ error.queue.result.status }}</b> reason "<b>{{ error.queue.result.reason }}</b>"</p>
+            <p *ngIf="error.cli">Cli: command <b>{{ error.cli.command }}</b></p>
+            <p>
+                <a *ngIf="error.error" (click)="triggerErrorRaw[error.id] = !triggerErrorRaw[error.id]" href="javascript:void(0)">
+                    <span *ngIf="triggerErrorRaw[error.id]">Hide trace</span>
+                    <span *ngIf="!triggerErrorRaw[error.id]">Show trace</span>
+                </a>
+                <a (click)="triggerRaw[error.id] = !triggerRaw[error.id]" href="javascript:void(0)">
+                    <span *ngIf="triggerRaw[error.id]">Hide raw</span>
+                    <span *ngIf="!triggerRaw[error.id]">Show raw</span>
+                </a>
+                <a *ngIf="error.request" (click)="triggerRequestRaw[error.id] = !triggerRequestRaw[error.id]" href="javascript:void(0)">
+                    <span *ngIf="triggerRequestRaw[error.id]">Hide request raw</span>
+                    <span *ngIf="!triggerRequestRaw[error.id]">Show request raw</span>
+                </a>
+                <a *ngIf="error.queue?.message" (click)="triggerQueueRaw[error.id] = !triggerQueueRaw[error.id]" href="javascript:void(0)">
+                    <span *ngIf="triggerQueueRaw[error.id]">Hide queue raw</span>
+                    <span *ngIf="!triggerQueueRaw[error.id]">Show queue raw</span>
+                </a>
+            </p>
+        </div>
+        <div class="col-2 align-text-top">
+            <time-ago [date]="error.createdAtAsDate"></time-ago>
+        </div>
+        <div class="clearfix"></div>
+        <prettyjson *ngIf="triggerRaw[error.id]" [obj]="error"></prettyjson>
+        <pre *ngIf="triggerErrorRaw[error.id]" class="pre-scrollable">{{ error.error.raw }}</pre>
+        <pre *ngIf="triggerRequestRaw[error.id]" >{{error.request.raw}}</pre>
+        <prettyjson *ngIf="triggerQueueRaw[error.id]" [obj]="error.queue"></prettyjson>
+    </li>
+</ul>
+
+<p *ngIf="olderErrors.length">Older errors:</p>
+<ul *ngIf="olderErrors.length" class="list-group">
+    <li *ngFor="let error of olderErrors" class="list-group-item row">
+        <div class="col-10">
+            <p *ngIf="error.error"><b>{{ error.error.message }}</b> in file <b>{{ error.error.file }}</b> at line <b>{{ error.error.line }}</b></p>
+
+            <p *ngIf="error.request">Request: <b>{{ error.request.method }} {{ error.request.requestUri }} {{ error.request.serverProtocol }}</b></p>
+            <p *ngIf="error.queue?.message">
+                Queue: processor <b>{{ error.queue.message.processorName }}</b> from <b>{{ error.queue.message.commandName || error.queue.message.topicName }}</b>
+            </p>
+            <p *ngIf="error.queue?.result">Queue message was <b>{{ error.queue.result.status }}</b> reason "<b>{{ error.queue.result.reason }}</b>"</p>
+            <p *ngIf="error.cli">Cli: command <b>{{ error.cli.command }}</b></p>
+            <p>
+                <a *ngIf="error.error" (click)="triggerErrorRaw[error.id] = !triggerErrorRaw[error.id]" href="javascript:void(0)">
+                    <span *ngIf="triggerErrorRaw[error.id]">Hide trace</span>
+                    <span *ngIf="!triggerErrorRaw[error.id]">Show trace</span>
+                </a>
+                <a (click)="triggerRaw[error.id] = !triggerRaw[error.id]" href="javascript:void(0)">
+                    <span *ngIf="triggerRaw[error.id]">Hide raw</span>
+                    <span *ngIf="!triggerRaw[error.id]">Show raw</span>
+                </a>
+                <a *ngIf="error.request" (click)="triggerRequestRaw[error.id] = !triggerRequestRaw[error.id]" href="javascript:void(0)">
+                    <span *ngIf="triggerRequestRaw[error.id]">Hide request raw</span>
+                    <span *ngIf="!triggerRequestRaw[error.id]">Show request raw</span>
+                </a>
+                <a *ngIf="error.queue?.message" (click)="triggerQueueRaw[error.id] = !triggerQueueRaw[error.id]" href="javascript:void(0)">
+                    <span *ngIf="triggerQueueRaw[error.id]">Hide queue raw</span>
+                    <span *ngIf="!triggerQueueRaw[error.id]">Show queue raw</span>
+                </a>
+            </p>
+        </div>
+        <div class="col-2 align-text-top">
+            <time-ago [date]="error.createdAtAsDate"></time-ago>
+        </div>
+        <div class="clearfix"></div>
+        <prettyjson *ngIf="triggerRaw[error.id]" [obj]="error"></prettyjson>
+        <pre *ngIf="triggerErrorRaw[error.id]" class="pre-scrollable">{{ error.error.raw }}</pre>
+        <pre *ngIf="triggerRequestRaw[error.id]" >{{error.request.raw}}</pre>
+        <prettyjson *ngIf="triggerQueueRaw[error.id]" [obj]="error.queue"></prettyjson>
+    </li>
+</ul>

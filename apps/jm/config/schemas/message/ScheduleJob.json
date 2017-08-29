@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "id": "http://jm.forma-pro.com/schemas/message/ScheduleJob.json",
+  "type": "object",
+  "properties": {
+    "schema": { "type": "string", "enum": ["http://jm.forma-pro.com/schemas/message/ScheduleJob.json"] },
+    "jobTemplateId": { "$ref": "../uuid4.json" },
+    "triggers": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "oneOf": [
+        { "$ref": "../trigger/SimpleTrigger.json" },
+        { "$ref": "../trigger/CronTrigger.json" },
+        { "$ref": "../trigger/NowTrigger.json" }
+      ]}
+    }
+  },
+  "required": ["jobTemplateId", "triggers"]
+}

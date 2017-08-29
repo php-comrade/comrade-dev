@@ -1,7 +1,7 @@
-import {JobTemplate} from "./job-template";
+import {Date} from './date';
 
-export class JobResult extends JobTemplate {
+export class JobResult {
     schema: string = "http://jm.forma-pro.com/schemas/JobResult.json";
-    status: number;
+    status: 1 | 2 | 514 | 18 | 258 | 4 | 12 | 36 | 68 | 132;
     createdAt: Date;
 }

@@ -1,16 +1,15 @@
 <?php
 namespace App\Api\Controller;
 
+use App\Async\AddTrigger;
+use App\Async\Commands;
 use App\Async\CreateJob;
+use App\Async\ScheduleJob;
 use App\Infra\JsonSchema\SchemaValidator;
-use App\Model\SimpleTrigger;
-use App\Service\CreateJobTemplateService;
 use App\Service\ScheduleJobService;
 use App\Storage\JobTemplateStorage;
-use App\Storage\ProcessStorage;
+use Enqueue\Client\ProducerInterface;
 use Enqueue\Util\JSON;
-use Formapro\Pvm\Visual\GraphVizVisual;
-use Graphp\GraphViz\GraphViz;
 use function Makasim\Values\get_values;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,11 +29,11 @@ class JobTemplateController
      *
      * @param Request $request
      * @param SchemaValidator $schemaValidator
-     * @param CreateJobTemplateService $createJobTemplateService
+     * @param ProducerInterface $producer
      *
      * @return JsonResponse
      */
-    public function createAction(Request $request, SchemaValidator $schemaValidator, CreateJobTemplateService $createJobTemplateService)
+    public function createAction(Request $request, SchemaValidator $schemaValidator, ProducerInterface $producer)
     {
         try {
             $data = JSON::decode($request->getContent());
@@ -46,7 +45,7 @@ class JobTemplateController
             return new JsonResponse($errors, 400);
         }
 
-        $createJobTemplateService->create(CreateJob::create($data)->getJobTemplate());
+        $producer->sendCommand(Commands::CREATE_JOB, $data);
 
         return new JsonResponse('OK');
     }
@@ -69,57 +68,44 @@ class JobTemplateController
     }
 
     /**
-     * @Extra\Route("/job-templates/{id}/graph")
-     * @Extra\Method("GET")
-     *
-     * @param $id
-     * @param JobTemplateStorage $jobTemplateStorage
-     * @param ProcessStorage $processStorage
-     * @return Response
-     */
-    public function getGraphAction($id, JobTemplateStorage $jobTemplateStorage, ProcessStorage $processStorage)
-    {
-        if (false == $jobTemplate = $jobTemplateStorage->findOne(['templateId' => $id])) {
-            throw new NotFoundHttpException(sprintf('The job template with id "%s" could not be found', $id));
-        }
-
-        $process = $processStorage->findOne(['id' => $jobTemplate->getProcessTemplateId()]);
-        if (false == $process) {
-            throw new NotFoundHttpException(sprintf('Process %s was not found', $id));
-        }
-
-        $graph = (new GraphVizVisual())->createGraph($process);
-
-        return new Response(
-            (new GraphViz())->createImageData($graph),
-            200,
-            ['Content-Type' => 'image/png']
-        );
-    }
-
-    /**
-     * @Extra\Route("/job-templates/{id}/run-now")
+     * @Extra\Route("/add-trigger")
      * @Extra\Method("POST")
      *
-     * @param $id
+     * @param Request $request
+     * @param SchemaValidator $schemaValidator
      * @param JobTemplateStorage $jobTemplateStorage
      * @param ScheduleJobService $scheduleJobService
      *
      * @return Response
      */
-    public function scheduleNowAction($id, JobTemplateStorage $jobTemplateStorage, ScheduleJobService $scheduleJobService)
+    public function addTriggerAction(Request $request, SchemaValidator $schemaValidator, JobTemplateStorage $jobTemplateStorage, ProducerInterface $producer)
     {
-        if (false == $jobTemplate = $jobTemplateStorage->findOne(['templateId' => $id])) {
-            throw new NotFoundHttpException(sprintf('The job template with id "%s" could not be found', $id));
+        try {
+            $data = JSON::decode($request->getContent());
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException('The content is not valid json.', null, $e);
         }
 
-        $simpleTrigger = SimpleTrigger::create();
-        $simpleTrigger->setMisfireInstruction(SimpleTrigger::MISFIRE_INSTRUCTION_FIRE_NOW);
-        $jobTemplate->addTrigger($simpleTrigger);
+        if ($errors = $schemaValidator->validate($data, AddTrigger::SCHEMA)) {
+            return new JsonResponse($errors, 400);
+        }
 
-        $scheduleJobService->schedule($jobTemplate, [$simpleTrigger]);
+        $addTrigger = AddTrigger::create($data);
 
-        return new JsonResponse('OK');
+
+        if (false == $jobTemplate = $jobTemplateStorage->findOne(['templateId' => $addTrigger->getJobTemplateId()])) {
+            throw new NotFoundHttpException(sprintf('The job template with id "%s" could not be found', $addTrigger->getJobTemplateId()));
+        }
+
+        $trigger = $addTrigger->getTrigger();
+        $jobTemplate->addTrigger($trigger);
+        $jobTemplateStorage->update($jobTemplate);
+
+        $producer->sendCommand(Commands::SCHEDULE_JOB, ScheduleJob::createForSingle($jobTemplate, $trigger));
+
+        return new JsonResponse([
+            'jobTemplate' => get_values($jobTemplate),
+        ]);
     }
 
     /**
@@ -147,6 +133,4 @@ class JobTemplateController
 
         return $response;
     }
-
-
 }

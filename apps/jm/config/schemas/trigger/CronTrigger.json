@@ -7,7 +7,7 @@
     "startAt": { "$ref": "../date.json" },
     "expression": {
       "type": "string",
-      "pattern": "^.*? .*? .*? .*? .*? .*?$"
+      "pattern": "^(\\S*? )?\\S*? \\S*? \\S*? \\S*? \\S*?$"
     },
     "misfireInstruction": { "type": "string", "enum": ["fire_once_now", "do_nothing", "smart_policy", "ignore_misfire_policy"] }
   },

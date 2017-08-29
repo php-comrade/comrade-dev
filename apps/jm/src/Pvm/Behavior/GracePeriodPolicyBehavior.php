@@ -1,6 +1,7 @@
 <?php
 namespace App\Pvm\Behavior;
 
+use App\Async\Commands;
 use App\Async\Topics;
 use App\JobStatus;
 use App\Model\Job;
@@ -49,25 +50,22 @@ class GracePeriodPolicyBehavior implements Behavior, SignalBehavior
     {
         /** @var Process $process */
         $process = $token->getProcess();
-//        $job = $this->jobStorage->getOneById($process->getTokenJobId($token));
-//
-//        $endsAt = $job->getGracePeriodPolicy()->getPeriodEndsAt()->getTimestamp();
-//        $endsAt = time() + 30;
+        $job = $this->jobStorage->getOneById($process->getTokenJobId($token));
+        $policy = $job->getGracePeriodPolicy();
 
-
-        $job = JobBuilder::newJob(EnqueueResponseJob::class)->build();
+        $quartzJob = JobBuilder::newJob(EnqueueResponseJob::class)->build();
         $trigger = TriggerBuilder::newTrigger()
-            ->forJobDetail($job)
-            ->withSchedule(SimpleScheduleBuilder::simpleSchedule()->repeatForever())
+            ->forJobDetail($quartzJob)
+            ->withSchedule(SimpleScheduleBuilder::simpleSchedule())
             ->setJobData([
-                'topic' => Topics::PVM_HANDLE_ASYNC_TRANSITION,
+                'command' => Commands::PVM_HANDLE_ASYNC_TRANSITION,
                 'process' => $process->getId(),
                 'token' => $token->getId(),
             ])
-            ->startAt(new \DateTime('now + 30 seconds'))
+            ->startAt(new \DateTime(sprintf('now + %d seconds', $policy->getPeriod())))
             ->build();
 
-        $this->remoteScheduler->scheduleJob($trigger, $job);
+        $this->remoteScheduler->scheduleJob($trigger, $quartzJob);
 
         throw new WaitExecutionException;
     }
