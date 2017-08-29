@@ -39,6 +39,20 @@ services:
       - './docker/swoole.ini:/etc/php/7.1/cli/conf.d/20-swoole.ini'
     env_file: 'apps/jm/.env'
 
+  ui:
+    build: { context: 'docker/ui' }
+    restart: 'always'
+    entrypoint: "ng serve --host=0.0.0.0 --port=80 --public-host=ui.jm.loc"
+    working_dir: '/ui'
+    volumes:
+      - './apps/ui:/ui:cached'
+    ports:
+      - "3000:80"
+    expose:
+      - "80"
+    environment:
+      - VIRTUAL_HOST=ui.jm.loc
+
   demo:
     image: 'formapro/nginx-php-fpm:latest-all-exts'
     restart: 'always'
@@ -55,30 +69,6 @@ services:
       - './docker/swoole.ini:/etc/php/7.1/cli/conf.d/20-swoole.ini'
     env_file: 'apps/jm/.env'
 
-  ui:
-    build: { context: 'docker/ui' }
-    restart: 'always'
-    entrypoint: "ng serve --host=0.0.0.0 --port=80 --public-host=ui.jm.loc"
-    working_dir: '/ui'
-    volumes:
-      - './apps/ui:/ui:cached'
-    ports:
-      - "3000:80"
-    expose:
-      - "80"
-    environment:
-      - VIRTUAL_HOST=ui.jm.loc
-
-  qs:
-    image: 'node:8.1'
-    restart: 'always'
-    entrypoint: "npm start"
-    working_dir: '/qs'
-    volumes:
-      - './apps/qs:/qs:cached'
-    ports:
-      - "3005:3000"
-      - "3006:3001"
 
   rabbitmq:
     image: 'enqueue/rabbitmq:latest'
