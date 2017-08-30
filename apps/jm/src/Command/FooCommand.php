@@ -9,7 +9,6 @@ use App\Model\JobTemplate;
 use App\Model\QueueRunner;
 use App\Model\SimpleTrigger;
 use App\Service\BuildMongoIndexesService;
-use App\Ws\Ratchet\AmqpPusher;
 use Enqueue\Client\ProducerInterface;
 use function Makasim\Values\get_values;
 use function Makasim\Values\set_value;
