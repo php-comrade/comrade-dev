@@ -47,12 +47,20 @@ final class Kernel extends BaseKernel
 
     public function getCacheDir(): string
     {
-        return '/dev/shm/jm/cache/'.$this->getEnvironment();
+        if ($cacheDir = getenv('APP_CACHE_DIR')) {
+            return $cacheDir;
+        }
+
+        return dirname(__DIR__).'/var/cache/'.$this->environment;
     }
 
     public function getLogDir(): string
     {
-        return '/dev/shm/jm/logs/'.$this->getEnvironment();
+        if ($logDir = getenv('APP_LOG_DIR')) {
+            return $logDir;
+        }
+
+        return dirname(__DIR__).'/var/logs';
     }
 
     public function registerBundles(): iterable
