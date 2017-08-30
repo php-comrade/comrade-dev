@@ -35,14 +35,6 @@ class FooCommand extends Command implements ContainerAwareInterface
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        /** @var AmqpPusher $pusher */
-        $pusher = $this->container->get('gos_web_socket.amqp.pusher');
-        $pusher->push(['key' => 'value'], 'events');
-
-
-        return;
-
-
         if ($input->getOption('drop')) {
             foreach ($this->getYadmRegistry()->getStorages() as $name => $storage) {
                 $storage->getCollection()->drop();
