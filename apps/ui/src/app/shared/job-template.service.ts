@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { JobTemplate } from './job-template';
-import {Headers, Http, Response } from '@angular/http';
+import {Response} from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
@@ -11,25 +11,21 @@ import {AddTrigger} from "./messages/add-trigger";
 import {SimpleTrigger} from "./simple-trigger";
 import {Date} from "./date";
 import "rxjs/add/operator/share";
-import {QueueRunner} from "./queue-runner";
+import {HttpService} from "./http.service";
 
 @Injectable()
 export class JobTemplateService {
-    private apiBaseUrl = 'http://jm.loc/api/job-templates';
-
-    private headers = new Headers({'Content-Type': 'application/json'});
-
-    constructor(private http: Http) { }
+    constructor(private http: HttpService) { }
 
     getJobTemplates(): Promise<JobTemplate[]> {
-        return this.http.get(this.apiBaseUrl)
+        return this.http.get('/api/job-templates')
             .toPromise()
             .then(response => response.json().jobTemplates as JobTemplate[])
             .catch(this.handleError);
     }
 
     getJobTemplate(id: string): Promise<JobTemplate> {
-        const url = `${this.apiBaseUrl}/${id}`;
+        const url = `/api/job-templates/${id}`;
 
         return this.http.get(url)
             .toPromise()
@@ -38,8 +34,6 @@ export class JobTemplateService {
     }
 
     runNow(jobTemplate: JobTemplate): Observable<JobTemplate> {
-        const url = 'http://jm.loc/api/add-trigger';
-
         let moment = require('moment');
 
         const simpleTrigger = new SimpleTrigger();
@@ -50,7 +44,7 @@ export class JobTemplateService {
 
         const addTrigger = new AddTrigger(jobTemplate.templateId, simpleTrigger);
 
-        return this.http.post(url, JSON.stringify(addTrigger), {headers: this.headers})
+        return this.http.post('/api/add-trigger', addTrigger)
             .map((response: Response) => response.json().jobTemplate as JobTemplate)
             .catch((response: Response) => Observable.throw(response));
     }
@@ -58,11 +52,7 @@ export class JobTemplateService {
     create(jobTemplate: JobTemplate): Observable<Response> {
         let createJob = new CreateJob(jobTemplate);
 
-        return this.http.post(
-            this.apiBaseUrl,
-            JSON.stringify(createJob),
-            {headers: this.headers}
-        );
+        return this.http.post('/api/job-templates', createJob);
     }
 
     private handleError(error: any): Promise<any> {

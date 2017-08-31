@@ -13,7 +13,6 @@ import {BehaviorSubject} from "rxjs/BehaviorSubject";
 export class HttpService {
     private headers: Headers;
     private changeObservable: BehaviorSubject<string>;
-    private apiBaseUrl: string;
 
     constructor(private http: Http) {
         this.headers = new Headers({'Content-Type': 'application/json', 'Accept': 'application/json'});
