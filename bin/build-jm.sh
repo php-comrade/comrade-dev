@@ -20,6 +20,7 @@ rm -rf build/jm-container/.git
 
 mkdir -p build/jm-container/var/cache/prod
 mkdir -p build/jm-container/var/logs
+chmod u+rwX -R build/jm-container/var
 
 (cd build/jm-container; composer install --prefer-dist --no-dev --ignore-platform-reqs --no-scripts --optimize-autoloader --no-interaction)
 

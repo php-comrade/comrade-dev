@@ -3,37 +3,50 @@ version: '3'
 services:
   jm:
     image: 'formapro/comrade:latest'
-    restart: 'always'
     ports:
       - "3000:80"
     depends_on:
       - 'rabbitmq'
       - 'mongo'
+    environment:
+      - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume
+      - MONGO_DSN=mongodb://mongo:27017
 
   jmw:
     image: 'formapro/comrade:latest'
-    restart: 'always'
     entrypoint: "php bin/daemon.php"
     depends_on:
       - 'rabbitmq'
       - 'mongo'
+    environment:
+      - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume
+      - MONGO_DSN=mongodb://mongo:27017
+
+  jms:
+    image: 'formapro/comrade:latest'
+    entrypoint: "php bin/console gos:websocket:server -vvv"
+    depends_on:
+      - 'rabbitmq'
+      - 'mongo'
+    environment:
+      - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume
+      - MONGO_DSN=mongodb://mongo:27017
+    ports:
+        - '9502:9502'
 
   ui:
     image: 'formapro/comrade-ui:latest'
-    restart: 'always'
     ports:
       - "80:80"
 
   jmd:
     image: 'formapro/nginx-php-fpm:latest-all-exts'
-    restart: 'always'
     entrypoint: "php bin/demo_daemon.php"
     depends_on:
       - 'rabbitmq'
 
   rabbitmq:
     image: 'enqueue/rabbitmq:latest'
-    restart: 'always'
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
@@ -41,4 +54,3 @@ services:
 
   mongo:
     image: 'mongo:3'
-    restart: 'always'
