@@ -7,17 +7,20 @@ import {TemplateListComponent} from "./page/template-list.component";
 import {TemplateNewComponent} from "./page/template-new.component";
 import {JobViewComponent} from "./page/job-view.component";
 import {LateServerErrorsComponent} from "./page/late-server-errors.component";
+import {ApiBaseUrlComponent} from "./page/api-base-url.component";
+import {ApiGuard} from "./shared/api.guard";
 
 const routes: Routes = [
     { path: '', redirectTo: '/timeline', pathMatch: 'full' },
-    { path: 'timeline', component: TimelineComponent },
-    { path: 'template/list',  component: TemplateListComponent },
-    { path: 'template/new',  component: TemplateNewComponent },
-    { path: 'template/:id/view', component: TemplateViewComponent },
-    { path: 'template/:id/view/:tab', component: TemplateViewComponent },
-    { path: 'job/:id/view', component: JobViewComponent },
-    { path: 'job/:id/view/:tab', component: JobViewComponent },
-    { path: 'errors/late', component: LateServerErrorsComponent },
+    { path: 'timeline', component: TimelineComponent, canActivate: [ApiGuard] },
+    { path: 'template/list',  component: TemplateListComponent, canActivate: [ApiGuard] },
+    { path: 'template/new',  component: TemplateNewComponent, canActivate: [ApiGuard] },
+    { path: 'template/:id/view', component: TemplateViewComponent, canActivate: [ApiGuard] },
+    { path: 'template/:id/view/:tab', component: TemplateViewComponent, canActivate: [ApiGuard] },
+    { path: 'job/:id/view', component: JobViewComponent, canActivate: [ApiGuard] },
+    { path: 'job/:id/view/:tab', component: JobViewComponent, canActivate: [ApiGuard] },
+    { path: 'errors/late', component: LateServerErrorsComponent, canActivate: [ApiGuard] },
+    { path: 'settings/base-url', component: ApiBaseUrlComponent },
 ];
 
 @NgModule({

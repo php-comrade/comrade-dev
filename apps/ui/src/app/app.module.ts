@@ -43,6 +43,9 @@ import {JobListRowComponent} from "./part/job-list-row.component";
 import {JobListHeaderRowComponent} from "./part/job-list-header-row.component";
 import {ErrorService} from "./shared/error.service";
 import {LateServerErrorsComponent} from "./page/late-server-errors.component";
+import {HttpService} from "./shared/http.service";
+import {ApiBaseUrlComponent} from "./page/api-base-url.component";
+import {ApiGuard} from "./shared/api.guard";
 
 
 @NgModule({
@@ -78,6 +81,7 @@ import {LateServerErrorsComponent} from "./page/late-server-errors.component";
     JobListRowComponent,
     JobListHeaderRowComponent,
     LateServerErrorsComponent,
+    ApiBaseUrlComponent,
   ],
   imports: [
     BrowserModule,
@@ -94,6 +98,8 @@ import {LateServerErrorsComponent} from "./page/late-server-errors.component";
       JobService,
       TimelineService,
       ErrorService,
+      HttpService,
+      ApiGuard,
   ],
   bootstrap: [AppComponent]
 })
