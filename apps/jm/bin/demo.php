@@ -29,7 +29,7 @@ use function Makasim\Values\register_object_hooks;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-require_once __DIR__.'/../jm/vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 
 $output = new ConsoleOutput(ConsoleOutput::VERBOSITY_DEBUG);

@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  jm:
+    image: 'formapro/comrade:latest'
+    restart: 'always'
+    ports:
+      - "3000:80"
+    depends_on:
+      - 'rabbitmq'
+      - 'mongo'
+
+  jmw:
+    image: 'formapro/comrade:latest'
+    restart: 'always'
+    entrypoint: "php bin/daemon.php"
+    depends_on:
+      - 'rabbitmq'
+      - 'mongo'
+
+  ui:
+    image: 'formapro/comrade-ui:latest'
+    restart: 'always'
+    ports:
+      - "80:80"
+
+  jmd:
+    image: 'formapro/nginx-php-fpm:latest-all-exts'
+    restart: 'always'
+    entrypoint: "php bin/demo_daemon.php"
+    depends_on:
+      - 'rabbitmq'
+
+  rabbitmq:
+    image: 'enqueue/rabbitmq:latest'
+    restart: 'always'
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+      - RABBITMQ_DEFAULT_VHOST=jm
+
+  mongo:
+    image: 'mongo:3'
+    restart: 'always'

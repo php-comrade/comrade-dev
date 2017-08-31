@@ -5,6 +5,8 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 ADD . /app
+ADD ./amqp.so /usr/lib/php/20160303/amqp.so
+
 WORKDIR /app
 
 ENV NGINX_WEB_ROOT=/app/public

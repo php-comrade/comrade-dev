@@ -1,7 +1,3 @@
-index:
-    path: /
-    defaults: { _controller: 'App\Controller\FooController::fooAction' }
-
 graph:
     path: /graph/{id}
     defaults: { _controller: 'App\Controller\FooController::graphAction' }

@@ -26,7 +26,7 @@ services:
   jmw:
     image: 'formapro/nginx-php-fpm:latest-all-exts'
     restart: 'always'
-    entrypoint: "php bin/workers.php"
+    entrypoint: "php bin/daemon.php"
     working_dir: '/jobs_dev/apps/jm'
     depends_on:
       - 'rabbitmq'
@@ -69,15 +69,15 @@ services:
     ports:
         - '9502:9502'
 
-  demo:
+  jmd:
     image: 'formapro/nginx-php-fpm:latest-all-exts'
     restart: 'always'
-    entrypoint: "php consume.php"
-    working_dir: '/jobs_dev/apps/demo'
+    entrypoint: "php bin/demo_daemon.php"
+    working_dir: '/jobs_dev/apps/jm'
     depends_on:
       - 'rabbitmq'
+      - 'mongo'
     volumes:
-      - './apps/demo:/jobs_dev/apps/demo:cached'
       - './apps/jm:/jobs_dev/apps/jm:cached'
       - './shared:/shared'
       - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
