@@ -1,13 +1,19 @@
 {
     "type": "project",
     "license": "proprietary",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:formapro-forks/WebSocketBundle.git"
+        }
+    ],
     "require": {
         "php": "^7.1",
         "enqueue/amqp-ext": "^0.7@dev",
         "enqueue/enqueue": "^0.7.9@dev",
         "enqueue/enqueue-bundle": "^0.7.9@dev",
         "formapro/pvm": "dev-master",
-        "gos/web-socket-bundle": "^1.8",
+        "gos/web-socket-bundle": "dev-fix-sf3x",
         "graphp/graphviz": "^0.2",
         "justinrainbow/json-schema": "^5",
         "makasim/values": "@dev",
