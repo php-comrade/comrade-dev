@@ -1,14 +1,17 @@
 <?php
 namespace App\Pvm\Behavior;
 
+use App\Async\Topics;
 use App\JobStatus;
 use App\Model\Job;
 use App\Model\JobResult;
 use App\Model\Process;
 use App\Storage\ExclusiveJobStorage;
 use App\Storage\JobStorage;
+use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Token;
+use function Makasim\Values\get_values;
 use function Makasim\Yadm\get_object_id;
 
 class ExclusivePolicyBehavior implements Behavior
@@ -24,13 +27,19 @@ class ExclusivePolicyBehavior implements Behavior
     private $exclusiveJobStorage;
 
     /**
+     * @var ProducerInterface
+     */
+    private $producer;
+
+    /**
      * @param JobStorage $jobStorage
      * @param ExclusiveJobStorage $exclusiveJobStorage
      */
-    public function __construct(JobStorage $jobStorage, ExclusiveJobStorage $exclusiveJobStorage)
+    public function __construct(JobStorage $jobStorage, ExclusiveJobStorage $exclusiveJobStorage, ProducerInterface $producer)
     {
         $this->jobStorage = $jobStorage;
         $this->exclusiveJobStorage = $exclusiveJobStorage;
+        $this->producer = $producer;
     }
 
     /**
@@ -45,7 +54,7 @@ class ExclusivePolicyBehavior implements Behavior
 
         return $this->exclusiveJobStorage->lockByName($job->getName(), function() use ($process, $token) {
             return $this->jobStorage->lockByJobId($process->getTokenJobId($token), function(Job $job) {
-                $otherJobs =$this->jobStorage->count([
+                $otherJobs = $this->jobStorage->count([
                     '_id' => ['$ne' => get_object_id($job)],
                     'name' => $job->getName(),
                     'exclusivePolicy' => ['$exists' => true],
@@ -58,6 +67,7 @@ class ExclusivePolicyBehavior implements Behavior
                     $job->setCurrentResult($result);
 
                     $this->jobStorage->update($job);
+                    $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
 
                     return;
                 }
@@ -68,6 +78,7 @@ class ExclusivePolicyBehavior implements Behavior
                     $job->setCurrentResult($result);
 
                     $this->jobStorage->update($job);
+                    $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
 
                     return ['failed'];
                 }
@@ -77,6 +88,7 @@ class ExclusivePolicyBehavior implements Behavior
                 $job->setCurrentResult($result);
 
                 $this->jobStorage->update($job);
+                $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
 
                 return ['canceled'];
             });

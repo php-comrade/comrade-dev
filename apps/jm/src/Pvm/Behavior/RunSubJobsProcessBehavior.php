@@ -2,6 +2,7 @@
 namespace App\Pvm\Behavior;
 
 use App\Async\Commands;
+use App\Async\Topics;
 use App\JobStatus;
 use App\Model\Job;
 use App\Model\JobResult;
@@ -14,6 +15,7 @@ use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Exception\WaitExecutionException;
 use Formapro\Pvm\SignalBehavior;
 use Formapro\Pvm\Token;
+use function Makasim\Values\get_values;
 
 class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
 {
@@ -72,6 +74,7 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
         $job->addResult($jobResult);
         $job->setCurrentResult($jobResult);
         $this->jobStorage->update($job);
+        $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
 
         /** @var Job[] $subJobs */
         $subJobs = $this->jobStorage->find(['parentId' => $job->getId()]);
@@ -100,6 +103,7 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
                         $job->setCurrentResult($jobResult);
 
                         $this->jobStorage->update($job);
+                        $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
 
                         return ['failed'];
                     }
@@ -111,6 +115,7 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
             $job->setCurrentResult($jobResult);
 
             $this->jobStorage->update($job);
+            $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
 
             return ['completed'];
         });

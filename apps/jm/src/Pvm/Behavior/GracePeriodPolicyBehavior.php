@@ -8,11 +8,13 @@ use App\Model\Job;
 use App\Model\JobResult;
 use App\Model\Process;
 use App\Storage\JobStorage;
+use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Exception\InterruptExecutionException;
 use Formapro\Pvm\Exception\WaitExecutionException;
 use Formapro\Pvm\SignalBehavior;
 use Formapro\Pvm\Token;
+use function Makasim\Values\get_values;
 use Quartz\Bridge\Enqueue\EnqueueResponseJob;
 use Quartz\Bridge\Scheduler\RemoteScheduler;
 use Quartz\Core\JobBuilder;
@@ -32,15 +34,23 @@ class GracePeriodPolicyBehavior implements Behavior, SignalBehavior
     private $remoteScheduler;
 
     /**
-     * @param JobStorage $jobStorage
-     * @param RemoteScheduler $remoteScheduler
+     * @var ProducerInterface
+     */
+    private $producer;
+
+    /**
+     * @param JobStorage        $jobStorage
+     * @param RemoteScheduler   $remoteScheduler
+     * @param ProducerInterface $producer
      */
     public function __construct(
         JobStorage $jobStorage,
-        RemoteScheduler $remoteScheduler
+        RemoteScheduler $remoteScheduler,
+        ProducerInterface $producer
     ) {
         $this->jobStorage = $jobStorage;
         $this->remoteScheduler = $remoteScheduler;
+        $this->producer = $producer;
     }
 
     /**
@@ -66,6 +76,7 @@ class GracePeriodPolicyBehavior implements Behavior, SignalBehavior
             ->build();
 
         $this->remoteScheduler->scheduleJob($trigger, $quartzJob);
+        $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
 
         throw new WaitExecutionException;
     }
@@ -89,6 +100,7 @@ class GracePeriodPolicyBehavior implements Behavior, SignalBehavior
             $job->setCurrentResult($jobResult);
 
             $this->jobStorage->update($job);
+            $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
 
             return ['failed'];
         });

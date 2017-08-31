@@ -4,6 +4,7 @@ namespace App\Async\Processor;
 use App\Async\Commands;
 use App\Async\JobResult;
 use App\Async\RunSubJobsResult;
+use App\Async\Topics;
 use App\Infra\JsonSchema\Errors;
 use App\Infra\JsonSchema\SchemaValidator;
 use App\Infra\Uuid;
@@ -21,6 +22,7 @@ use Interop\Queue\PsrContext;
 use Interop\Queue\PsrMessage;
 use Interop\Queue\PsrProcessor;
 use Enqueue\Util\JSON;
+use function Makasim\Values\get_values;
 
 class JobResultProcessor implements PsrProcessor, CommandSubscriberInterface, QueueSubscriberInterface
 {
@@ -98,6 +100,7 @@ class JobResultProcessor implements PsrProcessor, CommandSubscriberInterface, Qu
             $job->addResult($message->getResult());
             $job->setCurrentResult($message->getResult());
             $this->jobStorage->update($job);
+            $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
         });
 
         $job = $this->jobStorage->getOneById($message->getJobId());
@@ -108,6 +111,7 @@ class JobResultProcessor implements PsrProcessor, CommandSubscriberInterface, Qu
                     $job->addResult($result);
                     $job->setCurrentResult($result);
                     $this->jobStorage->update($job);
+                    $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
                 });
 
                 return self::ACK;

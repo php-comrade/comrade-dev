@@ -23,6 +23,9 @@ services:
         tags:
             - { name: 'gos_web_socket.pusher', alias: 'amqp' }
 
+    Gos\Bundle\WebSocketBundle\Pusher\PusherInterface:
+        alias: 'gos_web_socket.amqp.pusher'
+
     gos_web_socket.amqp.server_push_handler:
         class: 'App\Ws\Ratchet\AmqpPusherHandler'
         arguments:

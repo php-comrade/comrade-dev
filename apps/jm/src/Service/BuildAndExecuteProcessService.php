@@ -1,6 +1,7 @@
 <?php
 namespace App\Service;
 
+use App\Async\Topics;
 use App\Infra\Uuid;
 use App\JobStatus;
 use App\Model\Job;
@@ -9,6 +10,7 @@ use App\Model\Process;
 use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessExecutionStorage;
+use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\ProcessEngine;
 use function Makasim\Values\build_object;
 use function Makasim\Values\get_values;
@@ -38,21 +40,29 @@ class BuildAndExecuteProcessService
     private $jobTemplateStorage;
 
     /**
+     * @var ProducerInterface
+     */
+    private $producer;
+
+    /**
      * @param ProcessExecutionStorage $processExecutionStorage
-     * @param ProcessEngine $processEngine
-     * @param JobStorage $jobStorage
-     * @param JobTemplateStorage $jobTemplateStorage
+     * @param ProcessEngine           $processEngine
+     * @param JobStorage              $jobStorage
+     * @param JobTemplateStorage      $jobTemplateStorage
+     * @param ProducerInterface       $producer
      */
     public function __construct(
         ProcessExecutionStorage $processExecutionStorage,
         ProcessEngine $processEngine,
         JobStorage $jobStorage,
-        JobTemplateStorage $jobTemplateStorage
+        JobTemplateStorage $jobTemplateStorage,
+        ProducerInterface $producer
     ) {
         $this->processExecutionStorage = $processExecutionStorage;
         $this->jobStorage = $jobStorage;
         $this->jobTemplateStorage = $jobTemplateStorage;
         $this->processEngine = $processEngine;
+        $this->producer = $producer;
     }
 
     public function buildAndRun(Process $templateProcess):Process
@@ -95,6 +105,7 @@ class BuildAndExecuteProcessService
             $job->setCurrentResult($result);
 
             $this->jobStorage->update($job);
+            $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
         }
         $this->processExecutionStorage->update($process);
 
