@@ -51,7 +51,7 @@ register_object_hooks();
 ]))->register();
 
 /** @var \Enqueue\AmqpExt\AmqpContext $c */
-$c = dsn_to_context('amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume');
+$c = dsn_to_context(getenv('ENQUEUE_DSN'));
 
 foreach (['demo_success_job', 'demo_failed_job', 'demo_success_sub_job', 'demo_run_sub_tasks', 'demo_intermediate_status', 'demo_random_job', 'demo_success_on_third_attempt'] as $queueName) {
     $q = $c->createQueue($queueName);
@@ -62,7 +62,7 @@ foreach (['demo_success_job', 'demo_failed_job', 'demo_success_sub_job', 'demo_r
 $queueConsumer = new QueueConsumer($c, new ChainExtension([
     new LoggerExtension($logger),
     new SignalExtension(),
-]));
+]), 0, 1000);
 
 $queueConsumer->bind('demo_success_job', function(PsrMessage $message, PsrContext $context) {
     if ($message->isRedelivered()) {

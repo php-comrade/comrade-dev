@@ -8,17 +8,19 @@ import 'rxjs/add/operator/do';
 import 'rxjs/observable/fromEvent'
 import {Observable} from "rxjs/Observable";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {LocalStorageService} from "ngx-webstorage";
 
 @Injectable()
 export class HttpService {
     private headers: Headers;
     private changeObservable: BehaviorSubject<string>;
 
-    constructor(private http: Http) {
+    constructor(private http: Http, private localStorage: LocalStorageService) {
         this.headers = new Headers({'Content-Type': 'application/json', 'Accept': 'application/json'});
 
-        this.changeObservable = new BehaviorSubject('');
-        this.changeObservable.subscribe((v) => console.log(v));
+        let storedApiBaseUrl: string = this.localStorage.retrieve('api_base_url');
+
+        this.changeObservable = new BehaviorSubject(storedApiBaseUrl ? storedApiBaseUrl : '');
     }
 
     get(relativeUrl: string): Observable<Response> {
@@ -47,8 +49,12 @@ export class HttpService {
         return this.http.get(apiBaseUrl + '/api/info', {headers: this.headers});
     }
 
-    changeApiBaseUrl(apiBaseUrl: string) {
+    changeApiBaseUrl(apiBaseUrl: string, store: boolean) {
         this.changeObservable.next(apiBaseUrl.replace(/\/$/, ""));
+
+        if (store) {
+            this.localStorage.store('api_base_url', apiBaseUrl);
+        }
     }
 
     getApiBaseUrl(): string {

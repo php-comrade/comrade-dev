@@ -4,7 +4,7 @@ services:
   jm:
     image: 'formapro/comrade:latest'
     ports:
-      - "3000:80"
+      - "81:80"
     depends_on:
       - 'rabbitmq'
       - 'mongo'
@@ -21,18 +21,8 @@ services:
     environment:
       - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume
       - MONGO_DSN=mongodb://mongo:27017
-
-  jms:
-    image: 'formapro/comrade:latest'
-    entrypoint: "php bin/console gos:websocket:server -vvv"
-    depends_on:
-      - 'rabbitmq'
-      - 'mongo'
-    environment:
-      - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume
-      - MONGO_DSN=mongodb://mongo:27017
-    ports:
-        - '9502:9502'
+      - COMRADE_DEFAULT_CONSUMER_NUMBER=5
+      - COMRADE_QUARTZ_CONSUMER_NUMBER=5
 
   ui:
     image: 'formapro/comrade-ui:latest'
@@ -40,10 +30,13 @@ services:
       - "80:80"
 
   jmd:
-    image: 'formapro/nginx-php-fpm:latest-all-exts'
+    image: 'formapro/comrade:latest'
     entrypoint: "php bin/demo_daemon.php"
     depends_on:
       - 'rabbitmq'
+    environment:
+      - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume
+      - COMRADE_DEMO_NUMBER=2
 
   rabbitmq:
     image: 'enqueue/rabbitmq:latest'

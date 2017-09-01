@@ -19,15 +19,16 @@ import {LocalStorageService} from "ngx-webstorage";
                   class="form-control"
                   id="api-base-url"
                   type="url"
-                  [ngClass]="{'ng-valid': serverInfo, 'ng-invalid': serverInfo === false}"
+                  [ngClass]="{'ng-valid': serverInfo, 'ng-invalid': serverInfo === false, 'disabled': checking}"
                   required
+                  [disabled]="checking"
                   (input)="resetResult()"
                   (focus)="resetResult()"
                   [value]="apiBaseUrl" #baseUrl
               >
           </div>
           <div class="col-md-3">
-              <button *ngIf="!serverInfo" class="btn btn-default btn-success" [ngClass]="{'btn-success': serverInfo, 'btn-danger': serverInfo === false}" (click)="testBaseUrl(baseUrl.value)">Test</button>
+              <button *ngIf="!serverInfo" class="btn btn-default btn-success" [disabled]="checking" [ngClass]="{'btn-success': serverInfo, 'btn-danger': serverInfo === false}" (click)="testBaseUrl(baseUrl.value)">Test</button>
               <button *ngIf="serverInfo" class="btn btn-default btn-success" (click)="useBaseUrl(baseUrl.value, true)">Store & Use</button>
               <button *ngIf="serverInfo" class="btn btn-default btn-success" (click)="useBaseUrl(baseUrl.value, false)">Use</button>
           </div>
@@ -36,14 +37,18 @@ import {LocalStorageService} from "ngx-webstorage";
       <prettyjson *ngIf="serverInfo" [obj]="serverInfo"></prettyjson>
   `,
 })
-export class ApiBaseUrlComponent implements OnInit {
+export class ApiHealthcheckComponent implements OnInit {
     private apiBaseUrl: string;
 
     private serverInfo: any;
 
+    private checking: boolean;
+
     constructor(private httpService: HttpService, private router: Router) {}
 
     ngOnInit(): void {
+        this.checking = false;
+
         this.apiBaseUrl = this.httpService.getApiBaseUrl();
         this.testBaseUrl(this.apiBaseUrl);
     }
@@ -59,11 +64,19 @@ export class ApiBaseUrlComponent implements OnInit {
             return;
         }
 
+        this.checking = true;
+
         this.httpService.getInfo(apiBaseUrl)
             .catch(err => Observable.throw(err))
             .subscribe(
-                res => this.serverInfo = res.json(),
-                err => this.serverInfo = false,
+                res => {
+                    this.serverInfo = res.json();
+                    // this.checking = false;
+                },
+                () => {
+                    this.serverInfo = false;
+                    // this.checking = false;
+                }
             )
         ;
     }

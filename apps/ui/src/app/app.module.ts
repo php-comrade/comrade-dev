@@ -46,6 +46,7 @@ import {LateServerErrorsComponent} from "./page/late-server-errors.component";
 import {HttpService} from "./shared/http.service";
 import {ApiBaseUrlComponent} from "./page/api-base-url.component";
 import {ApiGuard} from "./shared/api.guard";
+import {Ng2Webstorage} from "ngx-webstorage";
 
 
 @NgModule({
@@ -92,6 +93,7 @@ import {ApiGuard} from "./shared/api.guard";
     MomentModule,
     DatePickerModule,
     PrettyJsonModule,
+    Ng2Webstorage,
   ],
   providers: [
       JobTemplateService,

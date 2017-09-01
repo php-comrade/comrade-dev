@@ -1,5 +1,7 @@
 FROM nginx:1
 
-ADD dist /usr/share/nginx/html
+ADD dist /app
+ADD nginx.conf /etc/nginx/nginx.conf
 
-WORKDIR /usr/share/nginx/html
+WORKDIR /app
+

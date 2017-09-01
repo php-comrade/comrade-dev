@@ -11,17 +11,20 @@ if (false === $phpBin) {
 
 $daemon = new \App\Infra\Symfony\Daemon();
 
+$defaultConsumerNumber = getenv('COMRADE_DEFAULT_CONSUMER_NUMBER') || 2;
+$quartzConsumerNumber = getenv('COMRADE_QUARTZ_CONSUMER_NUMBER') || 2;
+
 $builder = new ProcessBuilder([$phpBin, 'bin/console', 'enqueue:consume', '--setup-broker', '-vvv']);
 $builder->setPrefix('exec');
 $builder->setWorkingDirectory(realpath(__DIR__.'/..'));
 $builder->setEnv('MASTER_PROCESS_PID', getmypid());
-$daemon->addWorker('cnsmr', 3, $builder);
+$daemon->addWorker('cnsmr', $defaultConsumerNumber, $builder);
 
 $builder = new ProcessBuilder([$phpBin, 'bin/console', 'enqueue:consume', 'quartz_job_run_shell', 'quartz_rpc', '--setup-broker', '-vvv']);
 $builder->setPrefix('exec');
 $builder->setWorkingDirectory(realpath(__DIR__.'/..'));
 $builder->setEnv('MASTER_PROCESS_PID', getmypid());
-$daemon->addWorker('qvrtz-cnsmr', 2, $builder);
+$daemon->addWorker('qvrtz-cnsmr', $quartzConsumerNumber, $builder);
 
 $builder = new ProcessBuilder([$phpBin, 'bin/console', 'quartz:scheduler', '-vvv']);
 $builder->setPrefix('exec');
