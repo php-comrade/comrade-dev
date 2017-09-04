@@ -1,0 +1,12 @@
+[{
+	"_id": {
+		"$oid": "59ad1146650e49deb1734792"
+	},
+	"group": "DEFAULT",
+	"name": "aa348d66-6df2-3e0d-b5ab-1c0fafd5a466-b1f37957-2fe1-4293-a82c-ff0aef7f0ebe",
+	"instance": "job-detail",
+	"durable": false,
+	"jobClass": "Quartz\\Bridge\\Enqueue\\EnqueueResponseJob",
+	"jobDataMap": []
+}]
+

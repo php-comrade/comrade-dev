@@ -17,6 +17,7 @@ use Quartz\Scheduler\Store\YadmStoreResource;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -224,6 +225,10 @@ class JobController
         ]);
         $rawJobs = [];
         foreach ($triggers as $trigger) {
+            if (false == isset($trigger->getJobDataMap()['jobTemplate'])) {
+                continue;
+            }
+
             if (false == $jobTemplate = $jobTemplateStorage->findOne(['templateId' => $trigger->getJobDataMap()['jobTemplate']])) {
                 continue;
             }

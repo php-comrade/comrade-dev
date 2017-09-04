@@ -44,6 +44,23 @@ services:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
       - RABBITMQ_DEFAULT_VHOST=jm
+    deploy:
+      mode: global
 
   mongo:
     image: 'mongo:3'
+    deploy:
+      mode: global
+
+  seeds:
+    image: formapro/comrade-demo-seeds
+    depends_on:
+      - 'mongo'
+    environment:
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - MONGO_DB=job_manager
+    deploy:
+      mode: global
+      restart_policy:
+        condition: none
