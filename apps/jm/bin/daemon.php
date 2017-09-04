@@ -11,8 +11,8 @@ if (false === $phpBin) {
 
 $daemon = new \App\Infra\Symfony\Daemon();
 
-$defaultConsumerNumber = getenv('COMRADE_DEFAULT_CONSUMER_NUMBER') || 2;
-$quartzConsumerNumber = getenv('COMRADE_QUARTZ_CONSUMER_NUMBER') || 2;
+$defaultConsumerNumber = getenv('COMRADE_DEFAULT_CONSUMER_NUMBER') ?: 2;
+$quartzConsumerNumber = getenv('COMRADE_QUARTZ_CONSUMER_NUMBER') ?: 2;
 
 $builder = new ProcessBuilder([$phpBin, 'bin/console', 'enqueue:consume', '--setup-broker', '-vvv']);
 $builder->setPrefix('exec');

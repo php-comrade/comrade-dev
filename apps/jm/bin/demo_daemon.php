@@ -11,7 +11,7 @@ if (false === $phpBin) {
     throw new \LogicException('Php executable could not be found');
 }
 
-$demoNumber = getenv('COMRADE_DEMO_NUMBER') || 3;
+$demoNumber = getenv('COMRADE_DEMO_NUMBER') ?: 3;
 
 $daemon = new Daemon();
 
