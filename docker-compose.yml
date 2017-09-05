@@ -39,21 +39,7 @@ services:
       - './docker/swoole.ini:/etc/php/7.1/cli/conf.d/20-swoole.ini'
     env_file: 'apps/jm/.env'
 
-  ui:
-    build: { context: 'docker/ui' }
-    restart: 'always'
-    entrypoint: "ng serve --host=0.0.0.0 --port=80 --public-host=ui.jm.loc"
-    working_dir: '/ui'
-    volumes:
-      - './apps/ui:/ui:cached'
-    ports:
-      - "3000:80"
-    expose:
-      - "80"
-    environment:
-      - VIRTUAL_HOST=ui.jm.loc
-
-  ws:
+  jms:
     image: 'formapro/nginx-php-fpm:latest-all-exts'
     restart: 'always'
     entrypoint: "php bin/console gos:websocket:server -vvv"
@@ -68,6 +54,7 @@ services:
     env_file: 'apps/jm/.env'
     ports:
         - '9502:9502'
+        - '9090:9090'
 
   jmd:
     image: 'formapro/nginx-php-fpm:latest-all-exts'
@@ -84,6 +71,20 @@ services:
       - './shared/swoole.so:/usr/lib/php/20160303/swoole.so'
       - './docker/swoole.ini:/etc/php/7.1/cli/conf.d/20-swoole.ini'
     env_file: 'apps/jm/.env'
+
+  ui:
+    build: { context: 'docker/ui' }
+    restart: 'always'
+    entrypoint: "ng serve --host=0.0.0.0 --port=80 --public-host=ui.jm.loc"
+    working_dir: '/ui'
+    volumes:
+      - './apps/ui:/ui:cached'
+    ports:
+      - "3000:80"
+    expose:
+      - "80"
+    environment:
+      - VIRTUAL_HOST=ui.jm.loc
 
 
   rabbitmq:
