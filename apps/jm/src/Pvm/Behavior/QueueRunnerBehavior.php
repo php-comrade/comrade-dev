@@ -2,12 +2,14 @@
 namespace App\Pvm\Behavior;
 
 use App\Async\RunJob;
+use App\Async\Topics;
 use App\JobStatus;
 use App\Model\Job;
 use App\Model\JobResult;
 use App\Model\Process;
 use App\Model\QueueRunner;
 use App\Storage\JobStorage;
+use Enqueue\Client\ProducerInterface;
 use Interop\Queue\PsrContext;
 use Enqueue\Util\JSON;
 use Formapro\Pvm\Behavior;
@@ -15,6 +17,7 @@ use Formapro\Pvm\Exception\WaitExecutionException;
 use Formapro\Pvm\SignalBehavior;
 use Formapro\Pvm\Token;
 use function Makasim\Values\get_value;
+use function Makasim\Values\get_values;
 
 class QueueRunnerBehavior implements Behavior, SignalBehavior
 {
@@ -29,15 +32,23 @@ class QueueRunnerBehavior implements Behavior, SignalBehavior
     private $jobStorage;
 
     /**
-     * @param PsrContext $psrContext
-     * @param JobStorage $jobStorage
+     * @var ProducerInterface
+     */
+    private $producer;
+
+    /**
+     * @param PsrContext        $psrContext
+     * @param JobStorage        $jobStorage
+     * @param ProducerInterface $producer
      */
     public function __construct(
         PsrContext $psrContext,
-        JobStorage $jobStorage
+        JobStorage $jobStorage,
+        ProducerInterface $producer
     ) {
         $this->psrContext = $psrContext;
         $this->jobStorage = $jobStorage;
+        $this->producer = $producer;
     }
 
     /**
@@ -73,6 +84,7 @@ class QueueRunnerBehavior implements Behavior, SignalBehavior
 
         $this->jobStorage->update($job);
         $this->psrContext->createProducer()->send($queue, $message);
+        $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
 
         throw new WaitExecutionException();
     }

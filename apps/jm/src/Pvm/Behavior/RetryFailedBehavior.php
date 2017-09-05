@@ -1,15 +1,18 @@
 <?php
 namespace App\Pvm\Behavior;
 
+use App\Async\Topics;
 use App\JobStatus;
 use App\Model\Job;
 use App\Model\JobResult;
 use App\Model\Process;
 use App\Storage\JobStorage;
 use App\Storage\ProcessExecutionStorage;
+use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Token;
 use function Makasim\Values\get_value;
+use function Makasim\Values\get_values;
 use function Makasim\Values\set_value;
 
 class RetryFailedBehavior implements Behavior
@@ -25,15 +28,23 @@ class RetryFailedBehavior implements Behavior
     private $jobStorage;
 
     /**
+     * @var ProducerInterface
+     */
+    private $producer;
+
+    /**
      * @param ProcessExecutionStorage $processExecutionStorage
-     * @param JobStorage $jobStorage
+     * @param JobStorage              $jobStorage
+     * @param ProducerInterface       $producer
      */
     public function __construct(
         ProcessExecutionStorage $processExecutionStorage,
-        JobStorage $jobStorage
+        JobStorage $jobStorage,
+        ProducerInterface $producer
     ) {
         $this->processExecutionStorage = $processExecutionStorage;
         $this->jobStorage = $jobStorage;
+        $this->producer = $producer;
     }
 
     /**
@@ -61,6 +72,7 @@ class RetryFailedBehavior implements Behavior
             $job->addResult($jobResult);
             $job->setCurrentResult($jobResult);
             $this->jobStorage->update($job);
+            $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
 
             return ['retry'];
         });
