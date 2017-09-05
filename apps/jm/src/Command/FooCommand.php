@@ -3,6 +3,7 @@ namespace App\Command;
 
 use App\Async\Commands;
 use App\Async\CreateJob;
+use App\Async\Topics;
 use App\Infra\Uuid;
 use App\Model\ExclusivePolicy;
 use App\Model\JobTemplate;
@@ -11,7 +12,6 @@ use App\Model\SimpleTrigger;
 use App\Service\BuildMongoIndexesService;
 use Enqueue\Client\ProducerInterface;
 use function Makasim\Values\get_values;
-use function Makasim\Values\set_value;
 use Makasim\Yadm\Registry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,6 +19,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Voryx\ThruwayBundle\Client\ClientManager;
+use Voryx\ThruwayBundle\WampKernel;
 
 class FooCommand extends Command implements ContainerAwareInterface
 {
@@ -34,6 +36,13 @@ class FooCommand extends Command implements ContainerAwareInterface
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        /** @var ClientManager $client */
+        $client = $this->container->get('thruway.client');
+
+        $client->publish(Topics::INTERNAL_ERROR, ['test']);
+
+        return;
+
         if ($input->getOption('drop')) {
             foreach ($this->getYadmRegistry()->getStorages() as $name => $storage) {
                 $storage->getCollection()->drop();

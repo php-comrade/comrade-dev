@@ -1,6 +1,0 @@
-{
-    "require": {
-        "voryx/thruway": "^0.4.2",
-        "enqueue/amqp-bunny": "^0.7"
-    }
-}

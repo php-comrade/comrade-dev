@@ -27,6 +27,9 @@ services:
             - { name: 'kernel.event_subscriber', priority: -100 }
             - { name: 'enqueue.consumption.extension', priority: -100 }
 
+    logger:
+        class: 'Thruway\Logging\ConsoleLogger'
+
     formapro.pvm.process_execution_storage:
         autowire: false
         class: 'Formapro\Pvm\Yadm\MongoProcessStorage'
@@ -112,4 +115,6 @@ services:
 
     Quartz\Bridge\Swoole\CheckMasterProcessSubscriber:
         tags: [{ name: 'kernel.event_subscriber' }]
+
+    Voryx\ThruwayBundle\Client\ClientManager: '@thruway.client'
 

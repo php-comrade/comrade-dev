@@ -1,19 +1,17 @@
 {
     "type": "project",
     "license": "proprietary",
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:formapro-forks/WebSocketBundle.git"
-        }
-    ],
     "require": {
         "php": "^7.1",
         "enqueue/amqp-ext": "^0.7@dev",
         "enqueue/enqueue": "^0.7.9@dev",
         "enqueue/enqueue-bundle": "^0.7.9@dev",
         "formapro/pvm": "dev-master",
-        "gos/web-socket-bundle": "dev-fix-sf3x",
+        "voryx/thruway-bundle": "dev-master",
+        "voryx/thruway": "^0.5@dev",
+        "thruway/pawl-transport": "dev-master",
+        "thruway/ratchet-transport": "dev-master",
+        "cboden/ratchet": "0.4.x-dev",
         "graphp/graphviz": "^0.2",
         "justinrainbow/json-schema": "^5",
         "makasim/values": "@dev",
@@ -28,6 +26,7 @@
         "sensio/framework-extra-bundle": "^3",
         "symfony/config": "^3.3@dev",
         "symfony/console": "^3.3",
+        "symfony/dotenv": "^3.3",
         "symfony/expression-language": "^3.3",
         "symfony/flex": "^1.0",
         "symfony/framework-bundle": "^3.3",
@@ -36,8 +35,7 @@
         "symfony/serializer": "^3.3",
         "symfony/twig-bundle": "^3.3",
         "symfony/validator": "^3.3",
-        "symfony/yaml": "^3.3",
-        "symfony/dotenv": "^3.3"
+        "symfony/yaml": "^3.3"
     },
     "require-dev": {
         "enqueue/null": "^0.7@dev"

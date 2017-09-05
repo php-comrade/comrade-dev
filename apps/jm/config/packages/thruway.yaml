@@ -1,0 +1,8 @@
+voryx_thruway:
+    realm: 'realm1'
+    url: 'ws://jms:9091'
+    router:
+        ip: '0.0.0.0'
+        port: '9090'
+        trusted_port: '9091'
+        authentication: false

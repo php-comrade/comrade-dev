@@ -1,4 +1,0 @@
-events:
-    channel: 'events'
-    handler:
-        callback: 'wamp' #related to the getName() of your topic
