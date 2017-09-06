@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-docker-compose up --remove-orphans
+docker-compose up -d --remove-orphans
 trap "docker-compose stop jmw jmd ui; killall fswatch" SIGTERM  SIGINT
 
 fswatch --latency=0.5 -o -L apps/jm | xargs -n1 -I{} docker-compose kill -s USR1 jmw &

@@ -3,25 +3,25 @@
 namespace App\Async\Processor;
 
 use App\Async\Topics;
+use App\Infra\ThruwayClient;
 use Enqueue\Client\TopicSubscriberInterface;
 use Enqueue\Consumption\Result;
 use Enqueue\Util\JSON;
 use Interop\Queue\PsrContext;
 use Interop\Queue\PsrMessage;
 use Interop\Queue\PsrProcessor;
-use Voryx\ThruwayBundle\Client\ClientManager;
 
 class WsPushInternalErrorProcessor implements PsrProcessor, TopicSubscriberInterface
 {
     /**
-     * @var ClientManager
+     * @var ThruwayClient
      */
     private $client;
 
     /**
-     * @param ClientManager $client
+     * @param ThruwayClient $client
      */
-    public function __construct(ClientManager $client)
+    public function __construct(ThruwayClient $client)
     {
         $this->client = $client;
     }
@@ -32,7 +32,7 @@ class WsPushInternalErrorProcessor implements PsrProcessor, TopicSubscriberInter
     public function process(PsrMessage $message, PsrContext $context)
     {
         if ($message->isRedelivered()) {
-            return Result::reject('Rejected redelivered message');
+            return Result::ack('Rejected redelivered message');
         }
 
         try {
@@ -42,7 +42,7 @@ class WsPushInternalErrorProcessor implements PsrProcessor, TopicSubscriberInter
 
             return self::ACK;
         } catch (\Throwable $e) {
-            return Result::reject($e->getMessage());
+            return Result::ack($e->getMessage());
         }
     }
 

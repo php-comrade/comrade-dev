@@ -28,7 +28,7 @@ services:
             - { name: 'enqueue.consumption.extension', priority: -100 }
 
     logger:
-        class: 'Thruway\Logging\ConsoleLogger'
+        class: 'Psr\Log\NullLogger'
 
     formapro.pvm.process_execution_storage:
         autowire: false
@@ -118,3 +118,4 @@ services:
 
     Voryx\ThruwayBundle\Client\ClientManager: '@thruway.client'
 
+    App\Infra\ThruwayClient: ~

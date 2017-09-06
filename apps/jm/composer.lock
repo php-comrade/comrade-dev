@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ce8d25e84ca0f46f950634ba29156eb4",
+    "content-hash": "a7b394d92a029950ac0dcc5b8b17315a",
     "packages": [
         {
             "name": "cboden/ratchet",
@@ -625,7 +625,7 @@
         },
         {
             "name": "enqueue/amqp-ext",
-            "version": "dev-master",
+            "version": "0.7.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/amqp-ext.git",
@@ -5653,19 +5653,78 @@
             "time": "2017-01-02T17:45:24+00:00"
         }
     ],
-    "packages-dev": [],
+    "packages-dev": [
+        {
+            "name": "bunny/bunny",
+            "version": "v0.2.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/jakubkulhan/bunny.git",
+                "reference": "f81da29e8a279af2b9af80fa041b84497a26ddf8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jakubkulhan/bunny/zipball/f81da29e8a279af2b9af80fa041b84497a26ddf8",
+                "reference": "f81da29e8a279af2b9af80fa041b84497a26ddf8",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "psr/log": "~1.0",
+                "react/event-loop": "~0.4",
+                "react/promise": "~2.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Bunny\\": [
+                        "src/Bunny/",
+                        "test/Bunny/"
+                    ]
+                },
+                "classmap": [
+                    "src/Bunny/",
+                    "test/Bunny/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jakub Kulhan",
+                    "email": "jakub.kulhan@gmail.com"
+                }
+            ],
+            "description": "Performant pure-PHP AMQP (RabbitMQ) sync/async (ReactPHP) library",
+            "keywords": [
+                "AMQP",
+                "bunny",
+                "exchange",
+                "message",
+                "messaging",
+                "queue",
+                "queueing",
+                "rabbit",
+                "rabbitmq",
+                "react",
+                "react-php",
+                "reactphp"
+            ],
+            "time": "2016-09-13T18:57:54+00:00"
+        }
+    ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "enqueue/amqp-ext": 20,
+        "cboden/ratchet": 20,
         "enqueue/enqueue": 20,
         "enqueue/enqueue-bundle": 20,
         "formapro/pvm": 20,
-        "voryx/thruway-bundle": 20,
-        "voryx/thruway": 20,
-        "thruway/pawl-transport": 20,
-        "thruway/ratchet-transport": 20,
-        "cboden/ratchet": 20,
         "makasim/values": 20,
         "makasim/yadm": 20,
         "makasim/yadm-bundle": 20,
@@ -5674,6 +5733,10 @@
         "php-quartz/quartz": 20,
         "queue-interop/queue-interop": 20,
         "symfony/config": 20,
+        "thruway/pawl-transport": 20,
+        "thruway/ratchet-transport": 20,
+        "voryx/thruway": 20,
+        "voryx/thruway-bundle": 20,
         "enqueue/null": 20
     },
     "prefer-stable": false,

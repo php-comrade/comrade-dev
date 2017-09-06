@@ -3,25 +3,25 @@
 namespace App\Async\Processor;
 
 use App\Async\Topics;
+use App\Infra\ThruwayClient;
 use Enqueue\Client\TopicSubscriberInterface;
 use Enqueue\Consumption\Result;
 use Enqueue\Util\JSON;
 use Interop\Queue\PsrContext;
 use Interop\Queue\PsrMessage;
 use Interop\Queue\PsrProcessor;
-use Voryx\ThruwayBundle\Client\ClientManager;
 
 class WsPushJobUpdatedProcessor implements PsrProcessor, TopicSubscriberInterface
 {
     /**
-     * @var ClientManager
+     * @var ThruwayClient
      */
     private $client;
 
     /**
-     * @param ClientManager $client
+     * @param ThruwayClient $client
      */
-    public function __construct(ClientManager $client)
+    public function __construct(ThruwayClient $client)
     {
         $this->client = $client;
     }
@@ -35,11 +35,17 @@ class WsPushJobUpdatedProcessor implements PsrProcessor, TopicSubscriberInterfac
             return Result::reject('Rejected redelivered message');
         }
 
-        $data = JSON::decode($message->getBody());
+        try {
+            $data = JSON::decode($message->getBody());
 
-        $this->client->publish(Topics::UPDATE_JOB, $data);
+            $this->client->publish(Topics::UPDATE_JOB, $data);
 
-        return self::ACK;
+            return self::ACK;
+        } catch (\Throwable $e) {
+            return Result::ack($e->getMessage());
+        }
+
+
     }
 
     /**

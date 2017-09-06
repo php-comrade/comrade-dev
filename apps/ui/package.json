@@ -35,7 +35,8 @@
     "ng2-datepicker": "^1.8.3",
     "ngx-webstorage": "^1.8.0",
     "prettycron": "^0.10.0",
-    "rxjs": "^5.1.0",
+    "rxjs": "^5.4.3",
+    "thruway.js": "^1.1.24",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {

@@ -47,6 +47,7 @@ import {HttpService} from "./shared/http.service";
 import {ApiBaseUrlComponent} from "./page/api-base-url.component";
 import {ApiGuard} from "./shared/api.guard";
 import {Ng2Webstorage} from "ngx-webstorage";
+import {WampService} from "./shared/wamp.service";
 
 
 @NgModule({
@@ -102,6 +103,7 @@ import {Ng2Webstorage} from "ngx-webstorage";
       ErrorService,
       HttpService,
       ApiGuard,
+      WampService,
   ],
   bootstrap: [AppComponent]
 })
