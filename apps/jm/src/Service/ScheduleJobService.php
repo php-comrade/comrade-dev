@@ -68,6 +68,7 @@ class ScheduleJobService
                     ->withSchedule($quartzScheduleBuilder)
                     ->setJobData([
                         'command' => Commands::EXECUTE_PROCESS,
+                        'jobTemplateId' => $jobTemplate->getTemplateId(),
                         'processTemplateId' => $jobTemplate->getProcessTemplateId(),
                     ])
                     ->build();
@@ -98,6 +99,7 @@ class ScheduleJobService
                     ->withSchedule($quartzScheduleBuilder)
                     ->setJobData([
                         'command' => Commands::EXECUTE_PROCESS,
+                        'jobTemplateId' => $jobTemplate->getTemplateId(),
                         'processTemplateId' => $jobTemplate->getProcessTemplateId(),
                     ])
                     ->build();

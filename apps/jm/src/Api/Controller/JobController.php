@@ -225,11 +225,11 @@ class JobController
         ]);
         $rawJobs = [];
         foreach ($triggers as $trigger) {
-            if (false == isset($trigger->getJobDataMap()['jobTemplate'])) {
+            if (false == isset($trigger->getJobDataMap()['jobTemplateId'])) {
                 continue;
             }
 
-            if (false == $jobTemplate = $jobTemplateStorage->findOne(['templateId' => $trigger->getJobDataMap()['jobTemplate']])) {
+            if (false == $jobTemplate = $jobTemplateStorage->findOne(['templateId' => $trigger->getJobDataMap()['jobTemplateId']])) {
                 continue;
             }
 
