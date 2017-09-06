@@ -31,6 +31,24 @@ services:
     depends_on:
       - 'rabbitmq'
       - 'mongo'
+    ports:
+      - '9090:9090'
+    volumes:
+      - './apps/jm:/jobs_dev/apps/jm:cached'
+      - './shared:/shared'
+      - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
+      - './shared/swoole.so:/usr/lib/php/20160303/swoole.so'
+      - './docker/swoole.ini:/etc/php/7.1/cli/conf.d/20-swoole.ini'
+    env_file: 'apps/jm/.env'
+
+  jmd:
+    image: 'formapro/nginx-php-fpm:latest-all-exts'
+    restart: 'always'
+    entrypoint: "php bin/demo_daemon.php"
+    working_dir: '/jobs_dev/apps/jm'
+    depends_on:
+      - 'rabbitmq'
+      - 'mongo'
     volumes:
       - './apps/jm:/jobs_dev/apps/jm:cached'
       - './shared:/shared'
@@ -52,38 +70,6 @@ services:
       - "80"
     environment:
       - VIRTUAL_HOST=ui.jm.loc
-
-  ws:
-    image: 'formapro/nginx-php-fpm:latest-all-exts'
-    restart: 'always'
-    entrypoint: "php bin/console gos:websocket:server -vvv"
-    working_dir: '/jobs_dev/apps/jm'
-    depends_on:
-      - 'rabbitmq'
-      - 'mongo'
-    volumes:
-      - './apps/jm:/jobs_dev/apps/jm:cached'
-      - './shared:/shared'
-      - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
-    env_file: 'apps/jm/.env'
-    ports:
-        - '9502:9502'
-
-  jmd:
-    image: 'formapro/nginx-php-fpm:latest-all-exts'
-    restart: 'always'
-    entrypoint: "php bin/demo_daemon.php"
-    working_dir: '/jobs_dev/apps/jm'
-    depends_on:
-      - 'rabbitmq'
-      - 'mongo'
-    volumes:
-      - './apps/jm:/jobs_dev/apps/jm:cached'
-      - './shared:/shared'
-      - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
-      - './shared/swoole.so:/usr/lib/php/20160303/swoole.so'
-      - './docker/swoole.ini:/etc/php/7.1/cli/conf.d/20-swoole.ini'
-    env_file: 'apps/jm/.env'
 
 
   rabbitmq:

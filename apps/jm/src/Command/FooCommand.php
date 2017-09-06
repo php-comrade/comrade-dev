@@ -11,7 +11,6 @@ use App\Model\SimpleTrigger;
 use App\Service\BuildMongoIndexesService;
 use Enqueue\Client\ProducerInterface;
 use function Makasim\Values\get_values;
-use function Makasim\Values\set_value;
 use Makasim\Yadm\Registry;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

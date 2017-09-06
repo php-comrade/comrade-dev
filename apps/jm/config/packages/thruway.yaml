@@ -1,0 +1,5 @@
+voryx_thruway:
+    realm: '%env(WAMP_REALM)%'
+    trusted_url: '%env(WAMP_DSN)%'
+    url: '%env(WAMP_DSN)%'
+    enable_logging: false

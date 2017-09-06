@@ -32,4 +32,10 @@ $builder->setWorkingDirectory(realpath(__DIR__.'/..'));
 $builder->setEnv('MASTER_PROCESS_PID', getmypid());
 $daemon->addWorker('schdlr', 1, $builder);
 
+$builder = new ProcessBuilder([$phpBin, 'bin/wamp_server.php']);
+$builder->setPrefix('exec');
+$builder->setWorkingDirectory(realpath(__DIR__.'/..'));
+$builder->setEnv('MASTER_PROCESS_PID', getmypid());
+$daemon->addWorker('wamp', 1, $builder);
+
 $daemon->start();

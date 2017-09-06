@@ -1,10 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import 'rxjs/add/observable/interval';
+import 'rxjs/add/operator/map';
 import {ErrorService} from "../shared/error.service";
 import {ServerError} from "../shared/server-error";
 import {Date as MyDate} from "../shared/date";
 import {Observable} from "rxjs/Observable";
 import {Title} from "@angular/platform-browser";
+import {WampService} from "../shared/wamp.service";
+import {EventMessage} from "thruway.js/src/Messages/EventMessage";
 
 
 @Component({
@@ -35,9 +38,20 @@ export class LateServerErrorsComponent implements OnInit {
     constructor(
         private errorService: ErrorService,
         private titleService: Title,
+        private wamp: WampService,
     ) { }
 
     ngOnInit(): void {
+        this.wamp.topic('job_manager.internal_error')
+            .map((e: EventMessage) => e.args.pop() as ServerError)
+            .subscribe((error: ServerError) => {
+                error.createdAtAsDate = this.convertMicroTimeToDate(error.createdAt);
+
+                this.lateErrors = [...this.lateErrors, error];
+                this.reorderErrors();
+            })
+        ;
+
         this.titleService.setTitle('JM. Server errors');
 
         this.refresh();

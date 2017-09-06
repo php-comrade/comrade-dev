@@ -3,9 +3,10 @@
 namespace App\Async\Processor;
 
 use App\Async\Topics;
+use App\Infra\ThruwayClient;
 use Enqueue\Client\TopicSubscriberInterface;
+use Enqueue\Consumption\Result;
 use Enqueue\Util\JSON;
-use Gos\Bundle\WebSocketBundle\Pusher\PusherInterface;
 use Interop\Queue\PsrContext;
 use Interop\Queue\PsrMessage;
 use Interop\Queue\PsrProcessor;
@@ -13,16 +14,16 @@ use Interop\Queue\PsrProcessor;
 class WsPushInternalErrorProcessor implements PsrProcessor, TopicSubscriberInterface
 {
     /**
-     * @var PusherInterface
+     * @var ThruwayClient
      */
-    private $pusher;
+    private $client;
 
     /**
-     * @param PusherInterface $pusher
+     * @param ThruwayClient $client
      */
-    public function __construct(PusherInterface $pusher)
+    public function __construct(ThruwayClient $client)
     {
-        $this->pusher = $pusher;
+        $this->client = $client;
     }
 
     /**
@@ -30,14 +31,19 @@ class WsPushInternalErrorProcessor implements PsrProcessor, TopicSubscriberInter
      */
     public function process(PsrMessage $message, PsrContext $context)
     {
-        $data = JSON::decode($message->getBody());
+        if ($message->isRedelivered()) {
+            return Result::ack('Rejected redelivered message');
+        }
 
-        $this->pusher->push([
-            'EVENT' => Topics::INTERNAL_ERROR,
-            'MESSAGE' => $data,
-        ], 'events');
+        try {
+            $data = JSON::decode($message->getBody());
 
-        return self::ACK;
+            $this->client->publish(Topics::INTERNAL_ERROR, $data);
+
+            return self::ACK;
+        } catch (\Throwable $e) {
+            return Result::ack($e->getMessage());
+        }
     }
 
     /**

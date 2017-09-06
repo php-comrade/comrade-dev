@@ -3,9 +3,10 @@
 namespace App\Async\Processor;
 
 use App\Async\Topics;
+use App\Infra\ThruwayClient;
 use Enqueue\Client\TopicSubscriberInterface;
+use Enqueue\Consumption\Result;
 use Enqueue\Util\JSON;
-use Gos\Bundle\WebSocketBundle\Pusher\PusherInterface;
 use Interop\Queue\PsrContext;
 use Interop\Queue\PsrMessage;
 use Interop\Queue\PsrProcessor;
@@ -13,16 +14,16 @@ use Interop\Queue\PsrProcessor;
 class WsPushJobUpdatedProcessor implements PsrProcessor, TopicSubscriberInterface
 {
     /**
-     * @var PusherInterface
+     * @var ThruwayClient
      */
-    private $pusher;
+    private $client;
 
     /**
-     * @param PusherInterface $pusher
+     * @param ThruwayClient $client
      */
-    public function __construct(PusherInterface $pusher)
+    public function __construct(ThruwayClient $client)
     {
-        $this->pusher = $pusher;
+        $this->client = $client;
     }
 
     /**
@@ -30,14 +31,21 @@ class WsPushJobUpdatedProcessor implements PsrProcessor, TopicSubscriberInterfac
      */
     public function process(PsrMessage $message, PsrContext $context)
     {
-        $data = JSON::decode($message->getBody());
+        if ($message->isRedelivered()) {
+            return Result::reject('Rejected redelivered message');
+        }
 
-        $this->pusher->push([
-            'EVENT' => Topics::UPDATE_JOB,
-            'MESSAGE' => $data,
-        ], 'events');
+        try {
+            $data = JSON::decode($message->getBody());
 
-        return self::ACK;
+            $this->client->publish(Topics::UPDATE_JOB, $data);
+
+            return self::ACK;
+        } catch (\Throwable $e) {
+            return Result::ack($e->getMessage());
+        }
+
+
     }
 
     /**

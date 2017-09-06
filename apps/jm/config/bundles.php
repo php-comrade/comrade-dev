@@ -9,6 +9,5 @@ return [
     'Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle' => ['all' => true],
     'Quartz\Bundle\QuartzBundle' => ['all' => true],
     'Symfony\Bundle\SecurityBundle\SecurityBundle' => ['all' => true],
-    'Gos\Bundle\WebSocketBundle\GosWebSocketBundle' => ['all' => true],
-    'Gos\Bundle\PubSubRouterBundle\GosPubSubRouterBundle' => ['all' => true],
+    'JMS\SerializerBundle\JMSSerializerBundle' => ['all' => true],
 ];
