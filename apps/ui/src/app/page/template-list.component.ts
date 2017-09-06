@@ -11,9 +11,7 @@ export class TemplateListComponent implements OnInit {
   jobTemplates: JobTemplate[];
   error: Error;
 
-  constructor(
-      private jobTemplateService: JobTemplateService
-  ) { }
+  constructor(private jobTemplateService: JobTemplateService) { }
 
   ngOnInit(): void {
     this.getJobTemplates();

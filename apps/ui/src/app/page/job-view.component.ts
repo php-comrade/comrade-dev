@@ -7,6 +7,7 @@ import {JobService} from "../shared/job.service";
 import {Job} from "../shared/job";
 import {GetJob} from "../shared/messages/get-job";
 import {GetSubJobs} from "../shared/messages/get-sub-jobs";
+import {CurrentJobService} from "../shared/current-job.service";
 
 @Component({
   selector: 'job-view',
@@ -20,7 +21,10 @@ export class JobViewComponent implements OnInit {
 
   tab: string = 'summary';
 
+  updatedAt: number;
+
   constructor(
+      private currentJobService: CurrentJobService,
       private jobService: JobService,
       private route: ActivatedRoute,
       private titleService: Title,
@@ -31,9 +35,14 @@ export class JobViewComponent implements OnInit {
 
       this.route.params
           .do((params: Params) => this.tab = params['tab'] || 'summary')
-          .switchMap((params: Params) => this.jobService.getJob(new GetJob(params['id'])))
+          .switchMap((params: Params) => {
+            this.currentJobService.change(params['id']);
+
+            return this.currentJobService.getCurrentJob();
+          })
           .subscribe((job: Job) => {
               this.job = job;
+              this.updatedAt = Date.now();
 
               if (job.runSubJobsPolicy) {
                   this.route.params

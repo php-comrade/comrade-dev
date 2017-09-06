@@ -53,7 +53,7 @@
         </div>
     </div>
     <div *ngIf="tab == 'graph'">
-        <process-graph-image [processId]="job.processId"></process-graph-image>
+        <process-graph-image [processId]="job.processId" [updatedAt]="updatedAt"></process-graph-image>
     </div>
     <div *ngIf="tab === 'raw'">
         <prettyjson [obj]="job"></prettyjson>
