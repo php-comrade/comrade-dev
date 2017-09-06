@@ -18,6 +18,7 @@ services:
     App\Storage\ProcessStorage: '@yadm.process.storage'
     App\Storage\ProcessExecutionStorage: '@yadm.process_execution.storage'
     App\Infra\Error\ErrorStorage: '@yadm.error.storage'
+    App\Storage\JobMetricsStorage: '@yadm.job_metrics.storage'
 
     Enqueue\Client\ProducerInterface:
         alias: 'enqueue.client.producer'

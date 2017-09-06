@@ -4,6 +4,7 @@ namespace App\Model;
 use App\Infra\Yadm\CreateTrait;
 use App\JobStatus;
 use Makasim\Values\CastTrait;
+use function Makasim\Values\get_object;
 use function Makasim\Values\get_value;
 use function Makasim\Values\set_value;
 use Makasim\Values\ValuesTrait;
@@ -88,6 +89,56 @@ class JobResult
     public function getCreatedAt(): ?\DateTime
     {
         return get_value($this, 'createdAt', null, \DateTime::class);
+    }
+
+    public function setStartTime(int $time)
+    {
+        set_value($this, 'startTime', $time);
+    }
+
+    public function getStartTime() :?int
+    {
+        return get_value($this, 'startTime');
+    }
+
+    public function setStopTime(int $time)
+    {
+        set_value($this, 'stopTime', $time);
+    }
+
+    public function getStopTime() :?int
+    {
+        return get_value($this, 'stopTime');
+    }
+
+    public function setDuration(int $duration)
+    {
+        set_value($this, 'duration', $duration);
+    }
+
+    public function getDuration() :?int
+    {
+        return get_value($this, 'duration');
+    }
+
+    public function setMemory(int $memory)
+    {
+        set_value($this, 'memory', $memory);
+    }
+
+    public function getMemory() :?int
+    {
+        return get_value($this, 'memory');
+    }
+
+    public function setError(string $error)
+    {
+        set_value($this, 'error', $error);
+    }
+
+    public function getError() :?Throwable
+    {
+        return get_object($this, 'error', Throwable::class);
     }
 
     /**

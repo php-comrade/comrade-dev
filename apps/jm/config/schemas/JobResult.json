@@ -4,6 +4,11 @@
   "type": "object",
   "properties": {
     "status": { "$ref": "JobStatus.json" },
+    "startTime": { "type": "integer" },
+    "stopTime": { "type": "integer" },
+    "duration": { "type": "integer" },
+    "memory": { "type": "integer" },
+    "error": { "$ref": "throwable.json" },
     "createdAt": { "$ref": "date.json" }
   },
   "required": ["status", "createdAt"]

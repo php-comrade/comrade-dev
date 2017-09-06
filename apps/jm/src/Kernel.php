@@ -11,6 +11,7 @@ use App\Async\RunSubJobsResult;
 use App\Async\RunJob;
 use App\Async\JobResult;
 use App\Async\ScheduleJob;
+use App\Chart\GetJobChart;
 use App\Infra\DependencyInjection\RegisterPvmBehaviorPass;
 use App\Infra\Yadm\ObjectBuilderHook;
 use App\Model\CronTrigger;
@@ -27,6 +28,7 @@ use App\Model\RunSubJobsPolicy;
 use App\Model\SimpleTrigger;
 use App\Model\SubJob;
 use App\Model\SubJobTemplate;
+use App\Model\Throwable;
 use function Makasim\Values\register_cast_hooks;
 use function Makasim\Values\register_hook;
 use function Makasim\Values\register_object_hooks;
@@ -134,6 +136,9 @@ final class Kernel extends BaseKernel
             ScheduleJob::SCHEMA => ScheduleJob::class,
             GetJob::SCHEMA => GetJob::class,
             GetSubJobs::SCHEMA => GetSubJobs::class,
+            Throwable::SCHEMA => Throwable::class,
+
+            GetJobChart::SCHEMA => GetJobChart::class,
 
             GracePeriodPolicy::SCHEMA => GracePeriodPolicy::class,
             RetryFailedPolicy::SCHEMA => RetryFailedPolicy::class,

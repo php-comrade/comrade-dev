@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "id": "http://jm.forma-pro.com/schemas/throwable.json",
+  "type": "object",
+  "properties": {
+    "raw": { "type": "string" },
+    "message": { "type": "string" },
+    "code": { "type": "integer" },
+    "file": { "type": "string" },
+    "line": { "type": "integer" },
+    "trace": { "type": "string" },
+    "previous": { "$ref": "throwable.json" }
+  },
+  "required": ["raw", "message", "file", "line", "trace"]
+}

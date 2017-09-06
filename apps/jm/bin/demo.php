@@ -13,6 +13,7 @@ use App\Model\JobResult;
 use App\Model\JobTemplate;
 use App\Model\QueueRunner;
 use App\Model\SubJobTemplate;
+use App\ProcessMetrics;
 use Enqueue\Consumption\ChainExtension;
 use Enqueue\Consumption\Extension\LoggerExtension;
 use Enqueue\Consumption\Extension\SignalExtension;
@@ -73,7 +74,16 @@ $queueConsumer->bind('demo_success_job', function(PsrMessage $message, PsrContex
 
     $result = JobResult::createFor(JobStatus::STATUS_COMPLETED);
 
+    $metrics = ProcessMetrics::start();
+
     sleep(10);
+
+    $metrics->stop();
+
+    $result->setStartTime($metrics->getStartTime());
+    $result->setStopTime($metrics->getStopTime());
+    $result->setDuration($metrics->getDuration());
+    $result->setMemory($metrics->getMemory());
 
     send_result(convert($runJob, $result));
 

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script language="javascript" type="text/javascript" src="jquery.js"></script>
+    <script language="javascript" type="text/javascript" src="Chart.bundle.min.js"></script>
+</head>
+<body>
+<input id="templateId">
+<input id="since" type="datetime-local">
+<input id="until" type="datetime-local">
+<button id="show">Show</button>
+<div style="width:75%;">
+    <canvas id="canvas"></canvas>
+</div>
+
+<script type="text/javascript">
+
+window.chartColors = {
+    red: 'rgb(255, 99, 132)',
+    orange: 'rgb(255, 159, 64)',
+    yellow: 'rgb(255, 205, 86)',
+    green: 'rgb(75, 192, 192)',
+    blue: 'rgb(54, 162, 235)',
+    purple: 'rgb(153, 102, 255)',
+    grey: 'rgb(201, 203, 207)'
+};
+
+$(function() {
+    var color = Chart.helpers.color;
+    var config = {
+        type: 'line',
+        data: {
+            datasets: [
+                {
+                    label: "Memory",
+                    backgroundColor: color(window.chartColors.orange).alpha(0.5).rgbString(),
+                    borderColor: window.chartColors.orange,
+                    fill: false,
+                    data: [],
+                    yAxisID: 1
+                },
+                {
+                    label: "Duration",
+                    backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
+                    borderColor: window.chartColors.green,
+                    fill: false,
+                    data: [],
+                    yAxisID: 2
+                },
+                {
+                    label: "Wait Time",
+                    backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                    borderColor: window.chartColors.red,
+                    fill: false,
+                    data: [],
+                    yAxisID: 3
+                },
+                {
+                    label: "Throughput",
+                    backgroundColor: color(window.chartColors.black).alpha(0.5).rgbString(),
+                    borderColor: window.chartColors.black,
+                    fill: false,
+                    data: [],
+                    yAxisID: 4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            title:{
+                display:true,
+                text:"Chart.js Time Point Data"
+            },
+            scales: {
+                xAxes: [{
+                    type: "time",
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Date'
+                    }
+                }],
+                yAxes: [
+                    {
+                        id: 1,
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Memory'
+                        }
+                    },
+                    {
+                        id: 2,
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Duration'
+                        }
+                    },
+                    {
+                        id: 3,
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Wait Time'
+                        }
+                    },
+                    {
+                        id: 4,
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Throughput'
+                        }
+                    }
+                ]
+            }
+        }
+    };
+
+    var ctx = document.getElementById("canvas").getContext("2d");
+    window.chart = new Chart(ctx, config);
+
+    $('#show').click(function () {
+        var since = new Date($('#since').val());
+        var until = new Date($('#until').val());
+
+        var request = {
+            templateId: $('#templateId').val(),
+            since: {
+                unix: since.getTime()/1000|0,
+                iso: since.toISOString()
+            },
+            until: {
+                unix: until.getTime()/1000|0,
+                iso: until.toISOString()
+            }
+        };
+
+        doRequest(request);
+    });
+
+    var doRequest = function(request) {
+        $.ajax({
+            url: 'http://jm.loc/api/metrics/chart',
+            contentType: 'application/json',
+            type: 'POST',
+            data: JSON.stringify(request),
+            success: function (data) {
+                chart.data.datasets[0].data = [];
+                chart.data.datasets[1].data = [];
+                chart.data.datasets[2].data = [];
+                chart.data.datasets[3].data = [];
+                chart.update();
+
+                data.forEach(function (value) {
+                    chart.data.datasets[0].data.push({
+                        x: value.range,
+                        y: value.avrMemory
+                    });
+
+                    chart.data.datasets[1].data.push({
+                        x: value.range,
+                        y: value.avrDuration
+                    });
+
+                    chart.data.datasets[2].data.push({
+                        x: value.range,
+                        y: value.avrWaitTime
+                    });
+
+                    chart.data.datasets[3].data.push({
+                        x: value.range,
+                        y: value.jobsPerHour
+                    });
+
+                    chart.update();
+                });
+            },
+            error: function() {
+                chart.data.datasets[0].data = [];
+                chart.data.datasets[1].data = [];
+                chart.data.datasets[2].data = [];
+                chart.data.datasets[3].data = [];
+                chart.update();
+            }
+        });
+    };
+});
+</script>
+</body>
+</html>

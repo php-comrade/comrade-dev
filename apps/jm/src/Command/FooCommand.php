@@ -4,11 +4,15 @@ namespace App\Command;
 use App\Async\Commands;
 use App\Async\CreateJob;
 use App\Infra\Uuid;
+use App\JobStatus;
 use App\Model\ExclusivePolicy;
+use App\Model\JobMetrics;
 use App\Model\JobTemplate;
 use App\Model\QueueRunner;
 use App\Model\SimpleTrigger;
 use App\Service\BuildMongoIndexesService;
+use App\Storage\JobMetricsStorage;
+use App\Ws\Ratchet\AmqpPusher;
 use Enqueue\Client\ProducerInterface;
 use function Makasim\Values\get_values;
 use Makasim\Yadm\Registry;
@@ -33,6 +37,17 @@ class FooCommand extends Command implements ContainerAwareInterface
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $this->createDemoJobMetrics();
+        return;
+
+        /** @var AmqpPusher $pusher */
+        $pusher = $this->container->get('gos_web_socket.amqp.pusher');
+        $pusher->push(['key' => 'value'], 'events');
+
+
+        return;
+
+
         if ($input->getOption('drop')) {
             foreach ($this->getYadmRegistry()->getStorages() as $name => $storage) {
                 $storage->getCollection()->drop();
@@ -51,6 +66,36 @@ class FooCommand extends Command implements ContainerAwareInterface
         $this->getProducer()->sendCommand(Commands::CREATE_JOB, $message);
 
         $output->writeln('');
+    }
+
+    protected function createDemoJobMetrics()
+    {
+        /** @var JobMetricsStorage $storage */
+        $storage = $this->container->get('yadm.job_metrics.storage');
+        $storage->getCollection()->drop();
+
+        $since = (int) (new \DateTime('2017-09-03 00:00:00'))->format('U');
+        $until = (int) (new \DateTIme('2017-09-04 23:59:59'))->format('U');
+
+
+        $now = $since;
+        while (true) {
+            $m = new JobMetrics();
+            $m->setStatus(JobStatus::STATUS_COMPLETED);
+            $m->setTemplateId('84da648a-4262-40bb-88d9-605cba1a2372');
+            $m->setJobId(\Enqueue\Util\UUID::generate());
+            $m->setStartTime(\DateTime::createFromFormat('U', $now));
+            $m->setDuration(random_int(100, 1000));
+            $m->setMemory(random_int(50, 800));
+            $m->setWaitTime(random_int(2, 10));
+
+            $storage->insert($m);
+
+            $now += random_int(300, 1000);
+            if ($now > $until) {
+                break;
+            }
+        }
     }
 
     protected function createDemoSuccessJob():JobTemplate
