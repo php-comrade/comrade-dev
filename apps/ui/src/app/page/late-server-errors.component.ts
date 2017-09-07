@@ -43,7 +43,7 @@ export class LateServerErrorsComponent implements OnInit {
 
     ngOnInit(): void {
         this.wamp.topic('job_manager.internal_error')
-            .map((e: EventMessage) => e.args.pop() as ServerError)
+            .map((e: EventMessage) => e.args[0] as ServerError)
             .subscribe((error: ServerError) => {
                 error.createdAtAsDate = this.convertMicroTimeToDate(error.createdAt);
 

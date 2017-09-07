@@ -5,7 +5,6 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/filter';
 import {JobService} from "../shared/job.service";
 import {Job} from "../shared/job";
-import {GetJob} from "../shared/messages/get-job";
 import {GetSubJobs} from "../shared/messages/get-sub-jobs";
 import {CurrentJobService} from "../shared/current-job.service";
 
