@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
     <script language="javascript" type="text/javascript" src="jquery.js"></script>
     <script language="javascript" type="text/javascript" src="Chart.bundle.min.js"></script>
 </head>
@@ -77,6 +78,10 @@ $(function() {
                 xAxes: [{
                     type: "time",
                     display: true,
+                    time: {
+                        format: 'x',
+                        tooltipFormat: 'll HH:mm'
+                    },
                     scaleLabel: {
                         display: true,
                         labelString: 'Date'
@@ -162,23 +167,25 @@ $(function() {
                 chart.update();
 
                 data.forEach(function (value) {
+                    var x = value.range*1000;
+
                     chart.data.datasets[0].data.push({
-                        x: value.range,
+                        x: x,
                         y: value.avrMemory
                     });
 
                     chart.data.datasets[1].data.push({
-                        x: value.range,
+                        x: x,
                         y: value.avrDuration
                     });
 
                     chart.data.datasets[2].data.push({
-                        x: value.range,
+                        x: x,
                         y: value.avrWaitTime
                     });
 
                     chart.data.datasets[3].data.push({
-                        x: value.range,
+                        x: x,
                         y: value.jobsPerHour
                     });
 
