@@ -3,8 +3,6 @@ namespace App\Command;
 
 use App\Async\Commands;
 use App\Async\CreateJob;
-use App\Async\Topics;
-use App\Infra\ThruwayClient;
 use App\Infra\Uuid;
 use App\Model\ExclusivePolicy;
 use App\Model\JobTemplate;
@@ -20,7 +18,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
-use Voryx\ThruwayBundle\Client\ClientManager;
 
 class FooCommand extends Command implements ContainerAwareInterface
 {

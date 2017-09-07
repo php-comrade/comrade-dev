@@ -116,7 +116,5 @@ services:
     Quartz\Bridge\Swoole\CheckMasterProcessSubscriber:
         tags: [{ name: 'kernel.event_subscriber' }]
 
-    Voryx\ThruwayBundle\Client\ClientManager: '@thruway.client'
-
     App\Infra\ThruwayClient:
         arguments: ['%env(WAMP_DSN)%', '%env(WAMP_REALM)%']
