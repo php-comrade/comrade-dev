@@ -118,4 +118,5 @@ services:
 
     Voryx\ThruwayBundle\Client\ClientManager: '@thruway.client'
 
-    App\Infra\ThruwayClient: ~
+    App\Infra\ThruwayClient:
+        arguments: ['%env(WAMP_DSN)%', '%env(WAMP_REALM)%']

@@ -31,8 +31,7 @@ services:
     depends_on:
       - 'rabbitmq'
       - 'mongo'
-    ports:
-      - '9090:9090'
+      - 'jms'
     volumes:
       - './apps/jm:/jobs_dev/apps/jm:cached'
       - './shared:/shared'
@@ -40,6 +39,35 @@ services:
       - './shared/swoole.so:/usr/lib/php/20160303/swoole.so'
       - './docker/swoole.ini:/etc/php/7.1/cli/conf.d/20-swoole.ini'
     env_file: 'apps/jm/.env'
+    environment:
+      - COMRADE_DEFAULT_CONSUMER_NUMBER=5
+      - COMRADE_QUARTZ_CONSUMER_NUMBER=5
+      - COMRADE_RUN_QUARTZ=1
+      - COMRADE_RUN_WAMP=0
+      - WAMP_DSN=ws://jms:9090
+      - WAMP_REALM=realm1
+
+  jms:
+    image: 'formapro/nginx-php-fpm:latest-all-exts'
+    restart: 'always'
+    entrypoint: "php bin/daemon.php"
+    working_dir: '/jobs_dev/apps/jm'
+    environment:
+      - COMRADE_DEFAULT_CONSUMER_NUMBER=0
+      - COMRADE_QUARTZ_CONSUMER_NUMBER=0
+      - COMRADE_RUN_QUARTZ=0
+      - COMRADE_RUN_WAMP=1
+      - WAMP_SERVER_HOST=0.0.0.0
+      - WAMP_SERVER_PORT=9090
+    volumes:
+      - './apps/jm:/jobs_dev/apps/jm:cached'
+      - './shared:/shared'
+      - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
+      - './shared/swoole.so:/usr/lib/php/20160303/swoole.so'
+      - './docker/swoole.ini:/etc/php/7.1/cli/conf.d/20-swoole.ini'
+    env_file: 'apps/jm/.env'
+    ports:
+      - "9090:9090"
 
   jmd:
     image: 'formapro/nginx-php-fpm:latest-all-exts'

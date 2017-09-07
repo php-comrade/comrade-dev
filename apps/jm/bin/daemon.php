@@ -11,31 +11,41 @@ if (false === $phpBin) {
 
 $daemon = new \App\Infra\Symfony\Daemon();
 
-$defaultConsumerNumber = getenv('COMRADE_DEFAULT_CONSUMER_NUMBER') ?: 2;
-$quartzConsumerNumber = getenv('COMRADE_QUARTZ_CONSUMER_NUMBER') ?: 2;
+$defaultConsumerNumber = false !== getenv('COMRADE_DEFAULT_CONSUMER_NUMBER') ? getenv('COMRADE_DEFAULT_CONSUMER_NUMBER') : 2;
+$quartzConsumerNumber = false !== getenv('COMRADE_QUARTZ_CONSUMER_NUMBER') ? getenv('COMRADE_QUARTZ_CONSUMER_NUMBER') : 2;
+$runQuartz = false !== getenv('COMRADE_RUN_QUARTZ') ? getenv('COMRADE_RUN_QUARTZ') : true;
+$runWamp = false !== getenv('COMRADE_RUN_WAMP') ? getenv('COMRADE_RUN_WAMP') : true;
 
-$builder = new ProcessBuilder([$phpBin, 'bin/console', 'enqueue:consume', '--setup-broker', '-vvv']);
-$builder->setPrefix('exec');
-$builder->setWorkingDirectory(realpath(__DIR__.'/..'));
-$builder->setEnv('MASTER_PROCESS_PID', getmypid());
-$daemon->addWorker('cnsmr', $defaultConsumerNumber, $builder);
+if ($defaultConsumerNumber) {
+    $builder = new ProcessBuilder([$phpBin, 'bin/console', 'enqueue:consume', '--setup-broker', '-vvv']);
+    $builder->setPrefix('exec');
+    $builder->setWorkingDirectory(realpath(__DIR__ . '/..'));
+    $builder->setEnv('MASTER_PROCESS_PID', getmypid());
+    $daemon->addWorker('cnsmr', $defaultConsumerNumber, $builder);
+}
 
-$builder = new ProcessBuilder([$phpBin, 'bin/console', 'enqueue:consume', 'quartz_job_run_shell', 'quartz_rpc', '--setup-broker', '-vvv']);
-$builder->setPrefix('exec');
-$builder->setWorkingDirectory(realpath(__DIR__.'/..'));
-$builder->setEnv('MASTER_PROCESS_PID', getmypid());
-$daemon->addWorker('qvrtz-cnsmr', $quartzConsumerNumber, $builder);
+if ($quartzConsumerNumber) {
+    $builder = new ProcessBuilder([$phpBin, 'bin/console', 'enqueue:consume', 'quartz_job_run_shell', 'quartz_rpc', '--setup-broker', '-vvv']);
+    $builder->setPrefix('exec');
+    $builder->setWorkingDirectory(realpath(__DIR__.'/..'));
+    $builder->setEnv('MASTER_PROCESS_PID', getmypid());
+    $daemon->addWorker('qvrtz-cnsmr', $quartzConsumerNumber, $builder);
+}
 
-$builder = new ProcessBuilder([$phpBin, 'bin/console', 'quartz:scheduler', '-vvv']);
-$builder->setPrefix('exec');
-$builder->setWorkingDirectory(realpath(__DIR__.'/..'));
-$builder->setEnv('MASTER_PROCESS_PID', getmypid());
-$daemon->addWorker('schdlr', 1, $builder);
+if ($runQuartz) {
+    $builder = new ProcessBuilder([$phpBin, 'bin/console', 'quartz:scheduler', '-vvv']);
+    $builder->setPrefix('exec');
+    $builder->setWorkingDirectory(realpath(__DIR__ . '/..'));
+    $builder->setEnv('MASTER_PROCESS_PID', getmypid());
+    $daemon->addWorker('schdlr', 1, $builder);
+}
 
-$builder = new ProcessBuilder([$phpBin, 'bin/wamp_server.php']);
-$builder->setPrefix('exec');
-$builder->setWorkingDirectory(realpath(__DIR__.'/..'));
-$builder->setEnv('MASTER_PROCESS_PID', getmypid());
-$daemon->addWorker('wamp', 1, $builder);
+if ($runWamp) {
+    $builder = new ProcessBuilder([$phpBin, 'bin/wamp_server.php']);
+    $builder->setPrefix('exec');
+    $builder->setWorkingDirectory(realpath(__DIR__ . '/..'));
+    $builder->setEnv('MASTER_PROCESS_PID', getmypid());
+    $daemon->addWorker('wamp', 1, $builder);
+}
 
 $daemon->start();
