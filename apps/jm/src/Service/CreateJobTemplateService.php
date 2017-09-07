@@ -3,12 +3,14 @@ namespace App\Service;
 
 use App\Async\Commands;
 use App\Async\ScheduleJob;
+use App\Async\Topics;
 use App\Model\ExclusiveJob;
 use App\Model\JobTemplate;
 use App\Storage\ExclusiveJobStorage;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessStorage;
 use Enqueue\Client\ProducerInterface;
+use function Makasim\Values\get_values;
 
 class CreateJobTemplateService
 {
@@ -77,6 +79,7 @@ class CreateJobTemplateService
             $this->exclusiveJobStorage->update($exclusiveJob, ['name' => $exclusiveJob->getName()], ['upsert' => true]);
         }
 
+        $this->producer->sendEvent(Topics::JOB_TEMPLATE_UPDATED, get_values($jobTemplate));
         $this->producer->sendCommand(Commands::SCHEDULE_JOB, ScheduleJob::createFor($jobTemplate));
     }
 }

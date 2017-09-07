@@ -16,28 +16,32 @@ import {ReplaySubject} from "rxjs/ReplaySubject";
 @Injectable()
 export class CurrentJobService {
     currentJobId: ReplaySubject<string>;
-    currentJob: Observable<Job>;
+    currentJob: ReplaySubject<Job>;
 
     constructor(private jobService: JobService, private wamp: WampService) {
         this.currentJobId = new ReplaySubject(1);
+        this.currentJob = new ReplaySubject(1);
 
-        this.currentJob = this.currentJobId
-            .distinctUntilChanged()
-            .switchMap((id: string) => {
-                return this.jobService.getJob(new GetJob(id))
-            })
-            .merge(wamp.topic('job_manager.update_job')
-                .map((event: EventMessage) => event.args[0])
-                .withLatestFrom(this.currentJobId)
-                .filter(([job, currentJobId]) => job.id === currentJobId)
-                .map(([job, currentJobId]) => job)
-            )
-            .shareReplay(1)
+        wamp.topic('job_manager.update_job')
+            .map((event: EventMessage) => event.args[0])
+            .withLatestFrom(this.currentJobId)
+            .filter(([job, currentJobId]) => job.id === currentJobId)
+            .map(([job, currentJobId]) => job)
+            .subscribe((job: Job) => this.currentJob.next(job))
         ;
 
-        // I dont know why, but shareReply does not work if I do not subscribe.
-        this.currentJob.subscribe(() => {});
-
+        this.currentJobId
+            .distinctUntilChanged()
+            .do(() => this.currentJob.next(null))
+            .switchMap((id: string) => {
+                return this.jobService.getJob(new GetJob(id)).catch(() => Observable.empty())
+            })
+            // .shareReplay(1)
+            .subscribe((job: Job) => {
+            console.log(123);
+                this.currentJob.next(job)
+            }, (v) => console.log(v))
+        ;
     }
 
 

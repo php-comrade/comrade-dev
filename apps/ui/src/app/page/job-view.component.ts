@@ -33,7 +33,7 @@ export class JobViewComponent implements OnInit {
       this.titleService.setTitle('JM. Job view');
 
       this.route.params
-          .do((params: Params) => this.tab = params['tab'] || 'summary')
+          .do((params: Params) => this.tab = params['tab'])
           .switchMap((params: Params) => {
             this.currentJobService.change(params['id']);
 
@@ -43,7 +43,7 @@ export class JobViewComponent implements OnInit {
               this.job = job;
               this.updatedAt = Date.now();
 
-              if (job.runSubJobsPolicy) {
+              if (job && job.runSubJobsPolicy) {
                   this.route.params
                       .filter((params: Params) => params['tab'] == 'sub-jobs')
                       .switchMap((params: Params) => this.jobService.getSubJobs(new GetSubJobs(params['id'])))

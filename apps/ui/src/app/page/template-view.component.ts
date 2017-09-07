@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {JobTemplate} from "../shared/job-template";
-import {JobTemplateService} from "../shared/job-template.service";
 import {ActivatedRoute, Params} from "@angular/router";
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/do';
+import {CurrentJobTemplateService} from "../shared/current-job-template.service";
 
 @Component({
   selector: 'template-view',
@@ -16,18 +16,21 @@ export class TemplateViewComponent implements OnInit {
   tab: string = 'summary';
 
   constructor(
-      private jobTemplateService: JobTemplateService,
-      private route: ActivatedRoute
+      private route: ActivatedRoute,
+      private currentJobTemplateService: CurrentJobTemplateService,
   ) { }
 
   ngOnInit(): void {
-    this.route.params
-        .do((params: Params) => this.tab = params['tab'] || 'summary')
-        .switchMap((params: Params) => this.jobTemplateService.getJobTemplate(params['id']))
+      this.route.params
+          .do((params: Params) => this.tab = params['tab'])
+          .switchMap((params: Params) => {
+              this.currentJobTemplateService.change(params['id']);
 
-        .subscribe(jobTemplate => {
-          this.jobTemplate = jobTemplate;
-        });
+              return this.currentJobTemplateService.getCurrentJobTemplate();
+          })
+          .subscribe((jobTemplate: JobTemplate) => {
+              this.jobTemplate = jobTemplate;
+          });
   }
 
   onRunFailed(error: Error):void {
