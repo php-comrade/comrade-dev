@@ -40,15 +40,28 @@ export class AppComponent implements OnInit {
       this.wamp.topic('job_manager.update_job')
           .map((e: EventMessage) => e.args[0] as Job)
           .subscribe((job: Job) => {
-              const toastOptions:ToastOptions = {
-                  title: "Job updated",
-                  msg: `<a href="/job/${job.id}/view">${job.name}</a>`
-              };
+              if (job.currentResult.status == 36 /** completed */) {
+                  const toastOptions:ToastOptions = {
+                      title: "Job completed",
+                      msg: `<a href="/job/${job.id}/view">${job.name}</a>`
+                  };
 
-              if (job.currentResult.status == 68 /** failed */ ) {
+                  this.toastyService.success(toastOptions);
+              } else if (job.currentResult.status == 12 /** canceled */ || job.currentResult.status == 132 /** terminated */) {
+                  const toastOptions:ToastOptions = {
+                      title: "Job canceled",
+                      msg: `<a href="/job/${job.id}/view">${job.name}</a>`
+                  };
+
+                  this.toastyService.warning(toastOptions);
+              } else if (job.currentResult.status == 68 /** failed */ ) {
+                  const toastOptions:ToastOptions = {
+                      title: "Job failed",
+                      msg: `<a href="/job/${job.id}/view">${job.name}</a>`,
+                      timeout: 10000,
+                  };
+
                   this.toastyService.error(toastOptions);
-              } else {
-                  this.toastyService.info(toastOptions);
               }
           }
       )

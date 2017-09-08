@@ -9,9 +9,10 @@ import {JobViewComponent} from "./page/job-view.component";
 import {LateServerErrorsComponent} from "./page/late-server-errors.component";
 import {ApiBaseUrlComponent} from "./page/api-base-url.component";
 import {ApiGuard} from "./shared/api.guard";
+import {LandingComponent} from "./page/landing.component";
 
 const routes: Routes = [
-    { path: '', redirectTo: '/timeline', pathMatch: 'full' },
+    { path: '', component: LandingComponent, canActivate: [ApiGuard] },
     { path: 'timeline', component: TimelineComponent, canActivate: [ApiGuard] },
     { path: 'template/list',  component: TemplateListComponent, canActivate: [ApiGuard] },
     { path: 'template/new',  component: TemplateNewComponent, canActivate: [ApiGuard] },

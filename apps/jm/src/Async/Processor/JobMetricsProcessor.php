@@ -47,16 +47,24 @@ class JobMetricsProcessor implements PsrProcessor, TopicSubscriberInterface
 
         $job = Job::create($data);
 
-        if (false == in_array($job->getCurrentResult()->getStatus(), [JobStatus::STATUS_COMPLETED, JobStatus::STATUS_FAILED])) {
-            return Result::REJECT;
+        if (false == JobStatus::isDone($job->getCurrentResult())) {
+            return Result::ack(sprintf(
+                'The job status "%s" is not one of the done statuses (%s). Metrics are not calculated for intermediate statuses. Ignoring.',
+                $job->getCurrentResult()->getStatus(),
+                implode(', ', JobStatus::getDoneStatuses())
+            ));
         }
 
         $scheduledTime = null;
         foreach ($job->getResults() as $result) {
-            if ($result->getStatus() === JobStatus::STATUS_NEW) {
+            if (JobStatus::isNew($result)) {
                 $scheduledTime = $result->getCreatedAt();
                 break;
             }
+        }
+
+        if (false == $scheduledTime) {
+            throw new \LogicException(sprintf('The job "%s" has done status but there is no running one which is exceptional case.', $job->getId()));
         }
 
         $metrics = new JobMetrics();

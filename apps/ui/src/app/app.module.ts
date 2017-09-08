@@ -51,6 +51,7 @@ import {WampService} from "./shared/wamp.service";
 import {CurrentJobService} from "./shared/current-job.service";
 import {ToastyModule} from "ng2-toasty";
 import {CurrentJobTemplateService} from "./shared/current-job-template.service";
+import {LandingComponent} from "./page/landing.component";
 
 
 @NgModule({
@@ -87,6 +88,7 @@ import {CurrentJobTemplateService} from "./shared/current-job-template.service";
     JobListHeaderRowComponent,
     LateServerErrorsComponent,
     ApiBaseUrlComponent,
+    LandingComponent,
   ],
   imports: [
     BrowserModule,

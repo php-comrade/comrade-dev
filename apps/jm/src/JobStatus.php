@@ -70,6 +70,17 @@ class JobStatus
         return static::isSame(static::STATUS_TERMINATED, $result->getStatus());
     }
 
+    public static function getDoneStatuses():array
+    {
+        return [
+            JobStatus::STATUS_DONE,
+            JobStatus::STATUS_FAILED,
+            JobStatus::STATUS_COMPLETED,
+            JobStatus::STATUS_CANCELED,
+            JobStatus::STATUS_TERMINATED
+        ];
+    }
+
     /**
      * @param int $expectedStatus
      * @param int $actualStatus
@@ -78,7 +89,7 @@ class JobStatus
      */
     private static function isEqual(int $expectedStatus, int $actualStatus):bool
     {
-        return ($expectedStatus | $actualStatus) === $expectedStatus;
+        return ($expectedStatus | $actualStatus) === $actualStatus;
     }
 
     /**
