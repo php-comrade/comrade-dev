@@ -36,11 +36,10 @@ export class CurrentJobService {
             .switchMap((id: string) => {
                 return this.jobService.getJob(new GetJob(id)).catch(() => Observable.empty())
             })
-            // .shareReplay(1)
+            .shareReplay(1)
             .subscribe((job: Job) => {
-            console.log(123);
                 this.currentJob.next(job)
-            }, (v) => console.log(v))
+            })
         ;
     }
 
