@@ -71,7 +71,7 @@ services:
       mode: global
 
   seeds:
-    image: formapro/comrade-demo-seeds
+    image: 'formapro/comrade-demo-seeds:latest'
     depends_on:
       - 'mongo'
     environment:

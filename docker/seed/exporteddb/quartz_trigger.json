@@ -16,6 +16,7 @@
 	"jobGroup": "DEFAULT",
 	"jobDataMap": {
 		"command": "execute_process",
+		"jobTemplateId": "d28452c1-5e03-4973-8313-093a2cb09dbf",
 		"processTemplateId": "6ed1362c-cbfa-4037-8b91-436045ee954c"
 	},
 	"nextFireTime": {
