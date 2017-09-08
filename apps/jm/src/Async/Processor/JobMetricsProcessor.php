@@ -39,6 +39,10 @@ class JobMetricsProcessor implements PsrProcessor, TopicSubscriberInterface
      */
     public function process(PsrMessage $message, PsrContext $context)
     {
+        if ($message->isRedelivered()) {
+            return Result::reject('Message is redelivered. Reject it');
+        }
+
         $data = JSON::decode($message->getBody());
 
         if ($errors = $this->schemaValidator->validate($data, Job::SCHEMA)) {
