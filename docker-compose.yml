@@ -99,6 +99,16 @@ services:
     environment:
       - VIRTUAL_HOST=ui.jm.loc
 
+  seeds:
+    image: 'formapro/comrade-demo-seeds:latest'
+    #entrypoint: 'echo "To populate seeds comment out this entrypoint in docker-compose.yml file\n"'
+    restart: 'no'
+    depends_on:
+      - 'mongo'
+    environment:
+      - MONGO_HOST=mongo
+      - MONGO_PORT=27017
+      - MONGO_DB=job_manager
 
   rabbitmq:
     image: 'enqueue/rabbitmq:latest'

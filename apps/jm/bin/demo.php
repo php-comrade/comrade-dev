@@ -13,7 +13,8 @@ use App\Model\JobResult;
 use App\Model\JobTemplate;
 use App\Model\QueueRunner;
 use App\Model\SubJobTemplate;
-use App\ProcessMetrics;
+use App\CollectMetrics;
+use App\Model\Throwable;
 use Enqueue\Consumption\ChainExtension;
 use Enqueue\Consumption\Extension\LoggerExtension;
 use Enqueue\Consumption\Extension\SignalExtension;
@@ -49,12 +50,13 @@ register_object_hooks();
     SubJobTemplate::SCHEMA => SubJobTemplate::class,
     RunSubJobsResult::SCHEMA => RunSubJobsResult::class,
     QueueRunner::SCHEMA => QueueRunner::class,
+    Throwable::SCHEMA => Throwable::class,
 ]))->register();
 
 /** @var \Enqueue\AmqpExt\AmqpContext $c */
 $c = dsn_to_context(getenv('ENQUEUE_DSN'));
 
-foreach (['demo_success_job', 'demo_failed_job', 'demo_success_sub_job', 'demo_run_sub_tasks', 'demo_intermediate_status', 'demo_random_job', 'demo_success_on_third_attempt'] as $queueName) {
+foreach (['demo_success_job', 'demo_failed_job', 'demo_failed_with_exception_job', 'demo_success_sub_job', 'demo_run_sub_tasks', 'demo_intermediate_status', 'demo_random_job', 'demo_success_on_third_attempt'] as $queueName) {
     $q = $c->createQueue($queueName);
     $q->addFlag(AMQP_DURABLE);
     $c->declareQueue($q);
@@ -74,16 +76,11 @@ $queueConsumer->bind('demo_success_job', function(PsrMessage $message, PsrContex
 
     $result = JobResult::createFor(JobStatus::STATUS_COMPLETED);
 
-    $metrics = ProcessMetrics::start();
+    $metrics = CollectMetrics::start();
 
-    sleep(10);
+    sleep(5);
 
-    $metrics->stop();
-
-    $result->setStartTime($metrics->getStartTime());
-    $result->setStopTime($metrics->getStopTime());
-    $result->setDuration($metrics->getDuration());
-    $result->setMemory($metrics->getMemory());
+    $metrics->stop()->updateResult($result);
 
     send_result(convert($runJob, $result));
 
@@ -102,7 +99,11 @@ $queueConsumer->bind('demo_success_on_third_attempt', function(PsrMessage $messa
         $result = JobResult::createFor(JobStatus::STATUS_COMPLETED);
     }
 
-    sleep(10);
+    $metrics = CollectMetrics::start();
+
+    sleep(5);
+
+    $metrics->stop()->updateResult($result);
 
     send_result(convert($runJob, $result));
 
@@ -119,7 +120,11 @@ $queueConsumer->bind('demo_random_job', function(PsrMessage $message, PsrContext
     $statuses = [JobStatus::STATUS_FAILED, JobStatus::STATUS_COMPLETED, JobStatus::STATUS_COMPLETED, JobStatus::STATUS_COMPLETED];
     $result = JobResult::createFor($statuses[rand(0, 3)]);
 
-    sleep(10);
+    $metrics = CollectMetrics::start();
+
+    sleep(5);
+
+    $metrics->stop()->updateResult($result);
 
     send_result(convert($runJob, $result));
 
@@ -169,7 +174,11 @@ $queueConsumer->bind('demo_run_sub_tasks', function(PsrMessage $message, PsrCont
     $jobTemplate->setRunner(QueueRunner::createFor('demo_random_job'));
     $jobResultMessage->addJobTemplate($jobTemplate);
 
+    $metrics = CollectMetrics::start();
+
     sleep(5);
+
+    $metrics->stop()->updateResult($result);
 
     send_result($jobResultMessage);
 
@@ -185,8 +194,33 @@ $queueConsumer->bind('demo_failed_job', function(PsrMessage $message, PsrContext
 
     $result = JobResult::createFor(JobStatus::STATUS_FAILED);
 
+    $metrics = CollectMetrics::start();
+
     sleep(5);
 
+    $metrics->stop()->updateResult($result);
+
+    send_result(convert($runJob, $result));
+
+    return Result::ACK;
+});
+
+$queueConsumer->bind('demo_failed_with_exception_job', function(PsrMessage $message, PsrContext $context) {
+    if ($message->isRedelivered()) {
+        return Result::reject('The message was redelivered. Reject it');
+    }
+
+    $runJob = RunJob::create(JSON::decode($message->getBody()));
+
+    $result = JobResult::createFor(JobStatus::STATUS_FAILED);
+
+    $metrics = CollectMetrics::start();
+
+    sleep(5);
+
+    $metrics->stop()->updateResult($result);
+
+    $result->setError(Throwable::createFromThrowable(new \LogicException('Something went wrong')));
     send_result(convert($runJob, $result));
 
     return Result::ACK;
@@ -200,11 +234,15 @@ $queueConsumer->bind('demo_intermediate_status', function(PsrMessage $message, P
     $runJob = RunJob::create(JSON::decode($message->getBody()));
     $result = JobResult::createFor(JobStatus::STATUS_RUNNING);
 
+    $metrics = CollectMetrics::start();
+
     sleep(5);
 
     send_result(convert($runJob, $result));
 
     sleep(5);
+
+    $metrics->stop()->updateResult($result);
 
     $result = JobResult::createFor(JobStatus::STATUS_COMPLETED);
     send_result(convert($runJob, $result));

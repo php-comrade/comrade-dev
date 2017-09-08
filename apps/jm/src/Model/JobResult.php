@@ -6,6 +6,7 @@ use App\JobStatus;
 use Makasim\Values\CastTrait;
 use function Makasim\Values\get_object;
 use function Makasim\Values\get_value;
+use function Makasim\Values\set_object;
 use function Makasim\Values\set_value;
 use Makasim\Values\ValuesTrait;
 
@@ -131,14 +132,14 @@ class JobResult
         return get_value($this, 'memory');
     }
 
-    public function setError(string $error)
+    public function setError(Throwable $error)
     {
-        set_value($this, 'error', $error);
+        set_object($this, 'error', $error);
     }
 
     public function getError() :?Throwable
     {
-        return get_object($this, 'error', Throwable::class);
+        return get_object($this, 'error');
     }
 
     /**

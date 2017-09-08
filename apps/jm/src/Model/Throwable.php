@@ -49,7 +49,7 @@ class Throwable
 
     public function getPrevious() :Throwable
     {
-        return get_object($this, 'previous', Throwable::class);
+        return get_object($this, 'previous');
     }
 
     public static function createFromThrowable(\Throwable $error)
@@ -60,6 +60,7 @@ class Throwable
     public static function convertThrowable(\Throwable $error):array
     {
         $rawError = [
+            'schema' => static::SCHEMA,
             'raw' => (string) $error,
             'message' => $error->getMessage(),
             'code' => $error->getCode(),

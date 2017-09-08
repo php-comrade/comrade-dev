@@ -2,7 +2,9 @@
 
 namespace App;
 
-class ProcessMetrics
+use App\Model\JobResult;
+
+class CollectMetrics
 {
     /**
      * @var int
@@ -46,12 +48,12 @@ class ProcessMetrics
         $this->finished = false;
     }
 
-    public static function start() :ProcessMetrics
+    public static function start(): CollectMetrics
     {
         return new static();
     }
 
-    public function stop() :void
+    public function stop(): CollectMetrics
     {
         $this->stopTime = (int) microtime(true) * 1000;
         $this->stopMem = memory_get_usage();
@@ -60,22 +62,21 @@ class ProcessMetrics
         $this->memory = $this->stopMem - $this->startMem;
 
         $this->finished = true;
+
+        return $this;
     }
 
-    public function getStartTime() :int
+    public function getStartTime(): int
     {
         return $this->startTime;
     }
 
-    public function getStopTime() :int
+    public function getStopTime(): int
     {
         return $this->stopTime;
     }
 
-    /**
-     * @return int
-     */
-    public function getDuration() :int
+    public function getDuration(): int
     {
         if (false == $this->finished) {
             throw new \LogicException('Is not finished yet');
@@ -84,15 +85,20 @@ class ProcessMetrics
         return $this->duration;
     }
 
-    /**
-     * @return int
-     */
-    public function getMemory() :int
+    public function getMemory(): int
     {
         if (false == $this->finished) {
             throw new \LogicException('Is not finished yet');
         }
 
         return $this->memory;
+    }
+
+    public function updateResult(JobResult $result): void
+    {
+        $result->setStartTime($this->getStartTime());
+        $result->setStopTime($this->getStopTime());
+        $result->setDuration($this->getDuration());
+        $result->setMemory($this->getMemory());
     }
 }
