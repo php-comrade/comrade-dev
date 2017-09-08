@@ -34,8 +34,7 @@
         "symfony/yaml": "^3.3",
         "thruway/pawl-transport": "dev-master",
         "thruway/ratchet-transport": "dev-master",
-        "voryx/thruway": "^0.5@dev",
-        "voryx/thruway-bundle": "dev-master"
+        "voryx/thruway": "^0.5@dev"
     },
     "require-dev": {
         "enqueue/null": "^0.7@dev"

@@ -1,4 +1,5 @@
 @import 'assets/litera-bootstrap.min.css';
+@import '../node_modules/ng2-toasty/style-bootstrap.css';
 
 .container { padding-top: 5rem; }
 

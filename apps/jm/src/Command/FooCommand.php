@@ -38,15 +38,15 @@ class FooCommand extends Command implements ContainerAwareInterface
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->createDemoJobMetrics();
-        return;
-
-        /** @var AmqpPusher $pusher */
-        $pusher = $this->container->get('gos_web_socket.amqp.pusher');
-        $pusher->push(['key' => 'value'], 'events');
-
 
         return;
 
+//        /** @var ClientManager $client */
+//        $client = $this->container->get(ThruwayClient::class);
+//
+//        $client->publish(Topics::INTERNAL_ERROR, ['test']);
+//
+//        return;
 
         if ($input->getOption('drop')) {
             foreach ($this->getYadmRegistry()->getStorages() as $name => $storage) {

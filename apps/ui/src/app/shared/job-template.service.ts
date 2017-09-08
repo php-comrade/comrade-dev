@@ -24,13 +24,8 @@ export class JobTemplateService {
             .catch(this.handleError);
     }
 
-    getJobTemplate(id: string): Promise<JobTemplate> {
-        const url = `/api/job-templates/${id}`;
-
-        return this.http.get(url)
-            .toPromise()
-            .then(response => response.json().data as JobTemplate)
-            .catch(this.handleError);
+    getJobTemplate(id: string): Observable<JobTemplate> {
+        return this.http.get(`/api/job-templates/${id}`).map((res: Response) => res.json().data);
     }
 
     runNow(jobTemplate: JobTemplate): Observable<JobTemplate> {

@@ -49,6 +49,8 @@ import {ApiGuard} from "./shared/api.guard";
 import {Ng2Webstorage} from "ngx-webstorage";
 import {WampService} from "./shared/wamp.service";
 import {CurrentJobService} from "./shared/current-job.service";
+import {ToastyModule} from "ng2-toasty";
+import {CurrentJobTemplateService} from "./shared/current-job-template.service";
 
 
 @NgModule({
@@ -96,6 +98,7 @@ import {CurrentJobService} from "./shared/current-job.service";
     DatePickerModule,
     PrettyJsonModule,
     Ng2Webstorage,
+    ToastyModule.forRoot()
   ],
   providers: [
       JobTemplateService,
@@ -106,6 +109,7 @@ import {CurrentJobService} from "./shared/current-job.service";
       ApiGuard,
       WampService,
       CurrentJobService,
+      CurrentJobTemplateService,
   ],
   bootstrap: [AppComponent]
 })

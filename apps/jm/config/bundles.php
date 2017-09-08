@@ -9,5 +9,4 @@ return [
     'Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle' => ['all' => true],
     'Quartz\Bundle\QuartzBundle' => ['all' => true],
     'Symfony\Bundle\SecurityBundle\SecurityBundle' => ['all' => true],
-    'JMS\SerializerBundle\JMSSerializerBundle' => ['all' => true],
 ];

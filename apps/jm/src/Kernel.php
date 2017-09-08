@@ -37,7 +37,6 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
 use Symfony\Component\Routing\RouteCollectionBuilder;
-use Voryx\ThruwayBundle\VoryxThruwayBundle;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -74,8 +73,6 @@ final class Kernel extends BaseKernel
                 yield new $class();
             }
         }
-
-        yield new VoryxThruwayBundle($this);
     }
 
     public function boot()
