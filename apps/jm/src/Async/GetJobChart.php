@@ -1,5 +1,5 @@
 <?php
-namespace App\Chart;
+namespace App\Async;
 
 use App\Infra\Yadm\CreateTrait;
 use Makasim\Values\CastTrait;
@@ -9,7 +9,7 @@ use function Makasim\Values\set_value;
 
 class GetJobChart implements \JsonSerializable
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/chart/GetJobChart.json';
+    const SCHEMA = 'http://jm.forma-pro.com/schemas/message/GetJobChart.json';
 
     use CreateTrait;
     use CastTrait;

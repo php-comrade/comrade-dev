@@ -52,6 +52,8 @@ import {CurrentJobService} from "./shared/current-job.service";
 import {ToastyModule} from "ng2-toasty";
 import {CurrentJobTemplateService} from "./shared/current-job-template.service";
 import {LandingComponent} from "./page/landing.component";
+import {TemplateViewChartComponent} from "./part/template-view-chart.component";
+import {ChartsModule} from "ng2-charts";
 
 
 @NgModule({
@@ -89,6 +91,7 @@ import {LandingComponent} from "./page/landing.component";
     LateServerErrorsComponent,
     ApiBaseUrlComponent,
     LandingComponent,
+    TemplateViewChartComponent,
   ],
   imports: [
     BrowserModule,
@@ -100,7 +103,8 @@ import {LandingComponent} from "./page/landing.component";
     DatePickerModule,
     PrettyJsonModule,
     Ng2Webstorage,
-    ToastyModule.forRoot()
+    ToastyModule.forRoot(),
+    ChartsModule,
   ],
   providers: [
       JobTemplateService,

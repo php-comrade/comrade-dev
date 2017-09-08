@@ -1,12 +1,12 @@
 {
   "$schema": "http://json-schema.org/schema#",
-  "id": "http://jm.forma-pro.com/schemas/chart/GetJobChart.json",
+  "id": "http://jm.forma-pro.com/schemas/message/GetJobChart.json",
   "type": "object",
   "properties": {
     "templateId": { "$ref": "../uuid4.json" },
     "statuses": {
       "type": "array",
-      "items": { "$ref": "JobStatus.json" }
+      "items": { "$ref": "../JobStatus.json" }
     },
     "since": { "$ref": "../date.json" },
     "until": { "$ref": "../date.json" }

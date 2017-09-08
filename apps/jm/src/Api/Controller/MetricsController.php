@@ -2,7 +2,7 @@
 
 namespace App\Api\Controller;
 
-use App\Chart\GetJobChart;
+use App\Async\GetJobChart;
 use App\Infra\JsonSchema\SchemaValidator;
 use App\JobStatus;
 use App\Storage\JobMetricsStorage;
@@ -66,7 +66,9 @@ class MetricsController
             $chartRequest->getTemplateId()
         );
 
-        $response = new JsonResponse($result);
+        $response = new JsonResponse([
+            'chart' => $result
+        ]);
         $response->setEncodingOptions(JsonResponse::DEFAULT_ENCODING_OPTIONS | JSON_PRETTY_PRINT);
 
         return $response;

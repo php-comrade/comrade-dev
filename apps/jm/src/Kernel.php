@@ -5,13 +5,13 @@ namespace App;
 use App\Async\AddTrigger;
 use App\Async\CreateJob;
 use App\Async\GetJob;
+use App\Async\GetJobChart;
 use App\Async\GetSubJobs;
 use App\Async\GetTimeline;
 use App\Async\RunSubJobsResult;
 use App\Async\RunJob;
 use App\Async\JobResult;
 use App\Async\ScheduleJob;
-use App\Chart\GetJobChart;
 use App\Infra\DependencyInjection\RegisterPvmBehaviorPass;
 use App\Infra\Yadm\ObjectBuilderHook;
 use App\Model\CronTrigger;
@@ -134,7 +134,6 @@ final class Kernel extends BaseKernel
             GetJob::SCHEMA => GetJob::class,
             GetSubJobs::SCHEMA => GetSubJobs::class,
             Throwable::SCHEMA => Throwable::class,
-
             GetJobChart::SCHEMA => GetJobChart::class,
 
             GracePeriodPolicy::SCHEMA => GracePeriodPolicy::class,
