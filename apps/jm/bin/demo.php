@@ -65,7 +65,7 @@ foreach (['demo_success_job', 'demo_failed_job', 'demo_failed_with_exception_job
 $queueConsumer = new QueueConsumer($c, new ChainExtension([
     new LoggerExtension($logger),
     new SignalExtension(),
-]), 0, 1000);
+]), 0, 200);
 
 $queueConsumer->bind('demo_success_job', function(PsrMessage $message, PsrContext $context) {
     if ($message->isRedelivered()) {
@@ -78,7 +78,7 @@ $queueConsumer->bind('demo_success_job', function(PsrMessage $message, PsrContex
 
     $metrics = CollectMetrics::start();
 
-    sleep(rand(2, 6));
+    do_something_important(rand(2, 6));
 
     $metrics->stop()->updateResult($result);
 
@@ -101,7 +101,7 @@ $queueConsumer->bind('demo_success_on_third_attempt', function(PsrMessage $messa
 
     $metrics = CollectMetrics::start();
 
-    sleep(rand(2, 6));
+    do_something_important(rand(2, 6));
 
     $metrics->stop()->updateResult($result);
 
@@ -122,7 +122,7 @@ $queueConsumer->bind('demo_random_job', function(PsrMessage $message, PsrContext
 
     $metrics = CollectMetrics::start();
 
-    sleep(rand(2, 6));
+    do_something_important(rand(2, 6));
 
     $metrics->stop()->updateResult($result);
 
@@ -176,7 +176,7 @@ $queueConsumer->bind('demo_run_sub_tasks', function(PsrMessage $message, PsrCont
 
     $metrics = CollectMetrics::start();
 
-    sleep(rand(2, 6));
+    do_something_important(rand(2, 6));
 
     $metrics->stop()->updateResult($result);
 
@@ -196,7 +196,7 @@ $queueConsumer->bind('demo_failed_job', function(PsrMessage $message, PsrContext
 
     $metrics = CollectMetrics::start();
 
-    sleep(rand(2, 6));
+    do_something_important(rand(2, 6));
 
     $metrics->stop()->updateResult($result);
 
@@ -216,7 +216,7 @@ $queueConsumer->bind('demo_failed_with_exception_job', function(PsrMessage $mess
 
     $metrics = CollectMetrics::start();
 
-    sleep(rand(2, 6));
+    do_something_important(rand(2, 6));
 
     $metrics->stop()->updateResult($result);
 
@@ -236,11 +236,11 @@ $queueConsumer->bind('demo_intermediate_status', function(PsrMessage $message, P
 
     $metrics = CollectMetrics::start();
 
-    sleep(rand(2, 6));
+    do_something_important(rand(2, 6));
 
     send_result(convert($runJob, $result));
 
-    sleep(rand(2, 6));
+    do_something_important(rand(2, 6));
 
     $metrics->stop()->updateResult($result);
 
@@ -274,4 +274,19 @@ function convert(RunJob $runJob, JobResult $result) {
     $jobResultMessage->setResult($result);
 
     return $jobResultMessage;
+}
+
+
+function do_something_important($timeout)
+{
+    $limit = microtime(true) + $timeout;
+    
+    while (microtime(true) < $limit) {
+        $arr = [];
+        foreach (range(10000, 20000) as $index) {
+            $arr = rand(0, 100);
+        }
+        
+        sort($arr);
+    }
 }

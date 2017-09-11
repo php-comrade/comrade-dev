@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "841db312ec438ff41e2af5dbf6cd0639",
+    "content-hash": "56c9998c9b9f90d1f19128d1dd8e3519",
     "packages": [
         {
             "name": "cboden/ratchet",
@@ -12,19 +12,19 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/ratchetphp/Ratchet.git",
-                "reference": "4ac1f914f3150c9b35d2f5bf794363561ac3bde9"
+                "reference": "0cde24bae7cb1d396d1ea82e862e826dee85d438"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ratchetphp/Ratchet/zipball/4ac1f914f3150c9b35d2f5bf794363561ac3bde9",
-                "reference": "4ac1f914f3150c9b35d2f5bf794363561ac3bde9",
+                "url": "https://api.github.com/repos/ratchetphp/Ratchet/zipball/0cde24bae7cb1d396d1ea82e862e826dee85d438",
+                "reference": "0cde24bae7cb1d396d1ea82e862e826dee85d438",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/psr7": "^1.0",
                 "php": ">=5.4.2",
                 "ratchet/rfc6455": "^0.2",
-                "react/socket": "^0.7 || ^0.6 || ^0.5",
+                "react/socket": "^1.0 || ^0.8 || ^0.7 || ^0.6 || ^0.5",
                 "symfony/http-foundation": "^2.2|^3.0",
                 "symfony/routing": "^2.2|^3.0"
             },
@@ -60,7 +60,7 @@
                 "sockets",
                 "websocket"
             ],
-            "time": "2017-04-19T21:05:46+00:00"
+            "time": "2017-09-10T18:41:56+00:00"
         },
         {
             "name": "clue/graph",
@@ -743,12 +743,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/enqueue.git",
-                "reference": "020ff9cf2defa1a06da0c7627470f020a6147219"
+                "reference": "98df8172792b5f2833ac7172c53d33bb1b2c15e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/020ff9cf2defa1a06da0c7627470f020a6147219",
-                "reference": "020ff9cf2defa1a06da0c7627470f020a6147219",
+                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/98df8172792b5f2833ac7172c53d33bb1b2c15e4",
+                "reference": "98df8172792b5f2833ac7172c53d33bb1b2c15e4",
                 "shasum": ""
             },
             "require": {
@@ -814,7 +814,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2017-08-28T11:05:15+00:00"
+            "time": "2017-09-11T09:00:27+00:00"
         },
         {
             "name": "enqueue/enqueue-bundle",
@@ -822,12 +822,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/enqueue-bundle.git",
-                "reference": "b58731f7b98a077ca8fb0d2256d701a0212fe723"
+                "reference": "864eeb8acbab8c9b0fa8963980c20c010163e4cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/enqueue-bundle/zipball/b58731f7b98a077ca8fb0d2256d701a0212fe723",
-                "reference": "b58731f7b98a077ca8fb0d2256d701a0212fe723",
+                "url": "https://api.github.com/repos/php-enqueue/enqueue-bundle/zipball/864eeb8acbab8c9b0fa8963980c20c010163e4cb",
+                "reference": "864eeb8acbab8c9b0fa8963980c20c010163e4cb",
                 "shasum": ""
             },
             "require": {
@@ -880,7 +880,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2017-09-05T11:51:52+00:00"
+            "time": "2017-09-11T06:24:47+00:00"
         },
         {
             "name": "enqueue/null",
@@ -2116,12 +2116,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/queue-interop/queue-interop.git",
-                "reference": "1c6e5b54811ebd9b53838195d80e1a9262a5d205"
+                "reference": "12c808d02209fdbf4cba6e0fe17f4fbc2220cea2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/queue-interop/queue-interop/zipball/1c6e5b54811ebd9b53838195d80e1a9262a5d205",
-                "reference": "1c6e5b54811ebd9b53838195d80e1a9262a5d205",
+                "url": "https://api.github.com/repos/queue-interop/queue-interop/zipball/12c808d02209fdbf4cba6e0fe17f4fbc2220cea2",
+                "reference": "12c808d02209fdbf4cba6e0fe17f4fbc2220cea2",
                 "shasum": ""
             },
             "require": {
@@ -2151,7 +2151,7 @@
                 "messaging",
                 "queue"
             ],
-            "time": "2017-08-28T10:34:40+00:00"
+            "time": "2017-09-08T07:07:18+00:00"
         },
         {
             "name": "ramsey/uuid",
@@ -2551,31 +2551,31 @@
         },
         {
             "name": "react/socket",
-            "version": "v0.7.2",
+            "version": "v0.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/socket.git",
-                "reference": "05b2fa7df1f87ba1d7d3c703c77b1eed02b171f2"
+                "reference": "ee817e348abcf35c55b448a5cd3ef4eec88379e9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/socket/zipball/05b2fa7df1f87ba1d7d3c703c77b1eed02b171f2",
-                "reference": "05b2fa7df1f87ba1d7d3c703c77b1eed02b171f2",
+                "url": "https://api.github.com/repos/reactphp/socket/zipball/ee817e348abcf35c55b448a5cd3ef4eec88379e9",
+                "reference": "ee817e348abcf35c55b448a5cd3ef4eec88379e9",
                 "shasum": ""
             },
             "require": {
-                "evenement/evenement": "~2.0|~1.0",
+                "evenement/evenement": "^3.0 || ^2.0 || ^1.0",
                 "php": ">=5.3.0",
-                "react/dns": "0.4.*|0.3.*",
-                "react/event-loop": "0.4.*|0.3.*",
+                "react/dns": "^0.4.11",
+                "react/event-loop": "^1.0 || ^0.5 || ^0.4 || ^0.3.5",
                 "react/promise": "^2.1 || ^1.2",
                 "react/promise-timer": "~1.0",
-                "react/stream": "^0.6 || ^0.5 || ^0.4.5"
+                "react/stream": "^1.0 || ^0.7 || ^0.6 || ^0.5 || ^0.4.5"
             },
             "require-dev": {
                 "clue/block-react": "^1.1",
                 "phpunit/phpunit": "~4.8",
-                "react/stream": "^0.6"
+                "react/stream": "^1.0 || ^0.7 || ^0.6"
             },
             "type": "library",
             "autoload": {
@@ -2595,7 +2595,7 @@
                 "reactphp",
                 "stream"
             ],
-            "time": "2017-04-24T09:37:03+00:00"
+            "time": "2017-08-25T09:08:33+00:00"
         },
         {
             "name": "react/socket-client",
@@ -5160,111 +5160,7 @@
             "time": "2017-01-02T17:45:24+00:00"
         }
     ],
-    "packages-dev": [
-        {
-            "name": "bunny/bunny",
-            "version": "v0.2.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jakubkulhan/bunny.git",
-                "reference": "f81da29e8a279af2b9af80fa041b84497a26ddf8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jakubkulhan/bunny/zipball/f81da29e8a279af2b9af80fa041b84497a26ddf8",
-                "reference": "f81da29e8a279af2b9af80fa041b84497a26ddf8",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0",
-                "psr/log": "~1.0",
-                "react/event-loop": "~0.4",
-                "react/promise": "~2.2"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.5"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Bunny\\": [
-                        "src/Bunny/",
-                        "test/Bunny/"
-                    ]
-                },
-                "classmap": [
-                    "src/Bunny/",
-                    "test/Bunny/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jakub Kulhan",
-                    "email": "jakub.kulhan@gmail.com"
-                }
-            ],
-            "description": "Performant pure-PHP AMQP (RabbitMQ) sync/async (ReactPHP) library",
-            "keywords": [
-                "AMQP",
-                "bunny",
-                "exchange",
-                "message",
-                "messaging",
-                "queue",
-                "queueing",
-                "rabbit",
-                "rabbitmq",
-                "react",
-                "react-php",
-                "reactphp"
-            ],
-            "time": "2016-09-13T18:57:54+00:00"
-        },
-        {
-            "name": "react/child-process",
-            "version": "v0.4.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/reactphp/child-process.git",
-                "reference": "b81d06daaafb5d7d592b6f7f8b1b7905cdef9ac6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/child-process/zipball/b81d06daaafb5d7d592b6f7f8b1b7905cdef9ac6",
-                "reference": "b81d06daaafb5d7d592b6f7f8b1b7905cdef9ac6",
-                "shasum": ""
-            },
-            "require": {
-                "evenement/evenement": "^2.0 || ^1.0",
-                "php": ">=5.3.0",
-                "react/event-loop": "^0.4 || ^0.3",
-                "react/stream": "^0.5 || ^0.4.4"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^5.0 || ^4.8.10",
-                "sebastian/environment": "~1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "React\\ChildProcess\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Library for executing child processes.",
-            "keywords": [
-                "process"
-            ],
-            "time": "2017-03-14T13:23:20+00:00"
-        }
-    ],
+    "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {

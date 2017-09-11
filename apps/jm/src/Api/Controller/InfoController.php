@@ -8,6 +8,7 @@ class InfoController
 {
     /**
      * @Extra\Route("/api/info")
+     * @Extra\Route("/")
      * @Extra\Method("GET")
      */
     public function infoAction()

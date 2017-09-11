@@ -22,6 +22,7 @@ import {Router} from "@angular/router";
                   required
                   (input)="resetResult()"
                   (focus)="resetResult()"
+                  (keypress)="onKeyPressed($event, baseUrl.value)"
                   [value]="apiBaseUrl" #baseUrl
               >
           </div>
@@ -75,5 +76,11 @@ export class ApiBaseUrlComponent implements OnInit {
         this.httpService.changeApiBaseUrl(apiBaseUrl, store);
 
         this.router.navigate(['']);
+    }
+
+    onKeyPressed(event: KeyboardEvent, apiBaseUrl: string) {
+       if (event.code == 'Enter' && apiBaseUrl) {
+        this.testBaseUrl(apiBaseUrl);
+      }
     }
 }
