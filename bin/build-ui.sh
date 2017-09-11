@@ -18,7 +18,7 @@ rm -rf build/ui-container/dist
 rm -rf build/ui-container/node_modules
 
 (cd build/ui-container; npm install)
-(cd build/ui-container; npm run build)
+(cd build/ui-container; ng build --prod)
 
 cp docker/ui/release/Dockerfile build/ui-container
 cp docker/ui/release/nginx.conf build/ui-container

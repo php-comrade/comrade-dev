@@ -63,9 +63,9 @@ interface GlobalMetrics {
   `,
 })
 export class LandingComponent implements OnInit {
-  private apiBaseUrl: string;
+  apiBaseUrl: string;
 
-  private globalMetrics: GlobalMetrics;
+  globalMetrics: GlobalMetrics;
 
   constructor(private httpService: HttpService, private wamp: WampService) {}
 

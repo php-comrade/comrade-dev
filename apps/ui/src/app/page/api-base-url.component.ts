@@ -37,9 +37,9 @@ import {Router} from "@angular/router";
   `,
 })
 export class ApiBaseUrlComponent implements OnInit {
-    private apiBaseUrl: string = '';
+    apiBaseUrl: string = '';
 
-    private serverInfo: any;
+    serverInfo: any;
 
     constructor(private httpService: HttpService, private router: Router) {}
 

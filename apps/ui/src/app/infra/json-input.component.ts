@@ -26,9 +26,9 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR, NG_VALIDATORS, FormControl, Va
     }]
 })
 export class JsonInputComponent implements ControlValueAccessor, Validator {
-  private jsonString: string;
-  private parseError: boolean;
-  private data: any;
+  jsonString: string;
+  parseError: boolean;
+  data: any;
 
   // this is the initial value set to the component
   public writeValue(obj: any) {
@@ -62,7 +62,7 @@ export class JsonInputComponent implements ControlValueAccessor, Validator {
   public registerOnTouched() { }
 
   // change events from the textarea
-  private onChange(event) {
+  onChange(event) {
 
     // get value from text area
     let newValue = event.target.value;
