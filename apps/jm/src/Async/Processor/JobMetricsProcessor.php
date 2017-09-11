@@ -75,7 +75,9 @@ class JobMetricsProcessor implements PsrProcessor, TopicSubscriberInterface
         $metrics->setMemory($job->getCurrentResult()->getMemory());
         $metrics->setScheduledTime($scheduledTime);
         $metrics->setStartTime(\DateTime::createFromFormat('U', $job->getCurrentResult()->getStartTime()/1000));
-        $metrics->setWaitTime((int) ($metrics->getStartTime()->format('U')) - ((int) $metrics->getScheduledTime()->format('U')));
+
+        $waitTimeSec = ((int) $metrics->getStartTime()->format('U')) - ((int) $metrics->getScheduledTime()->format('U'));
+        $metrics->setWaitTime($waitTimeSec * 1000);
 
         $this->metricsStorage->insert($metrics);
 
