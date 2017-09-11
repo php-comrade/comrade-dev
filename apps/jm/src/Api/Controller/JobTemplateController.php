@@ -53,15 +53,11 @@ class JobTemplateController
     /**
      * @Extra\Route("/job-templates/{id}")
      * @Extra\Method("GET")
-     *
-     * @param JobTemplateStorage $jobTemplateStorage
-     *
-     * @return JsonResponse
      */
     public function getAction($id, JobTemplateStorage $jobTemplateStorage)
     {
         if (false == $jobTemplate = $jobTemplateStorage->findOne(['templateId' => $id])) {
-            throw new NotFoundHttpException(sprintf('The job template with id "%s" could not be found', $id));
+            return new Response('', 404);
         }
 
         return new JsonResponse(['data' => get_values($jobTemplate)]);

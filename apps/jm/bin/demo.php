@@ -283,10 +283,8 @@ function do_something_important($timeout)
     
     while (microtime(true) < $limit) {
         $arr = [];
-        foreach (range(10000, 20000) as $index) {
-            $arr = rand(0, 100);
+        foreach (range(1000000, 5000000) as $index) {
+            $arr[] = $index;
         }
-        
-        sort($arr);
     }
 }

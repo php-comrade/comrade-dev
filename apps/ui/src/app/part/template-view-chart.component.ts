@@ -15,7 +15,8 @@ interface ChartItem {
     avrDuration: number;
     avrMemory: number;
     avrWaitTime: number;
-    jobsPerHour: number;
+    jobsPerRange: number;
+    throughput: number;
     range: number
 }
 
@@ -90,10 +91,20 @@ interface Point {
   <div *ngIf="avrDurationDatasets">
     <canvas  style="width: 100%; height: 400px"
             baseChart
-            [datasets]="jobsPerHourDatasets"
-            [options]="jobsPerHourChartOptions"
+            [datasets]="jobsPerRangeDatasets"
+            [options]="jobsPerRangeChartOptions"
             [chartType]="'line'"
             [colors]="chartColors"
+    ></canvas>
+  </div>
+
+  <div *ngIf="throughputDatasets">
+    <canvas  style="width: 100%; height: 400px"
+             baseChart
+             [datasets]="throughputDatasets"
+             [options]="throughputOptions"
+             [chartType]="'line'"
+             [colors]="chartColors"
     ></canvas>
   </div>
 </div>
@@ -119,8 +130,11 @@ export class TemplateViewChartComponent implements OnInit {
   avrWaitTimeDatasets: DatasetItem[];
   avrWaitTimeChartOptions: any;
 
-  jobsPerHourDatasets: DatasetItem[];
-  jobsPerHourChartOptions: any;
+  jobsPerRangeDatasets: DatasetItem[];
+  jobsPerRangeChartOptions: any;
+
+  throughputDatasets: DatasetItem[];
+  throughputOptions: any;
 
   chartColors: Array<any> = [{ // dark grey
     backgroundColor: 'rgba(77,83,96,0.2)',
@@ -140,12 +154,13 @@ export class TemplateViewChartComponent implements OnInit {
     this.untilOptions = new DatePickerOptions();
     this.untilOptions.initialDate = moment().toDate();
 
-    this.custom = false;
-
     this.avrDurationChartOptions = this.createChartOptions('Duration', 'Duration (ms)');
     this.avrMemoryChartOptions = this.createChartOptions('Memory', 'Memory');
     this.avrWaitTimeChartOptions = this.createChartOptions('Wait time', 'Wait time');
-    this.jobsPerHourChartOptions = this.createChartOptions('Jobs per hour', 'Jobs per hour');
+    this.jobsPerRangeChartOptions = this.createChartOptions('Executed jobs', 'Jobs');
+    this.throughputOptions = this.createChartOptions('Throughput', 'jobs/h');
+
+    this.custom = false;
   }
 
   ngOnInit(): void {
@@ -202,10 +217,13 @@ export class TemplateViewChartComponent implements OnInit {
       scales: {
         xAxes: [{
           type: "time",
+          distribution: 'linear',
           display: true,
           time: {
             format: 'x',
-            tooltipFormat: 'll HH:mm'
+            tooltipFormat: 'll HH:mm',
+            max: null,
+            min: null,
           },
           scaleLabel: {
             display: true,
@@ -229,7 +247,7 @@ export class TemplateViewChartComponent implements OnInit {
     this.sinceOptions.initialDate = since.toDate();
     this.untilOptions.initialDate = until.toDate();
 
-    this.jobsPerHourDatasets = null;
+    this.jobsPerRangeDatasets = null;
     this.avrDurationDatasets = null;
     this.avrMemoryDatasets = null;
     this.avrWaitTimeDatasets = null;
@@ -259,19 +277,25 @@ export class TemplateViewChartComponent implements OnInit {
         }];
 
         let avrMemoryDatasets: DatasetItem[] = [{
-          label: "Memory",
+          label: "Memory (Mb)",
           fill: false,
           data: [],
           yAxisID: 1
         }];
         let avrWaitTimeDatasets: DatasetItem[] = [{
-          label: "Wait time (sec)",
+          label: "Wait time (ms)",
           fill: false,
           data: [],
           yAxisID: 1
         }];
-        let jobsPerHourDatasets: DatasetItem[] = [{
-          label: "Jobs per hour",
+        let jobsPerRangeDatasets: DatasetItem[] = [{
+          label: "Executed jobs",
+          fill: false,
+          data: [],
+          yAxisID: 1
+        }];
+        let throughputDatasets: DatasetItem[] = [{
+          label: "jobs/h",
           fill: false,
           data: [],
           yAxisID: 1
@@ -281,15 +305,17 @@ export class TemplateViewChartComponent implements OnInit {
           chart.forEach((item: ChartItem) => {
             const time = item.range * 1000;
             avrDurationDatasets[0].data.push({x: time, y: item.avrDuration});
-            avrMemoryDatasets[0].data.push({x: time, y: item.avrMemory});
+            avrMemoryDatasets[0].data.push({x: time, y: item.avrMemory / 1000000});
             avrWaitTimeDatasets[0].data.push({x: time, y: item.avrWaitTime});
-            jobsPerHourDatasets[0].data.push({x: time, y: item.jobsPerHour});
+            jobsPerRangeDatasets[0].data.push({x: time, y: item.jobsPerRange});
+            throughputDatasets[0].data.push({x: time, y: item.jobsPerRange});
           });
 
           this.avrDurationDatasets = avrDurationDatasets;
           this.avrMemoryDatasets = avrMemoryDatasets;
           this.avrWaitTimeDatasets = avrWaitTimeDatasets;
-          this.jobsPerHourDatasets = jobsPerHourDatasets;
+          this.jobsPerRangeDatasets = jobsPerRangeDatasets;
+          this.throughputDatasets = throughputDatasets;
         } else {
           this.noData = true;
         }
