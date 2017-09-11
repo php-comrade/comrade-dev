@@ -145,12 +145,16 @@ class JobMetricsStorage extends Storage
         }');
 
         $finalize = new Javascript('function (key, value) {
+            var avrDuration = Math.round(value.duration / value.count);
+            var avrWaitTime = Math.round(value.waitTime / value.count);
+
             return {
                 range: key,
-                avrDuration: Math.round(value.duration / value.count),
+                avrDuration: avrDuration,
                 avrMemory: Math.round(value.memory / value.count),
-                avrWaitTime: Math.round(value.waitTime / value.count),
-                jobsPerHour: period > 0 ? Math.round(3600 * value.count / period) : 0
+                avrWaitTime: avrWaitTime,
+                throughput: Math.ceil(3600000 / (avrDuration + avrWaitTime)),
+                jobsPerRange: value.count
             };
         }', ['period' => $periodSec]);
 
