@@ -17,7 +17,7 @@ $runQuartz = false !== getenv('COMRADE_RUN_QUARTZ') ? getenv('COMRADE_RUN_QUARTZ
 $runWamp = false !== getenv('COMRADE_RUN_WAMP') ? getenv('COMRADE_RUN_WAMP') : true;
 
 if ($defaultConsumerNumber) {
-    $builder = new ProcessBuilder([$phpBin, 'bin/console', 'enqueue:consume', '--setup-broker', '-vvv']);
+    $builder = new ProcessBuilder([$phpBin, 'bin/console', 'enqueue:consume', '--setup-broker', '--time-limit=+5 minutes', '-vvv']);
     $builder->setPrefix('exec');
     $builder->setWorkingDirectory(realpath(__DIR__ . '/..'));
     $builder->setEnv('MASTER_PROCESS_PID', getmypid());
@@ -25,7 +25,7 @@ if ($defaultConsumerNumber) {
 }
 
 if ($quartzConsumerNumber) {
-    $builder = new ProcessBuilder([$phpBin, 'bin/console', 'enqueue:consume', 'quartz_job_run_shell', 'quartz_rpc', '--setup-broker', '-vvv']);
+    $builder = new ProcessBuilder([$phpBin, 'bin/console', 'enqueue:consume', 'quartz_job_run_shell', 'quartz_rpc', '--setup-broker', '--time-limit=+5 minutes',  '-vvv']);
     $builder->setPrefix('exec');
     $builder->setWorkingDirectory(realpath(__DIR__.'/..'));
     $builder->setEnv('MASTER_PROCESS_PID', getmypid());

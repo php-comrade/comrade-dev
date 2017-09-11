@@ -5,7 +5,6 @@ import {HttpService} from "../shared/http.service";
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/observable/of';
 import {Router} from "@angular/router";
-import {LocalStorageService} from "ngx-webstorage";
 
 @Component({
   selector: 'api-base-url',
@@ -37,14 +36,18 @@ import {LocalStorageService} from "ngx-webstorage";
   `,
 })
 export class ApiBaseUrlComponent implements OnInit {
-    private apiBaseUrl: string;
+    private apiBaseUrl: string = '';
 
     private serverInfo: any;
 
     constructor(private httpService: HttpService, private router: Router) {}
 
     ngOnInit(): void {
-        this.apiBaseUrl = this.httpService.getApiBaseUrl();
+        const apiBaseUrl = this.httpService.getApiBaseUrl();
+        if (apiBaseUrl !== undefined) {
+          this.apiBaseUrl = apiBaseUrl;
+        }
+
         this.testBaseUrl(this.apiBaseUrl);
     }
 

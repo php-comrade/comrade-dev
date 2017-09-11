@@ -23,15 +23,15 @@ interface GlobalMetrics {
               {{ this.apiBaseUrl }} (<a routerLink="/settings/base-url">change</a>)
           </div>
       </div>
-      <div class="row">
+      <div *ngIf="globalMetrics" class="row">
           <div class="col-3">
-              Success jobs last minute:
+              Success jobs last minute
           </div>
           <div class="col-6">
               {{ globalMetrics.successJobsLastMinute }}
           </div>
       </div>
-      <div class="row">
+      <div *ngIf="globalMetrics" class="row">
           <div class="col-3">
               Success jobs last hour:
           </div>
@@ -39,7 +39,7 @@ interface GlobalMetrics {
               {{ globalMetrics.successJobsLastHour }}
           </div>
       </div>
-      <div class="row">
+      <div *ngIf="globalMetrics" class="row">
           <div class="col-3">
               Success jobs last day:
           </div>
@@ -47,12 +47,17 @@ interface GlobalMetrics {
               {{ globalMetrics.successJobsLastDay }}
           </div>
       </div>
-      <div class="row">
+      <div *ngIf="globalMetrics" class="row">
           <div class="col-3">
               Failed jobs last hour:
           </div>
           <div class="col-6">
               {{ globalMetrics.failedJobsLastHour }}
+          </div>
+      </div>
+      <div *ngIf="!globalMetrics" class="row">
+          <div class="col-3">
+              Loading statistics
           </div>
       </div>
   `,
