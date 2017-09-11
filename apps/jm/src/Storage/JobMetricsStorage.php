@@ -153,7 +153,7 @@ class JobMetricsStorage extends Storage
                 avrDuration: avrDuration,
                 avrMemory: Math.round(value.memory / value.count),
                 avrWaitTime: avrWaitTime,
-                jobsPerHour: Math.ceil(3600000 / (avrDuration + avrWaitTime)),
+                throughput: Math.ceil(3600000 / (avrDuration + avrWaitTime)),
                 jobsPerRange: value.count
             };
         }', ['period' => $periodSec]);
