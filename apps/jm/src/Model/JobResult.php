@@ -92,54 +92,24 @@ class JobResult
         return get_value($this, 'createdAt', null, \DateTime::class);
     }
 
-    public function setStartTime(int $time)
-    {
-        set_value($this, 'startTime', $time);
-    }
-
-    public function getStartTime() :?int
-    {
-        return get_value($this, 'startTime');
-    }
-
-    public function setStopTime(int $time)
-    {
-        set_value($this, 'stopTime', $time);
-    }
-
-    public function getStopTime() :?int
-    {
-        return get_value($this, 'stopTime');
-    }
-
-    public function setDuration(int $duration)
-    {
-        set_value($this, 'duration', $duration);
-    }
-
-    public function getDuration() :?int
-    {
-        return get_value($this, 'duration');
-    }
-
-    public function setMemory(int $memory)
-    {
-        set_value($this, 'memory', $memory);
-    }
-
-    public function getMemory() :?int
-    {
-        return get_value($this, 'memory');
-    }
-
     public function setError(Throwable $error)
     {
         set_object($this, 'error', $error);
     }
 
-    public function getError() :?Throwable
+    public function getError(): ?Throwable
     {
         return get_object($this, 'error');
+    }
+
+    public function setMetrics(JobResultMetrics $metrics): void
+    {
+        set_object($this, 'metrics', $metrics);
+    }
+
+    public function getMetrics(): ?JobResultMetrics
+    {
+        return get_object($this, 'metrics');
     }
 
     /**

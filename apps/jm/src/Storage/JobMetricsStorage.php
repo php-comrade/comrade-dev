@@ -54,41 +54,13 @@ class JobMetricsStorage extends Storage
             ];
         }
 
-        /** @var Cursor $cursor */
-        $cursor = $this->getCollection()->aggregate([
-            [
-                '$match' => $query,
-            ],
-            [
-                '$group' => [
-                    '_id' => null,
-                    'min' => ['$min' => '$startTime.unix'],
-                    'max' => ['$max' => '$startTime.unix'],
-                    'count' => ['$sum' => 1],
-                ]
-            ]
-        ]);
-        $cursor->setTypeMap(['root' => 'array', 'document' => 'array', 'array' => 'array']);
-        $minMaxCount = $cursor->toArray();
-
-        if (false == $minMaxCount) {
-            return [];
-        }
-
-        $sinceU = $minMaxCount[0]['min'];
-        $untilU = $minMaxCount[0]['max'];
-
-//        if ($minMaxCount[0]['count'] <= 100) {
-//            return $this->accurateChart($sinceU, $untilU, $status, $templateId);
-//        }
-
         // calculate time period
         if (false == $periodSec) {
             $maxNumberPointsPerChart = 100;
             if (($untilU - $sinceU) > $maxNumberPointsPerChart) {
                 $periodSec = (int) (($untilU - $sinceU) / $maxNumberPointsPerChart);
             } else {
-                $periodSec = (int) (($untilU - $sinceU) / $minMaxCount[0]['count']);
+                $periodSec = 1;
             }
         }
 

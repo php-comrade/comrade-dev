@@ -26,19 +26,54 @@
   <div class="clearfix mb-3"></div>
 
   <div *ngIf="tab == 'summary'">
-    <p>Template Id: {{jobTemplate.templateId}}</p>
-    <p>Process Template Id: {{jobTemplate.processTemplateId}}</p>
-    <p>Name: {{jobTemplate.name}}</p>
-    <p>Details: {{jobTemplate.details | json }}</p>
-    <p>Created At: <time-ago [date]="jobTemplate.createdAt"></time-ago>
+    <div class="row">
+      <div class="col-3">
+        Template Id:
+      </div>
+      <div class="col-6">
+        {{jobTemplate.templateId}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">
+        Process Template Id:
+      </div>
+      <div class="col-6">
+        {{jobTemplate.processTemplateId}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">
+        Name:
+      </div>
+      <div class="col-6">
+        {{jobTemplate.name}}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">
+        Details:
+      </div>
+      <div class="col-6">
+        {{jobTemplate.details | json }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-3">
+        Created At:
+      </div>
+      <div class="col-6">
+        <time-ago [date]="jobTemplate.createdAt"></time-ago>
+      </div>
+    </div>
 
-    <h3>Triggers: </h3>
+    <h3 class="mt-4">Triggers: </h3>
     <list-triggers [triggers]="jobTemplate.triggers" [showRemove]="false"></list-triggers>
 
-    <h3>Runner: </h3>
+    <h3 class="mt-4">Runner: </h3>
     <list-runner *ngIf="jobTemplate.runner" [runner]="jobTemplate.runner"></list-runner>
 
-    <h3>Polices: </h3>
+    <h3 class="mt-4">Polices: </h3>
     <show-exclusive-policy *ngIf="jobTemplate.exclusivePolicy" [policy]="jobTemplate.exclusivePolicy"></show-exclusive-policy>
     <show-grace-period-policy *ngIf="jobTemplate.gracePeriodPolicy" [policy]="jobTemplate.gracePeriodPolicy"></show-grace-period-policy>
     <show-retry-failed-policy *ngIf="jobTemplate.retryFailedPolicy" [policy]="jobTemplate.retryFailedPolicy"></show-retry-failed-policy>

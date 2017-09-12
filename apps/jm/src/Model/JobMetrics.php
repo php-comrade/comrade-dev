@@ -19,22 +19,22 @@ class JobMetrics
         getValue as public;
     }
 
-    public function setTemplateId(string $id) :void
+    public function setTemplateId(string $id): void
     {
         set_value($this, 'templateId', $id);
     }
 
-    public function getTemplateId() :string
+    public function getTemplateId(): string
     {
         return get_value($this, 'templateId');
     }
 
-    public function setJobId(string $id) :void
+    public function setJobId(string $id): void
     {
         set_value($this, 'jobId', $id);
     }
 
-    public function getJobId() :string
+    public function getJobId(): string
     {
         return get_value($this, 'jobId');
     }
@@ -44,7 +44,7 @@ class JobMetrics
         return get_value($this, 'status');
     }
 
-    public function setStatus(int $status) : void
+    public function setStatus(int $status):  void
     {
         set_value($this, 'status', $status);
     }
@@ -54,7 +54,7 @@ class JobMetrics
         set_value($this, 'scheduledTime', $time);
     }
 
-    public function getScheduledTime() :\DateTime
+    public function getScheduledTime(): \DateTime
     {
         return get_value($this, 'scheduledTime', null, \DateTime::class);
     }
@@ -64,7 +64,7 @@ class JobMetrics
         set_value($this, 'startTime', $time);
     }
 
-    public function getStartTime() :\DateTime
+    public function getStartTime(): \DateTime
     {
         return get_value($this, 'startTime', null, \DateTime::class);
     }
@@ -74,7 +74,7 @@ class JobMetrics
         set_value($this, 'waitTime', $wait);
     }
 
-    public function getWaitTime() :int
+    public function getWaitTime(): int
     {
         return get_value($this, 'waitTime');
     }
@@ -84,7 +84,7 @@ class JobMetrics
         set_value($this, 'duration', $duration);
     }
 
-    public function getDuration() :int
+    public function getDuration(): int
     {
         return get_value($this, 'duration');
     }
@@ -94,7 +94,7 @@ class JobMetrics
         set_value($this, 'memory', $memory);
     }
 
-    public function getMemory() :int
+    public function getMemory(): int
     {
         return get_value($this, 'memory');
     }

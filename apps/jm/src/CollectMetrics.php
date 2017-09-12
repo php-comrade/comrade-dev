@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Model\JobResult;
+use App\Model\JobResultMetrics;
 
 class CollectMetrics
 {
@@ -96,9 +97,12 @@ class CollectMetrics
 
     public function updateResult(JobResult $result): void
     {
-        $result->setStartTime($this->getStartTime());
-        $result->setStopTime($this->getStopTime());
-        $result->setDuration($this->getDuration());
-        $result->setMemory($this->getMemory());
+        $metrics = JobResultMetrics::create();
+        $metrics->setStartTime($this->getStartTime());
+        $metrics->setStopTime($this->getStopTime());
+        $metrics->setDuration($this->getDuration());
+        $metrics->setMemory($this->getMemory());
+
+        $result->setMetrics($metrics);
     }
 }

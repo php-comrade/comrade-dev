@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
         .map((e: EventMessage) => e.args[0] as ServerError)
         .subscribe((error: ServerError) => {
           const toastOptions:ToastOptions = {title: "Server Error"};
-          if (error.error.message !== undefined) {
+          if (typeof error.error.message !== 'undefined') {
             toastOptions.msg = `<a href="/errors/late">${error.error.message}</a>`;
           }
 

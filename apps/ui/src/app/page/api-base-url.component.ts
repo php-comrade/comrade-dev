@@ -45,7 +45,7 @@ export class ApiBaseUrlComponent implements OnInit {
 
     ngOnInit(): void {
         const apiBaseUrl = this.httpService.getApiBaseUrl();
-        if (apiBaseUrl !== undefined) {
+        if (typeof apiBaseUrl !== 'undefined') {
           this.apiBaseUrl = apiBaseUrl;
         }
 

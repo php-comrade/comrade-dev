@@ -19,6 +19,7 @@ use App\Model\ExclusivePolicy;
 use App\Model\GracePeriodPolicy;
 use App\Model\Job;
 use App\Model\JobResult as JobResultModel;
+use App\Model\JobResultMetrics;
 use App\Model\JobTemplate;
 use App\Model\NowTrigger;
 use App\Model\QueueRunner;
@@ -121,6 +122,7 @@ final class Kernel extends BaseKernel
             Job::SCHEMA => Job::class,
             JobTemplate::SCHEMA => JobTemplate::class,
             JobResult::SCHEMA => JobResult::class,
+            JobResultMetrics::SCHEMA => JobResultMetrics::class,
             SubJobTemplate::SCHEMA => SubJobTemplate::class,
             SubJob::SCHEMA => SubJob::class,
             RunSubJobsResult::SCHEMA => RunSubJobsResult::class,

@@ -10,6 +10,7 @@ use App\JobStatus;
 use App\Model\Job;
 use App\Async\JobResult as JobResultMessage;
 use App\Model\JobResult;
+use App\Model\JobResultMetrics;
 use App\Model\JobTemplate;
 use App\Model\QueueRunner;
 use App\Model\SubJobTemplate;
@@ -43,6 +44,7 @@ register_object_hooks();
 (new ObjectBuilderHook([
     Job::SCHEMA => Job::class,
     JobResult::SCHEMA => JobResult::class,
+    JobResultMetrics::SCHEMA => JobResultMetrics::class,
     RunJob::SCHEMA => RunJob::class,
     JobResultMessage::SCHEMA => JobResultMessage::class,
     RunSubJobsResult::SCHEMA => RunSubJobsResult::class,

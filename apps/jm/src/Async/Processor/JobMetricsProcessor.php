@@ -51,6 +51,10 @@ class JobMetricsProcessor implements PsrProcessor, TopicSubscriberInterface
 
         $job = Job::create($data);
 
+        if (false == $jobResultMetrics = $job->getCurrentResult()->getMetrics()) {
+            return Result::ACK;
+        }
+
         if (false == JobStatus::isDone($job->getCurrentResult())) {
             return Result::ack(sprintf(
                 'The job status "%s" is not one of the done statuses (%s). Metrics are not calculated for intermediate statuses. Ignoring.',
@@ -75,10 +79,10 @@ class JobMetricsProcessor implements PsrProcessor, TopicSubscriberInterface
         $metrics->setTemplateId($job->getTemplateId());
         $metrics->setJobId($job->getId());
         $metrics->setStatus($job->getCurrentResult()->getStatus());
-        $metrics->setDuration($job->getCurrentResult()->getDuration());
-        $metrics->setMemory($job->getCurrentResult()->getMemory());
+        $metrics->setDuration($jobResultMetrics->getDuration());
+        $metrics->setMemory($jobResultMetrics->getMemory());
         $metrics->setScheduledTime($scheduledTime);
-        $metrics->setStartTime(\DateTime::createFromFormat('U', $job->getCurrentResult()->getStartTime()/1000));
+        $metrics->setStartTime(\DateTime::createFromFormat('U', $jobResultMetrics->getStartTime()/1000));
 
         $waitTimeSec = ((int) $metrics->getStartTime()->format('U')) - ((int) $metrics->getScheduledTime()->format('U'));
         $metrics->setWaitTime($waitTimeSec * 1000);

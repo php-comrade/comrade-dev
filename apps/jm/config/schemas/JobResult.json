@@ -3,13 +3,11 @@
   "id": "http://jm.forma-pro.com/schemas/JobResult.json",
   "type": "object",
   "properties": {
+    "schema": { "type": "string", "enum": ["http://jm.forma-pro.com/schemas/JobResult.json"] },
     "status": { "$ref": "JobStatus.json" },
-    "startTime": { "type": "integer" },
-    "stopTime": { "type": "integer" },
-    "duration": { "type": "integer" },
-    "memory": { "type": "integer" },
-    "error": { "$ref": "throwable.json" },
-    "createdAt": { "$ref": "date.json" }
+    "createdAt": { "$ref": "date.json" },
+    "metrics": { "$ref": "JobResultMetrics.json" },
+    "error": { "$ref": "throwable.json" }
   },
   "required": ["status", "createdAt"]
 }
