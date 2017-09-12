@@ -50,10 +50,6 @@ class ScheduleJobProcessor implements PsrProcessor, CommandSubscriberInterface
      */
     public function process(PsrMessage $psrMessage, PsrContext $psrContext)
     {
-        if ($psrMessage->isRedelivered()) {
-            return Result::reject('The message failed. Remove it');
-        }
-
         $data = JSON::decode($psrMessage->getBody());
         if ($errors = $this->schemaValidator->validate($data, ScheduleJob::SCHEMA)) {
             return Result::reject(Errors::toString($errors, 'Message schema validation has failed.'));

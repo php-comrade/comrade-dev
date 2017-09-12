@@ -1,4 +1,7 @@
 enqueue:
     transport:
         default: '%env(ENQUEUE_DSN)%'
-    client: ~
+    client:
+        redelivered_delay_time: 5
+        prefix: ''
+        app_name: 'comrade'

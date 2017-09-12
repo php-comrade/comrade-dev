@@ -20,6 +20,7 @@ services:
     App\Infra\Error\ErrorStorage: '@yadm.error.storage'
     App\Storage\JobMetricsStorage: '@yadm.job_metrics.storage'
 
+
     Enqueue\Client\ProducerInterface:
         alias: 'enqueue.client.producer'
 
@@ -90,9 +91,12 @@ services:
             - '@enqueue.producer'
             - '@enqueue.client.meta.queue_meta_registry'
 
-    App\Infra\Enqueue\RejectMessageOnExceptionExtension:
+    App\Infra\Enqueue\LimitMessageRedeliveryExtension:
+        arguments:
+          - '@enqueue.transport.context'
+          - 5
         tags:
-            - { name: 'enqueue.consumption.extension', priority: -100 }
+            - { name: 'enqueue.consumption.extension', priority: 100 }
 
     App\Service\BuildMongoIndexesService:
         autowire: false
@@ -119,3 +123,5 @@ services:
 
     App\Infra\ThruwayClient:
         arguments: ['%env(WAMP_DSN)%', '%env(WAMP_REALM)%']
+
+    Interop\Queue\PsrContext: '@enqueue.transport.context'

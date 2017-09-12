@@ -49,10 +49,6 @@ class ExecuteProcessProcessor implements PsrProcessor, CommandSubscriberInterfac
      */
     public function process(PsrMessage $psrMessage, PsrContext $psrContext)
     {
-        if ($psrMessage->isRedelivered()) {
-            return Result::reject('The message failed. Remove it');
-        }
-
         $data = JSON::decode($psrMessage->getBody());
 
         if (false == array_key_exists('processTemplateId', $data)) {
