@@ -29,13 +29,13 @@ if ($quartzConsumerNumber) {
     $builder->setPrefix('exec');
     $builder->setWorkingDirectory(realpath(__DIR__.'/..'));
     $builder->setEnv('MASTER_PROCESS_PID', getmypid());
-    $daemon->addWorker('qvrtz-cnsmr', $quartzConsumerNumber, $builder);
+    $daemon->addWorker('qvrtz-rpc-cnsmr', $quartzConsumerNumber, $builder);
 
     $builder = new ProcessBuilder([$phpBin, 'bin/console', 'enqueue:consume', 'quartz_job_run_shell', '--setup-broker', '--receive-timeout=5000', '--time-limit=+5 minutes',  '-vvv']);
     $builder->setPrefix('exec');
     $builder->setWorkingDirectory(realpath(__DIR__.'/..'));
     $builder->setEnv('MASTER_PROCESS_PID', getmypid());
-    $daemon->addWorker('qvrtz-cnsmr', $quartzConsumerNumber, $builder);
+    $daemon->addWorker('qvrtz-jrs-cnsmr', $quartzConsumerNumber, $builder);
 }
 
 if ($runQuartz) {
