@@ -97,9 +97,7 @@
     </div>
 
     <div *ngIf="tab == 'execution'">
-        <div style="height: 35px" *ngFor="let result of job.results; let index = index">
-            <time-cal [date]="result.createdAt"></time-cal>(<time-ago [date]="result.createdAt"></time-ago>)<job-status [status]="result.status"></job-status>
-        </div>
+        <job-view-execution [job]="job" [subJobs]="subJobs"></job-view-execution>
     </div>
     <div *ngIf="tab == 'graph'">
         <process-graph-image [processId]="job.processId" [updatedAt]="updatedAt"></process-graph-image>

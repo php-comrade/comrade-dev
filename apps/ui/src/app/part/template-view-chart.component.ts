@@ -309,8 +309,6 @@ export class TemplateViewChartComponent implements OnInit {
             avrWaitTimeDatasets[0].data.push({x: time, y: item.avrWaitTime});
             jobsPerRangeDatasets[0].data.push({x: time, y: item.jobsPerRange});
             throughputDatasets[0].data.push({x: time, y: item.jobsPerRange});
-
-            console.log(time);
           });
 
           avrDurationDatasets[0].data.push({x: parseInt(until.format('x')), y: null});

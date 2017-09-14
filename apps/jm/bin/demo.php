@@ -17,6 +17,7 @@ use App\Model\SubJobTemplate;
 use App\CollectMetrics;
 use App\Model\Throwable;
 use Enqueue\Consumption\ChainExtension;
+use Enqueue\Consumption\Extension\LimitConsumptionTimeExtension;
 use Enqueue\Consumption\Extension\LoggerExtension;
 use Enqueue\Consumption\Extension\SignalExtension;
 use Enqueue\Consumption\QueueConsumer;
@@ -67,13 +68,10 @@ foreach (['demo_success_job', 'demo_failed_job', 'demo_failed_with_exception_job
 $queueConsumer = new QueueConsumer($c, new ChainExtension([
     new LoggerExtension($logger),
     new SignalExtension(),
+    new LimitConsumptionTimeExtension(new \DateTime('now + 5 minutes')),
 ]), 0, 200);
 
 $queueConsumer->bind('demo_success_job', function(PsrMessage $message, PsrContext $context) {
-    if ($message->isRedelivered()) {
-        return Result::reject('The message was redelivered. Reject it');
-    }
-
     $runJob = RunJob::create(JSON::decode($message->getBody()));
 
     $result = JobResult::createFor(JobStatus::STATUS_COMPLETED);

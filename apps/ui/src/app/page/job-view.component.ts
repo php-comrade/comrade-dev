@@ -3,10 +3,10 @@ import {ActivatedRoute, Params} from "@angular/router";
 import { Title }     from '@angular/platform-browser';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/filter';
-import {JobService} from "../shared/job.service";
 import {Job} from "../shared/job";
-import {GetSubJobs} from "../shared/messages/get-sub-jobs";
 import {CurrentJobService} from "../shared/current-job.service";
+import {CurrentSubJobsService} from "../shared/current-sub-jobs.service";
+import {SubJob} from "../shared/sub-job";
 
 @Component({
   selector: 'job-view',
@@ -24,9 +24,9 @@ export class JobViewComponent implements OnInit {
 
   constructor(
       private currentJobService: CurrentJobService,
-      private jobService: JobService,
       private route: ActivatedRoute,
       private titleService: Title,
+      private currentSubJobsService: CurrentSubJobsService
   ) { }
 
   ngOnInit(): void {
@@ -42,13 +42,11 @@ export class JobViewComponent implements OnInit {
           .subscribe((job: Job) => {
               this.job = job;
               this.updatedAt = Date.now();
-
-              if (job && job.runSubJobsPolicy) {
-                  this.route.params
-                      .filter((params: Params) => params['tab'] == 'sub-jobs')
-                      .switchMap((params: Params) => this.jobService.getSubJobs(new GetSubJobs(params['id'])))
-                      .subscribe((jobs: Job[]) => this.subJobs = jobs);
-              }
           });
+
+      this.currentSubJobsService.getCurrentSubJobs().subscribe((jobs: SubJob[]) => {
+        console.log('Sub Jobs Updated');
+        this.subJobs = jobs;
+      });
   }
 }

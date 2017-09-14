@@ -23,7 +23,7 @@ services:
       - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume
       - MONGO_DSN=mongodb://mongo:27017
       - COMRADE_DEFAULT_CONSUMER_NUMBER=5
-      - COMRADE_QUARTZ_CONSUMER_NUMBER=5
+      - COMRADE_QUARTZ_CONSUMER_NUMBER=2
       - COMRADE_RUN_QUARTZ=1
       - COMRADE_RUN_WAMP=0
       - WAMP_DSN=ws://jms:9090

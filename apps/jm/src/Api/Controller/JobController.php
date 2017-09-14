@@ -17,7 +17,6 @@ use Quartz\Scheduler\Store\YadmStoreResource;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -126,7 +125,7 @@ class JobController
         try {
             $job = $jobStorage->getOneById($getJob->getJobId());
         } catch (\Exception $e) {
-            throw new NotFoundHttpException(sprintf('The job with id "%s" could not be found', $getJob->getJobId()), null, $e);
+            throw new NotFoundHttpException(sprintf('The job with id "%s" could not be found', $getJob->getJobId()), $e);
         }
 
         $response = new JsonResponse([

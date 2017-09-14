@@ -18,7 +18,7 @@ import {TimelineService} from "./shared/timeline.service";
 import {TimelineComponent} from "./page/timeline.component";
 import {ListTriggersComponent} from "./part/list.triggers.component";
 import { NavbarComponent } from './part/navbar.component';
-import {StatusJobComponent} from "./part/status.job.component";
+  import {JobStatusComponent} from "./part/job-status.component";
 import {RunNowJobComponent} from "./part/run-now.job.component";
 import {NewQueueRunnerComponent} from "./part/new-queue.runner.component";
 import {ListRunnerComponent} from "./part/list.runner.component";
@@ -54,6 +54,9 @@ import {CurrentJobTemplateService} from "./shared/current-job-template.service";
 import {LandingComponent} from "./page/landing.component";
 import {TemplateViewChartComponent} from "./part/template-view-chart.component";
 import {ChartsModule} from "ng2-charts";
+import {ToastyService} from "./shared/toasty.service";
+import {JobViewExecutionComponent} from "./part/job-view-execution.component";
+import {CurrentSubJobsService} from "./shared/current-sub-jobs.service";
 
 
 @NgModule({
@@ -69,7 +72,7 @@ import {ChartsModule} from "ng2-charts";
     ListTriggersComponent,
     TimelineComponent,
     PrettycronPipe,
-    StatusJobComponent,
+    JobStatusComponent,
     RunNowJobComponent,
     NewQueueRunnerComponent,
     ListRunnerComponent,
@@ -81,10 +84,11 @@ import {ChartsModule} from "ng2-charts";
     ShowRetryFailedPolicyComponent,
     NewRunSubJobsPolicyComponent,
     ShowRunSubJobsPolicyComponent,
-    JobViewComponent,
     TimeAgoComponent,
     TimeCalComponent,
     ProcessGraphImageComponent,
+    JobViewComponent,
+    JobViewExecutionComponent,
     JobListComponent,
     JobListRowComponent,
     JobListHeaderRowComponent,
@@ -116,6 +120,8 @@ import {ChartsModule} from "ng2-charts";
       WampService,
       CurrentJobService,
       CurrentJobTemplateService,
+      CurrentSubJobsService,
+      ToastyService
   ],
   bootstrap: [AppComponent]
 })
