@@ -76,16 +76,20 @@ export class JobViewExecutionComponent implements OnChanges {
   showSubJobsStatuses: boolean = true;
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.job = {...changes.job.currentValue};
-    this.job.results = [...this.job.results];
+    if (changes.job) {
+      this.job = {...changes.job.currentValue};
+      this.job.results = [...this.job.results];
+    }
 
-    this.subJobs = [...changes.subJobs.currentValue];
+    if (changes.subJobs) {
+      this.subJobs = [...changes.subJobs.currentValue];
 
-    this.subJobs.forEach((job: SubJob) => {
-      if (job.currentResult) {
-        job.currentResult = {...job.currentResult};
-      }
-    });
+      this.subJobs.forEach((job: SubJob) => {
+        if (job.currentResult) {
+          job.currentResult = {...job.currentResult};
+        }
+      });
+    }
 
     this.refreshResults();
   }

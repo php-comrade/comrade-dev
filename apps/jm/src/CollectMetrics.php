@@ -45,7 +45,7 @@ class CollectMetrics
     private function __construct()
     {
         $this->startTime = (int) microtime(true) * 1000;
-        $this->startMem = memory_get_usage(true);
+        $this->startMem = memory_get_usage();
         $this->finished = false;
     }
 
@@ -57,7 +57,7 @@ class CollectMetrics
     public function stop(): CollectMetrics
     {
         $this->stopTime = (int) microtime(true) * 1000;
-        $this->stopMem = memory_get_usage(true);
+        $this->stopMem = memory_get_usage();
 
         $this->duration = $this->stopTime - $this->startTime;
         $this->memory = $this->stopMem - $this->startMem;

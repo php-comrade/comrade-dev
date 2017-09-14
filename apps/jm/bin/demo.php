@@ -4,6 +4,7 @@ namespace DemoApp;
 use App\Async\Commands;
 use App\Async\RunSubJobsResult;
 use App\Async\RunJob;
+use App\ClientQueueRunner;
 use App\Infra\Uuid;
 use App\Infra\Yadm\ObjectBuilderHook;
 use App\JobStatus;
@@ -59,7 +60,9 @@ register_object_hooks();
 /** @var \Enqueue\AmqpExt\AmqpContext $c */
 $c = dsn_to_context(getenv('ENQUEUE_DSN'));
 
-foreach (['demo_success_job', 'demo_failed_job', 'demo_failed_with_exception_job', 'demo_success_sub_job', 'demo_run_sub_tasks', 'demo_intermediate_status', 'demo_random_job', 'demo_success_on_third_attempt'] as $queueName) {
+$runner = new ClientQueueRunner($c);
+
+foreach (['demo_success_job', 'demo_failed_job', 'demo_failed_with_exception_job', 'demo_success_sub_job', 'demo_run_sub_tasks', 'demo_random_job', 'demo_success_on_third_attempt'] as $queueName) {
     $q = $c->createQueue($queueName);
     $q->addFlag(AMQP_DURABLE);
     $c->declareQueue($q);
@@ -71,181 +74,115 @@ $queueConsumer = new QueueConsumer($c, new ChainExtension([
     new LimitConsumptionTimeExtension(new \DateTime('now + 5 minutes')),
 ]), 0, 200);
 
-$queueConsumer->bind('demo_success_job', function(PsrMessage $message, PsrContext $context) {
-    $runJob = RunJob::create(JSON::decode($message->getBody()));
+$queueConsumer->bind('demo_success_job', function(PsrMessage $message) use ($runner) {
+    $runner->run($message, function(RunJob $runJob) {
+        do_something_important(rand(2, 6));
 
-    $result = JobResult::createFor(JobStatus::STATUS_COMPLETED);
+        $jobResultMessage = JobResultMessage::create();
+        $jobResultMessage->setResult(JobResult::createFor(JobStatus::STATUS_COMPLETED));
 
-    $metrics = CollectMetrics::start();
-
-    do_something_important(rand(2, 6));
-
-    $metrics->stop()->updateResult($result);
-
-    send_result(convert($runJob, $result));
+        return $jobResultMessage;
+    });
 
     return Result::ACK;
 });
 
-$queueConsumer->bind('demo_success_on_third_attempt', function(PsrMessage $message, PsrContext $context) {
-    if ($message->isRedelivered()) {
-        return Result::reject('The message was redelivered. Reject it');
-    }
+$queueConsumer->bind('demo_success_on_third_attempt', function(PsrMessage $message) use ($runner) {
+    $runner->run($message, function(RunJob $runJob) {
+        $result = JobResult::createFor(JobStatus::STATUS_FAILED);
+        if (get_value($runJob->getJob(), 'retryAttempts') > 2) {
+            $result = JobResult::createFor(JobStatus::STATUS_COMPLETED);
+        }
 
-    $runJob = RunJob::create(JSON::decode($message->getBody()));
+        do_something_important(rand(2, 6));
 
-    $result = JobResult::createFor(JobStatus::STATUS_FAILED);
-    if (get_value($runJob->getJob(), 'retryAttempts') > 2) {
-        $result = JobResult::createFor(JobStatus::STATUS_COMPLETED);
-    }
+        $jobResultMessage = JobResultMessage::create();
+        $jobResultMessage->setResult($result);
 
-    $metrics = CollectMetrics::start();
-
-    do_something_important(rand(2, 6));
-
-    $metrics->stop()->updateResult($result);
-
-    send_result(convert($runJob, $result));
+        return $jobResultMessage;
+    });
 
     return Result::ACK;
 });
 
-$queueConsumer->bind('demo_random_job', function(PsrMessage $message, PsrContext $context) {
-    if ($message->isRedelivered()) {
-        return Result::reject('The message was redelivered. Reject it');
-    }
+$queueConsumer->bind('demo_random_job', function(PsrMessage $message) use ($runner) {
+    $runner->run($message, function(RunJob $runJob) {
+        $statuses = [JobStatus::STATUS_FAILED, JobStatus::STATUS_COMPLETED, JobStatus::STATUS_COMPLETED, JobStatus::STATUS_COMPLETED, JobStatus::STATUS_COMPLETED, JobStatus::STATUS_COMPLETED];
+        $result = JobResult::createFor($statuses[rand(0, 3)]);
 
-    $runJob = RunJob::create(JSON::decode($message->getBody()));
+        do_something_important(rand(2, 6));
 
-    $statuses = [JobStatus::STATUS_FAILED, JobStatus::STATUS_COMPLETED, JobStatus::STATUS_COMPLETED, JobStatus::STATUS_COMPLETED];
-    $result = JobResult::createFor($statuses[rand(0, 3)]);
+        $jobResultMessage = JobResultMessage::create();
+        $jobResultMessage->setResult($result);
 
-    $metrics = CollectMetrics::start();
-
-    do_something_important(rand(2, 6));
-
-    $metrics->stop()->updateResult($result);
-
-    send_result(convert($runJob, $result));
+        return $jobResultMessage;
+    });
 
     return Result::ACK;
 });
 
-$queueConsumer->bind('demo_run_sub_tasks', function(PsrMessage $message, PsrContext $context) {
-    if ($message->isRedelivered()) {
-        return Result::reject('The message was redelivered. Reject it');
-    }
+$queueConsumer->bind('demo_run_sub_tasks', function(PsrMessage $message) use ($runner) {
+    $runner->run($message, function(RunJob $runJob) {
+        $result = JobResult::createFor(JobStatus::STATUS_RUN_SUB_JOBS);
+        $jobResultMessage = RunSubJobsResult::create();
+        $jobResultMessage->setProcessTemplateId(Uuid::generate());
+        $jobResultMessage->setResult($result);
 
-    $runJob = RunJob::create(JSON::decode($message->getBody()));
+        $jobTemplate = JobTemplate::create();
+        $jobTemplate->setName('testSubJob1');
+        $jobTemplate->setTemplateId(Uuid::generate());
+        $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
+        $jobTemplate->setRunner(QueueRunner::createFor('demo_random_job'));
+        $jobResultMessage->addJobTemplate($jobTemplate);
 
-    $result = JobResult::createFor(JobStatus::STATUS_RUN_SUB_JOBS);
+        $jobTemplate = JobTemplate::create();
+        $jobTemplate->setName('testSubJob2');
+        $jobTemplate->setTemplateId(Uuid::generate());
+        $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
+        $jobTemplate->setRunner(QueueRunner::createFor('demo_random_job'));
+        $jobResultMessage->addJobTemplate($jobTemplate);
 
-    $jobResultMessage = convert($runJob, $result);
-    $values = get_values($jobResultMessage);
-    unset($values['schema']);
-    $jobResultMessage = RunSubJobsResult::create($values);
-    $jobResultMessage->setProcessTemplateId(Uuid::generate());
+        $jobTemplate = JobTemplate::create();
+        $jobTemplate->setName('testSubJob3');
+        $jobTemplate->setTemplateId(Uuid::generate());
+        $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
+        $jobTemplate->setRunner(QueueRunner::createFor('demo_random_job'));
+        $jobResultMessage->addJobTemplate($jobTemplate);
 
-    $jobTemplate = JobTemplate::create();
-    $jobTemplate->setName('testSubJob1');
-    $jobTemplate->setTemplateId(Uuid::generate());
-    $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
-    $jobTemplate->setRunner(QueueRunner::createFor('demo_random_job'));
-    $jobResultMessage->addJobTemplate($jobTemplate);
+        $jobTemplate = JobTemplate::create();
+        $jobTemplate->setName('testSubJob4');
+        $jobTemplate->setTemplateId(Uuid::generate());
+        $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
+        $jobTemplate->setRunner(QueueRunner::createFor('demo_random_job'));
+        $jobResultMessage->addJobTemplate($jobTemplate);
 
-    $jobTemplate = JobTemplate::create();
-    $jobTemplate->setName('testSubJob2');
-    $jobTemplate->setTemplateId(Uuid::generate());
-    $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
-    $jobTemplate->setRunner(QueueRunner::createFor('demo_random_job'));
-    $jobResultMessage->addJobTemplate($jobTemplate);
+        do_something_important(rand(2, 6));
 
-    $jobTemplate = JobTemplate::create();
-    $jobTemplate->setName('testSubJob3');
-    $jobTemplate->setTemplateId(Uuid::generate());
-    $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
-    $jobTemplate->setRunner(QueueRunner::createFor('demo_random_job'));
-    $jobResultMessage->addJobTemplate($jobTemplate);
-
-    $jobTemplate = JobTemplate::create();
-    $jobTemplate->setName('testSubJob4');
-    $jobTemplate->setTemplateId(Uuid::generate());
-    $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
-    $jobTemplate->setRunner(QueueRunner::createFor('demo_random_job'));
-    $jobResultMessage->addJobTemplate($jobTemplate);
-
-    $metrics = CollectMetrics::start();
-
-    do_something_important(rand(2, 6));
-
-    $metrics->stop()->updateResult($result);
-
-    send_result($jobResultMessage);
+        return $jobResultMessage;
+    });
 
     return Result::ACK;
 });
 
-$queueConsumer->bind('demo_failed_job', function(PsrMessage $message, PsrContext $context) {
-    if ($message->isRedelivered()) {
-        return Result::reject('The message was redelivered. Reject it');
-    }
+$queueConsumer->bind('demo_failed_job', function(PsrMessage $message) use ($runner) {
+    $runner->run($message, function(RunJob $runJob) {
+        do_something_important(rand(2, 6));
 
-    $runJob = RunJob::create(JSON::decode($message->getBody()));
+        $jobResultMessage = JobResultMessage::create();
+        $jobResultMessage->setResult(JobResult::createFor(JobStatus::STATUS_FAILED));
 
-    $result = JobResult::createFor(JobStatus::STATUS_FAILED);
-
-    $metrics = CollectMetrics::start();
-
-    do_something_important(rand(2, 6));
-
-    $metrics->stop()->updateResult($result);
-
-    send_result(convert($runJob, $result));
+        return $jobResultMessage;
+    });
 
     return Result::ACK;
 });
 
-$queueConsumer->bind('demo_failed_with_exception_job', function(PsrMessage $message, PsrContext $context) {
-    if ($message->isRedelivered()) {
-        return Result::reject('The message was redelivered. Reject it');
-    }
+$queueConsumer->bind('demo_failed_with_exception_job', function(PsrMessage $message) use ($runner) {
+    $runner->run($message, function(RunJob $runJob) {
+        do_something_important(rand(2, 6));
 
-    $runJob = RunJob::create(JSON::decode($message->getBody()));
-
-    $result = JobResult::createFor(JobStatus::STATUS_FAILED);
-
-    $metrics = CollectMetrics::start();
-
-    do_something_important(rand(2, 6));
-
-    $metrics->stop()->updateResult($result);
-
-    $result->setError(Throwable::createFromThrowable(new \LogicException('Something went wrong')));
-    send_result(convert($runJob, $result));
-
-    return Result::ACK;
-});
-
-$queueConsumer->bind('demo_intermediate_status', function(PsrMessage $message, PsrContext $context) {
-    if ($message->isRedelivered()) {
-        return Result::reject('The message was redelivered. Reject it');
-    }
-
-    $runJob = RunJob::create(JSON::decode($message->getBody()));
-    $result = JobResult::createFor(JobStatus::STATUS_RUNNING);
-
-    $metrics = CollectMetrics::start();
-
-    do_something_important(rand(2, 6));
-
-    send_result(convert($runJob, $result));
-
-    do_something_important(rand(2, 6));
-
-    $metrics->stop()->updateResult($result);
-
-    $result = JobResult::createFor(JobStatus::STATUS_COMPLETED);
-    send_result(convert($runJob, $result));
+        throw new \LogicException('Something went wrong');
+    });
 
     return Result::ACK;
 });
@@ -280,11 +217,19 @@ function convert(RunJob $runJob, JobResult $result) {
 function do_something_important($timeout)
 {
     $limit = microtime(true) + $timeout;
+
+    $memoryConsumed = false;
     
     while (microtime(true) < $limit) {
-        $arr = [];
-        foreach (range(1000000, 5000000) as $index) {
-            $arr[] = $index;
+
+        if ($memoryConsumed) {
+            foreach (range(1000000, 5000000) as $index) {
+                $arr[] = $index;
+            }
+
+            $memoryConsumed = true;
         }
+
+        usleep(10000);
     }
 }
