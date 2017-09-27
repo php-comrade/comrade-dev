@@ -25,6 +25,7 @@ The best way to run Comrade in production is to use pre-build Docker containers.
 version: '3'
 
 services:
+  # http server
   jm:
     image: 'formapro/comrade:latest'
     ports: ['80:80']
@@ -33,6 +34,7 @@ services:
       - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/comrade
       - MONGO_DSN=mongodb://mongo:27017
 
+  # web soker server, queue consumers, quartz scheduler
   jmw:
     image: 'formapro/comrade:latest'
     entrypoint: "php bin/daemon.php"
@@ -46,6 +48,11 @@ services:
       - WAMP_SERVER_PORT=9090
     ports:
       - "9090:9090"
+
+  ui:
+    image: 'formapro/comrade-ui:latest'
+    ports:
+      - "80:80"
 
   rabbitmq:
     image: 'enqueue/rabbitmq:latest'
