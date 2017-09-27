@@ -20,8 +20,9 @@ import {ListTriggersComponent} from "./part/list.triggers.component";
 import { NavbarComponent } from './part/navbar.component';
   import {JobStatusComponent} from "./part/job-status.component";
 import {RunNowJobComponent} from "./part/run-now.job.component";
-import {NewQueueRunnerComponent} from "./part/new-queue.runner.component";
-import {ListRunnerComponent} from "./part/list.runner.component";
+import {RunnerNewQueueComponent} from "./part/runner-new-queue.component";
+import {RunnerNewHttpComponent} from "./part/runner-new-http.component";
+import {RunnerListComponent} from "./part/list.runner.component";
 import {NewExclusivePolicyComponent} from "./part/new-exclusive.policy.component";
 import {ShowExclusivePolicyComponent} from "./part/show-exclusive.policy.component";
 import {NewGracePeriodPolicyComponent} from "./part/new-grace-period.policy.component";
@@ -74,8 +75,9 @@ import {CurrentSubJobsService} from "./shared/current-sub-jobs.service";
     PrettycronPipe,
     JobStatusComponent,
     RunNowJobComponent,
-    NewQueueRunnerComponent,
-    ListRunnerComponent,
+    RunnerNewQueueComponent,
+    RunnerNewHttpComponent,
+    RunnerListComponent,
     ShowExclusivePolicyComponent,
     NewExclusivePolicyComponent,
     NewGracePeriodPolicyComponent,

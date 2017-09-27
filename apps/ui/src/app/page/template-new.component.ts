@@ -25,6 +25,7 @@ export class TemplateNewComponent implements OnInit {
   addCronTrigger: boolean = false;
   addSimpleTrigger: boolean = false;
   addQueueRunner: boolean = false;
+  addHttpRunner: boolean = false;
   addExclusivePolicy: boolean = false;
   addGracePeriodPolicy: boolean = false;
   addRetryFailedPolicy: boolean = false;
@@ -69,6 +70,10 @@ export class TemplateNewComponent implements OnInit {
 
   triggerQueueRunner(): void {
       this.addQueueRunner = !this.addQueueRunner;
+  }
+
+  triggerHttpRunner(): void {
+    this.addHttpRunner = !this.addHttpRunner;
   }
 
   triggerExclusivePolicy(): void {
@@ -126,6 +131,7 @@ export class TemplateNewComponent implements OnInit {
     this.jobTemplate.runner = runner;
 
     this.addQueueRunner = false;
+    this.addHttpRunner = false;
   }
 
   onRemoveTrigger(trigger: Trigger)

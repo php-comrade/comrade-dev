@@ -17,6 +17,7 @@ use App\Infra\Yadm\ObjectBuilderHook;
 use App\Model\CronTrigger;
 use App\Model\ExclusivePolicy;
 use App\Model\GracePeriodPolicy;
+use App\Model\HttpRunner;
 use App\Model\Job;
 use App\Model\JobResult as JobResultModel;
 use App\Model\JobResultMetrics;
@@ -144,6 +145,7 @@ final class Kernel extends BaseKernel
             ExclusivePolicy::SCHEMA => ExclusivePolicy::class,
 
             QueueRunner::SCHEMA => QueueRunner::class,
+            HttpRunner::SCHEMA => HttpRunner::class,
 
             CronTrigger::SCHEMA => CronTrigger::class,
             SimpleTrigger::SCHEMA => SimpleTrigger::class,

@@ -9,6 +9,7 @@
         "enqueue/enqueue-bundle": "^0.7.11@dev",
         "formapro/pvm": "dev-master",
         "graphp/graphviz": "^0.2",
+        "guzzlehttp/guzzle": "^6.3",
         "justinrainbow/json-schema": "^5",
         "makasim/values": "@dev",
         "makasim/yadm": "@dev",
