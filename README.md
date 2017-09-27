@@ -27,23 +27,18 @@ version: '3'
 services:
   jm:
     image: 'formapro/comrade:latest'
-    ports:
-      - "80:80"
-    depends_on:
-      - 'rabbitmq'
-      - 'mongo'
+    ports: ['80:80']
+    depends_on: ['rabbitmq', 'mongo']
     environment:
-      - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume
+      - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/comrade
       - MONGO_DSN=mongodb://mongo:27017
 
   jmw:
     image: 'formapro/comrade:latest'
     entrypoint: "php bin/daemon.php"
-    depends_on:
-      - 'rabbitmq'
-      - 'mongo'
+    depends_on: ['rabbitmq', 'mongo']
     environment:
-      - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume
+      - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/comrade
       - MONGO_DSN=mongodb://mongo:27017
       - WAMP_DSN=ws://jms:9090
       - WAMP_REALM=realm1
@@ -57,11 +52,10 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
-      - RABBITMQ_DEFAULT_VHOST=jm
+      - RABBITMQ_DEFAULT_VHOST=comrade
 
   mongo:
     image: 'mongo:3'
-
 ```
 
 If you'd like to to run Comrade from source codes do next:
