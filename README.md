@@ -42,7 +42,7 @@ services:
     environment:
       - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/comrade
       - MONGO_DSN=mongodb://mongo:27017
-      - WAMP_DSN=ws://jms:9090
+      - WAMP_DSN=ws://jmw:9090
       - WAMP_REALM=realm1
       - WAMP_SERVER_HOST=0.0.0.0
       - WAMP_SERVER_PORT=9090
