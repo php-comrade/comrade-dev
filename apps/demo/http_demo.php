@@ -43,7 +43,7 @@ register_global_hook('get_object_class', function(array $values) {
     }
 });
 
-$runner = new \Comrade\Shared\ClientHttpRunner('http://jm');
+$runner = new \Comrade\Client\ClientHttpRunner('http://jm');
 
 if ('/demo_success_job' === $path) {
     $httpRequest = \GuzzleHttp\Psr7\ServerRequest::fromGlobals();

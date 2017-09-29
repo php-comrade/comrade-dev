@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5ad8ccc456d5143d1692b2b471bdc5b8",
+    "content-hash": "29c19b4ac6a2ecef3feeb2a27a7729d2",
     "packages": [
         {
             "name": "cboden/ratchet",
@@ -112,13 +112,11 @@
             "version": "dev-master",
             "dist": {
                 "type": "path",
-                "url": "../../pkg/comrade-shared",
-                "reference": "cdec714e3a16c3e9a71fb989b8c82bc578bc2f62",
+                "url": "../../pkg/php-shared",
+                "reference": "153196345ef2a56b777e74950db5446524f9bcb4",
                 "shasum": null
             },
             "require": {
-                "enqueue/enqueue": "^0.7",
-                "guzzlehttp/guzzle": "^6.3",
                 "makasim/values": "@dev",
                 "php": ">=7.1"
             },
@@ -136,10 +134,12 @@
             "license": [
                 "MIT"
             ],
-            "description": "Comrade PHP client",
+            "description": "Comrade Models and Messages",
             "keywords": [
-                "client",
-                "job manager"
+                "comrade",
+                "job manager",
+                "message",
+                "model"
             ]
         },
         {
@@ -1029,12 +1029,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/formapro/pvm.git",
-                "reference": "a6e6952974f9839d1381525a7b01aacbdba2a4fd"
+                "reference": "ecc429fe6616e637e0603bf2dd7b4f9e0fe3c41c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/formapro/pvm/zipball/a6e6952974f9839d1381525a7b01aacbdba2a4fd",
-                "reference": "a6e6952974f9839d1381525a7b01aacbdba2a4fd",
+                "url": "https://api.github.com/repos/formapro/pvm/zipball/ecc429fe6616e637e0603bf2dd7b4f9e0fe3c41c",
+                "reference": "ecc429fe6616e637e0603bf2dd7b4f9e0fe3c41c",
                 "shasum": ""
             },
             "require": {
@@ -1071,7 +1071,7 @@
                 "process",
                 "workflow"
             ],
-            "time": "2017-09-28T15:24:58+00:00"
+            "time": "2017-09-28T17:48:41+00:00"
         },
         {
             "name": "g4/cron",
@@ -3042,12 +3042,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "013a978434c4e2ce0cf22e85d338cade4420d24a"
+                "reference": "5ce4cf55bf3ad8eaaa72bec949c18f1a85d27eb3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/013a978434c4e2ce0cf22e85d338cade4420d24a",
-                "reference": "013a978434c4e2ce0cf22e85d338cade4420d24a",
+                "url": "https://api.github.com/repos/symfony/config/zipball/5ce4cf55bf3ad8eaaa72bec949c18f1a85d27eb3",
+                "reference": "5ce4cf55bf3ad8eaaa72bec949c18f1a85d27eb3",
                 "shasum": ""
             },
             "require": {
@@ -3096,7 +3096,7 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
-            "time": "2017-09-26T20:01:10+00:00"
+            "time": "2017-09-29T09:41:38+00:00"
         },
         {
             "name": "symfony/console",
@@ -3562,16 +3562,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.0.22",
+            "version": "v1.0.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "5a2618b783beb1c60655ffd5df7cd57829619ed4"
+                "reference": "295b2e749e4c3075d955bf63e3cd82092fa08719"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/5a2618b783beb1c60655ffd5df7cd57829619ed4",
-                "reference": "5a2618b783beb1c60655ffd5df7cd57829619ed4",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/295b2e749e4c3075d955bf63e3cd82092fa08719",
+                "reference": "295b2e749e4c3075d955bf63e3cd82092fa08719",
                 "shasum": ""
             },
             "require": {
@@ -3604,7 +3604,7 @@
                     "email": "fabien.potencier@gmail.com"
                 }
             ],
-            "time": "2017-09-27T01:36:46+00:00"
+            "time": "2017-09-29T01:15:31+00:00"
         },
         {
             "name": "symfony/framework-bundle",

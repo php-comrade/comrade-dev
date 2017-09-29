@@ -4,20 +4,53 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "56975820cba405fa888a7d4aad78010a",
+    "content-hash": "254918db3dea39dd8dea70a98d1dd272",
     "packages": [
+        {
+            "name": "comrade/client",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "../../pkg/php-client",
+                "reference": "c4a84d5ae976c20e88757ae1f087864c975bba46",
+                "shasum": null
+            },
+            "require": {
+                "comrade/shared": "*@dev",
+                "enqueue/enqueue": "^0.7",
+                "guzzlehttp/guzzle": "^6.3",
+                "php": ">=7.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Comrade\\Client\\": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Comrade PHP client",
+            "keywords": [
+                "client",
+                "job manager"
+            ]
+        },
         {
             "name": "comrade/shared",
             "version": "dev-master",
             "dist": {
                 "type": "path",
-                "url": "../../pkg/comrade-shared",
-                "reference": "cdec714e3a16c3e9a71fb989b8c82bc578bc2f62",
+                "url": "../../pkg/php-shared",
+                "reference": "153196345ef2a56b777e74950db5446524f9bcb4",
                 "shasum": null
             },
             "require": {
-                "enqueue/enqueue": "^0.7",
-                "guzzlehttp/guzzle": "^6.3",
                 "makasim/values": "@dev",
                 "php": ">=7.1"
             },
@@ -35,10 +68,12 @@
             "license": [
                 "MIT"
             ],
-            "description": "Comrade PHP client",
+            "description": "Comrade Models and Messages",
             "keywords": [
-                "client",
-                "job manager"
+                "comrade",
+                "job manager",
+                "message",
+                "model"
             ]
         },
         {
@@ -1060,7 +1095,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "comrade/shared": 20
+        "comrade/shared": 20,
+        "comrade/client": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

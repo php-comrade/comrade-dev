@@ -74,7 +74,7 @@
     "repositories": [
         {
             "type": "path",
-            "url": "../../pkg/comrade-shared"
+            "url": "../../pkg/php-shared"
         }
     ]
 }

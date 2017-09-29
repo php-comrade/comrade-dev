@@ -12,10 +12,7 @@ services:
     volumes:
       - './apps/jm:/jobs_dev/apps/jm:cached'
       - './pkg:/jobs_dev/pkg:cached'
-      - './shared:/shared'
       - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
-      - './shared/swoole.so:/usr/lib/php/20160303/swoole.so'
-      - './docker/swoole.ini:/etc/php/7.1/cli/conf.d/20-swoole.ini'
     env_file: 'apps/jm/.env'
     environment:
       - VIRTUAL_HOST=jm.loc
@@ -37,10 +34,7 @@ services:
     volumes:
       - './apps/jm:/jobs_dev/apps/jm:cached'
       - './pkg:/jobs_dev/pkg:cached'
-      - './shared:/shared'
       - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
-      - './shared/swoole.so:/usr/lib/php/20160303/swoole.so'
-      - './docker/swoole.ini:/etc/php/7.1/cli/conf.d/20-swoole.ini'
     env_file: 'apps/jm/.env'
     environment:
       - COMRADE_DEFAULT_CONSUMER_NUMBER=5
@@ -65,10 +59,7 @@ services:
     volumes:
       - './apps/jm:/jobs_dev/apps/jm:cached'
       - './pkg:/jobs_dev/pkg:cached'
-      - './shared:/shared'
       - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
-      - './shared/swoole.so:/usr/lib/php/20160303/swoole.so'
-      - './docker/swoole.ini:/etc/php/7.1/cli/conf.d/20-swoole.ini'
     env_file: 'apps/jm/.env'
     ports:
       - "9090:9090"
@@ -84,10 +75,7 @@ services:
     volumes:
       - './apps/demo:/jobs_dev/apps/demo:cached'
       - './pkg:/jobs_dev/pkg:cached'
-      - './shared:/shared'
       - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
-      - './shared/swoole.so:/usr/lib/php/20160303/swoole.so'
-      - './docker/swoole.ini:/etc/php/7.1/cli/conf.d/20-swoole.ini'
     expose:
       - '80'
     environment:
@@ -107,17 +95,6 @@ services:
       - "80"
     environment:
       - VIRTUAL_HOST=ui.jm.loc
-
-#  seeds:
-#    image: 'formapro/comrade-demo-seeds:latest'
-##    entrypoint: 'echo "To populate seeds comment out this entrypoint in docker-compose.yml file\n"'
-#    restart: 'no'
-#    depends_on:
-#      - 'mongo'
-#    environment:
-#      - MONGO_HOST=mongo
-#      - MONGO_PORT=27017
-#      - MONGO_DB=job_manager
 
   rabbitmq:
     image: 'enqueue/rabbitmq:latest'

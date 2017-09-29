@@ -1,7 +1,7 @@
 <?php
 namespace DemoApp;
 
-use Comrade\Shared\ClientQueueRunner;
+use Comrade\Client\ClientQueueRunner;
 use Comrade\Shared\ComradeClassMap;
 use Comrade\Shared\Message\JobResult as JobResultMessage;
 use Comrade\Shared\Message\RunJob;

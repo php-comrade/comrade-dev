@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+set -e
+set -x
+
+CURRENT_BRANCH=`git rev-parse --abbrev-ref HEAD`
+
+function split()
+{
+    split_new_repo $1 $2
+
+
+#    SHA1=`./bin/splitsh-lite --prefix=$1`
+#    git push $2 "$SHA1:$CURRENT_BRANCH"
+}
+
+function split_new_repo()
+{
+    TMP_DIR="/tmp/enqueue-repo"
+    REMOTE_URL=`git remote get-url $2`
+
+    rm -rf $TMP_DIR;
+    mkdir $TMP_DIR;
+
+    (
+        cd $TMP_DIR;
+        git clone $REMOTE_URL .;
+        git checkout -b master;
+        touch foo;
+        git add foo;
+        git commit -m "foo";
+        git push origin master;
+    );
+
+    SHA1=`./bin/splitsh-lite --prefix=$1`
+    git fetch $2
+    git push $2 "$SHA1:$CURRENT_BRANCH" -f
+}
+
+
+function remote()
+{
+    git remote add $1 $2 || true
+}
+
+remote php-shared git@github.com:php-comrade/php-shared.git
+remote php-client git@github.com:php-comrade/php-client.git
+
+split 'pkg/php-shared' php-shared
+split 'pkg/php-client' php-client

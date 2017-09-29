@@ -4,6 +4,7 @@
     "require": {
         "php": "^7.1",
         "comrade/shared": "*@dev",
+        "comrade/client": "*@dev",
         "enqueue/amqp-ext": "^0.7",
         "symfony/process": "^3.3",
         "symfony/console": "^3.3"
@@ -17,7 +18,11 @@
     "repositories": [
         {
             "type": "path",
-            "url": "../../pkg/comrade-shared"
+            "url": "../../pkg/php-client"
+        },
+        {
+            "type": "path",
+            "url": "../../pkg/php-shared"
         }
     ]
 }

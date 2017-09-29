@@ -1,0 +1,21 @@
+{
+    "name": "comrade/shared",
+    "type": "library",
+    "description": "Comrade Models and Messages",
+    "keywords": ["job manager", "comrade", "model", "message"],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.1",
+
+        "makasim/values": "@dev"
+    },
+    "autoload": {
+        "psr-4": { "Comrade\\Shared\\": "" }
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
+    }
+}
