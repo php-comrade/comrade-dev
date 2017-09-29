@@ -1,7 +1,7 @@
 <?php
 namespace App\Storage;
 
-use App\Model\Job;
+use Comrade\Shared\Model\Job;
 use function Makasim\Yadm\get_object_id;
 use Makasim\Yadm\Storage;
 

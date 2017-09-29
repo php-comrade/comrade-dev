@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "56c9998c9b9f90d1f19128d1dd8e3519",
+    "content-hash": "5ad8ccc456d5143d1692b2b471bdc5b8",
     "packages": [
         {
             "name": "cboden/ratchet",
@@ -106,6 +106,41 @@
                 "vertex"
             ],
             "time": "2015-03-07T18:11:31+00:00"
+        },
+        {
+            "name": "comrade/shared",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "../../pkg/comrade-shared",
+                "reference": "cdec714e3a16c3e9a71fb989b8c82bc578bc2f62",
+                "shasum": null
+            },
+            "require": {
+                "enqueue/enqueue": "^0.7",
+                "guzzlehttp/guzzle": "^6.3",
+                "makasim/values": "@dev",
+                "php": ">=7.1"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Comrade\\Shared\\": ""
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "Comrade PHP client",
+            "keywords": [
+                "client",
+                "job manager"
+            ]
         },
         {
             "name": "doctrine/annotations",
@@ -571,16 +606,16 @@
         },
         {
             "name": "enqueue/amqp-ext",
-            "version": "0.7.12",
+            "version": "0.7.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/amqp-ext.git",
-                "reference": "d12575357f51b1499aca2ef05a067ebbad291cde"
+                "reference": "35e3b27006c7a4df32eab0ddad51e724bc88bdf3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/amqp-ext/zipball/d12575357f51b1499aca2ef05a067ebbad291cde",
-                "reference": "d12575357f51b1499aca2ef05a067ebbad291cde",
+                "url": "https://api.github.com/repos/php-enqueue/amqp-ext/zipball/35e3b27006c7a4df32eab0ddad51e724bc88bdf3",
+                "reference": "35e3b27006c7a4df32eab0ddad51e724bc88bdf3",
                 "shasum": ""
             },
             "require": {
@@ -626,7 +661,7 @@
                 "messaging",
                 "queue"
             ],
-            "time": "2017-09-11T14:17:18+00:00"
+            "time": "2017-09-25T09:58:39+00:00"
         },
         {
             "name": "enqueue/amqp-tools",
@@ -743,12 +778,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/enqueue.git",
-                "reference": "98df8172792b5f2833ac7172c53d33bb1b2c15e4"
+                "reference": "744a13b6b387613f1d41e3158e27e1c712933aa3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/98df8172792b5f2833ac7172c53d33bb1b2c15e4",
-                "reference": "98df8172792b5f2833ac7172c53d33bb1b2c15e4",
+                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/744a13b6b387613f1d41e3158e27e1c712933aa3",
+                "reference": "744a13b6b387613f1d41e3158e27e1c712933aa3",
                 "shasum": ""
             },
             "require": {
@@ -760,13 +795,19 @@
             },
             "require-dev": {
                 "empi89/php-amqp-stubs": "*@dev",
+                "enqueue/amqp-bunny": "^0.7@dev",
                 "enqueue/amqp-ext": "^0.7@dev",
+                "enqueue/amqp-lib": "^0.7@dev",
                 "enqueue/dbal": "^0.7@dev",
                 "enqueue/fs": "^0.7@dev",
                 "enqueue/gearman": "^0.7@dev",
+                "enqueue/gps": "^0.7@dev",
                 "enqueue/pheanstalk": "^0.7@dev",
                 "enqueue/rdkafka": "^0.7@dev",
+                "enqueue/redis": "^0.7@dev",
                 "enqueue/simple-client": "^0.7@dev",
+                "enqueue/sqs": "^0.7@dev",
+                "enqueue/stomp": "^0.7@dev",
                 "enqueue/test": "^0.7@dev",
                 "phpunit/phpunit": "~5.5",
                 "symfony/config": "^2.8|^3",
@@ -814,7 +855,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2017-09-11T09:00:27+00:00"
+            "time": "2017-09-25T12:04:26+00:00"
         },
         {
             "name": "enqueue/enqueue-bundle",
@@ -822,12 +863,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/enqueue-bundle.git",
-                "reference": "864eeb8acbab8c9b0fa8963980c20c010163e4cb"
+                "reference": "afbfcbebe7e201fb82b15bd928e80ed444fc7d8a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/enqueue-bundle/zipball/864eeb8acbab8c9b0fa8963980c20c010163e4cb",
-                "reference": "864eeb8acbab8c9b0fa8963980c20c010163e4cb",
+                "url": "https://api.github.com/repos/php-enqueue/enqueue-bundle/zipball/afbfcbebe7e201fb82b15bd928e80ed444fc7d8a",
+                "reference": "afbfcbebe7e201fb82b15bd928e80ed444fc7d8a",
                 "shasum": ""
             },
             "require": {
@@ -880,7 +921,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2017-09-11T06:24:47+00:00"
+            "time": "2017-09-27T15:52:28+00:00"
         },
         {
             "name": "enqueue/null",
@@ -988,12 +1029,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/formapro/pvm.git",
-                "reference": "846eabfe731fddcf648a6d46d4c33f51c3c685f9"
+                "reference": "a6e6952974f9839d1381525a7b01aacbdba2a4fd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/formapro/pvm/zipball/846eabfe731fddcf648a6d46d4c33f51c3c685f9",
-                "reference": "846eabfe731fddcf648a6d46d4c33f51c3c685f9",
+                "url": "https://api.github.com/repos/formapro/pvm/zipball/a6e6952974f9839d1381525a7b01aacbdba2a4fd",
+                "reference": "a6e6952974f9839d1381525a7b01aacbdba2a4fd",
                 "shasum": ""
             },
             "require": {
@@ -1030,7 +1071,7 @@
                 "process",
                 "workflow"
             ],
-            "time": "2017-09-12T14:03:45+00:00"
+            "time": "2017-09-28T15:24:58+00:00"
         },
         {
             "name": "g4/cron",
@@ -1164,6 +1205,122 @@
                 "graphviz"
             ],
             "time": "2015-03-08T10:30:28+00:00"
+        },
+        {
+            "name": "guzzlehttp/guzzle",
+            "version": "6.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/guzzle.git",
+                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f4db5a78a5ea468d4831de7f0bf9d9415e348699",
+                "reference": "f4db5a78a5ea468d4831de7f0bf9d9415e348699",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/promises": "^1.0",
+                "guzzlehttp/psr7": "^1.4",
+                "php": ">=5.5"
+            },
+            "require-dev": {
+                "ext-curl": "*",
+                "phpunit/phpunit": "^4.0 || ^5.0",
+                "psr/log": "^1.0"
+            },
+            "suggest": {
+                "psr/log": "Required for using the Log middleware"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.2-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/functions_include.php"
+                ],
+                "psr-4": {
+                    "GuzzleHttp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "Guzzle is a PHP HTTP client library",
+            "homepage": "http://guzzlephp.org/",
+            "keywords": [
+                "client",
+                "curl",
+                "framework",
+                "http",
+                "http client",
+                "rest",
+                "web service"
+            ],
+            "time": "2017-06-22T18:50:49+00:00"
+        },
+        {
+            "name": "guzzlehttp/promises",
+            "version": "v1.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/guzzle/promises.git",
+                "reference": "a59da6cf61d80060647ff4d3eb2c03a2bc694646"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/guzzle/promises/zipball/a59da6cf61d80060647ff4d3eb2c03a2bc694646",
+                "reference": "a59da6cf61d80060647ff4d3eb2c03a2bc694646",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.4-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "GuzzleHttp\\Promise\\": "src/"
+                },
+                "files": [
+                    "src/functions_include.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael Dowling",
+                    "email": "mtdowling@gmail.com",
+                    "homepage": "https://github.com/mtdowling"
+                }
+            ],
+            "description": "Guzzle promises library",
+            "keywords": [
+                "promise"
+            ],
+            "time": "2016-12-20T10:07:11+00:00"
         },
         {
             "name": "guzzlehttp/psr7",
@@ -1628,16 +1785,16 @@
         },
         {
             "name": "paragonie/random_compat",
-            "version": "v2.0.10",
+            "version": "v2.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/paragonie/random_compat.git",
-                "reference": "634bae8e911eefa89c1abfbf1b66da679ac8f54d"
+                "reference": "5da4d3c796c275c55f057af5a643ae297d96b4d8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/634bae8e911eefa89c1abfbf1b66da679ac8f54d",
-                "reference": "634bae8e911eefa89c1abfbf1b66da679ac8f54d",
+                "url": "https://api.github.com/repos/paragonie/random_compat/zipball/5da4d3c796c275c55f057af5a643ae297d96b4d8",
+                "reference": "5da4d3c796c275c55f057af5a643ae297d96b4d8",
                 "shasum": ""
             },
             "require": {
@@ -1672,7 +1829,7 @@
                 "pseudorandom",
                 "random"
             ],
-            "time": "2017-03-13T16:27:32+00:00"
+            "time": "2017-09-27T21:40:39+00:00"
         },
         {
             "name": "php-quartz/bridge",
@@ -2155,16 +2312,16 @@
         },
         {
             "name": "ramsey/uuid",
-            "version": "3.7.0",
+            "version": "3.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ramsey/uuid.git",
-                "reference": "0ef23d1b10cf1bc576e9d865a7e9c47982c5715e"
+                "reference": "45cffe822057a09e05f7bd09ec5fb88eeecd2334"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ramsey/uuid/zipball/0ef23d1b10cf1bc576e9d865a7e9c47982c5715e",
-                "reference": "0ef23d1b10cf1bc576e9d865a7e9c47982c5715e",
+                "url": "https://api.github.com/repos/ramsey/uuid/zipball/45cffe822057a09e05f7bd09ec5fb88eeecd2334",
+                "reference": "45cffe822057a09e05f7bd09ec5fb88eeecd2334",
                 "shasum": ""
             },
             "require": {
@@ -2233,7 +2390,7 @@
                 "identifier",
                 "uuid"
             ],
-            "time": "2017-08-04T13:39:04+00:00"
+            "time": "2017-09-22T20:46:04+00:00"
         },
         {
             "name": "ratchet/pawl",
@@ -2282,16 +2439,16 @@
         },
         {
             "name": "ratchet/rfc6455",
-            "version": "v0.2.2",
+            "version": "v0.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ratchetphp/RFC6455.git",
-                "reference": "56aecde679d72d7b1087bbe1d6f7d96e123d396a"
+                "reference": "cc8a1a46a703ce01de10fdb5fab387381b66edc8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ratchetphp/RFC6455/zipball/56aecde679d72d7b1087bbe1d6f7d96e123d396a",
-                "reference": "56aecde679d72d7b1087bbe1d6f7d96e123d396a",
+                "url": "https://api.github.com/repos/ratchetphp/RFC6455/zipball/cc8a1a46a703ce01de10fdb5fab387381b66edc8",
+                "reference": "cc8a1a46a703ce01de10fdb5fab387381b66edc8",
                 "shasum": ""
             },
             "require": {
@@ -2299,6 +2456,7 @@
                 "php": ">=5.4.2"
             },
             "require-dev": {
+                "phpunit/phpunit": "4.8.*",
                 "react/http": "^0.4.1",
                 "react/socket-client": "^0.4.3"
             },
@@ -2326,7 +2484,7 @@
                 "rfc6455",
                 "websocket"
             ],
-            "time": "2017-01-01T15:41:18+00:00"
+            "time": "2017-09-13T13:49:42+00:00"
         },
         {
             "name": "react/cache",
@@ -2884,12 +3042,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "00bd326cdf4f76d7b090e0e496817389eee17eed"
+                "reference": "013a978434c4e2ce0cf22e85d338cade4420d24a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/00bd326cdf4f76d7b090e0e496817389eee17eed",
-                "reference": "00bd326cdf4f76d7b090e0e496817389eee17eed",
+                "url": "https://api.github.com/repos/symfony/config/zipball/013a978434c4e2ce0cf22e85d338cade4420d24a",
+                "reference": "013a978434c4e2ce0cf22e85d338cade4420d24a",
                 "shasum": ""
             },
             "require": {
@@ -2938,7 +3096,7 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
-            "time": "2017-09-11T20:45:17+00:00"
+            "time": "2017-09-26T20:01:10+00:00"
         },
         {
             "name": "symfony/console",
@@ -3404,21 +3562,21 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.0.17",
+            "version": "v1.0.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "6cfb2e6f690d905843cc52ea3236eb54ba50a42e"
+                "reference": "5a2618b783beb1c60655ffd5df7cd57829619ed4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/6cfb2e6f690d905843cc52ea3236eb54ba50a42e",
-                "reference": "6cfb2e6f690d905843cc52ea3236eb54ba50a42e",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/5a2618b783beb1c60655ffd5df7cd57829619ed4",
+                "reference": "5a2618b783beb1c60655ffd5df7cd57829619ed4",
                 "shasum": ""
             },
             "require": {
                 "composer-plugin-api": "^1.1",
-                "php": "^7.1"
+                "php": "^7.0"
             },
             "require-dev": {
                 "composer/composer": "^1.4",
@@ -3446,7 +3604,7 @@
                     "email": "fabien.potencier@gmail.com"
                 }
             ],
-            "time": "2017-09-01T23:43:15+00:00"
+            "time": "2017-09-27T01:36:46+00:00"
         },
         {
             "name": "symfony/framework-bundle",
@@ -5036,16 +5194,16 @@
         },
         {
             "name": "twig/twig",
-            "version": "v2.4.3",
+            "version": "v2.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "eab7c3288ae6603d7d6f92b531626af2b162d1f2"
+                "reference": "eddb97148ad779f27e670e1e3f19fb323aedafeb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/eab7c3288ae6603d7d6f92b531626af2b162d1f2",
-                "reference": "eab7c3288ae6603d7d6f92b531626af2b162d1f2",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/eddb97148ad779f27e670e1e3f19fb323aedafeb",
+                "reference": "eddb97148ad779f27e670e1e3f19fb323aedafeb",
                 "shasum": ""
             },
             "require": {
@@ -5098,7 +5256,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-06-07T18:47:58+00:00"
+            "time": "2017-09-27T18:10:31+00:00"
         },
         {
             "name": "voryx/thruway",
@@ -5216,6 +5374,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "cboden/ratchet": 20,
+        "comrade/shared": 20,
         "enqueue/enqueue": 20,
         "enqueue/enqueue-bundle": 20,
         "formapro/pvm": 20,

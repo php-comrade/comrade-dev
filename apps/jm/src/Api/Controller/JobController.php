@@ -1,15 +1,17 @@
 <?php
 namespace App\Api\Controller;
 
-use App\Async\GetJob;
-use App\Async\GetSubJobs;
-use App\Async\GetTimeline;
+use App\Commands;
 use App\Infra\JsonSchema\SchemaValidator;
 use App\JobStatus;
-use App\Model\Job;
 use App\Model\JobResult;
 use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
+use Comrade\Shared\Message\GetJob;
+use Comrade\Shared\Message\GetSubJobs;
+use Comrade\Shared\Message\GetTimeline;
+use Comrade\Shared\Model\Job;
+use Enqueue\Client\ProducerInterface;
 use Enqueue\Util\JSON;
 use function Makasim\Values\get_values;
 use Quartz\Core\Trigger;
@@ -17,6 +19,7 @@ use Quartz\Scheduler\Store\YadmStoreResource;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -58,6 +61,33 @@ class JobController
         $response->setEncodingOptions(JsonResponse::DEFAULT_ENCODING_OPTIONS | JSON_PRETTY_PRINT);
 
         return $response;
+    }
+
+    /**
+     * @Extra\Route("/add-job-result")
+     * @Extra\Method("POST")
+     *
+     * @param Request $request
+     * @param ProducerInterface $producer
+     * @param SchemaValidator $schemaValidator
+     *
+     * @return Response
+     */
+    public function addJobResultAction(Request $request, ProducerInterface $producer, SchemaValidator $schemaValidator)
+    {
+        try {
+            $data = JSON::decode($request->getContent());
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException('The content is not valid json.', null, $e);
+        }
+
+        if ($errors = $schemaValidator->validate($data, \Comrade\Shared\Message\JobResult::SCHEMA)) {
+            return new JsonResponse($errors, 400);
+        }
+
+        $producer->sendCommand(Commands::JOB_RESULT, $request->getContent());
+
+        return new Response('', 204);
     }
 
     /**

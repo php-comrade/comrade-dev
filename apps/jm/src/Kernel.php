@@ -2,34 +2,12 @@
 
 namespace App;
 
-use App\Async\AddTrigger;
-use App\Async\CreateJob;
-use App\Async\GetJob;
-use App\Async\GetJobChart;
-use App\Async\GetSubJobs;
-use App\Async\GetTimeline;
-use App\Async\RunSubJobsResult;
-use App\Async\RunJob;
-use App\Async\JobResult;
-use App\Async\ScheduleJob;
 use App\Infra\DependencyInjection\RegisterPvmBehaviorPass;
 use App\Infra\Yadm\ObjectBuilderHook;
-use App\Model\CronTrigger;
-use App\Model\ExclusivePolicy;
-use App\Model\GracePeriodPolicy;
-use App\Model\Job;
-use App\Model\JobResult as JobResultModel;
-use App\Model\JobResultMetrics;
-use App\Model\JobTemplate;
-use App\Model\NowTrigger;
-use App\Model\QueueRunner;
+use App\Model\JobResult;
 use App\Model\Process;
-use App\Model\RetryFailedPolicy;
-use App\Model\RunSubJobsPolicy;
-use App\Model\SimpleTrigger;
-use App\Model\SubJob;
-use App\Model\SubJobTemplate;
-use App\Model\Throwable;
+use Comrade\Shared\ComradeClassMap;
+use Formapro\Pvm\PvmClassMap;
 use function Makasim\Values\register_cast_hooks;
 use function Makasim\Values\register_hook;
 use function Makasim\Values\register_object_hooks;
@@ -118,36 +96,14 @@ final class Kernel extends BaseKernel
             }
         });
 
-        (new ObjectBuilderHook([
-            Job::SCHEMA => Job::class,
-            JobTemplate::SCHEMA => JobTemplate::class,
-            JobResult::SCHEMA => JobResult::class,
-            JobResultMetrics::SCHEMA => JobResultMetrics::class,
-            SubJobTemplate::SCHEMA => SubJobTemplate::class,
-            SubJob::SCHEMA => SubJob::class,
-            RunSubJobsResult::SCHEMA => RunSubJobsResult::class,
-
-            JobResultModel::SCHEMA => JobResultModel::class,
-            CreateJob::SCHEMA => CreateJob::class,
-            RunJob::SCHEMA => RunJob::class,
-            AddTrigger::SCHEMA => AddTrigger::class,
-            GetTimeline::SCHEMA => GetTimeline::class,
-            ScheduleJob::SCHEMA => ScheduleJob::class,
-            GetJob::SCHEMA => GetJob::class,
-            GetSubJobs::SCHEMA => GetSubJobs::class,
-            Throwable::SCHEMA => Throwable::class,
-            GetJobChart::SCHEMA => GetJobChart::class,
-
-            GracePeriodPolicy::SCHEMA => GracePeriodPolicy::class,
-            RetryFailedPolicy::SCHEMA => RetryFailedPolicy::class,
-            RunSubJobsPolicy::SCHEMA => RunSubJobsPolicy::class,
-            ExclusivePolicy::SCHEMA => ExclusivePolicy::class,
-
-            QueueRunner::SCHEMA => QueueRunner::class,
-
-            CronTrigger::SCHEMA => CronTrigger::class,
-            SimpleTrigger::SCHEMA => SimpleTrigger::class,
-            NowTrigger::SCHEMA => NowTrigger::class,
-        ]))->register();
+        (new ObjectBuilderHook(array_replace(
+            (new ComradeClassMap())->get(),
+            (new PvmClassMap())->get(),
+            [
+                // comrade service classes here
+                JobResult::SCHEMA => JobResult::class,
+                Process::SCHEMA => Process::class,
+            ]
+        )))->register();
     }
 }

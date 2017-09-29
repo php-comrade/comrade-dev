@@ -1,36 +1,10 @@
 <?php
 namespace App\Model;
 
-use App\Infra\Yadm\CreateTrait;
 use App\JobStatus;
-use Makasim\Values\CastTrait;
-use function Makasim\Values\get_object;
-use function Makasim\Values\get_value;
-use function Makasim\Values\set_object;
-use function Makasim\Values\set_value;
-use Makasim\Values\ValuesTrait;
 
-class JobResult
+class JobResult extends \Comrade\Shared\Model\JobResult
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/JobResult.json';
-
-    use CreateTrait;
-    use CastTrait;
-    use ValuesTrait {
-        setValue as public;
-        getValue as public;
-    }
-
-    public function getStatus():int
-    {
-        return get_value($this, 'status');
-    }
-
-    public function setStatus(int $status) : void
-    {
-        set_value($this, 'status', $status);
-    }
-
     public function isNew():bool
     {
         return JobStatus::isNew($this);
@@ -74,56 +48,5 @@ class JobResult
     public function isTerminated():bool
     {
         return JobStatus::isTerminated($this);
-    }
-
-    /**
-     * @param \DateTime $date
-     */
-    public function setCreatedAt(\DateTime $date):void
-    {
-        set_value($this, 'createdAt', $date);
-    }
-
-    /**
-     * @return \DateTime|null
-     */
-    public function getCreatedAt(): ?\DateTime
-    {
-        return get_value($this, 'createdAt', null, \DateTime::class);
-    }
-
-    public function setError(Throwable $error)
-    {
-        set_object($this, 'error', $error);
-    }
-
-    public function getError(): ?Throwable
-    {
-        return get_object($this, 'error');
-    }
-
-    public function setMetrics(JobResultMetrics $metrics): void
-    {
-        set_object($this, 'metrics', $metrics);
-    }
-
-    public function getMetrics(): ?JobResultMetrics
-    {
-        return get_object($this, 'metrics');
-    }
-
-    /**
-     * @param int $status
-     * @param \DateTime|null $dateTime
-     *
-     * @return object|static
-     */
-    public static function createFor(int $status, \DateTime $dateTime = null)
-    {
-        $result = static::create();
-        $result->setStatus($status);
-        $result->setCreatedAt($dateTime ?: new \DateTime('now'));
-
-        return $result;
     }
 }

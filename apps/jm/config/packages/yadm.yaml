@@ -2,20 +2,20 @@ yadm:
     mongo_uri: '%env(MONGO_DSN)%'
     models:
         job_template:
-            class: 'App\Model\JobTemplate'
+            class: 'Comrade\Shared\Model\JobTemplate'
             storage_class: 'App\Storage\JobTemplateStorage'
             collection: 'job_template'
             database: '%mongo_database%'
 
         job:
-            class: 'App\Model\Job'
+            class: 'Comrade\Shared\Model\Job'
             storage_class: 'App\Storage\JobStorage'
             collection: 'job'
             database: '%mongo_database%'
             pessimistic_lock: true
 
         job_metrics:
-            class: 'App\Model\JobMetrics'
+            class: 'Comrade\Shared\Model\JobMetrics'
             storage_class: 'App\Storage\JobMetricsStorage'
             collection: 'metrics'
             database: '%mongo_database%'

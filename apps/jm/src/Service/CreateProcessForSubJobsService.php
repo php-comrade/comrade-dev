@@ -2,12 +2,15 @@
 namespace App\Service;
 
 use App\Infra\Uuid;
-use App\Model\Job;
 use App\Model\Process;
+use App\Pvm\Behavior\HttpRunnerBehavior;
 use App\Pvm\Behavior\IdleBehavior;
 use App\Pvm\Behavior\NotifyParentProcessBehavior;
 use App\Pvm\Behavior\QueueRunnerBehavior;
 use App\Pvm\Behavior\SimpleSynchronizeBehavior;
+use Comrade\Shared\Model\HttpRunner;
+use Comrade\Shared\Model\Job;
+use Comrade\Shared\Model\QueueRunner;
 use Formapro\Pvm\Token;
 
 class CreateProcessForSubJobsService
@@ -20,7 +23,7 @@ class CreateProcessForSubJobsService
      */
     public function createProcess(Token $parentProcessToken, \Traversable $jobs) : Process
     {
-        $process = new Process();
+        $process = Process::create();
         $process->setId(Uuid::generate());
 
         $startTask = $process->createNode();
@@ -32,23 +35,37 @@ class CreateProcessForSubJobsService
         $completedTasks = [];
 
         foreach ($jobs as $job) {
-            $runJobTask = $process->createNode();
-            $runJobTask->setLabel('Run job: '.$job->getName());
-            $runJobTask->setBehavior(QueueRunnerBehavior::class);
-            $process->addNodeJob($runJobTask, $job);
-            $transition = $process->createTransition($startTask, $runJobTask);
-            $transition->setAsync(true);
+            $runner = $job->getRunner();
+            if ($runner instanceof QueueRunner) {
+                $runnerTask = $process->createNode();
+                $runnerTask->setLabel('Queue runner');
+                $runnerTask->setBehavior(QueueRunnerBehavior::class);
+                $process->addNodeJob($runnerTask, $job);
+                $process->createTransition($startTask, $runnerTask)
+                    ->setAsync(true)
+                ;
+            } elseif ($runner instanceof  HttpRunner) {
+                $runnerTask = $process->createNode();
+                $runnerTask->setLabel('Http runner');
+                $runnerTask->setBehavior(HttpRunnerBehavior::class);
+                $process->addNodeJob($runnerTask, $job);
+                $process->createTransition($startTask, $runnerTask)
+                    ->setAsync(true)
+                ;
+            } else {
+                throw new \LogicException(sprintf('The runner "%s" is not supported.', get_class($runner)));
+            }
 
             $jobCompletedTask = $process->createNode();
             $jobCompletedTask->setLabel('Completed');
             $jobCompletedTask->setBehavior(IdleBehavior::class);
-            $process->createTransition($runJobTask, $jobCompletedTask, 'completed');
+            $process->createTransition($runnerTask, $jobCompletedTask, 'completed');
             $completedTasks[] = $jobCompletedTask;
 
             $jobFailedTask = $process->createNode();
             $jobFailedTask->setLabel('Failed');
             $jobFailedTask->setBehavior(IdleBehavior::class);
-            $process->createTransition($runJobTask, $jobFailedTask, 'failed');
+            $process->createTransition($runnerTask, $jobFailedTask, 'failed');
             $failedTasks[] = $jobFailedTask;
         }
 

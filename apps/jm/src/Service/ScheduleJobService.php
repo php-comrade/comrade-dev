@@ -1,12 +1,11 @@
 <?php
 namespace App\Service;
 
-use App\Async\Commands;
-use App\Model\CronTrigger;
-use App\Model\JobTemplate;
-use App\Model\NowTrigger;
-use App\Model\SimpleTrigger;
-use App\Model\Trigger;
+use App\Commands;
+use Comrade\Shared\Model\CronTrigger;
+use Comrade\Shared\Model\JobTemplate;
+use Comrade\Shared\Model\NowTrigger;
+use Comrade\Shared\Model\SimpleTrigger;
 use Enqueue\Client\ProducerInterface;
 use Quartz\Bridge\Enqueue\EnqueueResponseJob;
 use Quartz\Bridge\Scheduler\RemoteScheduler;

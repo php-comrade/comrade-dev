@@ -2,10 +2,10 @@
 
 namespace App\Api\Controller;
 
-use App\Async\GetJobChart;
 use App\Infra\JsonSchema\SchemaValidator;
 use App\JobStatus;
 use App\Storage\JobMetricsStorage;
+use Comrade\Shared\Message\GetJobChart;
 use Enqueue\Util\JSON;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 use Symfony\Component\HttpFoundation\JsonResponse;

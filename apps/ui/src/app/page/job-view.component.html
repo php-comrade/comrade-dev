@@ -87,7 +87,7 @@
         <list-triggers [triggers]="job.triggers" [showRemove]="false"></list-triggers>
 
         <h3 class="mt-4">Runner: </h3>
-        <list-runner *ngIf="job.runner" [runner]="job.runner"></list-runner>
+        <runner-list *ngIf="job.runner" [runner]="job.runner"></runner-list>
 
         <h3 class="mt-4">Polices: </h3>
         <show-exclusive-policy *ngIf="job.exclusivePolicy" [policy]="job.exclusivePolicy"></show-exclusive-policy>

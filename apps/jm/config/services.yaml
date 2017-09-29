@@ -69,8 +69,8 @@ services:
 
     App\Infra\JsonSchema\SchemaValidator: ~
 
-    App\Async\Processor\:
-        resource: '../src/Async/Processor/*'
+    App\Queue\:
+        resource: '../src/Queue/*'
         tags: ['enqueue.client.processor']
 
     App\Pvm\Behavior\:

@@ -1,13 +1,13 @@
 <?php
 namespace App\Pvm\Behavior;
 
-use App\Async\Commands;
-use App\Async\Topics;
+use App\Commands;
+use App\Topics;
 use App\JobStatus;
-use App\Model\Job;
 use App\Model\JobResult;
 use App\Model\Process;
 use App\Storage\JobStorage;
+use Comrade\Shared\Model\Job;
 use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Exception\InterruptExecutionException;

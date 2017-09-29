@@ -22,7 +22,8 @@
     },
     "runner": {
       "oneOf": [
-        { "$ref": "runner/QueueRunner.json" }
+        { "$ref": "runner/QueueRunner.json" },
+        { "$ref": "runner/HttpRunner.json" }
       ]
     }
   },

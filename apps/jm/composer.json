@@ -1,14 +1,16 @@
 {
     "type": "project",
-    "license": "proprietary",
+    "license": "MIT",
     "require": {
         "php": "^7.1",
         "cboden/ratchet": "0.4.x-dev",
+        "comrade/shared": "*@dev",
         "enqueue/amqp-ext": "^0.7.6",
         "enqueue/enqueue": "^0.7.11@dev",
         "enqueue/enqueue-bundle": "^0.7.11@dev",
         "formapro/pvm": "dev-master",
         "graphp/graphviz": "^0.2",
+        "guzzlehttp/guzzle": "^6.3",
         "justinrainbow/json-schema": "^5",
         "makasim/values": "@dev",
         "makasim/yadm": "@dev",
@@ -68,5 +70,11 @@
             "id": "01BH20HT59R1KN3CEXRM17KTRV",
             "allow-contrib": "true"
         }
-    }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../pkg/comrade-shared"
+        }
+    ]
 }

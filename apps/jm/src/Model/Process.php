@@ -1,9 +1,11 @@
 <?php
 namespace App\Model;
 
+use Comrade\Shared\Model\Job;
 use Formapro\Pvm\Node;
 use Formapro\Pvm\Process as PvmProcess;
 use Formapro\Pvm\Token;
+use Comrade\Shared\Model\JobTemplate;
 use function Makasim\Values\add_value;
 use function Makasim\Values\get_value;
 use function Makasim\Values\set_value;

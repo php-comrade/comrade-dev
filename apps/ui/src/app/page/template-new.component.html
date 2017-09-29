@@ -36,12 +36,18 @@
   </div>
 
   <h3>Runner: </h3>
-  <list-runner *ngIf="jobTemplate.runner" [runner]="jobTemplate.runner" (onRemoveRunner)="onRemoveRunner"></list-runner>
+  <runner-list *ngIf="jobTemplate.runner" [runner]="jobTemplate.runner" (onRemoveRunner)="onRemoveRunner()"></runner-list>
 
   <a class="nav-link" *ngIf="!addQueueRunner && !jobTemplate.runner" (click)="triggerQueueRunner()" href="javascript:void(0)">Add queue runner</a>
   <div *ngIf="addQueueRunner">
-    <new-queue-runner (onRunnerAdded)="onRunnerAdded($event)"></new-queue-runner>
+    <runner-new-queue (onRunnerAdded)="onRunnerAdded($event)"></runner-new-queue>
     <a (click)="triggerQueueRunner()" href="javascript:void(0)">Cancel</a>
+  </div>
+
+  <a class="nav-link" *ngIf="!addHttpRunner && !jobTemplate.runner" (click)="triggerHttpRunner()" href="javascript:void(0)">Add http runner</a>
+  <div *ngIf="addHttpRunner">
+    <runner-new-http (onRunnerAdded)="onRunnerAdded($event)"></runner-new-http>
+    <a (click)="triggerHttpRunner()" href="javascript:void(0)">Cancel</a>
   </div>
 
   <h3>Polices: </h3>

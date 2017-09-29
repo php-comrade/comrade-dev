@@ -1,0 +1,23 @@
+{
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": "^7.1",
+        "comrade/shared": "*@dev",
+        "enqueue/amqp-ext": "^0.7",
+        "symfony/process": "^3.3",
+        "symfony/console": "^3.3"
+
+    },
+    "autoload": {
+        "psr-4": {
+            "Comrade\\Demo\\": ""
+        }
+    },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../pkg/comrade-shared"
+        }
+    ]
+}
