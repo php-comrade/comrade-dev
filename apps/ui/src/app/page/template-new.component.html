@@ -36,7 +36,7 @@
   </div>
 
   <h3>Runner: </h3>
-  <runner-list *ngIf="jobTemplate.runner" [runner]="jobTemplate.runner" (onRemoveRunner)="onRemoveRunner"></runner-list>
+  <runner-list *ngIf="jobTemplate.runner" [runner]="jobTemplate.runner" (onRemoveRunner)="onRemoveRunner()"></runner-list>
 
   <a class="nav-link" *ngIf="!addQueueRunner && !jobTemplate.runner" (click)="triggerQueueRunner()" href="javascript:void(0)">Add queue runner</a>
   <div *ngIf="addQueueRunner">

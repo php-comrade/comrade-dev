@@ -158,7 +158,4 @@ export class TemplateNewComponent implements OnInit {
   onRemoveRunner() {
     this.jobTemplate.runner = null;
   }
-
-  // TODO: Remove this when we're done
-  get diagnostic() { return JSON.stringify(this.jobTemplate); }
 }
