@@ -98,7 +98,7 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $template->addTrigger($this->createTrigger());
 
         $policy = GracePeriodPolicy::create();
-        $policy->setPeriod(20);
+        $policy->setPeriod(60);
         $template->setGracePeriodPolicy($policy);
 
         $policy = RetryFailedPolicy::create();

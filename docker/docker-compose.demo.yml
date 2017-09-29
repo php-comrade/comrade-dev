@@ -48,13 +48,27 @@ services:
       - "80:80"
 
   jmd:
-    image: 'formapro/comrade:latest'
-    entrypoint: "php bin/demo_daemon.php"
+    image: 'formapro/comrade-demo:latest'
     depends_on:
       - 'rabbitmq'
+      - 'jm'
     environment:
       - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume
       - COMRADE_DEMO_NUMBER=2
+
+  seeds:
+    image: 'formapro/comrade:latest'
+    entrypoint: 'php bin/console comrade:load-demo-fixtures --drop --trigger="cron"'
+    depends_on:
+      - 'rabbitmq'
+      - 'mongo'
+    environment:
+      - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume
+      - MONGO_DSN=mongodb://mongo:27017
+    deploy:
+      mode: global
+      restart_policy:
+        condition: none
 
   rabbitmq:
     image: 'enqueue/rabbitmq:latest'
@@ -69,16 +83,3 @@ services:
     image: 'mongo:3'
     deploy:
       mode: global
-
-  seeds:
-    image: 'formapro/comrade-demo-seeds:latest'
-    depends_on:
-      - 'mongo'
-    environment:
-      - MONGO_HOST=mongo
-      - MONGO_PORT=27017
-      - MONGO_DB=job_manager
-    deploy:
-      mode: global
-      restart_policy:
-        condition: none

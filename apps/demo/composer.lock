@@ -4,16 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "254918db3dea39dd8dea70a98d1dd272",
+    "content-hash": "aca956a39c40702d8e601ba4a72e4b5f",
     "packages": [
         {
             "name": "comrade/client",
             "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-comrade/php-client.git",
+                "reference": "8968072e72e347e5622402a53ff84dca29fe566c"
+            },
             "dist": {
-                "type": "path",
-                "url": "../../pkg/php-client",
-                "reference": "c4a84d5ae976c20e88757ae1f087864c975bba46",
-                "shasum": null
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-comrade/php-client/zipball/8968072e72e347e5622402a53ff84dca29fe566c",
+                "reference": "8968072e72e347e5622402a53ff84dca29fe566c",
+                "shasum": ""
             },
             "require": {
                 "comrade/shared": "*@dev",
@@ -32,23 +37,30 @@
                     "Comrade\\Client\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Comrade PHP client",
             "keywords": [
-                "client",
-                "job manager"
-            ]
+                "Job Manager",
+                "client"
+            ],
+            "time": "2017-09-29T12:14:11+00:00"
         },
         {
             "name": "comrade/shared",
             "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-comrade/php-shared.git",
+                "reference": "438a8c2157f70fbcc6613e32585faf2b50871136"
+            },
             "dist": {
-                "type": "path",
-                "url": "../../pkg/php-shared",
-                "reference": "153196345ef2a56b777e74950db5446524f9bcb4",
-                "shasum": null
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-comrade/php-shared/zipball/438a8c2157f70fbcc6613e32585faf2b50871136",
+                "reference": "438a8c2157f70fbcc6613e32585faf2b50871136",
+                "shasum": ""
             },
             "require": {
                 "makasim/values": "@dev",
@@ -65,16 +77,18 @@
                     "Comrade\\Shared\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Comrade Models and Messages",
             "keywords": [
+                "Job Manager",
                 "comrade",
-                "job manager",
                 "message",
                 "model"
-            ]
+            ],
+            "time": "2017-09-29T12:14:11+00:00"
         },
         {
             "name": "enqueue/amqp-ext",
