@@ -1,18 +1,19 @@
 <?php
 namespace App\Command;
 
-use App\Async\Commands;
-use App\Async\CreateJob;
+use App\Commands;
 use App\Infra\Uuid;
 use App\JobStatus;
-use App\Model\ExclusivePolicy;
-use App\Model\JobMetrics;
-use App\Model\JobTemplate;
-use App\Model\QueueRunner;
-use App\Model\SimpleTrigger;
+use App\Model\Process;
 use App\Service\BuildMongoIndexesService;
 use App\Storage\JobMetricsStorage;
 use App\Ws\Ratchet\AmqpPusher;
+use Comrade\Shared\Message\CreateJob;
+use Comrade\Shared\Model\ExclusivePolicy;
+use Comrade\Shared\Model\JobMetrics;
+use Comrade\Shared\Model\JobTemplate;
+use Comrade\Shared\Model\QueueRunner;
+use Comrade\Shared\Model\SimpleTrigger;
 use Enqueue\Client\ProducerInterface;
 use function Makasim\Values\get_values;
 use Makasim\Yadm\Registry;
@@ -38,6 +39,10 @@ class FooCommand extends Command implements ContainerAwareInterface
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->createDemoJobMetrics();
+
+        $process = Process::create();
+
+        var_dump(get_values($process));
 
         return;
 

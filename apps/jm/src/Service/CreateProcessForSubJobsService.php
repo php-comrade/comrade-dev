@@ -2,15 +2,15 @@
 namespace App\Service;
 
 use App\Infra\Uuid;
-use App\Model\HttpRunner;
-use App\Model\Job;
 use App\Model\Process;
-use App\Model\QueueRunner;
 use App\Pvm\Behavior\HttpRunnerBehavior;
 use App\Pvm\Behavior\IdleBehavior;
 use App\Pvm\Behavior\NotifyParentProcessBehavior;
 use App\Pvm\Behavior\QueueRunnerBehavior;
 use App\Pvm\Behavior\SimpleSynchronizeBehavior;
+use Comrade\Shared\Model\HttpRunner;
+use Comrade\Shared\Model\Job;
+use Comrade\Shared\Model\QueueRunner;
 use Formapro\Pvm\Token;
 
 class CreateProcessForSubJobsService
@@ -23,7 +23,7 @@ class CreateProcessForSubJobsService
      */
     public function createProcess(Token $parentProcessToken, \Traversable $jobs) : Process
     {
-        $process = new Process();
+        $process = Process::create();
         $process->setId(Uuid::generate());
 
         $startTask = $process->createNode();

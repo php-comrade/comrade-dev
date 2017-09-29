@@ -3,8 +3,8 @@
 docker-compose up -d --remove-orphans
 trap "docker-compose stop jmw jms jmd ui; killall fswatch" SIGTERM  SIGINT
 
-fswatch --latency=0.5 -o -L apps/jm | xargs -n1 -I{} docker-compose kill -s USR1 jmw &
-fswatch --latency=0.5 -o -L apps/jm | xargs -n1 -I{} docker-compose kill -s USR1 jms &
-fswatch --latency=0.5 -o -L apps/jm | xargs -n1 -I{} docker-compose kill -s USR1 jmd &
+fswatch --latency=0.5 -o -L apps/jm pkg | xargs -n1 -I{} docker-compose kill -s USR1 jmw &
+fswatch --latency=0.5 -o -L apps/jm pkg | xargs -n1 -I{} docker-compose kill -s USR1 jms &
+fswatch --latency=0.5 -o -L apps/demo pkg  | xargs -n1 -I{} docker-compose kill -s USR1 jmd &
 
 docker-compose logs --tail=10 -f jm jms jmw jmd ui

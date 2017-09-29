@@ -1,7 +1,7 @@
 <?php
 namespace App\Storage;
 
-use App\Model\JobMetrics;
+use Comrade\Shared\Model\JobMetrics;
 use Makasim\Yadm\Storage;
 use MongoDB\BSON\Javascript;
 use MongoDB\Driver\Command;

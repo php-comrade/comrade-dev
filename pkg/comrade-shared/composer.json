@@ -1,0 +1,23 @@
+{
+    "name": "comrade/shared",
+    "type": "library",
+    "description": "Comrade PHP client",
+    "keywords": ["job manager", "client"],
+    "license": "MIT",
+    "require": {
+        "php": ">=7.1",
+
+        "enqueue/enqueue": "^0.7",
+        "guzzlehttp/guzzle": "^6.3",
+        "makasim/values": "@dev"
+    },
+    "autoload": {
+        "psr-4": { "Comrade\\Shared\\": "" }
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        }
+    }
+}

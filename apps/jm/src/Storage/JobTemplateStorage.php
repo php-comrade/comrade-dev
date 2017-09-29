@@ -1,7 +1,7 @@
 <?php
 namespace App\Storage;
 
-use App\Model\JobTemplate;
+use Comrade\Shared\Model\JobTemplate;
 use Makasim\Yadm\Storage;
 
 /**

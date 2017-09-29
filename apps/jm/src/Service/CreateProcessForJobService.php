@@ -1,10 +1,7 @@
 <?php
 namespace App\Service;
 
-use App\Model\HttpRunner;
-use App\Model\JobTemplate;
 use App\Model\Process;
-use App\Model\QueueRunner;
 use App\Pvm\Behavior\ExclusivePolicyBehavior;
 use App\Pvm\Behavior\GracePeriodPolicyBehavior;
 use App\Pvm\Behavior\HttpRunnerBehavior;
@@ -12,6 +9,9 @@ use App\Pvm\Behavior\IdleBehavior;
 use App\Pvm\Behavior\RetryFailedBehavior;
 use App\Pvm\Behavior\QueueRunnerBehavior;
 use App\Pvm\Behavior\RunSubJobsProcessBehavior;
+use Comrade\Shared\Model\HttpRunner;
+use Comrade\Shared\Model\JobTemplate;
+use Comrade\Shared\Model\QueueRunner;
 
 class CreateProcessForJobService
 {
@@ -22,7 +22,7 @@ class CreateProcessForJobService
      */
     public function createProcess(JobTemplate $jobTemplate) : Process
     {
-        $process = new Process();
+        $process = Process::create();
         $process->setId($jobTemplate->getProcessTemplateId());
 
         $startTask = $process->createNode();

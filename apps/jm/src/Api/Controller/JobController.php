@@ -1,16 +1,16 @@
 <?php
 namespace App\Api\Controller;
 
-use App\Async\Commands;
-use App\Async\GetJob;
-use App\Async\GetSubJobs;
-use App\Async\GetTimeline;
+use App\Commands;
 use App\Infra\JsonSchema\SchemaValidator;
 use App\JobStatus;
-use App\Model\Job;
 use App\Model\JobResult;
 use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
+use Comrade\Shared\Message\GetJob;
+use Comrade\Shared\Message\GetSubJobs;
+use Comrade\Shared\Message\GetTimeline;
+use Comrade\Shared\Model\Job;
 use Enqueue\Client\ProducerInterface;
 use Enqueue\Util\JSON;
 use function Makasim\Values\get_values;
@@ -64,7 +64,7 @@ class JobController
     }
 
     /**
-     * @Extra\Route("/job-result")
+     * @Extra\Route("/add-job-result")
      * @Extra\Method("POST")
      *
      * @param Request $request
@@ -73,7 +73,7 @@ class JobController
      *
      * @return Response
      */
-    public function jobResultAction(Request $request, ProducerInterface $producer, SchemaValidator $schemaValidator)
+    public function addJobResultAction(Request $request, ProducerInterface $producer, SchemaValidator $schemaValidator)
     {
         try {
             $data = JSON::decode($request->getContent());
@@ -81,7 +81,7 @@ class JobController
             throw new BadRequestHttpException('The content is not valid json.', null, $e);
         }
 
-        if ($errors = $schemaValidator->validate($data, \App\Async\JobResult::SCHEMA)) {
+        if ($errors = $schemaValidator->validate($data, \Comrade\Shared\Message\JobResult::SCHEMA)) {
             return new JsonResponse($errors, 400);
         }
 

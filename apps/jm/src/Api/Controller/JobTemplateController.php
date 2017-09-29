@@ -1,13 +1,13 @@
 <?php
 namespace App\Api\Controller;
 
-use App\Async\AddTrigger;
-use App\Async\Commands;
-use App\Async\CreateJob;
-use App\Async\ScheduleJob;
+use App\Commands;
 use App\Infra\JsonSchema\SchemaValidator;
 use App\Service\ScheduleJobService;
 use App\Storage\JobTemplateStorage;
+use Comrade\Shared\Message\AddTrigger;
+use Comrade\Shared\Message\CreateJob;
+use Comrade\Shared\Message\ScheduleJob;
 use Enqueue\Client\ProducerInterface;
 use Enqueue\Util\JSON;
 use function Makasim\Values\get_values;

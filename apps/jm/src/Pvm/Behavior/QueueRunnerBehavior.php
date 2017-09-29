@@ -1,13 +1,13 @@
 <?php
 namespace App\Pvm\Behavior;
 
-use App\Async\RunJob;
-use App\Async\Topics;
+use App\Topics;
 use App\JobStatus;
 use App\Model\JobResult;
 use App\Model\Process;
-use App\Model\QueueRunner;
 use App\Storage\JobStorage;
+use Comrade\Shared\Message\RunJob;
+use Comrade\Shared\Model\QueueRunner;
 use Enqueue\Client\ProducerInterface;
 use Interop\Queue\PsrContext;
 use Enqueue\Util\JSON;
@@ -72,7 +72,7 @@ class QueueRunnerBehavior implements Behavior, SignalBehavior
         }
 
         $queue = $this->psrContext->createQueue($runner->getQueue());
-        $message = $this->psrContext->createMessage(JSON::encode(RunJob::createFor($job, $token)));
+        $message = $this->psrContext->createMessage(JSON::encode(RunJob::createFor($job, $token->getId())));
 
         $result = JobResult::create();
         $result->setStatus(JobStatus::STATUS_RUNNING);

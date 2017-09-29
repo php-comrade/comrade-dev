@@ -1,8 +1,8 @@
 <?php
 namespace App\Infra\Error;
 
-use App\Async\Processor\StoreInternalErrorProcessor;
-use App\Async\Topics;
+use App\Queue\StoreInternalErrorProcessor;
+use App\Topics;
 use App\Infra\Uuid;
 use Enqueue\Client\Config;
 use Enqueue\Client\ProducerInterface;

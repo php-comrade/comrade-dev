@@ -1,15 +1,15 @@
 <?php
 namespace App\Service;
 
-use App\Async\Topics;
+use App\Topics;
 use App\Infra\Uuid;
 use App\JobStatus;
-use App\Model\Job;
 use App\Model\JobResult;
 use App\Model\Process;
 use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessExecutionStorage;
+use Comrade\Shared\Model\Job;
 use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\ProcessEngine;
 use function Makasim\Values\build_object;

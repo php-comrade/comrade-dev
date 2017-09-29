@@ -1,14 +1,14 @@
 <?php
 namespace App\Service;
 
-use App\Async\Commands;
-use App\Async\ScheduleJob;
-use App\Async\Topics;
+use App\Commands;
+use App\Topics;
 use App\Model\ExclusiveJob;
-use App\Model\JobTemplate;
 use App\Storage\ExclusiveJobStorage;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessStorage;
+use Comrade\Shared\Message\ScheduleJob;
+use Comrade\Shared\Model\JobTemplate;
 use Enqueue\Client\ProducerInterface;
 use function Makasim\Values\get_values;
 
