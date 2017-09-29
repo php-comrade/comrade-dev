@@ -70,11 +70,5 @@
             "id": "01BH20HT59R1KN3CEXRM17KTRV",
             "allow-contrib": "true"
         }
-    },
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../../pkg/php-shared"
-        }
-    ]
+    }
 }

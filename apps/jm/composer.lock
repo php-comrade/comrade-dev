@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "29c19b4ac6a2ecef3feeb2a27a7729d2",
+    "content-hash": "018eeff79f22c99925d443ccd88cb312",
     "packages": [
         {
             "name": "cboden/ratchet",
@@ -110,11 +110,16 @@
         {
             "name": "comrade/shared",
             "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-comrade/php-shared.git",
+                "reference": "438a8c2157f70fbcc6613e32585faf2b50871136"
+            },
             "dist": {
-                "type": "path",
-                "url": "../../pkg/php-shared",
-                "reference": "153196345ef2a56b777e74950db5446524f9bcb4",
-                "shasum": null
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-comrade/php-shared/zipball/438a8c2157f70fbcc6613e32585faf2b50871136",
+                "reference": "438a8c2157f70fbcc6613e32585faf2b50871136",
+                "shasum": ""
             },
             "require": {
                 "makasim/values": "@dev",
@@ -131,16 +136,18 @@
                     "Comrade\\Shared\\": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "description": "Comrade Models and Messages",
             "keywords": [
+                "Job Manager",
                 "comrade",
-                "job manager",
                 "message",
                 "model"
-            ]
+            ],
+            "time": "2017-09-29T12:14:11+00:00"
         },
         {
             "name": "doctrine/annotations",
