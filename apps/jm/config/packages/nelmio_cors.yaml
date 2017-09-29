@@ -5,3 +5,8 @@ nelmio_cors:
             allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
             allow_headers: ['content-type']
             max_age: 3600
+        '^/process':
+            allow_origin: ['*']
+            allow_methods: ['POST', 'PUT', 'GET', 'DELETE']
+            allow_headers: ['content-type']
+            max_age: 3600

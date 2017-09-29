@@ -37,4 +37,31 @@ class ProcessController
             ['Content-Type' => 'image/png']
         );
     }
+
+    /**
+     * @Extra\Route("/process/{id}/graph.gv")
+     * @Extra\Method("GET")
+     *
+     * @param string $id
+     * @param ProcessStorage $processStorage
+     * @param ProcessExecutionStorage $processExecutionStorage
+     *
+     * @return Response
+     */
+    public function getGraphDotAction(string $id, ProcessStorage $processStorage, ProcessExecutionStorage $processExecutionStorage)
+    {
+        if (false == $process = $processStorage->findOne(['id' => $id])) {
+            if (false == $process = $processExecutionStorage->findOne(['id' => $id])) {
+                throw new NotFoundHttpException(sprintf('Process %s was not found', $id));
+            }
+        }
+
+        $graph = (new GraphVizVisual())->createGraph($process);
+
+        return new Response(
+            (new GraphViz())->createScript($graph),
+            200,
+            ['Content-Type' => 'text/vnd.graphviz']
+        );
+    }
 }
