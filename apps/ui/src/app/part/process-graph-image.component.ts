@@ -1,18 +1,26 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {HttpService} from "../shared/http.service";
+import {Response} from "@angular/http";
+import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
 @Component({
   selector: 'process-graph-image',
-  template: `<img [src]="getApiBaseUrl()+'/process/'+processId+'/graph.png?updatedAt='+updatedAt" />`,
+  template: `<div *ngIf="digraph" [innerHTML]="digraph"></div>`,
 })
-export class ProcessGraphImageComponent {
+export class ProcessGraphImageComponent implements OnInit {
     @Input() processId: string;
     @Input() updatedAt: number;
 
-    constructor(private httpService: HttpService) {
-    }
+    digraph: SafeHtml;
 
-    getApiBaseUrl(): string {
-        return this.httpService.getApiBaseUrl();
+    constructor(private httpService: HttpService, private sanitizer: DomSanitizer) {}
+
+    ngOnInit(): void {
+      this.httpService.get('/process/' + this.processId + '/graph.gv?updatedAt=' + this.updatedAt)
+        .subscribe((res: Response) => {
+          let Viz = require('viz.js');
+
+          this.digraph = this.sanitizer.bypassSecurityTrustHtml(Viz(res.text()));
+        });
     }
 }
