@@ -58,6 +58,8 @@ import {ChartsModule} from "ng2-charts";
 import {ToastyService} from "./shared/toasty.service";
 import {JobViewExecutionComponent} from "./part/job-view-execution.component";
 import {CurrentSubJobsService} from "./shared/current-sub-jobs.service";
+import {PolicyNewSubJobComponent} from "./part/policy-new-sub-job.component";
+import {PolicyShowSubJobComponent} from "./part/policy-show-sub-job.component";
 
 
 @NgModule({
@@ -98,6 +100,8 @@ import {CurrentSubJobsService} from "./shared/current-sub-jobs.service";
     ApiBaseUrlComponent,
     LandingComponent,
     TemplateViewChartComponent,
+    PolicyNewSubJobComponent,
+    PolicyShowSubJobComponent,
   ],
   imports: [
     BrowserModule,

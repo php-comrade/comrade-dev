@@ -5,6 +5,7 @@ import {ExclusivePolicy} from "./exclusive-policy";
 import {GracePeriodPolicy} from "./grace-period-policy";
 import {RetryFailedPolicy} from "./retry-failed-policy";
 import {RunSubJobsPolicy} from "./run-sub-jobs-policy";
+import {SubJobPolicy} from "./sub-job-policy";
 
 export class JobTemplate {
     schema: string = "http://jm.forma-pro.com/schemas/JobTemplate.json";
@@ -19,6 +20,7 @@ export class JobTemplate {
     gracePeriodPolicy: GracePeriodPolicy;
     retryFailedPolicy: RetryFailedPolicy;
     runSubJobsPolicy: RunSubJobsPolicy;
+    subJobPolicy: SubJobPolicy;
 
     addTrigger(trigger: Trigger)
     {

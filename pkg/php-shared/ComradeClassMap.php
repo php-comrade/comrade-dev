@@ -24,6 +24,7 @@ use Comrade\Shared\Model\RetryFailedPolicy;
 use Comrade\Shared\Model\RunSubJobsPolicy;
 use Comrade\Shared\Model\SimpleTrigger;
 use Comrade\Shared\Model\SubJob;
+use Comrade\Shared\Model\SubJobPolicy;
 use Comrade\Shared\Model\SubJobTemplate;
 use Comrade\Shared\Message\JobResult as JobResultMessage;
 use Comrade\Shared\Model\Throwable;
@@ -53,6 +54,7 @@ class ComradeClassMap
             RetryFailedPolicy::SCHEMA => RetryFailedPolicy::class,
             RunSubJobsPolicy::SCHEMA => RunSubJobsPolicy::class,
             ExclusivePolicy::SCHEMA => ExclusivePolicy::class,
+            SubJobPolicy::SCHEMA => SubJobPolicy::class,
             QueueRunner::SCHEMA => QueueRunner::class,
             HttpRunner::SCHEMA => HttpRunner::class,
             CronTrigger::SCHEMA => CronTrigger::class,
