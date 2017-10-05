@@ -9,7 +9,7 @@ class SubJob extends Job
     /**
      * @var array
      */
-    private $values = [];
+    protected $values = [];
 
     /**
      * @param string $id

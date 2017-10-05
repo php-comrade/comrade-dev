@@ -2,7 +2,7 @@
 namespace App\Service;
 
 use App\Infra\Uuid;
-use App\Model\Process;
+use App\Model\PvmProcess;
 use App\Pvm\Behavior\HttpRunnerBehavior;
 use App\Pvm\Behavior\IdleBehavior;
 use App\Pvm\Behavior\NotifyParentProcessBehavior;
@@ -19,11 +19,11 @@ class CreateProcessForSubJobsService
      * @param Token $parentProcessToken
      * @param \Traversable|Job[] $jobs
      *
-     * @return Process
+     * @return PvmProcess
      */
-    public function createProcess(Token $parentProcessToken, \Traversable $jobs) : Process
+    public function createProcess(Token $parentProcessToken, \Traversable $jobs) : PvmProcess
     {
-        $process = Process::create();
+        $process = PvmProcess::create();
         $process->setId(Uuid::generate());
 
         $startTask = $process->createNode();
@@ -40,7 +40,6 @@ class CreateProcessForSubJobsService
                 $runnerTask = $process->createNode();
                 $runnerTask->setLabel('Queue runner');
                 $runnerTask->setBehavior(QueueRunnerBehavior::class);
-                $process->addNodeJob($runnerTask, $job);
                 $process->createTransition($startTask, $runnerTask)
                     ->setAsync(true)
                 ;
@@ -48,7 +47,6 @@ class CreateProcessForSubJobsService
                 $runnerTask = $process->createNode();
                 $runnerTask->setLabel('Http runner');
                 $runnerTask->setBehavior(HttpRunnerBehavior::class);
-                $process->addNodeJob($runnerTask, $job);
                 $process->createTransition($startTask, $runnerTask)
                     ->setAsync(true)
                 ;

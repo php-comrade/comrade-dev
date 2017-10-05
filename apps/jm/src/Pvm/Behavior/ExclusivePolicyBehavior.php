@@ -1,17 +1,20 @@
 <?php
 namespace App\Pvm\Behavior;
 
+use App\Model\Job;
+use App\Model\JobAction;
+use App\Model\PvmToken;
+use App\Service\ChangeJobStateService;
 use App\Topics;
-use App\JobStatus;
 use App\Model\JobResult;
-use App\Model\Process;
 use App\Storage\ExclusiveJobStorage;
 use App\Storage\JobStorage;
-use Comrade\Shared\Model\Job;
 use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Token;
+use Formapro\Pvm\Transition;
 use function Makasim\Values\get_values;
+use function Makasim\Values\set_value;
 use function Makasim\Yadm\get_object_id;
 
 class ExclusivePolicyBehavior implements Behavior
@@ -32,66 +35,63 @@ class ExclusivePolicyBehavior implements Behavior
     private $producer;
 
     /**
-     * @param JobStorage $jobStorage
-     * @param ExclusiveJobStorage $exclusiveJobStorage
+     * @var ChangeJobStateService
      */
-    public function __construct(JobStorage $jobStorage, ExclusiveJobStorage $exclusiveJobStorage, ProducerInterface $producer)
-    {
+    private $changeJobStateService;
+
+    public function __construct(
+        JobStorage $jobStorage,
+        ExclusiveJobStorage $exclusiveJobStorage,
+        ProducerInterface $producer,
+        ChangeJobStateService $changeJobStateService
+    ) {
         $this->jobStorage = $jobStorage;
         $this->exclusiveJobStorage = $exclusiveJobStorage;
         $this->producer = $producer;
+        $this->changeJobStateService = $changeJobStateService;
     }
 
     /**
+     * @param PvmToken $token
+     *
      * {@inheritdoc}
      */
     public function execute(Token $token)
     {
-        /** @var Process $process */
-        $process = $token->getProcess();
+        $job = $this->jobStorage->getOneById($token->getJobId());
 
-        $job = $this->jobStorage->getOneById($process->getTokenJobId($token));
+        return $this->exclusiveJobStorage->lockByName($job->getName(), function() use ($token, $job) {
+            $otherJobs = $this->jobStorage->count([
+                '_id' => ['$ne' => get_object_id($job)],
+                'name' => $job->getName(),
+                'exclusivePolicy' => ['$exists' => true],
+                'exclusive' => true,
+                'finishedAt' => ['$exists' => false]
+            ]);
 
-        return $this->exclusiveJobStorage->lockByName($job->getName(), function() use ($process, $token) {
-            return $this->jobStorage->lockByJobId($process->getTokenJobId($token), function(Job $job) {
-                $otherJobs = $this->jobStorage->count([
-                    '_id' => ['$ne' => get_object_id($job)],
-                    'name' => $job->getName(),
-                    'exclusivePolicy' => ['$exists' => true],
-                    'currentResult.status' => ['$bitsAnySet' => JobStatus::STATUS_RUNNING ]
-                ]);
+            if (0 === $otherJobs) {
+                set_value($job, 'exclusive', true);
+                $this->jobStorage->update($job);
 
-                if ($otherJobs == 0) {
-                    $result = JobResult::createFor(JobStatus::STATUS_RUN_EXCLUSIVE);
-                    $job->addResult($result);
-                    $job->setCurrentResult($result);
+                $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
 
-                    $this->jobStorage->update($job);
-                    $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
+                return $token->getTransition()->getName();
+            }
 
-                    return;
-                }
-
-                if ($job->getExclusivePolicy()->isMarkParentJobAsFailed()) {
-                    $result = JobResult::createFor(JobStatus::STATUS_FAILED);
-                    $job->addResult($result);
-                    $job->setCurrentResult($result);
-
-                    $this->jobStorage->update($job);
-                    $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
-
-                    return ['failed'];
-                }
-
-                $result = JobResult::createFor(JobStatus::STATUS_CANCELED);
+            /** @var Job $job */
+            $job = $this->changeJobStateService->changeInFlow($job->getId(), 'terminate_on_duplicate', function(Job $job, Transition $transition) {
+                $result = JobResult::createFor($transition->getTo()->getLabel());
                 $job->addResult($result);
                 $job->setCurrentResult($result);
 
                 $this->jobStorage->update($job);
-                $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
 
-                return ['canceled'];
+                return $job;
             });
+
+            $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
+
+            return 'finalize';
         });
     }
 }

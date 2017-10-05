@@ -18,7 +18,7 @@ import {TimelineService} from "./shared/timeline.service";
 import {TimelineComponent} from "./page/timeline.component";
 import {ListTriggersComponent} from "./part/list.triggers.component";
 import { NavbarComponent } from './part/navbar.component';
-  import {JobStatusComponent} from "./part/job-status.component";
+import {JobStatusComponent} from "./part/job-status.component";
 import {RunNowJobComponent} from "./part/run-now.job.component";
 import {RunnerNewQueueComponent} from "./part/runner-new-queue.component";
 import {RunnerNewHttpComponent} from "./part/runner-new-http.component";
@@ -37,7 +37,7 @@ import {TemplateNewComponent} from "./page/template-new.component";
 import {JobViewComponent} from "./page/job-view.component";
 import {TimeAgoComponent} from "./part/time-ago.component";
 import {TimeCalComponent} from "./part/time-cal.component";
-import {ProcessGraphImageComponent} from "./part/process-graph-image.component";
+import {JobFlowGraphComponent} from "./part/job-flow-graph.component";
 import {PrettyJsonModule} from 'angular2-prettyjson';
 import {JobListComponent} from "./part/job-list.component";
 import {JobListRowComponent} from "./part/job-list-row.component";
@@ -60,6 +60,7 @@ import {JobViewExecutionComponent} from "./part/job-view-execution.component";
 import {CurrentSubJobsService} from "./shared/current-sub-jobs.service";
 import {PolicyNewSubJobComponent} from "./part/policy-new-sub-job.component";
 import {PolicyShowSubJobComponent} from "./part/policy-show-sub-job.component";
+import {JobStateGraphComponent} from "./part/job-state-graph.component";
 
 
 @NgModule({
@@ -90,7 +91,8 @@ import {PolicyShowSubJobComponent} from "./part/policy-show-sub-job.component";
     ShowRunSubJobsPolicyComponent,
     TimeAgoComponent,
     TimeCalComponent,
-    ProcessGraphImageComponent,
+    JobFlowGraphComponent,
+    JobStateGraphComponent,
     JobViewComponent,
     JobViewExecutionComponent,
     JobListComponent,

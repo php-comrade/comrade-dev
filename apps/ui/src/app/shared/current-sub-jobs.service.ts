@@ -24,7 +24,7 @@ export class CurrentSubJobsService {
     constructor(private currentJobService: CurrentJobService, private jobService: JobService, private wamp: WampService) {
         this.currentSubJobs = new ReplaySubject(1);
 
-        wamp.topic('job_manager.update_job')
+        wamp.topic('comrade.job_updated')
             .map((event: EventMessage) => event.args[0])
             .filter((job: SubJob) => !!job.parentId)
             .withLatestFrom(this.currentJobService.getCurrentJob())

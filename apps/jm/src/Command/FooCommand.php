@@ -4,14 +4,14 @@ namespace App\Command;
 use App\Commands;
 use App\Infra\Uuid;
 use App\JobStatus;
-use App\Model\Process;
+use App\Model\PvmProcess;
 use App\Service\BuildMongoIndexesService;
 use App\Storage\JobMetricsStorage;
 use App\Ws\Ratchet\AmqpPusher;
 use Comrade\Shared\Message\CreateJob;
 use Comrade\Shared\Model\ExclusivePolicy;
 use Comrade\Shared\Model\JobMetrics;
-use Comrade\Shared\Model\JobTemplate;
+use App\Model\JobTemplate;
 use Comrade\Shared\Model\QueueRunner;
 use Comrade\Shared\Model\SimpleTrigger;
 use Enqueue\Client\ProducerInterface;
@@ -40,7 +40,7 @@ class FooCommand extends Command implements ContainerAwareInterface
     {
         $this->createDemoJobMetrics();
 
-        $process = Process::create();
+        $process = PvmProcess::create();
 
         var_dump(get_values($process));
 
@@ -86,7 +86,7 @@ class FooCommand extends Command implements ContainerAwareInterface
         $now = $since;
         while (true) {
             $m = new JobMetrics();
-            $m->setStatus(JobStatus::STATUS_COMPLETED);
+            $m->setStatus(JobStatus::COMPLETED);
             $m->setTemplateId('84da648a-4262-40bb-88d9-605cba1a2372');
             $m->setJobId(\Enqueue\Util\UUID::generate());
             $m->setStartTime(\DateTime::createFromFormat('U', $now));
@@ -108,7 +108,6 @@ class FooCommand extends Command implements ContainerAwareInterface
         $template = JobTemplate::create();
         $template->setName('demo_success_job');
         $template->setTemplateId(Uuid::generate());
-        $template->setProcessTemplateId(Uuid::generate());
         $template->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
 
         $runner = QueueRunner::create();
@@ -129,7 +128,6 @@ class FooCommand extends Command implements ContainerAwareInterface
         $jobTemplate = JobTemplate::create();
         $jobTemplate->setName('testJob');
         $jobTemplate->setTemplateId(Uuid::generate());
-        $jobTemplate->setProcessTemplateId(Uuid::generate());
         $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
 
         $runner = QueueRunner::create();

@@ -19,38 +19,16 @@ class JobTemplate
     /**
      * @var array
      */
-    private $values = [];
+    protected $values = [];
 
-    /**
-     * @return string
-     */
     public function getTemplateId(): string
     {
         return get_value($this,'templateId');
     }
 
-    /**
-     * @param string $id
-     */
     public function setTemplateId(string $id): void
     {
         set_value($this, 'templateId', $id);
-    }
-
-    /**
-     * @return string
-     */
-    public function getProcessTemplateId(): string
-    {
-        return get_value($this,'processTemplateId');
-    }
-
-    /**
-     * @param string $id
-     */
-    public function setProcessTemplateId(string $id): void
-    {
-        set_value($this, 'processTemplateId', $id);
     }
 
     /**
@@ -133,6 +111,16 @@ class JobTemplate
         set_object($this, 'runSubJobsPolicy', $runSubJobsPolicy);
     }
 
+    public function getSubJobPolicy(): ?SubJobPolicy
+    {
+        return get_object($this, 'subJobPolicy');
+    }
+
+    public function setSubJobPolicy(SubJobPolicy $runSubJobsPolicy = null): void
+    {
+        set_object($this, 'subJobPolicy', $runSubJobsPolicy);
+    }
+
     /**
      * @return ExclusivePolicy|object|null
      */
@@ -147,27 +135,6 @@ class JobTemplate
     public function setExclusivePolicy(ExclusivePolicy $exclusivePolicy = null): void
     {
         set_object($this, 'exclusivePolicy', $exclusivePolicy);
-    }
-
-    public function addTrigger(Trigger $trigger): void
-    {
-        add_object($this, 'triggers', $trigger);
-    }
-
-    /**
-     * @return \Traversable|Trigger[]
-     */
-    public function getTriggers(): \Traversable
-    {
-        return get_objects($this, 'triggers');
-    }
-
-    /**
-     * @return void
-     */
-    public function removeTriggers(): void
-    {
-        set_value($this, 'triggers', null);
     }
 
     public function setRunner(Runner $executor): void

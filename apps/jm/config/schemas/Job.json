@@ -6,7 +6,6 @@
     {
       "type": "object",
       "properties": {
-        "status": { "$ref": "JobStatus.json" },
         "id": { "$ref" : "uuid4.json" },
         "results": {
           "type": "array",

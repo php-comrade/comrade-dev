@@ -17,7 +17,7 @@ class GetJobChart implements \JsonSerializable
     /**
      * @var array
      */
-    private $values = [];
+    protected $values = [];
 
     public function setTemplateId(string $id) :void
     {

@@ -5,14 +5,18 @@ use App\Commands;
 use App\Infra\JsonSchema\SchemaValidator;
 use App\JobStatus;
 use App\Model\JobResult;
+use App\Service\JobStateMachine;
 use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
+use App\Storage\ProcessExecutionStorage;
 use Comrade\Shared\Message\GetJob;
 use Comrade\Shared\Message\GetSubJobs;
 use Comrade\Shared\Message\GetTimeline;
 use Comrade\Shared\Model\Job;
 use Enqueue\Client\ProducerInterface;
 use Enqueue\Util\JSON;
+use Formapro\Pvm\Visual\GraphVizVisual;
+use Graphp\GraphViz\GraphViz;
 use function Makasim\Values\get_values;
 use Quartz\Core\Trigger;
 use Quartz\Scheduler\Store\YadmStoreResource;
@@ -269,7 +273,7 @@ class JobController
             $job->setCreatedAt($trigger->getNextFireTime());
             $job->setDetails($jobTemplate->getDetails());
 
-            $jobStatus = JobResult::createFor(JobStatus::STATUS_NEW, $trigger->getNextFireTime());
+            $jobStatus = JobResult::createFor(JobStatus::NEW, $trigger->getNextFireTime());
             $job->setCurrentResult($jobStatus);
             $job->addResult($jobStatus);
 
@@ -282,5 +286,59 @@ class JobController
         $response->setEncodingOptions(JsonResponse::DEFAULT_ENCODING_OPTIONS | JSON_PRETTY_PRINT);
 
         return $response;
+    }
+
+    /**
+     * @Extra\Route("/job/{id}/flow-graph.gv")
+     * @Extra\Method("GET")
+     *
+     * @param string $id
+     * @param JobStorage $jobStorage
+     * @param ProcessExecutionStorage $processStorage
+     * @return Response
+     */
+    public function getFlowGraphDotAction(string $id, JobStorage $jobStorage, ProcessExecutionStorage $processStorage)
+    {
+        if (false == $job = $jobStorage->findOne(['id' => $id])) {
+            throw new NotFoundHttpException(sprintf('Job template %s was not found', $id));
+        }
+
+        $processId = $job->getProcessId();
+        if (false == $process = $processStorage->findOne(['id' => $processId])) {
+            throw new NotFoundHttpException(sprintf('Process %s was not found', $processId));
+        }
+
+        $graph = (new GraphVizVisual())->createGraph($process);
+
+        return new Response(
+            (new GraphViz())->createScript($graph),
+            200,
+            ['Content-Type' => 'text/vnd.graphviz']
+        );
+    }
+
+    /**
+     * @Extra\Route("/job/{id}/state-graph.gv")
+     * @Extra\Method("GET")
+     *
+     * @param string $id
+     * @param JobStorage $jobStorage
+     * @param ProcessExecutionStorage $processStorage
+     * @return Response
+     */
+    public function getStateGraphDotAction(string $id, JobStorage $jobStorage, ProcessExecutionStorage $processStorage)
+    {
+        if (false == $job = $jobStorage->findOne(['id' => $id])) {
+            throw new NotFoundHttpException(sprintf('Job template %s was not found', $id));
+        }
+
+        $sm = new JobStateMachine($job);
+        $graph = (new GraphVizVisual())->createGraph($sm->getProcess());
+
+        return new Response(
+            (new GraphViz())->createScript($graph),
+            200,
+            ['Content-Type' => 'text/vnd.graphviz']
+        );
     }
 }

@@ -113,7 +113,7 @@ export class JobViewExecutionComponent implements OnChanges {
       jobResult.isSubJob = false;
       results.push(jobResult);
 
-      if (this.showSubJobsStatuses && jobResult.status == 18 /** running sub jobs */ && this.subJobs) {
+      if (this.showSubJobsStatuses && jobResult.status == 'running_sub_jobs' && this.subJobs) {
         this.subJobs.forEach((job: SubJob) => {
           if (!job.currentResult) {
             return;

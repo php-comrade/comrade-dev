@@ -45,7 +45,7 @@ export class TimelineComponent implements OnInit {
     ngOnInit(): void {
       this.refreshGrid();
 
-      this.wamp.topic('job_manager.update_job')
+      this.wamp.topic('comrade.job_updated')
           .map((event: EventMessage) => event.args.pop())
           .filter((job: Job) => {
             if (this.jobTemplateId && job.templateId !== this.jobTemplateId) {

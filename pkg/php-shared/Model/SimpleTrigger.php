@@ -5,7 +5,7 @@ use Makasim\Values\CastTrait;
 use function Makasim\Values\get_value;
 use function Makasim\Values\set_value;
 
-class SimpleTrigger implements Trigger
+class SimpleTrigger extends Trigger
 {
     const SCHEMA = 'http://jm.forma-pro.com/schemas/trigger/SimpleTrigger.json';
 
@@ -25,11 +25,6 @@ class SimpleTrigger implements Trigger
     const MISFIRE_INSTRUCTION_SMART_POLICY = 'smart_policy';
 
     const MISFIRE_INSTRUCTION_IGNORE_MISFIRE_POLICY = 'ignore_misfire_policy';
-
-    /**
-     * @var array
-     */
-    private $values = [];
 
     public function setStartAt(\DateTime $startAt):void
     {

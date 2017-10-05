@@ -77,7 +77,7 @@ export class LandingComponent implements OnInit {
           .subscribe((metrics: GlobalMetrics) => this.globalMetrics = metrics)
       ;
 
-      this.wamp.topic('job_manager.update_job')
+      this.wamp.topic('comrade.job_updated')
           .map((event: EventMessage) => event.args[0])
           .switchMap(() => this.httpService.get('/api/metrics/global'))
           .map((res: Response) => res.json().metrics)

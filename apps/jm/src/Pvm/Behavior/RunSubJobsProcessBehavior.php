@@ -2,10 +2,10 @@
 namespace App\Pvm\Behavior;
 
 use App\Commands;
+use App\Model\PvmToken;
 use App\Topics;
 use App\JobStatus;
 use App\Model\JobResult;
-use App\Model\Process;
 use App\Service\CreateProcessForSubJobsService;
 use App\Storage\JobStorage;
 use App\Storage\ProcessStorage;
@@ -58,13 +58,13 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
     }
 
     /**
+     * @param PvmToken $token
+     *
      * {@inheritdoc}
      */
     public function execute(Token $token)
     {
-        /** @var Process $process */
-        $process = $token->getProcess();
-        $job = $this->jobStorage->getOneById($process->getTokenJobId($token));
+        $job = $this->jobStorage->getOneById($token->getJobId());
 
         if (false == $job->getCurrentResult()->isRunSubJobs()) {
             throw new \LogicException('The process comes to this task but its status is not "run_sub_jobs"');
@@ -74,7 +74,7 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
         $job->addResult($jobResult);
         $job->setCurrentResult($jobResult);
         $this->jobStorage->update($job);
-        $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
+        $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
 
         /** @var Job[] $subJobs */
         $subJobs = $this->jobStorage->find(['parentId' => $job->getId()]);
@@ -87,35 +87,34 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
     }
 
     /**
+     * @param PvmToken $token
+     *
      * {@inheritdoc}
      */
     public function signal(Token $token)
     {
-        /** @var Process $process */
-        $process = $token->getProcess();
-
-        return $this->jobStorage->lockByJobId($process->getTokenJobId($token), function(Job $job) {
+        return $this->jobStorage->lockByJobId($token->getJobId(), function(Job $job) {
             if ($job->getRunSubJobsPolicy()->isMarkParentJobAsFailed()) {
                 foreach ($this->jobStorage->findSubJobs($job->getId()) as $subJob) {
                     if ($subJob->getCurrentResult()->isFailed()) {
-                        $jobResult = JobResult::createFor(JobStatus::STATUS_FAILED);
+                        $jobResult = JobResult::createFor(JobStatus::FAILED);
                         $job->addResult($jobResult);
                         $job->setCurrentResult($jobResult);
 
                         $this->jobStorage->update($job);
-                        $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
+                        $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
 
                         return ['failed'];
                     }
                 }
             }
 
-            $jobResult = JobResult::createFor(JobStatus::STATUS_COMPLETED);
+            $jobResult = JobResult::createFor(JobStatus::COMPLETED);
             $job->addResult($jobResult);
             $job->setCurrentResult($jobResult);
 
             $this->jobStorage->update($job);
-            $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
+            $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
 
             return ['completed'];
         });

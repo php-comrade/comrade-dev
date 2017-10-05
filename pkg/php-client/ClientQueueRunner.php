@@ -1,11 +1,10 @@
 <?php
 namespace Comrade\Client;
 
+use Comrade\Shared\Message\RunnerResult;
 use Comrade\Shared\Message\RunJob;
-use Comrade\Shared\Model\JobResult;
-use Comrade\Shared\Model\JobStatus;
+use Comrade\Shared\Model\JobAction;
 use Comrade\Shared\Model\Throwable;
-use Comrade\Shared\Message\JobResult as JobResultMessage;
 use Enqueue\Util\JSON;
 use Interop\Queue\PsrContext;
 use Interop\Queue\PsrMessage;
@@ -33,37 +32,38 @@ class ClientQueueRunner
         try {
             $metrics = CollectMetrics::start();
 
-            /** @var JobResultMessage $jobResultMessage */
-            $jobResultMessage = call_user_func($worker, $runJob);
-
-            if (false == $jobResultMessage instanceof  JobResultMessage) {
-                throw new \LogicException(sprintf('The worker must return instance of "%s"', JobResultMessage::class));
+            $result = call_user_func($worker, $runJob);
+var_dump($result);
+            if (is_string($result)) {
+                var_dump(1);
+                $result = RunnerResult::createFor($runJob, $result);
             }
+var_dump(2);
+            if (false == $result instanceof RunnerResult) {
+                var_dump(3);
+                throw new \LogicException(sprintf('The worker must return instance of "%s" or action (string)', RunnerResult::class));
+            }
+            var_dump(4);
+            $result->setMetrics($metrics->stop()->getMetrics());
 
-            $metrics->stop()->updateResult($jobResultMessage->getResult());
-
-            $jobResultMessage->setToken($runJob->getToken());
-            $jobResultMessage->setJobId($runJob->getJob()->getId());
-
+            var_dump(5);
             $this->context->createProducer()->send(
-                $this->context->createQueue('comrade_job_result'),
-                $this->context->createMessage(JSON::encode($jobResultMessage))
+                $this->context->createQueue('comrade_handle_runner_result'),
+                $this->context->createMessage(JSON::encode($result))
             );
+            var_dump(6);
         } catch (\Throwable $e) {
-            $result = JobResult::createFor(JobStatus::STATUS_FAILED);
+            $result = RunnerResult::createFor($runJob, JobAction::FAIL);
             $result->setError(Throwable::createFromThrowable($e));
 
-            $metrics && $metrics->stop()->updateResult($result);
-
-            $jobResultMessage = JobResultMessage::create();
-            $jobResultMessage->setToken($runJob->getToken());
-            $jobResultMessage->setJobId($runJob->getJob()->getId());
-            $jobResultMessage->setResult($result);
+            $metrics && $result->setMetrics($metrics->stop()->getMetrics());
 
             $this->context->createProducer()->send(
-                $this->context->createQueue('comrade_job_result'),
-                $this->context->createMessage(JSON::encode($jobResultMessage))
+                $this->context->createQueue('comrade_handle_runner_result'),
+                $this->context->createMessage(JSON::encode($result))
             );
+
+            throw $e;
         }
     }
 }

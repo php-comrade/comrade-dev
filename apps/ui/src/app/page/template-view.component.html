@@ -36,14 +36,6 @@
     </div>
     <div class="row">
       <div class="col-3">
-        Process Template Id:
-      </div>
-      <div class="col-6">
-        {{jobTemplate.processTemplateId}}
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-3">
         Name:
       </div>
       <div class="col-6">
@@ -82,7 +74,10 @@
   </div>
 
   <div *ngIf="tab == 'graph'">
-    <process-graph-image [processId]="jobTemplate.processTemplateId"></process-graph-image>
+    <h4>Flow graph:</h4>
+    <job-flow-graph *ngIf="jobTemplate" [updatedAt]="jobTemplate.createdAt.unix" [jobTemplateId]="jobTemplate.templateId"></job-flow-graph>
+    <h4>State graph:</h4>
+    <job-state-graph *ngIf="jobTemplate" [updatedAt]="jobTemplate.createdAt.unix" [jobTemplateId]="jobTemplate.templateId"></job-state-graph>
   </div>
 
   <div *ngIf="tab === 'timeline'">

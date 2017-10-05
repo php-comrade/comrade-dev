@@ -1,11 +1,10 @@
 <?php
 namespace Comrade\Client;
 
+use Comrade\Shared\Message\RunnerResult;
 use Comrade\Shared\Message\RunJob;
-use Comrade\Shared\Model\JobResult;
-use Comrade\Shared\Model\JobStatus;
+use Comrade\Shared\Model\JobAction;
 use Comrade\Shared\Model\Throwable;
-use Comrade\Shared\Message\JobResult as JobResultMessage;
 use Enqueue\Util\JSON;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
@@ -34,31 +33,26 @@ class ClientHttpRunner
         try {
             $metrics = CollectMetrics::start();
 
-            /** @var JobResultMessage $jobResultMessage */
-            $jobResultMessage = call_user_func($worker, $runJob);
+            $result = call_user_func($worker, $runJob);
 
-            if (false == $jobResultMessage instanceof JobResultMessage) {
-                throw new \LogicException(sprintf('The worker must return instance of "%s"', JobResultMessage::class));
+            if (is_string($result)) {
+                $result = RunnerResult::createFor($runJob, $result);
             }
 
-            $metrics->stop()->updateResult($jobResultMessage->getResult());
+            if (false == $result instanceof  RunnerResult) {
+                throw new \LogicException(sprintf('The worker must return instance of "%s" or action (string)', RunnerResult::class));
+            }
 
-            $jobResultMessage->setToken($runJob->getToken());
-            $jobResultMessage->setJobId($runJob->getJob()->getId());
+            $result->setMetrics($metrics->stop()->getMetrics());
 
-            return $this->sendResult($jobResultMessage);
+            return $this->sendResult($result);
         } catch (\Throwable $e) {
-            $result = JobResult::createFor(JobStatus::STATUS_FAILED);
+            $result = RunnerResult::createFor($runJob, JobAction::FAIL);
             $result->setError(Throwable::createFromThrowable($e));
 
-            $metrics && $metrics->stop()->updateResult($result);
+            $metrics && $result->setMetrics($metrics->stop()->getMetrics());
 
-            $jobResultMessage = JobResultMessage::create();
-            $jobResultMessage->setToken($runJob->getToken());
-            $jobResultMessage->setJobId($runJob->getJob()->getId());
-            $jobResultMessage->setResult($result);
-
-            return $this->sendResult($jobResultMessage);
+            return $this->sendResult($result);
         }
     }
 

@@ -1,14 +1,18 @@
 <?php
 namespace App\Pvm\Behavior;
 
+use App\Model\PvmToken;
+use Comrade\Shared\Model\JobAction;
+use App\Service\ChangeJobStateService;
 use App\Topics;
-use App\JobStatus;
 use App\Model\JobResult;
-use App\Model\Process;
+use App\Model\PvmProcess;
 use App\Storage\JobStorage;
 use Comrade\Shared\Message\RunJob;
+use Comrade\Shared\Model\Job;
 use Comrade\Shared\Model\QueueRunner;
 use Enqueue\Client\ProducerInterface;
+use Formapro\Pvm\Transition;
 use Interop\Queue\PsrContext;
 use Enqueue\Util\JSON;
 use Formapro\Pvm\Behavior;
@@ -35,83 +39,79 @@ class QueueRunnerBehavior implements Behavior, SignalBehavior
     private $producer;
 
     /**
-     * @param PsrContext        $psrContext
-     * @param JobStorage        $jobStorage
-     * @param ProducerInterface $producer
+     * @var ChangeJobStateService
      */
+    private $changeJobStateService;
+
     public function __construct(
         PsrContext $psrContext,
         JobStorage $jobStorage,
-        ProducerInterface $producer
+        ProducerInterface $producer,
+        ChangeJobStateService $changeJobStateService
     ) {
         $this->psrContext = $psrContext;
         $this->jobStorage = $jobStorage;
         $this->producer = $producer;
+        $this->changeJobStateService = $changeJobStateService;
     }
 
     /**
+     * @param PvmToken $token
+     *
      * {@inheritdoc}
      */
     public function execute(Token $token)
     {
-        /** @var Process $process */
-        $process = $token->getProcess();
-        $job = $this->jobStorage->getOneById($process->getTokenJobId($token));
-        if ($job->getCurrentResult()->isCompleted()) {
-            return ['completed'];
-        }
-        if ($job->getCurrentResult()->isFailed()) {
-            return ['failed'];
-        }
+        $job = $this->changeJobStateService->changeInFlow($token->getJobId(), JobAction::RUN, function(Job $job, Transition $transition) {
+            $result = JobResult::createFor($transition->getTo()->getLabel(), new \DateTime('now'));
+
+            $job->addResult($result);
+            $job->setCurrentResult($result);
+
+            return $job;
+        });
+
+        $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
 
         /** @var QueueRunner $runner */
         $runner = $job->getRunner();
 
-        if ($runner->getConnectionDsn()) {
-            throw new \LogicException('Not implemented yet');
-        }
-
         $queue = $this->psrContext->createQueue($runner->getQueue());
         $message = $this->psrContext->createMessage(JSON::encode(RunJob::createFor($job, $token->getId())));
-
-        $result = JobResult::create();
-        $result->setStatus(JobStatus::STATUS_RUNNING);
-        $result->setCreatedAt(new \DateTime('now'));
-        $job->addResult($result);
-        $job->setCurrentResult($result);
-
-        $this->jobStorage->update($job);
         $this->psrContext->createProducer()->send($queue, $message);
-        $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
 
         throw new WaitExecutionException();
     }
 
     /**
+     * @param PvmToken $token
+     *
      * {@inheritdoc}
      */
     public function signal(Token $token)
     {
-        /** @var Process $process */
-        $process = $token->getProcess();
-        $job = $this->jobStorage->getOneById($process->getTokenJobId($token));
-        $result = $job->getCurrentResult();
-        if ($result->isFailed()) {
-            return ['failed'];
-        }
+        $runnerResult = $token->getRunnerResult();
 
-        if ($result->isRunSubJobs()) {
-            return ['run_sub_jobs'];
-        }
+        /** @var Job $job */
+        $job = $this->changeJobStateService->changeInFlow($token->getJobId(), $runnerResult->getAction(), function(Job $job, Transition $transition) use ($runnerResult) {
+            $result = JobResult::createFor($transition->getTo()->getLabel(), \DateTime::createFromFormat('U', $runnerResult->getTimestamp()));
 
-        if ($result->isCompleted() || $result->isCanceled() || $result->isTerminated()){
-            return ['completed'];
-        }
+            if ($error = $runnerResult->getError()) {
+                $result->setError($error);
+            }
 
-        if ($result->isRunning() || $result->isNew()) {
-            throw new WaitExecutionException();
-        }
+            if ($metrics = $runnerResult->getMetrics()) {
+                $result->setMetrics($metrics);
+            }
 
-        throw new \LogicException(sprintf('Status "%s"is not supported', $result->getStatus()));
+            $job->addResult($result);
+            $job->setCurrentResult($result);
+
+            return $job;
+        });
+
+        $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
+
+        return 'finalize';
     }
 }

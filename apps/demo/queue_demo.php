@@ -3,13 +3,10 @@ namespace DemoApp;
 
 use Comrade\Client\ClientQueueRunner;
 use Comrade\Shared\ComradeClassMap;
-use Comrade\Shared\Message\JobResult as JobResultMessage;
+use Comrade\Shared\Message\RunnerResult;
+use Comrade\Shared\Message\Part\SubJob;
 use Comrade\Shared\Message\RunJob;
-use Comrade\Shared\Message\RunSubJobsResult;
-use Comrade\Shared\Model\JobResult;
-use Comrade\Shared\Model\JobStatus;
-use Comrade\Shared\Model\JobTemplate;
-use Comrade\Shared\Model\QueueRunner;
+use Comrade\Shared\Model\JobAction;
 use Enqueue\Consumption\ChainExtension;
 use Enqueue\Consumption\Extension\LimitConsumptionTimeExtension;
 use Enqueue\Consumption\Extension\LoggerExtension;
@@ -17,7 +14,6 @@ use Enqueue\Consumption\Extension\SignalExtension;
 use Enqueue\Consumption\QueueConsumer;
 use Enqueue\Consumption\Result;
 use function Enqueue\dsn_to_context;
-use Enqueue\Util\UUID;
 use Interop\Queue\PsrMessage;
 use function Makasim\Values\get_value;
 use function Makasim\Values\register_cast_hooks;
@@ -67,10 +63,7 @@ $queueConsumer->bind('demo_success_job', function(PsrMessage $message) use ($run
     $runner->run($message, function(RunJob $runJob) {
         do_something_important(rand(2, 6));
 
-        $jobResultMessage = JobResultMessage::create();
-        $jobResultMessage->setResult(JobResult::createFor(JobStatus::STATUS_COMPLETED));
-
-        return $jobResultMessage;
+        return JobAction::COMPLETE;
     });
 
     return Result::ACK;
@@ -78,17 +71,9 @@ $queueConsumer->bind('demo_success_job', function(PsrMessage $message) use ($run
 
 $queueConsumer->bind('demo_success_on_third_attempt', function(PsrMessage $message) use ($runner) {
     $runner->run($message, function(RunJob $runJob) {
-        $result = JobResult::createFor(JobStatus::STATUS_FAILED);
-        if (get_value($runJob->getJob(), 'retryAttempts') > 2) {
-            $result = JobResult::createFor(JobStatus::STATUS_COMPLETED);
-        }
-
         do_something_important(rand(2, 6));
 
-        $jobResultMessage = JobResultMessage::create();
-        $jobResultMessage->setResult($result);
-
-        return $jobResultMessage;
+        return get_value($runJob->getJob(), 'retryFailedPolicy.retryAttempts') > 2 ? JobAction::COMPLETE : JobAction::FAIL;
     });
 
     return Result::ACK;
@@ -96,15 +81,11 @@ $queueConsumer->bind('demo_success_on_third_attempt', function(PsrMessage $messa
 
 $queueConsumer->bind('demo_random_job', function(PsrMessage $message) use ($runner) {
     $runner->run($message, function(RunJob $runJob) {
-        $statuses = [JobStatus::STATUS_FAILED, JobStatus::STATUS_COMPLETED, JobStatus::STATUS_COMPLETED, JobStatus::STATUS_COMPLETED, JobStatus::STATUS_COMPLETED, JobStatus::STATUS_COMPLETED];
-        $result = JobResult::createFor($statuses[rand(0, 3)]);
-
         do_something_important(rand(2, 6));
 
-        $jobResultMessage = JobResultMessage::create();
-        $jobResultMessage->setResult($result);
+        $actions = [JobAction::FAIL, JobAction::COMPLETE, JobAction::COMPLETE, JobAction::COMPLETE, JobAction::COMPLETE, JobAction::COMPLETE, JobAction::COMPLETE];
 
-        return $jobResultMessage;
+        return $actions[rand(0, count($actions) - 1)];
     });
 
     return Result::ACK;
@@ -112,42 +93,16 @@ $queueConsumer->bind('demo_random_job', function(PsrMessage $message) use ($runn
 
 $queueConsumer->bind('demo_run_sub_tasks', function(PsrMessage $message) use ($runner) {
     $runner->run($message, function(RunJob $runJob) {
-        $result = JobResult::createFor(JobStatus::STATUS_RUN_SUB_JOBS);
-        $jobResultMessage = RunSubJobsResult::create();
-        $jobResultMessage->setProcessTemplateId(Uuid::generate());
-        $jobResultMessage->setResult($result);
-
-        $jobTemplate = JobTemplate::create();
-        $jobTemplate->setName('testSubJob1');
-        $jobTemplate->setTemplateId(Uuid::generate());
-        $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
-        $jobTemplate->setRunner(QueueRunner::createFor('demo_random_job'));
-        $jobResultMessage->addJobTemplate($jobTemplate);
-
-        $jobTemplate = JobTemplate::create();
-        $jobTemplate->setName('testSubJob2');
-        $jobTemplate->setTemplateId(Uuid::generate());
-        $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
-        $jobTemplate->setRunner(QueueRunner::createFor('demo_random_job'));
-        $jobResultMessage->addJobTemplate($jobTemplate);
-
-        $jobTemplate = JobTemplate::create();
-        $jobTemplate->setName('testSubJob3');
-        $jobTemplate->setTemplateId(Uuid::generate());
-        $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
-        $jobTemplate->setRunner(QueueRunner::createFor('demo_random_job'));
-        $jobResultMessage->addJobTemplate($jobTemplate);
-
-        $jobTemplate = JobTemplate::create();
-        $jobTemplate->setName('testSubJob4');
-        $jobTemplate->setTemplateId(Uuid::generate());
-        $jobTemplate->setDetails(['foo' => 'fooVal', 'bar' => 'barVal']);
-        $jobTemplate->setRunner(QueueRunner::createFor('demo_random_job'));
-        $jobResultMessage->addJobTemplate($jobTemplate);
-
         do_something_important(rand(2, 6));
 
-        return $jobResultMessage;
+        $message = RunnerResult::createFor($runJob, JobAction::RUN_SUB_JOBS);
+
+        $message->addSubJob(SubJob::createFor('demo_sub_job' , ['foo' => 'fooVal']));
+        $message->addSubJob(SubJob::createFor('demo_sub_job' , ['bar' => 'barVal']));
+        $message->addSubJob(SubJob::createFor('demo_sub_job' , ['baz' => 'bazVal']));
+        $message->addSubJob(SubJob::createFor('demo_sub_job' , ['ololo' => 'ololoVal']));
+
+        return $message;
     });
 
     return Result::ACK;
@@ -157,10 +112,7 @@ $queueConsumer->bind('demo_failed_job', function(PsrMessage $message) use ($runn
     $runner->run($message, function(RunJob $runJob) {
         do_something_important(rand(2, 6));
 
-        $jobResultMessage = JobResultMessage::create();
-        $jobResultMessage->setResult(JobResult::createFor(JobStatus::STATUS_FAILED));
-
-        return $jobResultMessage;
+        return JobAction::FAIL;
     });
 
     return Result::ACK;

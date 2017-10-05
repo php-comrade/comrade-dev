@@ -95,7 +95,7 @@ class CollectMetrics
         return $this->memory;
     }
 
-    public function updateResult(JobResult $result): void
+    public function getMetrics(): JobResultMetrics
     {
         $metrics = JobResultMetrics::create();
         $metrics->setStartTime($this->getStartTime());
@@ -103,6 +103,11 @@ class CollectMetrics
         $metrics->setDuration($this->getDuration());
         $metrics->setMemory($this->getMemory());
 
-        $result->setMetrics($metrics);
+        return $metrics;
+    }
+
+    public function updateResult(JobResult $result): void
+    {
+        $result->setMetrics($this->getMetrics());
     }
 }

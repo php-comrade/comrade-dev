@@ -18,7 +18,7 @@ class RunJob implements \JsonSerializable
     /**
      * @var array
      */
-    private $values = [];
+    protected $values = [];
 
     /**
      * @return Job|object

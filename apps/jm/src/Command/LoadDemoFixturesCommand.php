@@ -8,11 +8,12 @@ use Comrade\Shared\Model\CronTrigger;
 use Comrade\Shared\Model\ExclusivePolicy;
 use Comrade\Shared\Model\GracePeriodPolicy;
 use Comrade\Shared\Model\HttpRunner;
-use Comrade\Shared\Model\JobTemplate;
+use App\Model\JobTemplate;
 use Comrade\Shared\Model\NowTrigger;
 use Comrade\Shared\Model\QueueRunner;
 use Comrade\Shared\Model\RetryFailedPolicy;
 use Comrade\Shared\Model\RunSubJobsPolicy;
+use Comrade\Shared\Model\SubJobPolicy;
 use Comrade\Shared\Model\Trigger;
 use Enqueue\Client\ProducerInterface;
 use Makasim\Yadm\Registry;
@@ -61,15 +62,16 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $template = JobTemplate::create();
         $template->setName('demo_success_job');
         $template->setTemplateId(Uuid::generate());
-        $template->setProcessTemplateId(Uuid::generate());
         $template->setRunner(QueueRunner::createFor('demo_success_job'));
-        $template->addTrigger($this->createTrigger());
 
         $policy = GracePeriodPolicy::create();
         $policy->setPeriod(20);
         $template->setGracePeriodPolicy($policy);
 
-        $this->getProducer()->sendCommand(Commands::CREATE_JOB, CreateJob::createFor($template));
+        $createJob = CreateJob::createFor($template);
+        $createJob->addTrigger($this->createTrigger($template));
+
+        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
     }
 
     private function createDemoFailedJob()
@@ -77,15 +79,16 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $template = JobTemplate::create();
         $template->setName('demo_failed_job');
         $template->setTemplateId(Uuid::generate());
-        $template->setProcessTemplateId(Uuid::generate());
         $template->setRunner(QueueRunner::createFor('demo_failed_job'));
-        $template->addTrigger($this->createTrigger());
 
         $policy = GracePeriodPolicy::create();
         $policy->setPeriod(20);
         $template->setGracePeriodPolicy($policy);
 
-        $this->getProducer()->sendCommand(Commands::CREATE_JOB, CreateJob::createFor($template));
+        $createJob = CreateJob::createFor($template);
+        $createJob->addTrigger($this->createTrigger($template));
+
+        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
     }
 
     private function createDemoRetryJob()
@@ -93,9 +96,7 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $template = JobTemplate::create();
         $template->setName('demo_retry_job');
         $template->setTemplateId(Uuid::generate());
-        $template->setProcessTemplateId(Uuid::generate());
         $template->setRunner(QueueRunner::createFor('demo_success_on_third_attempt'));
-        $template->addTrigger($this->createTrigger());
 
         $policy = GracePeriodPolicy::create();
         $policy->setPeriod(60);
@@ -105,7 +106,10 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $policy->setRetryLimit(5);
         $template->setRetryFailedPolicy($policy);
 
-        $this->getProducer()->sendCommand(Commands::CREATE_JOB, CreateJob::createFor($template));
+        $createJob = CreateJob::createFor($template);
+        $createJob->addTrigger($this->createTrigger($template));
+
+        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
     }
 
     private function createDemoExclusiveJob()
@@ -113,19 +117,20 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $template = JobTemplate::create();
         $template->setName('demo_exclusive_job');
         $template->setTemplateId(Uuid::generate());
-        $template->setProcessTemplateId(Uuid::generate());
         $template->setRunner(QueueRunner::createFor('demo_success_job'));
-        $template->addTrigger($this->createTrigger());
 
         $policy = ExclusivePolicy::create();
-        $policy->setOnFailedSubJob(ExclusivePolicy::MARK_JOB_AS_CANCELED);
+        $policy->setOnDuplicateRun(ExclusivePolicy::MARK_JOB_AS_CANCELED);
         $template->setExclusivePolicy($policy);
 
         $policy = GracePeriodPolicy::create();
         $policy->setPeriod(20);
         $template->setGracePeriodPolicy($policy);
 
-        $this->getProducer()->sendCommand(Commands::CREATE_JOB, CreateJob::createFor($template));
+        $createJob = CreateJob::createFor($template);
+        $createJob->addTrigger($this->createTrigger($template));
+
+        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
     }
 
     private function createDemoTimeoutedJob()
@@ -133,45 +138,87 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $template = JobTemplate::create();
         $template->setName('demo_timeouted_job');
         $template->setTemplateId(Uuid::generate());
-        $template->setProcessTemplateId(Uuid::generate());
         $template->setRunner(QueueRunner::createFor('no_one_consumes_from_this_queue'));
-        $template->addTrigger($this->createTrigger());
 
         $policy = GracePeriodPolicy::create();
         $policy->setPeriod(5);
         $template->setGracePeriodPolicy($policy);
 
-        $this->getProducer()->sendCommand(Commands::CREATE_JOB, CreateJob::createFor($template));
+        $createJob = CreateJob::createFor($template);
+        $createJob->addTrigger($this->createTrigger($template));
+
+        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
     }
 
     private function createDemoJobWithSubJobs()
     {
-        $template = JobTemplate::create();
-        $template->setName('demo_job_with_sub_jobs');
-        $template->setTemplateId(Uuid::generate());
-        $template->setProcessTemplateId(Uuid::generate());
-        $template->setRunner(QueueRunner::createFor('demo_run_sub_tasks'));
-        $template->addTrigger($this->createTrigger());
+        $parentTemplate = JobTemplate::create();
+        $parentTemplate->setName('demo_job_with_sub_jobs');
+        $parentTemplate->setTemplateId(Uuid::generate());
+        $parentTemplate->setRunner(QueueRunner::createFor('demo_run_sub_tasks'));
 
         $policy = GracePeriodPolicy::create();
         $policy->setPeriod(5);
-        $template->setGracePeriodPolicy($policy);
+        $parentTemplate->setGracePeriodPolicy($policy);
 
         $policy = RunSubJobsPolicy::create();
         $policy->setOnFailedSubJob(RunSubJobsPolicy::MARK_JOB_AS_FAILED);
-        $template->setRunSubJobsPolicy($policy);
+        $parentTemplate->setRunSubJobsPolicy($policy);
 
-        $this->getProducer()->sendCommand(Commands::CREATE_JOB, CreateJob::createFor($template));
+        $createJob = CreateJob::createFor($parentTemplate);
+        $createJob->addTrigger($this->createTrigger($parentTemplate));
+
+        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
+
+        $childTemplate = JobTemplate::create();
+        $childTemplate->setName('demo_sub_job');
+        $childTemplate->setTemplateId(Uuid::generate());
+        $childTemplate->setRunner(QueueRunner::createFor('demo_random_job'));
+
+        $policy = GracePeriodPolicy::create();
+        $policy->setPeriod(20);
+        $childTemplate->setGracePeriodPolicy($policy);
+
+        $policy = SubJobPolicy::create();
+        $policy->setParentId($parentTemplate->getTemplateId());
+        $childTemplate->setSubJobPolicy($policy);
+
+        $createJob = CreateJob::createFor($childTemplate);
+
+        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
     }
 
-    private function createTrigger(): Trigger
+    private function createDemoHttpRunnerJob()
+    {
+        $template = JobTemplate::create();
+        $template->setName('demo_http_runner_job');
+        $template->setTemplateId(Uuid::generate());
+
+        $runner = HttpRunner::createFor('http://jmd/demo_success_job');
+        $template->setRunner($runner);
+
+        $policy = GracePeriodPolicy::create();
+        $policy->setPeriod(20);
+        $template->setGracePeriodPolicy($policy);
+
+        $createJob = CreateJob::createFor($template);
+        $createJob->addTrigger($this->createTrigger($template));
+
+        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
+    }
+
+    private function createTrigger(JobTemplate $template): Trigger
     {
         if ($this->trigger == 'now') {
-            return NowTrigger::create();
+            $trigger = NowTrigger::create();
+            $trigger->setTemplateId($template->getTemplateId());
+
+            return $trigger;
         }
 
         if ($this->trigger == 'cron') {
             $trigger = CronTrigger::create();
+            $trigger->setTemplateId($template->getTemplateId());
             $trigger->setStartAt(new \DateTime('now'));
             $trigger->setMisfireInstruction(CronTrigger::MISFIRE_INSTRUCTION_FIRE_ONCE_NOW);
             $trigger->setExpression(sprintf('*/%d * * * *', rand(5, 10)));
@@ -180,25 +227,6 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         }
 
         throw new \LogicException(sprintf('The trigger "%s" is not supported are "now", "cron"', $this->trigger));
-    }
-
-    private function createDemoHttpRunnerJob()
-    {
-        $template = JobTemplate::create();
-        $template->setName('demo_http_runner_job');
-        $template->setTemplateId(Uuid::generate());
-        $template->setProcessTemplateId(Uuid::generate());
-
-        $runner = HttpRunner::createFor('http://jmd/demo_success_job');
-        $template->setRunner($runner);
-
-        $template->addTrigger($this->createTrigger());
-
-        $policy = GracePeriodPolicy::create();
-        $policy->setPeriod(20);
-        $template->setGracePeriodPolicy($policy);
-
-        $this->getProducer()->sendCommand(Commands::CREATE_JOB, CreateJob::createFor($template));
     }
 
     private function getProducer(): ProducerInterface

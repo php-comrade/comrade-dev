@@ -52,14 +52,6 @@
         </div>
         <div class="row">
             <div class="col-3">
-                Process Template Id:
-            </div>
-            <div class="col-6">
-                {{job.processTemplateId}}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-3">
                 Name:
             </div>
             <div class="col-6">
@@ -100,7 +92,10 @@
         <job-view-execution [job]="job" [subJobs]="subJobs"></job-view-execution>
     </div>
     <div *ngIf="tab == 'graph'">
-        <process-graph-image [processId]="job.processId" [updatedAt]="updatedAt"></process-graph-image>
+        <h4>Flow graph:</h4>
+        <job-flow-graph *ngIf="job" [jobId]="job.id" [updatedAt]="updatedAt"></job-flow-graph>
+        <h4>State graph:</h4>
+        <job-state-graph *ngIf="job" [jobId]="job.id" [updatedAt]="updatedAt"></job-state-graph>
     </div>
     <div *ngIf="tab === 'raw'">
         <prettyjson [obj]="job"></prettyjson>

@@ -13,7 +13,7 @@ class HttpRunner implements Runner
     /**
      * @var array
      */
-    private $values = [];
+    protected $values = [];
 
     public function setUrl(string $url):void
     {

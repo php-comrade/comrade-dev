@@ -1,12 +1,12 @@
 <?php
 namespace App\Storage;
 
-use App\Model\Process;
+use App\Model\PvmProcess;
 
 /**
- * @method Process|null create()
- * @method Process|null findOne(array $filter = [], array $options = [])
- * @method Process[]|\Traversable find(array $filter = [], array $options = [])
+ * @method PvmProcess|null create()
+ * @method PvmProcess|null findOne(array $filter = [], array $options = [])
+ * @method PvmProcess[]|\Traversable find(array $filter = [], array $options = [])
  */
 class ProcessExecutionStorage extends ProcessStorage
 {

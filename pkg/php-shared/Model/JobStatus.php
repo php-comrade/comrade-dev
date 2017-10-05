@@ -3,23 +3,19 @@ namespace Comrade\Shared\Model;
 
 class JobStatus
 {
-    const STATUS_NEW = 1;
+    const NEW = 'new';
 
-    const STATUS_RUNNING = 2;
+    const RUNNING = 'running';
 
-    const STATUS_RUN_EXCLUSIVE = 2 | 512;
+    const RUNNING_SUB_JOBS = 'running_sub_jobs';
 
-    const STATUS_RUNNING_SUB_JOBS = 2 | 16;
+    const RETRYING = 'retrying';
 
-    const STATUS_RUN_SUB_JOBS = 2 | 256;
+    const CANCELED = 'canceled';
 
-    const STATUS_DONE = 4;
+    const COMPLETED = 'completed';
 
-    const STATUS_CANCELED = 4 | 8;
+    const FAILED = 'failed';
 
-    const STATUS_COMPLETED = 4 | 32;
-
-    const STATUS_FAILED = 4 | 64;
-
-    const STATUS_TERMINATED = 4 | 128;
+    const TERMINATED = 'terminated';
 }

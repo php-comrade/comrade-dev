@@ -16,7 +16,7 @@ class Job extends JobTemplate
     /**
      * @var array
      */
-    private $values = [];
+    protected $values = [];
 
     public static function createFromTemplate(JobTemplate $jobTemplate) : Job
     {

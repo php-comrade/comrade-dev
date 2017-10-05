@@ -4,11 +4,12 @@ import {Response} from "@angular/http";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
 @Component({
-  selector: 'process-graph-image',
+  selector: 'job-flow-graph',
   template: `<div *ngIf="digraph" [innerHTML]="digraph"></div>`,
 })
-export class ProcessGraphImageComponent implements OnInit {
-    @Input() processId: string;
+export class JobFlowGraphComponent implements OnInit {
+    @Input() jobId: string;
+    @Input() jobTemplateId: string;
     @Input() updatedAt: number;
 
     digraph: SafeHtml;
@@ -16,7 +17,20 @@ export class ProcessGraphImageComponent implements OnInit {
     constructor(private httpService: HttpService, private sanitizer: DomSanitizer) {}
 
     ngOnInit(): void {
-      this.httpService.get('/process/' + this.processId + '/graph.gv?updatedAt=' + this.updatedAt)
+      if (this.jobId) {
+
+
+        this.requestGraph('/api/job/' + this.jobId + '/flow-graph.gv?updatedAt=' + this.updatedAt);
+      }
+
+      if (this.jobTemplateId) {
+        this.requestGraph('/api/job-template/' + this.jobTemplateId + '/flow-graph.gv?updatedAt=' + this.updatedAt);
+      }
+    }
+
+    requestGraph(url: string)
+    {
+      this.httpService.get(url)
         .subscribe((res: Response) => {
           let Viz = require('viz.js');
 

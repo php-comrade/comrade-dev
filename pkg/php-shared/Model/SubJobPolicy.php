@@ -10,7 +10,7 @@ class SubJobPolicy implements Policy
 
     const SCHEMA = 'http://jm.forma-pro.com/schemas/policy/SubJobPolicy.json';
 
-    private $values = [];
+    protected $values = [];
 
     public function getParentId(): string
     {

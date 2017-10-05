@@ -1,0 +1,1590 @@
+2017-10-04 16:18:05,680 CRIT Supervisor running as root (no user in config file)
+2017-10-04 16:18:05,694 INFO supervisord started with pid 1
+2017-10-04 16:18:06,696 INFO spawned: 'quartz_00' with pid 8
+2017-10-04 16:18:06,708 INFO spawned: 'consumer_00' with pid 9
+2017-10-04 16:18:06,719 INFO spawned: 'consumer_01' with pid 10
+2017-10-04 16:18:06,735 INFO spawned: 'consumer_02' with pid 11
+2017-10-04 16:18:06,750 INFO spawned: 'consumer_03' with pid 12
+2017-10-04 16:18:06,769 INFO spawned: 'consumer_04' with pid 13
+2017-10-04 16:18:06,775 INFO spawned: 'wamp_00' with pid 14
+2017-10-04 16:18:07,021 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:18:07,027 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:18:07,164 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:18:07,173 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:18:07,180 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:18:07,192 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:18:08,169 INFO success: quartz_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:18:08,173 INFO spawned: 'consumer_00' with pid 21
+2017-10-04 16:18:08,178 INFO spawned: 'consumer_01' with pid 22
+2017-10-04 16:18:08,183 INFO spawned: 'consumer_03' with pid 23
+2017-10-04 16:18:08,190 INFO spawned: 'wamp_00' with pid 24
+2017-10-04 16:18:08,202 INFO spawned: 'consumer_02' with pid 25
+2017-10-04 16:18:08,214 INFO spawned: 'consumer_04' with pid 26
+2017-10-04 16:18:08,390 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:18:08,403 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:18:08,416 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:18:08,418 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:18:08,436 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:18:08,486 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:18:10,491 INFO spawned: 'consumer_00' with pid 27
+2017-10-04 16:18:10,504 INFO spawned: 'consumer_01' with pid 28
+2017-10-04 16:18:10,529 INFO spawned: 'consumer_02' with pid 29
+2017-10-04 16:18:10,542 INFO spawned: 'consumer_03' with pid 30
+2017-10-04 16:18:10,577 INFO spawned: 'consumer_04' with pid 31
+2017-10-04 16:18:10,605 INFO spawned: 'wamp_00' with pid 32
+2017-10-04 16:18:10,828 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:18:10,913 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:18:10,922 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:18:10,924 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:18:10,933 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:18:10,983 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:18:13,989 INFO spawned: 'consumer_00' with pid 33
+2017-10-04 16:18:13,999 INFO spawned: 'consumer_01' with pid 34
+2017-10-04 16:18:14,006 INFO spawned: 'consumer_02' with pid 35
+2017-10-04 16:18:14,012 INFO spawned: 'consumer_03' with pid 36
+2017-10-04 16:18:14,023 INFO spawned: 'consumer_04' with pid 37
+2017-10-04 16:18:14,033 INFO spawned: 'wamp_00' with pid 38
+2017-10-04 16:18:14,149 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:18:14,163 INFO gave up: consumer_01 entered FATAL state, too many start retries too quickly
+2017-10-04 16:18:14,184 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:18:14,200 INFO gave up: consumer_00 entered FATAL state, too many start retries too quickly
+2017-10-04 16:18:14,214 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:18:14,277 INFO gave up: consumer_03 entered FATAL state, too many start retries too quickly
+2017-10-04 16:18:14,312 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:18:14,328 INFO gave up: consumer_04 entered FATAL state, too many start retries too quickly
+2017-10-04 16:18:14,329 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:18:14,336 INFO gave up: wamp_00 entered FATAL state, too many start retries too quickly
+2017-10-04 16:18:14,357 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:18:15,360 INFO gave up: consumer_02 entered FATAL state, too many start retries too quickly
+2017-10-04 16:26:56,210 WARN received SIGTERM indicating exit request
+2017-10-04 16:26:56,212 INFO waiting for quartz_00 to die
+2017-10-04 16:26:58,287 INFO stopped: quartz_00 (exit status 0)
+2017-10-04 16:27:10,891 CRIT Supervisor running as root (no user in config file)
+2017-10-04 16:27:10,912 INFO supervisord started with pid 1
+2017-10-04 16:27:11,915 INFO spawned: 'quartz_00' with pid 9
+2017-10-04 16:27:11,917 INFO spawned: 'consumer_00' with pid 10
+2017-10-04 16:27:11,925 INFO spawned: 'consumer_01' with pid 11
+2017-10-04 16:27:11,927 INFO spawned: 'consumer_02' with pid 12
+2017-10-04 16:27:11,929 INFO spawned: 'consumer_03' with pid 13
+2017-10-04 16:27:11,934 INFO spawned: 'consumer_04' with pid 14
+2017-10-04 16:27:11,943 INFO spawned: 'wamp_00' with pid 15
+2017-10-04 16:27:11,998 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:27:12,005 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:27:12,007 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:27:12,021 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:27:12,070 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:27:12,077 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:27:13,510 INFO success: quartz_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:27:13,511 INFO spawned: 'consumer_00' with pid 22
+2017-10-04 16:27:13,514 INFO spawned: 'consumer_01' with pid 23
+2017-10-04 16:27:13,516 INFO spawned: 'consumer_02' with pid 24
+2017-10-04 16:27:13,518 INFO spawned: 'consumer_03' with pid 25
+2017-10-04 16:27:13,525 INFO spawned: 'consumer_04' with pid 26
+2017-10-04 16:27:13,529 INFO spawned: 'wamp_00' with pid 27
+2017-10-04 16:27:13,572 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:27:13,601 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:27:13,611 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:27:13,616 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:27:13,625 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:27:13,645 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:27:15,650 INFO spawned: 'consumer_00' with pid 28
+2017-10-04 16:27:15,652 INFO spawned: 'consumer_01' with pid 29
+2017-10-04 16:27:15,655 INFO spawned: 'consumer_02' with pid 30
+2017-10-04 16:27:15,660 INFO spawned: 'consumer_03' with pid 31
+2017-10-04 16:27:15,664 INFO spawned: 'consumer_04' with pid 32
+2017-10-04 16:27:15,668 INFO spawned: 'wamp_00' with pid 33
+2017-10-04 16:27:15,716 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:27:15,732 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:27:15,742 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:27:15,743 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:27:15,765 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:27:15,775 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:27:18,781 INFO spawned: 'consumer_00' with pid 34
+2017-10-04 16:27:18,785 INFO spawned: 'consumer_01' with pid 35
+2017-10-04 16:27:18,791 INFO spawned: 'consumer_02' with pid 36
+2017-10-04 16:27:18,794 INFO spawned: 'consumer_03' with pid 37
+2017-10-04 16:27:18,802 INFO spawned: 'consumer_04' with pid 38
+2017-10-04 16:27:18,805 INFO spawned: 'wamp_00' with pid 39
+2017-10-04 16:27:18,866 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:27:18,867 INFO gave up: consumer_00 entered FATAL state, too many start retries too quickly
+2017-10-04 16:27:18,890 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:27:18,897 INFO gave up: consumer_02 entered FATAL state, too many start retries too quickly
+2017-10-04 16:27:18,898 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:27:18,901 INFO gave up: consumer_03 entered FATAL state, too many start retries too quickly
+2017-10-04 16:27:18,902 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:27:18,911 INFO gave up: consumer_01 entered FATAL state, too many start retries too quickly
+2017-10-04 16:27:18,920 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:27:18,925 INFO gave up: consumer_04 entered FATAL state, too many start retries too quickly
+2017-10-04 16:27:18,927 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:27:19,930 INFO gave up: wamp_00 entered FATAL state, too many start retries too quickly
+2017-10-04 16:28:57,358 WARN received SIGTERM indicating exit request
+2017-10-04 16:28:57,359 INFO waiting for quartz_00 to die
+2017-10-04 16:28:59,389 INFO stopped: quartz_00 (exit status 0)
+2017-10-04 16:29:16,981 CRIT Supervisor running as root (no user in config file)
+2017-10-04 16:29:16,982 WARN For [program:consumer], redirect_stderr=true but stderr_logfile has also been set to a filename, the filename has been ignored
+2017-10-04 16:29:16,982 WARN For [program:consumer], redirect_stderr=true but stderr_logfile has also been set to a filename, the filename has been ignored
+2017-10-04 16:29:16,982 WARN For [program:consumer], redirect_stderr=true but stderr_logfile has also been set to a filename, the filename has been ignored
+2017-10-04 16:29:16,983 WARN For [program:consumer], redirect_stderr=true but stderr_logfile has also been set to a filename, the filename has been ignored
+2017-10-04 16:29:16,983 WARN For [program:consumer], redirect_stderr=true but stderr_logfile has also been set to a filename, the filename has been ignored
+2017-10-04 16:29:16,984 WARN For [program:quartz], redirect_stderr=true but stderr_logfile has also been set to a filename, the filename has been ignored
+2017-10-04 16:29:16,984 WARN For [program:wamp], redirect_stderr=true but stderr_logfile has also been set to a filename, the filename has been ignored
+2017-10-04 16:29:16,988 INFO supervisord started with pid 1
+2017-10-04 16:29:17,991 INFO spawned: 'quartz_00' with pid 8
+2017-10-04 16:29:17,993 INFO spawned: 'consumer_00' with pid 9
+2017-10-04 16:29:18,003 INFO spawned: 'consumer_01' with pid 10
+2017-10-04 16:29:18,006 INFO spawned: 'consumer_02' with pid 11
+2017-10-04 16:29:18,018 INFO spawned: 'consumer_03' with pid 12
+2017-10-04 16:29:18,021 INFO spawned: 'consumer_04' with pid 13
+2017-10-04 16:29:18,027 INFO spawned: 'wamp_00' with pid 14
+2017-10-04 16:29:18,121 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:29:18,128 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:29:18,136 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:29:18,149 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:29:18,152 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:29:18,165 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:29:19,565 INFO success: quartz_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:29:19,567 INFO spawned: 'consumer_00' with pid 21
+2017-10-04 16:29:19,571 INFO spawned: 'consumer_01' with pid 22
+2017-10-04 16:29:19,574 INFO spawned: 'consumer_02' with pid 23
+2017-10-04 16:29:19,578 INFO spawned: 'consumer_03' with pid 24
+2017-10-04 16:29:19,582 INFO spawned: 'consumer_04' with pid 25
+2017-10-04 16:29:19,585 INFO spawned: 'wamp_00' with pid 26
+2017-10-04 16:29:19,637 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:29:19,659 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:29:19,666 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:29:19,669 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:29:19,690 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:29:19,703 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:29:21,708 INFO spawned: 'consumer_00' with pid 27
+2017-10-04 16:29:21,714 INFO spawned: 'consumer_01' with pid 28
+2017-10-04 16:29:21,718 INFO spawned: 'consumer_02' with pid 29
+2017-10-04 16:29:21,725 INFO spawned: 'consumer_03' with pid 30
+2017-10-04 16:29:21,728 INFO spawned: 'consumer_04' with pid 31
+2017-10-04 16:29:21,731 INFO spawned: 'wamp_00' with pid 32
+2017-10-04 16:29:21,777 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:29:21,785 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:29:21,803 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:29:21,829 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:29:21,848 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:29:21,849 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:29:24,855 INFO spawned: 'consumer_00' with pid 33
+2017-10-04 16:29:24,857 INFO spawned: 'consumer_01' with pid 34
+2017-10-04 16:29:24,866 INFO spawned: 'consumer_02' with pid 35
+2017-10-04 16:29:24,869 INFO spawned: 'consumer_03' with pid 36
+2017-10-04 16:29:24,879 INFO spawned: 'consumer_04' with pid 37
+2017-10-04 16:29:24,883 INFO spawned: 'wamp_00' with pid 38
+2017-10-04 16:29:24,906 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:29:24,929 INFO gave up: consumer_00 entered FATAL state, too many start retries too quickly
+2017-10-04 16:29:24,948 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:29:24,956 INFO gave up: consumer_02 entered FATAL state, too many start retries too quickly
+2017-10-04 16:29:24,956 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:29:24,960 INFO gave up: consumer_01 entered FATAL state, too many start retries too quickly
+2017-10-04 16:29:24,961 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:29:24,969 INFO gave up: consumer_03 entered FATAL state, too many start retries too quickly
+2017-10-04 16:29:24,978 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:29:24,981 INFO gave up: consumer_04 entered FATAL state, too many start retries too quickly
+2017-10-04 16:29:24,988 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:29:25,991 INFO gave up: wamp_00 entered FATAL state, too many start retries too quickly
+2017-10-04 16:29:58,078 WARN received SIGTERM indicating exit request
+2017-10-04 16:29:58,080 INFO waiting for quartz_00 to die
+2017-10-04 16:30:00,118 INFO stopped: quartz_00 (exit status 0)
+2017-10-04 16:30:12,427 CRIT Supervisor running as root (no user in config file)
+2017-10-04 16:30:12,432 INFO supervisord started with pid 1
+2017-10-04 16:30:13,435 INFO spawned: 'quartz_00' with pid 9
+2017-10-04 16:30:13,437 INFO spawned: 'consumer_00' with pid 10
+2017-10-04 16:30:13,441 INFO spawned: 'consumer_01' with pid 11
+2017-10-04 16:30:13,446 INFO spawned: 'consumer_02' with pid 12
+2017-10-04 16:30:13,454 INFO spawned: 'consumer_03' with pid 13
+2017-10-04 16:30:13,459 INFO spawned: 'consumer_04' with pid 14
+2017-10-04 16:30:13,463 INFO spawned: 'wamp_00' with pid 15
+2017-10-04 16:30:13,541 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:30:13,544 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:30:13,554 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:30:13,584 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:30:13,587 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:30:13,595 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:30:15,034 INFO success: quartz_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:30:15,035 INFO spawned: 'consumer_00' with pid 22
+2017-10-04 16:30:15,038 INFO spawned: 'consumer_01' with pid 23
+2017-10-04 16:30:15,040 INFO spawned: 'consumer_02' with pid 24
+2017-10-04 16:30:15,047 INFO spawned: 'consumer_03' with pid 25
+2017-10-04 16:30:15,055 INFO spawned: 'consumer_04' with pid 26
+2017-10-04 16:30:15,057 INFO spawned: 'wamp_00' with pid 27
+2017-10-04 16:30:15,125 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:30:15,126 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:30:15,134 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:30:15,141 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:30:15,150 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:30:15,156 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:30:17,160 INFO spawned: 'consumer_00' with pid 28
+2017-10-04 16:30:17,165 INFO spawned: 'consumer_01' with pid 29
+2017-10-04 16:30:17,169 INFO spawned: 'consumer_02' with pid 30
+2017-10-04 16:30:17,176 INFO spawned: 'consumer_03' with pid 31
+2017-10-04 16:30:17,185 INFO spawned: 'consumer_04' with pid 32
+2017-10-04 16:30:17,208 INFO spawned: 'wamp_00' with pid 33
+2017-10-04 16:30:17,229 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:30:17,242 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:30:17,253 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:30:17,261 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:30:17,286 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:30:17,299 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:30:20,305 INFO spawned: 'consumer_00' with pid 34
+2017-10-04 16:30:20,308 INFO spawned: 'consumer_01' with pid 35
+2017-10-04 16:30:20,311 INFO spawned: 'consumer_02' with pid 36
+2017-10-04 16:30:20,316 INFO spawned: 'consumer_03' with pid 37
+2017-10-04 16:30:20,319 INFO spawned: 'consumer_04' with pid 38
+2017-10-04 16:30:20,322 INFO spawned: 'wamp_00' with pid 39
+2017-10-04 16:30:20,375 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:30:20,377 INFO gave up: consumer_02 entered FATAL state, too many start retries too quickly
+2017-10-04 16:30:20,392 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:30:20,397 INFO gave up: consumer_00 entered FATAL state, too many start retries too quickly
+2017-10-04 16:30:20,410 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:30:20,412 INFO gave up: wamp_00 entered FATAL state, too many start retries too quickly
+2017-10-04 16:30:20,412 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:30:20,420 INFO gave up: consumer_01 entered FATAL state, too many start retries too quickly
+2017-10-04 16:30:20,429 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:30:20,433 INFO gave up: consumer_03 entered FATAL state, too many start retries too quickly
+2017-10-04 16:30:20,435 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:30:21,437 INFO gave up: consumer_04 entered FATAL state, too many start retries too quickly
+2017-10-04 16:33:17,362 WARN received SIGTERM indicating exit request
+2017-10-04 16:33:17,363 INFO waiting for quartz_00 to die
+2017-10-04 16:33:19,412 INFO stopped: quartz_00 (exit status 0)
+2017-10-04 16:33:31,944 CRIT Supervisor running as root (no user in config file)
+2017-10-04 16:33:31,945 WARN For [program:consumer], redirect_stderr=true but stderr_logfile has also been set to a filename, the filename has been ignored
+2017-10-04 16:33:31,946 WARN For [program:consumer], redirect_stderr=true but stderr_logfile has also been set to a filename, the filename has been ignored
+2017-10-04 16:33:31,946 WARN For [program:consumer], redirect_stderr=true but stderr_logfile has also been set to a filename, the filename has been ignored
+2017-10-04 16:33:31,947 WARN For [program:consumer], redirect_stderr=true but stderr_logfile has also been set to a filename, the filename has been ignored
+2017-10-04 16:33:31,947 WARN For [program:consumer], redirect_stderr=true but stderr_logfile has also been set to a filename, the filename has been ignored
+2017-10-04 16:33:31,948 WARN For [program:quartz], redirect_stderr=true but stderr_logfile has also been set to a filename, the filename has been ignored
+2017-10-04 16:33:31,951 INFO supervisord started with pid 1
+2017-10-04 16:33:32,954 INFO spawned: 'quartz_00' with pid 9
+2017-10-04 16:33:32,958 INFO spawned: 'consumer_00' with pid 10
+2017-10-04 16:33:32,965 INFO spawned: 'consumer_01' with pid 11
+2017-10-04 16:33:32,974 INFO spawned: 'consumer_02' with pid 12
+2017-10-04 16:33:32,981 INFO spawned: 'consumer_03' with pid 13
+2017-10-04 16:33:32,987 INFO spawned: 'consumer_04' with pid 14
+2017-10-04 16:33:32,995 INFO spawned: 'wamp_00' with pid 15
+2017-10-04 16:33:33,019 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:33:33,066 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:33:33,094 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:33:33,119 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:33:33,132 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:33:33,144 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:33:34,582 INFO success: quartz_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:33:34,584 INFO spawned: 'consumer_00' with pid 22
+2017-10-04 16:33:34,586 INFO spawned: 'consumer_01' with pid 23
+2017-10-04 16:33:34,589 INFO spawned: 'consumer_02' with pid 24
+2017-10-04 16:33:34,592 INFO spawned: 'consumer_03' with pid 25
+2017-10-04 16:33:34,602 INFO spawned: 'consumer_04' with pid 26
+2017-10-04 16:33:34,605 INFO spawned: 'wamp_00' with pid 27
+2017-10-04 16:33:34,640 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:33:34,669 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:33:34,692 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:33:34,702 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:33:34,703 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:33:34,715 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:33:36,718 INFO spawned: 'consumer_00' with pid 28
+2017-10-04 16:33:36,723 INFO spawned: 'consumer_01' with pid 29
+2017-10-04 16:33:36,726 INFO spawned: 'consumer_02' with pid 30
+2017-10-04 16:33:36,734 INFO spawned: 'consumer_03' with pid 31
+2017-10-04 16:33:36,736 INFO spawned: 'consumer_04' with pid 32
+2017-10-04 16:33:36,740 INFO spawned: 'wamp_00' with pid 33
+2017-10-04 16:33:36,792 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:33:36,806 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:33:36,807 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:33:36,831 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:33:36,832 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:33:36,843 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:33:39,850 INFO spawned: 'consumer_00' with pid 34
+2017-10-04 16:33:39,853 INFO spawned: 'consumer_01' with pid 35
+2017-10-04 16:33:39,861 INFO spawned: 'consumer_02' with pid 36
+2017-10-04 16:33:39,868 INFO spawned: 'consumer_03' with pid 37
+2017-10-04 16:33:39,871 INFO spawned: 'consumer_04' with pid 38
+2017-10-04 16:33:39,876 INFO spawned: 'wamp_00' with pid 39
+2017-10-04 16:33:39,972 INFO exited: consumer_00 (exit status 0; not expected)
+2017-10-04 16:33:40,007 INFO gave up: consumer_00 entered FATAL state, too many start retries too quickly
+2017-10-04 16:33:40,042 INFO exited: consumer_01 (exit status 0; not expected)
+2017-10-04 16:33:40,043 INFO exited: consumer_02 (exit status 0; not expected)
+2017-10-04 16:33:40,049 INFO gave up: consumer_01 entered FATAL state, too many start retries too quickly
+2017-10-04 16:33:40,050 INFO gave up: consumer_02 entered FATAL state, too many start retries too quickly
+2017-10-04 16:33:40,062 INFO exited: consumer_03 (exit status 0; not expected)
+2017-10-04 16:33:40,066 INFO gave up: consumer_03 entered FATAL state, too many start retries too quickly
+2017-10-04 16:33:40,066 INFO exited: consumer_04 (exit status 0; not expected)
+2017-10-04 16:33:40,069 INFO exited: wamp_00 (exit status 0; not expected)
+2017-10-04 16:33:41,073 INFO gave up: consumer_04 entered FATAL state, too many start retries too quickly
+2017-10-04 16:33:41,073 INFO gave up: wamp_00 entered FATAL state, too many start retries too quickly
+2017-10-04 16:34:09,916 WARN received SIGTERM indicating exit request
+2017-10-04 16:34:09,917 INFO waiting for quartz_00 to die
+2017-10-04 16:34:11,944 INFO stopped: quartz_00 (exit status 0)
+2017-10-04 16:34:24,898 CRIT Supervisor running as root (no user in config file)
+2017-10-04 16:34:24,899 WARN For [program:consumer], redirect_stderr=true but stderr_logfile has also been set to a filename, the filename has been ignored
+2017-10-04 16:34:24,900 WARN For [program:consumer], redirect_stderr=true but stderr_logfile has also been set to a filename, the filename has been ignored
+2017-10-04 16:34:24,900 WARN For [program:consumer], redirect_stderr=true but stderr_logfile has also been set to a filename, the filename has been ignored
+2017-10-04 16:34:24,901 WARN For [program:consumer], redirect_stderr=true but stderr_logfile has also been set to a filename, the filename has been ignored
+2017-10-04 16:34:24,901 WARN For [program:consumer], redirect_stderr=true but stderr_logfile has also been set to a filename, the filename has been ignored
+2017-10-04 16:34:24,905 INFO supervisord started with pid 1
+2017-10-04 16:34:25,907 INFO spawned: 'quartz_00' with pid 8
+2017-10-04 16:34:25,909 INFO spawned: 'consumer_00' with pid 9
+2017-10-04 16:34:25,912 INFO spawned: 'consumer_01' with pid 10
+2017-10-04 16:34:25,914 INFO spawned: 'consumer_02' with pid 11
+2017-10-04 16:34:25,916 INFO spawned: 'consumer_03' with pid 12
+2017-10-04 16:34:25,919 INFO spawned: 'consumer_04' with pid 13
+2017-10-04 16:34:25,923 INFO spawned: 'wamp_00' with pid 14
+2017-10-04 16:34:26,972 INFO success: quartz_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:34:26,973 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:34:26,974 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:34:26,976 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:34:26,977 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:34:26,978 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:34:26,978 INFO success: wamp_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:34:27,264 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:34:27,272 INFO spawned: 'consumer_04' with pid 51
+2017-10-04 16:34:27,275 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:34:27,276 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:34:27,278 INFO spawned: 'consumer_02' with pid 52
+2017-10-04 16:34:27,287 INFO spawned: 'consumer_03' with pid 54
+2017-10-04 16:34:27,289 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:34:27,290 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:34:27,705 INFO spawned: 'consumer_00' with pid 73
+2017-10-04 16:34:27,727 INFO spawned: 'consumer_01' with pid 74
+2017-10-04 16:34:28,194 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:34:28,330 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:34:28,330 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:34:28,363 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:34:28,374 INFO spawned: 'consumer_03' with pid 87
+2017-10-04 16:34:28,397 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:34:28,655 INFO spawned: 'consumer_02' with pid 94
+2017-10-04 16:34:28,700 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:34:28,714 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:34:28,837 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:34:28,850 INFO spawned: 'consumer_01' with pid 95
+2017-10-04 16:34:28,862 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:34:29,146 INFO spawned: 'consumer_00' with pid 108
+2017-10-04 16:34:29,254 INFO spawned: 'consumer_04' with pid 109
+2017-10-04 16:34:29,267 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:34:29,660 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:34:29,661 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:34:29,700 INFO spawned: 'consumer_02' with pid 122
+2017-10-04 16:34:29,843 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:34:29,863 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:34:29,867 INFO spawned: 'consumer_01' with pid 123
+2017-10-04 16:34:30,005 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:34:30,205 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:34:30,452 INFO spawned: 'consumer_03' with pid 136
+2017-10-04 16:34:30,554 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:34:30,729 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:34:31,070 INFO spawned: 'consumer_00' with pid 143
+2017-10-04 16:34:31,164 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:34:31,556 INFO spawned: 'consumer_02' with pid 150
+2017-10-04 16:34:31,641 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:34:32,035 INFO spawned: 'consumer_01' with pid 157
+2017-10-04 16:34:32,125 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:34:32,497 INFO spawned: 'consumer_04' with pid 164
+2017-10-04 16:34:32,581 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:34:33,147 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:34:34,150 INFO spawned: 'consumer_00' with pid 171
+2017-10-04 16:34:34,152 INFO spawned: 'consumer_02' with pid 172
+2017-10-04 16:34:34,161 INFO spawned: 'consumer_03' with pid 173
+2017-10-04 16:34:34,784 INFO spawned: 'consumer_01' with pid 192
+2017-10-04 16:34:34,903 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:34:34,953 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:34:35,031 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:34:35,450 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:34:36,453 INFO spawned: 'consumer_04' with pid 199
+2017-10-04 16:34:36,978 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:34:37,981 INFO spawned: 'consumer_02' with pid 206
+2017-10-04 16:34:37,987 INFO spawned: 'consumer_03' with pid 207
+2017-10-04 16:34:37,989 INFO gave up: consumer_04 entered FATAL state, too many start retries too quickly
+2017-10-04 16:34:38,643 INFO spawned: 'consumer_00' with pid 220
+2017-10-04 16:34:38,648 INFO spawned: 'consumer_01' with pid 221
+2017-10-04 16:34:38,772 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:34:38,800 INFO gave up: consumer_02 entered FATAL state, too many start retries too quickly
+2017-10-04 16:34:38,817 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:34:39,244 INFO gave up: consumer_03 entered FATAL state, too many start retries too quickly
+2017-10-04 16:34:39,345 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:34:39,351 INFO gave up: consumer_01 entered FATAL state, too many start retries too quickly
+2017-10-04 16:34:39,352 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:34:40,354 INFO gave up: consumer_00 entered FATAL state, too many start retries too quickly
+2017-10-04 16:35:25,656 WARN received SIGTERM indicating exit request
+2017-10-04 16:35:25,659 INFO waiting for quartz_00, wamp_00 to die
+2017-10-04 16:35:26,371 INFO stopped: wamp_00 (exit status 0)
+2017-10-04 16:35:27,396 INFO stopped: quartz_00 (exit status 0)
+2017-10-04 16:36:16,852 CRIT Supervisor running as root (no user in config file)
+2017-10-04 16:36:16,869 INFO supervisord started with pid 1
+2017-10-04 16:36:17,871 INFO spawned: 'quartz_00' with pid 9
+2017-10-04 16:36:17,875 INFO spawned: 'consumer_00' with pid 10
+2017-10-04 16:36:17,879 INFO spawned: 'consumer_01' with pid 11
+2017-10-04 16:36:17,888 INFO spawned: 'consumer_02' with pid 12
+2017-10-04 16:36:17,894 INFO spawned: 'consumer_03' with pid 13
+2017-10-04 16:36:17,897 INFO spawned: 'consumer_04' with pid 14
+2017-10-04 16:36:17,900 INFO spawned: 'wamp_00' with pid 15
+2017-10-04 16:36:18,920 INFO success: quartz_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:18,921 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:18,922 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:18,923 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:18,923 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:18,924 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:18,925 INFO success: wamp_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:19,147 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:36:19,153 INFO spawned: 'consumer_04' with pid 52
+2017-10-04 16:36:19,155 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:36:19,161 INFO spawned: 'consumer_03' with pid 53
+2017-10-04 16:36:19,181 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:36:19,192 INFO spawned: 'consumer_00' with pid 54
+2017-10-04 16:36:19,193 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:36:19,302 INFO spawned: 'consumer_01' with pid 55
+2017-10-04 16:36:19,363 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:36:20,055 INFO spawned: 'consumer_02' with pid 80
+2017-10-04 16:36:20,152 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:20,166 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:20,190 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:20,195 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:36:20,209 INFO spawned: 'consumer_04' with pid 81
+2017-10-04 16:36:20,324 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:20,347 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:36:20,350 INFO spawned: 'consumer_03' with pid 82
+2017-10-04 16:36:20,556 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:36:20,559 INFO spawned: 'consumer_01' with pid 95
+2017-10-04 16:36:20,613 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:36:21,220 INFO spawned: 'consumer_00' with pid 108
+2017-10-04 16:36:21,222 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:21,223 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:21,349 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:21,379 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:36:21,459 INFO spawned: 'consumer_04' with pid 109
+2017-10-04 16:36:21,529 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:36:21,600 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:21,613 INFO spawned: 'consumer_03' with pid 116
+2017-10-04 16:36:21,657 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:36:21,732 INFO spawned: 'consumer_02' with pid 117
+2017-10-04 16:36:21,932 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:36:22,237 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:22,241 INFO spawned: 'consumer_01' with pid 136
+2017-10-04 16:36:22,429 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:36:22,500 INFO spawned: 'consumer_00' with pid 137
+2017-10-04 16:36:22,503 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:22,619 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:22,734 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:22,735 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:36:22,841 INFO spawned: 'consumer_04' with pid 150
+2017-10-04 16:36:22,978 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:36:23,062 INFO spawned: 'consumer_03' with pid 154
+2017-10-04 16:36:23,081 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:36:23,527 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:23,528 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:23,531 INFO spawned: 'consumer_02' with pid 164
+2017-10-04 16:36:23,767 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:36:23,808 INFO spawned: 'consumer_00' with pid 165
+2017-10-04 16:36:23,840 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:23,840 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:36:23,845 INFO spawned: 'consumer_01' with pid 166
+2017-10-04 16:36:23,954 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:36:23,993 INFO spawned: 'consumer_04' with pid 173
+2017-10-04 16:36:24,208 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:24,252 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:36:24,670 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:24,672 INFO spawned: 'consumer_03' with pid 192
+2017-10-04 16:36:24,835 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:24,872 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:24,872 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:36:24,888 INFO spawned: 'consumer_02' with pid 193
+2017-10-04 16:36:24,998 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:25,045 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:36:25,050 INFO spawned: 'consumer_01' with pid 200
+2017-10-04 16:36:25,194 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:36:25,234 INFO spawned: 'consumer_00' with pid 207
+2017-10-04 16:36:25,252 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:36:25,654 INFO spawned: 'consumer_04' with pid 220
+2017-10-04 16:36:25,691 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:25,801 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:36:25,806 INFO spawned: 'consumer_03' with pid 221
+2017-10-04 16:36:25,901 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:25,918 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:36:25,926 INFO spawned: 'consumer_02' with pid 222
+2017-10-04 16:36:26,056 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:26,057 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:36:26,115 INFO spawned: 'consumer_01' with pid 229
+2017-10-04 16:36:26,136 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:36:26,699 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:26,726 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:36:26,735 INFO spawned: 'consumer_04' with pid 248
+2017-10-04 16:36:26,814 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:36:26,814 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:36:26,969 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:36:27,002 INFO spawned: 'consumer_03' with pid 255
+2017-10-04 16:36:27,011 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:36:27,378 INFO spawned: 'consumer_00' with pid 262
+2017-10-04 16:36:27,481 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:36:27,668 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:36:27,943 INFO spawned: 'consumer_02' with pid 269
+2017-10-04 16:36:28,047 INFO spawned: 'consumer_01' with pid 270
+2017-10-04 16:36:28,063 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:36:28,485 INFO spawned: 'consumer_04' with pid 283
+2017-10-04 16:36:28,577 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:36:28,712 INFO spawned: 'consumer_03' with pid 290
+2017-10-04 16:36:28,733 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:36:29,255 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:36:29,400 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:36:30,403 INFO spawned: 'consumer_00' with pid 297
+2017-10-04 16:36:30,951 INFO spawned: 'consumer_01' with pid 304
+2017-10-04 16:36:30,954 INFO spawned: 'consumer_02' with pid 305
+2017-10-04 16:36:31,086 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:36:31,592 INFO spawned: 'consumer_03' with pid 318
+2017-10-04 16:36:31,595 INFO spawned: 'consumer_04' with pid 319
+2017-10-04 16:36:31,707 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:36:31,888 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:36:32,338 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:36:32,340 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:36:34,344 INFO spawned: 'consumer_00' with pid 332
+2017-10-04 16:36:34,784 INFO spawned: 'consumer_01' with pid 339
+2017-10-04 16:36:34,884 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:36:35,285 INFO gave up: consumer_00 entered FATAL state, too many start retries too quickly
+2017-10-04 16:36:35,287 INFO spawned: 'consumer_02' with pid 346
+2017-10-04 16:36:35,372 INFO spawned: 'consumer_03' with pid 347
+2017-10-04 16:36:35,375 INFO spawned: 'consumer_04' with pid 348
+2017-10-04 16:36:35,383 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:36:35,946 INFO gave up: consumer_01 entered FATAL state, too many start retries too quickly
+2017-10-04 16:36:36,117 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:36:36,124 INFO gave up: consumer_02 entered FATAL state, too many start retries too quickly
+2017-10-04 16:36:36,187 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:36:36,198 INFO gave up: consumer_04 entered FATAL state, too many start retries too quickly
+2017-10-04 16:36:36,214 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:36:37,216 INFO gave up: consumer_03 entered FATAL state, too many start retries too quickly
+2017-10-04 16:37:18,440 WARN received SIGTERM indicating exit request
+2017-10-04 16:37:18,441 INFO waiting for quartz_00, wamp_00 to die
+2017-10-04 16:37:19,378 INFO stopped: wamp_00 (exit status 0)
+2017-10-04 16:37:20,401 INFO stopped: quartz_00 (exit status 0)
+2017-10-04 16:40:24,475 CRIT Supervisor running as root (no user in config file)
+2017-10-04 16:40:24,483 INFO supervisord started with pid 1
+2017-10-04 16:40:25,494 INFO spawned: 'quartz_00' with pid 17
+2017-10-04 16:40:25,499 INFO spawned: 'consumer_00' with pid 18
+2017-10-04 16:40:25,505 INFO spawned: 'consumer_01' with pid 19
+2017-10-04 16:40:25,514 INFO spawned: 'consumer_02' with pid 20
+2017-10-04 16:40:25,541 INFO spawned: 'consumer_03' with pid 21
+2017-10-04 16:40:25,552 INFO spawned: 'consumer_04' with pid 22
+2017-10-04 16:40:25,579 INFO spawned: 'wamp_00' with pid 23
+2017-10-04 16:40:26,549 INFO success: quartz_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:26,550 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:26,551 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:26,551 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:26,552 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:26,553 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:26,580 INFO success: wamp_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:28,594 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:40:28,605 INFO spawned: 'consumer_04' with pid 60
+2017-10-04 16:40:28,817 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:40:28,817 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:40:28,858 INFO spawned: 'consumer_00' with pid 61
+2017-10-04 16:40:28,864 INFO spawned: 'consumer_02' with pid 62
+2017-10-04 16:40:28,927 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:40:28,953 INFO spawned: 'consumer_03' with pid 63
+2017-10-04 16:40:28,955 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:40:29,961 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:29,967 INFO spawned: 'consumer_01' with pid 88
+2017-10-04 16:40:29,971 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:29,972 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:29,974 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:30,863 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:40:30,884 INFO spawned: 'consumer_04' with pid 95
+2017-10-04 16:40:30,885 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:40:30,951 INFO spawned: 'consumer_00' with pid 96
+2017-10-04 16:40:30,965 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:31,104 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:40:31,184 INFO spawned: 'consumer_03' with pid 103
+2017-10-04 16:40:31,481 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:40:31,990 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:31,998 INFO spawned: 'consumer_02' with pid 116
+2017-10-04 16:40:32,000 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:32,183 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:32,330 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:40:32,445 INFO spawned: 'consumer_01' with pid 117
+2017-10-04 16:40:32,522 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:40:32,814 INFO spawned: 'consumer_04' with pid 118
+2017-10-04 16:40:33,077 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:33,078 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:40:33,373 INFO spawned: 'consumer_00' with pid 135
+2017-10-04 16:40:33,626 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:33,729 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:40:34,590 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:34,608 INFO spawned: 'consumer_03' with pid 144
+2017-10-04 16:40:34,628 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:34,820 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:40:35,220 INFO spawned: 'consumer_01' with pid 150
+2017-10-04 16:40:35,595 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:35,732 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:40:35,793 INFO spawned: 'consumer_04' with pid 152
+2017-10-04 16:40:35,980 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:40:36,140 INFO spawned: 'consumer_02' with pid 159
+2017-10-04 16:40:36,200 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:40:36,827 INFO spawned: 'consumer_00' with pid 166
+2017-10-04 16:40:36,829 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:36,830 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:37,087 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:40:37,562 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:37,567 INFO spawned: 'consumer_03' with pid 179
+2017-10-04 16:40:37,864 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:37,979 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:40:38,023 INFO spawned: 'consumer_01' with pid 180
+2017-10-04 16:40:38,141 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:40:38,482 INFO spawned: 'consumer_04' with pid 193
+2017-10-04 16:40:38,575 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:38,638 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:40:38,747 INFO spawned: 'consumer_02' with pid 194
+2017-10-04 16:40:39,001 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:40:39,406 INFO spawned: 'consumer_00' with pid 207
+2017-10-04 16:40:39,415 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:39,675 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:39,746 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:39,753 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:40:39,769 INFO spawned: 'consumer_03' with pid 208
+2017-10-04 16:40:40,055 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:40:40,668 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:40,671 INFO spawned: 'consumer_01' with pid 221
+2017-10-04 16:40:40,827 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:40,933 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:40:40,954 INFO spawned: 'consumer_04' with pid 222
+2017-10-04 16:40:40,961 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:40:41,654 INFO spawned: 'consumer_02' with pid 235
+2017-10-04 16:40:41,793 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:41,878 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:40:41,927 INFO spawned: 'consumer_03' with pid 236
+2017-10-04 16:40:41,945 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:40:42,667 INFO spawned: 'consumer_00' with pid 249
+2017-10-04 16:40:42,669 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:42,670 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:42,969 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:42,970 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:40:42,980 INFO spawned: 'consumer_01' with pid 250
+2017-10-04 16:40:43,331 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:40:43,482 INFO spawned: 'consumer_04' with pid 263
+2017-10-04 16:40:43,687 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:43,689 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:40:43,964 INFO spawned: 'consumer_02' with pid 267
+2017-10-04 16:40:43,982 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:44,476 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:40:44,525 INFO spawned: 'consumer_00' with pid 271
+2017-10-04 16:40:44,533 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:44,534 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:40:44,933 INFO spawned: 'consumer_03' with pid 278
+2017-10-04 16:40:44,972 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:45,228 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:40:45,256 INFO spawned: 'consumer_04' with pid 285
+2017-10-04 16:40:45,266 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:40:45,431 INFO spawned: 'consumer_01' with pid 292
+2017-10-04 16:40:45,542 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:45,589 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:40:45,765 INFO spawned: 'consumer_02' with pid 303
+2017-10-04 16:40:45,932 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:45,971 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:40:46,183 INFO spawned: 'consumer_00' with pid 312
+2017-10-04 16:40:46,363 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:46,427 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:40:46,430 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:46,449 INFO spawned: 'consumer_03' with pid 313
+2017-10-04 16:40:46,551 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:40:46,559 INFO spawned: 'consumer_04' with pid 315
+2017-10-04 16:40:46,562 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:40:46,921 INFO spawned: 'consumer_01' with pid 333
+2017-10-04 16:40:46,924 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:47,118 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:40:47,254 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:47,257 INFO spawned: 'consumer_02' with pid 334
+2017-10-04 16:40:47,440 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:47,460 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:40:47,466 INFO spawned: 'consumer_00' with pid 341
+2017-10-04 16:40:47,581 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:47,583 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:40:47,595 INFO spawned: 'consumer_03' with pid 342
+2017-10-04 16:40:47,820 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:40:48,013 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:48,019 INFO spawned: 'consumer_04' with pid 361
+2017-10-04 16:40:48,196 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:40:48,343 INFO spawned: 'consumer_01' with pid 362
+2017-10-04 16:40:48,345 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:48,473 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:48,474 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:40:48,514 INFO spawned: 'consumer_02' with pid 369
+2017-10-04 16:40:48,559 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:40:48,678 INFO spawned: 'consumer_00' with pid 376
+2017-10-04 16:40:48,679 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:48,714 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:40:49,066 INFO spawned: 'consumer_03' with pid 389
+2017-10-04 16:40:49,074 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:49,235 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:40:49,248 INFO spawned: 'consumer_04' with pid 390
+2017-10-04 16:40:49,373 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:49,410 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:40:49,537 INFO spawned: 'consumer_01' with pid 401
+2017-10-04 16:40:49,557 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:49,680 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:49,696 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:40:49,703 INFO spawned: 'consumer_02' with pid 404
+2017-10-04 16:40:49,704 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:40:50,067 INFO spawned: 'consumer_00' with pid 417
+2017-10-04 16:40:50,069 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:50,256 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:50,258 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:40:50,339 INFO spawned: 'consumer_03' with pid 418
+2017-10-04 16:40:50,534 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:50,535 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:40:50,545 INFO spawned: 'consumer_04' with pid 426
+2017-10-04 16:40:50,746 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:50,765 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:40:50,779 INFO spawned: 'consumer_01' with pid 430
+2017-10-04 16:40:50,781 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:40:51,256 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:51,264 INFO spawned: 'consumer_02' with pid 446
+2017-10-04 16:40:51,411 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:51,478 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:40:51,534 INFO spawned: 'consumer_00' with pid 447
+2017-10-04 16:40:51,555 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:51,731 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:40:51,779 INFO spawned: 'consumer_03' with pid 452
+2017-10-04 16:40:51,782 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:51,936 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:40:52,059 INFO spawned: 'consumer_01' with pid 461
+2017-10-04 16:40:52,072 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:40:52,545 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:52,545 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:52,550 INFO spawned: 'consumer_04' with pid 474
+2017-10-04 16:40:52,772 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:40:52,775 INFO spawned: 'consumer_02' with pid 475
+2017-10-04 16:40:52,788 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:52,998 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:40:53,009 INFO spawned: 'consumer_00' with pid 477
+2017-10-04 16:40:53,055 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:53,223 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:40:53,223 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:40:53,824 INFO spawned: 'consumer_01' with pid 495
+2017-10-04 16:40:53,826 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:53,830 INFO spawned: 'consumer_03' with pid 496
+2017-10-04 16:40:53,837 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:53,954 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:40:53,959 INFO spawned: 'consumer_04' with pid 497
+2017-10-04 16:40:54,051 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:54,078 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:40:54,082 INFO spawned: 'consumer_00' with pid 498
+2017-10-04 16:40:54,095 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:40:54,774 INFO spawned: 'consumer_02' with pid 524
+2017-10-04 16:40:54,837 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:54,838 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:54,931 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:40:54,972 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:40:55,022 INFO spawned: 'consumer_01' with pid 525
+2017-10-04 16:40:55,161 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:55,235 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:40:55,336 INFO spawned: 'consumer_03' with pid 538
+2017-10-04 16:40:55,356 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:40:55,683 INFO spawned: 'consumer_00' with pid 545
+2017-10-04 16:40:55,804 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:55,857 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:40:56,148 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:56,152 INFO spawned: 'consumer_02' with pid 552
+2017-10-04 16:40:56,166 INFO spawned: 'consumer_04' with pid 553
+2017-10-04 16:40:56,328 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:56,383 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:40:56,452 INFO spawned: 'consumer_01' with pid 554
+2017-10-04 16:40:56,533 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:40:56,570 INFO spawned: 'consumer_03' with pid 555
+2017-10-04 16:40:56,708 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:56,709 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:40:57,268 INFO spawned: 'consumer_00' with pid 580
+2017-10-04 16:40:57,271 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:57,271 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:57,459 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:57,459 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:40:57,481 INFO spawned: 'consumer_04' with pid 585
+2017-10-04 16:40:57,581 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:57,724 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:40:57,768 INFO spawned: 'consumer_02' with pid 588
+2017-10-04 16:40:57,811 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:40:57,832 INFO spawned: 'consumer_01' with pid 589
+2017-10-04 16:40:57,834 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:40:58,155 INFO spawned: 'consumer_03' with pid 608
+2017-10-04 16:40:58,293 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:58,372 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:40:58,892 INFO spawned: 'consumer_00' with pid 615
+2017-10-04 16:40:58,896 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:58,898 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:58,899 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:59,173 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:40:59,209 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:40:59,219 INFO spawned: 'consumer_04' with pid 616
+2017-10-04 16:40:59,223 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:40:59,233 INFO spawned: 'consumer_02' with pid 617
+2017-10-04 16:40:59,241 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:40:59,350 INFO spawned: 'consumer_01' with pid 624
+2017-10-04 16:40:59,530 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:41:00,028 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:00,033 INFO spawned: 'consumer_03' with pid 643
+2017-10-04 16:41:00,207 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:41:00,243 INFO spawned: 'consumer_00' with pid 644
+2017-10-04 16:41:00,246 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:00,249 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:00,349 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:00,453 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:41:00,465 INFO spawned: 'consumer_02' with pid 645
+2017-10-04 16:41:00,467 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:41:00,496 INFO spawned: 'consumer_04' with pid 646
+2017-10-04 16:41:00,600 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:41:01,360 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:01,363 INFO spawned: 'consumer_01' with pid 671
+2017-10-04 16:41:01,367 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:01,498 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:01,499 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:01,527 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:41:01,586 INFO spawned: 'consumer_03' with pid 672
+2017-10-04 16:41:01,600 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:41:01,614 INFO spawned: 'consumer_00' with pid 674
+2017-10-04 16:41:01,757 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:41:01,797 INFO spawned: 'consumer_02' with pid 686
+2017-10-04 16:41:01,825 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:41:02,277 INFO spawned: 'consumer_04' with pid 699
+2017-10-04 16:41:02,413 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:02,476 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:41:02,491 INFO spawned: 'consumer_01' with pid 703
+2017-10-04 16:41:02,632 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:02,636 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:02,637 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:41:02,744 INFO spawned: 'consumer_03' with pid 707
+2017-10-04 16:41:02,886 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:02,985 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:41:03,042 INFO spawned: 'consumer_00' with pid 714
+2017-10-04 16:41:03,122 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:41:03,268 INFO spawned: 'consumer_02' with pid 721
+2017-10-04 16:41:03,272 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:03,487 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:03,541 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:41:03,593 INFO spawned: 'consumer_04' with pid 728
+2017-10-04 16:41:03,632 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:41:03,734 INFO spawned: 'consumer_01' with pid 730
+2017-10-04 16:41:03,735 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:03,871 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:41:04,074 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:04,077 INFO spawned: 'consumer_03' with pid 748
+2017-10-04 16:41:04,277 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:04,277 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:41:04,571 INFO spawned: 'consumer_00' with pid 755
+2017-10-04 16:41:04,619 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:04,760 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:04,823 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:41:04,832 INFO spawned: 'consumer_04' with pid 762
+2017-10-04 16:41:04,865 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:41:04,875 INFO spawned: 'consumer_02' with pid 763
+2017-10-04 16:41:04,883 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:41:04,891 INFO spawned: 'consumer_01' with pid 764
+2017-10-04 16:41:05,095 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:05,244 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:41:05,463 INFO spawned: 'consumer_03' with pid 783
+2017-10-04 16:41:05,575 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:05,591 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:41:05,652 INFO spawned: 'consumer_00' with pid 784
+2017-10-04 16:41:05,773 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:41:05,813 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:41:05,832 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:41:06,356 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:41:06,462 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:41:07,468 INFO spawned: 'consumer_00' with pid 797
+2017-10-04 16:41:07,471 INFO spawned: 'consumer_01' with pid 798
+2017-10-04 16:41:07,475 INFO spawned: 'consumer_02' with pid 799
+2017-10-04 16:41:07,478 INFO spawned: 'consumer_03' with pid 800
+2017-10-04 16:41:07,480 INFO spawned: 'consumer_04' with pid 801
+2017-10-04 16:41:08,323 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:41:08,398 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:41:08,404 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:41:08,410 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:41:08,425 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:41:10,431 INFO spawned: 'consumer_00' with pid 832
+2017-10-04 16:41:10,437 INFO spawned: 'consumer_01' with pid 833
+2017-10-04 16:41:10,440 INFO spawned: 'consumer_02' with pid 834
+2017-10-04 16:41:10,443 INFO spawned: 'consumer_03' with pid 835
+2017-10-04 16:41:10,447 INFO spawned: 'consumer_04' with pid 836
+2017-10-04 16:41:11,456 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:11,456 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:11,457 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:11,458 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:11,458 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:11,459 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:41:11,460 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:41:11,466 INFO spawned: 'consumer_00' with pid 867
+2017-10-04 16:41:11,469 INFO spawned: 'consumer_02' with pid 868
+2017-10-04 16:41:11,507 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:41:11,518 INFO spawned: 'consumer_04' with pid 869
+2017-10-04 16:41:11,520 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:41:11,526 INFO spawned: 'consumer_01' with pid 870
+2017-10-04 16:41:11,528 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:41:12,137 INFO spawned: 'consumer_03' with pid 895
+2017-10-04 16:41:12,282 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:41:12,291 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:41:12,386 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:41:12,585 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:12,603 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:41:12,801 INFO spawned: 'consumer_01' with pid 902
+2017-10-04 16:41:12,907 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:41:13,488 INFO spawned: 'consumer_00' with pid 909
+2017-10-04 16:41:13,494 INFO spawned: 'consumer_02' with pid 910
+2017-10-04 16:41:13,498 INFO spawned: 'consumer_04' with pid 911
+2017-10-04 16:41:13,634 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:41:14,336 INFO spawned: 'consumer_03' with pid 930
+2017-10-04 16:41:14,486 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:14,494 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:14,497 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:14,514 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:41:14,519 INFO spawned: 'consumer_02' with pid 931
+2017-10-04 16:41:14,520 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:41:14,525 INFO spawned: 'consumer_04' with pid 932
+2017-10-04 16:41:14,526 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:41:15,155 INFO spawned: 'consumer_00' with pid 951
+2017-10-04 16:41:15,166 INFO spawned: 'consumer_01' with pid 952
+2017-10-04 16:41:15,261 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:41:15,483 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:41:15,528 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:41:15,669 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:41:15,855 INFO spawned: 'consumer_04' with pid 965
+2017-10-04 16:41:15,974 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:41:16,050 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:41:16,512 INFO spawned: 'consumer_02' with pid 972
+2017-10-04 16:41:16,531 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:41:16,998 INFO spawned: 'consumer_00' with pid 979
+2017-10-04 16:41:17,091 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:41:17,521 INFO spawned: 'consumer_03' with pid 986
+2017-10-04 16:41:17,537 INFO spawned: 'consumer_04' with pid 987
+2017-10-04 16:41:17,633 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:41:18,130 INFO spawned: 'consumer_01' with pid 1000
+2017-10-04 16:41:18,247 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:41:18,269 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:41:18,675 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:41:19,679 INFO spawned: 'consumer_00' with pid 1007
+2017-10-04 16:41:19,684 INFO spawned: 'consumer_02' with pid 1008
+2017-10-04 16:41:20,385 INFO spawned: 'consumer_04' with pid 1021
+2017-10-04 16:41:20,556 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:41:20,567 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:41:20,950 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:41:21,954 INFO spawned: 'consumer_01' with pid 1028
+2017-10-04 16:41:21,959 INFO spawned: 'consumer_03' with pid 1029
+2017-10-04 16:41:22,758 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:41:22,796 INFO gave up: consumer_03 entered FATAL state, too many start retries too quickly
+2017-10-04 16:41:22,808 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:41:23,812 INFO spawned: 'consumer_00' with pid 1042
+2017-10-04 16:41:23,815 INFO gave up: consumer_01 entered FATAL state, too many start retries too quickly
+2017-10-04 16:41:23,820 INFO spawned: 'consumer_02' with pid 1043
+2017-10-04 16:41:24,409 INFO spawned: 'consumer_04' with pid 1056
+2017-10-04 16:41:24,520 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:41:24,529 INFO gave up: consumer_00 entered FATAL state, too many start retries too quickly
+2017-10-04 16:41:24,544 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:41:25,005 INFO gave up: consumer_02 entered FATAL state, too many start retries too quickly
+2017-10-04 16:41:25,119 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:41:26,121 INFO gave up: consumer_04 entered FATAL state, too many start retries too quickly
+2017-10-04 16:41:43,352 WARN received SIGTERM indicating exit request
+2017-10-04 16:41:43,353 INFO waiting for quartz_00, wamp_00 to die
+2017-10-04 16:41:43,716 INFO stopped: wamp_00 (exit status 0)
+2017-10-04 16:41:44,751 INFO stopped: quartz_00 (exit status 0)
+2017-10-04 16:41:58,131 CRIT Supervisor running as root (no user in config file)
+2017-10-04 16:41:58,135 INFO supervisord started with pid 1
+2017-10-04 16:41:59,138 INFO spawned: 'quartz_00' with pid 14
+2017-10-04 16:41:59,141 INFO spawned: 'consumer_00' with pid 15
+2017-10-04 16:41:59,143 INFO spawned: 'consumer_01' with pid 16
+2017-10-04 16:41:59,147 INFO spawned: 'consumer_02' with pid 17
+2017-10-04 16:41:59,151 INFO spawned: 'consumer_03' with pid 18
+2017-10-04 16:41:59,154 INFO spawned: 'consumer_04' with pid 19
+2017-10-04 16:41:59,158 INFO spawned: 'wamp_00' with pid 20
+2017-10-04 16:42:00,138 INFO success: quartz_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:42:00,139 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:42:00,153 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:42:00,155 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:42:00,156 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:42:00,156 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:42:00,157 INFO success: wamp_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:42:00,326 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:42:00,343 INFO spawned: 'consumer_00' with pid 57
+2017-10-04 16:42:00,395 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:42:00,412 INFO spawned: 'consumer_04' with pid 59
+2017-10-04 16:42:00,417 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:42:00,426 INFO spawned: 'consumer_03' with pid 60
+2017-10-04 16:42:00,454 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:42:00,524 INFO spawned: 'consumer_01' with pid 61
+2017-10-04 16:42:00,559 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:42:00,738 INFO spawned: 'consumer_02' with pid 83
+2017-10-04 16:42:01,466 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:42:01,467 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:42:01,467 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:42:01,522 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:42:01,655 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:42:01,684 INFO spawned: 'consumer_04' with pid 93
+2017-10-04 16:42:01,745 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:42:01,746 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:42:01,757 INFO spawned: 'consumer_00' with pid 94
+2017-10-04 16:42:01,795 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:42:01,809 INFO spawned: 'consumer_03' with pid 95
+2017-10-04 16:42:01,821 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:42:01,906 INFO spawned: 'consumer_01' with pid 96
+2017-10-04 16:42:02,043 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:42:02,748 INFO spawned: 'consumer_02' with pid 121
+2017-10-04 16:42:02,750 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:42:02,751 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:42:02,810 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:42:02,904 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:42:02,981 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:42:02,991 INFO spawned: 'consumer_00' with pid 123
+2017-10-04 16:42:02,992 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:42:02,993 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:42:03,038 INFO spawned: 'consumer_03' with pid 130
+2017-10-04 16:42:03,043 INFO spawned: 'consumer_04' with pid 131
+2017-10-04 16:42:03,046 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:42:03,681 INFO spawned: 'consumer_01' with pid 150
+2017-10-04 16:42:03,810 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:42:03,825 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:42:03,853 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:42:03,868 INFO spawned: 'consumer_02' with pid 151
+2017-10-04 16:42:03,988 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:42:03,994 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:42:03,996 INFO spawned: 'consumer_00' with pid 158
+2017-10-04 16:42:04,004 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:42:04,649 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:42:04,730 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:42:04,848 INFO spawned: 'consumer_03' with pid 171
+2017-10-04 16:42:04,861 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:42:05,343 INFO spawned: 'consumer_04' with pid 178
+2017-10-04 16:42:05,473 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:42:05,915 INFO spawned: 'consumer_00' with pid 185
+2017-10-04 16:42:05,920 INFO spawned: 'consumer_01' with pid 186
+2017-10-04 16:42:05,926 INFO spawned: 'consumer_02' with pid 187
+2017-10-04 16:42:06,032 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:42:06,782 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:42:06,830 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:42:06,848 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:42:07,851 INFO spawned: 'consumer_03' with pid 216
+2017-10-04 16:42:08,342 INFO spawned: 'consumer_04' with pid 223
+2017-10-04 16:42:08,436 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:42:08,862 INFO spawned: 'consumer_00' with pid 231
+2017-10-04 16:42:08,864 INFO spawned: 'consumer_01' with pid 232
+2017-10-04 16:42:08,868 INFO spawned: 'consumer_02' with pid 233
+2017-10-04 16:42:08,972 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:42:09,612 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:42:09,632 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:42:09,720 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:42:11,726 INFO spawned: 'consumer_03' with pid 252
+2017-10-04 16:42:12,138 INFO spawned: 'consumer_04' with pid 259
+2017-10-04 16:42:12,301 INFO exited: consumer_03 (exit status 255; not expected)
+2017-10-04 16:42:12,578 INFO gave up: consumer_03 entered FATAL state, too many start retries too quickly
+2017-10-04 16:42:12,649 INFO spawned: 'consumer_01' with pid 266
+2017-10-04 16:42:12,654 INFO spawned: 'consumer_02' with pid 267
+2017-10-04 16:42:12,660 INFO exited: consumer_04 (exit status 255; not expected)
+2017-10-04 16:42:13,173 INFO spawned: 'consumer_00' with pid 280
+2017-10-04 16:42:13,177 INFO gave up: consumer_04 entered FATAL state, too many start retries too quickly
+2017-10-04 16:42:13,296 INFO exited: consumer_01 (exit status 255; not expected)
+2017-10-04 16:42:13,301 INFO gave up: consumer_01 entered FATAL state, too many start retries too quickly
+2017-10-04 16:42:13,314 INFO exited: consumer_02 (exit status 255; not expected)
+2017-10-04 16:42:13,666 INFO gave up: consumer_02 entered FATAL state, too many start retries too quickly
+2017-10-04 16:42:13,751 INFO exited: consumer_00 (exit status 255; not expected)
+2017-10-04 16:42:14,753 INFO gave up: consumer_00 entered FATAL state, too many start retries too quickly
+2017-10-04 16:43:43,858 WARN received SIGTERM indicating exit request
+2017-10-04 16:43:43,860 INFO waiting for quartz_00, wamp_00 to die
+2017-10-04 16:43:44,732 INFO stopped: wamp_00 (exit status 0)
+2017-10-04 16:43:45,761 INFO stopped: quartz_00 (exit status 0)
+2017-10-04 16:44:16,642 CRIT Supervisor running as root (no user in config file)
+2017-10-04 16:44:16,646 INFO supervisord started with pid 1
+2017-10-04 16:44:17,649 INFO spawned: 'quartz_00' with pid 14
+2017-10-04 16:44:17,652 INFO spawned: 'consumer_00' with pid 15
+2017-10-04 16:44:17,656 INFO spawned: 'consumer_01' with pid 16
+2017-10-04 16:44:17,660 INFO spawned: 'consumer_02' with pid 17
+2017-10-04 16:44:17,667 INFO spawned: 'consumer_03' with pid 18
+2017-10-04 16:44:17,670 INFO spawned: 'consumer_04' with pid 19
+2017-10-04 16:44:17,673 INFO spawned: 'wamp_00' with pid 20
+2017-10-04 16:44:19,043 INFO success: quartz_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:19,044 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:19,044 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:19,045 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:19,046 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:19,047 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:19,048 INFO success: wamp_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:22,350 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:22,397 INFO spawned: 'consumer_02' with pid 57
+2017-10-04 16:44:22,546 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:44:22,569 INFO spawned: 'consumer_04' with pid 58
+2017-10-04 16:44:22,675 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:22,701 INFO spawned: 'consumer_01' with pid 59
+2017-10-04 16:44:22,703 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:44:22,758 INFO spawned: 'consumer_00' with pid 60
+2017-10-04 16:44:22,803 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:23,634 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:23,638 INFO spawned: 'consumer_03' with pid 85
+2017-10-04 16:44:23,639 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:23,773 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:23,774 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:23,812 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:44:23,813 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:23,834 INFO spawned: 'consumer_01' with pid 86
+2017-10-04 16:44:23,842 INFO spawned: 'consumer_04' with pid 87
+2017-10-04 16:44:23,999 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:24,120 INFO spawned: 'consumer_02' with pid 100
+2017-10-04 16:44:24,265 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:44:24,991 INFO spawned: 'consumer_00' with pid 113
+2017-10-04 16:44:24,994 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:24,995 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:24,996 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:25,129 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:25,174 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:25,177 INFO spawned: 'consumer_03' with pid 114
+2017-10-04 16:44:25,180 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:44:25,185 INFO spawned: 'consumer_04' with pid 115
+2017-10-04 16:44:25,297 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:25,351 INFO spawned: 'consumer_01' with pid 129
+2017-10-04 16:44:25,514 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:25,961 INFO spawned: 'consumer_02' with pid 142
+2017-10-04 16:44:25,990 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:26,088 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:26,254 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:26,352 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:26,399 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:44:26,437 INFO spawned: 'consumer_00' with pid 143
+2017-10-04 16:44:26,505 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:26,598 INFO spawned: 'consumer_01' with pid 151
+2017-10-04 16:44:26,640 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:44:27,097 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:27,100 INFO spawned: 'consumer_03' with pid 164
+2017-10-04 16:44:27,104 INFO spawned: 'consumer_04' with pid 165
+2017-10-04 16:44:27,206 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:27,277 INFO spawned: 'consumer_02' with pid 166
+2017-10-04 16:44:27,440 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:27,442 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:44:27,512 INFO spawned: 'consumer_00' with pid 185
+2017-10-04 16:44:27,613 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:27,638 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:27,972 INFO spawned: 'consumer_01' with pid 192
+2017-10-04 16:44:28,080 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:28,124 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:28,125 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:28,180 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:28,341 INFO spawned: 'consumer_03' with pid 199
+2017-10-04 16:44:28,343 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:44:28,355 INFO spawned: 'consumer_04' with pid 200
+2017-10-04 16:44:28,461 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:44:28,728 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:29,073 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:29,086 INFO spawned: 'consumer_02' with pid 213
+2017-10-04 16:44:29,173 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:44:29,915 INFO spawned: 'consumer_00' with pid 220
+2017-10-04 16:44:29,923 INFO spawned: 'consumer_01' with pid 221
+2017-10-04 16:44:30,098 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:30,106 INFO spawned: 'consumer_03' with pid 222
+2017-10-04 16:44:30,156 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:30,889 INFO spawned: 'consumer_02' with pid 241
+2017-10-04 16:44:30,896 INFO spawned: 'consumer_04' with pid 242
+2017-10-04 16:44:30,927 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:30,927 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:31,031 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:31,041 INFO spawned: 'consumer_01' with pid 243
+2017-10-04 16:44:31,044 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:44:31,117 INFO spawned: 'consumer_00' with pid 244
+2017-10-04 16:44:31,119 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:31,261 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:32,037 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:32,038 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:32,041 INFO spawned: 'consumer_03' with pid 269
+2017-10-04 16:44:32,043 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:32,117 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:32,298 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:32,323 INFO spawned: 'consumer_02' with pid 270
+2017-10-04 16:44:32,325 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:32,364 INFO spawned: 'consumer_01' with pid 274
+2017-10-04 16:44:32,395 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:44:32,430 INFO spawned: 'consumer_04' with pid 278
+2017-10-04 16:44:32,612 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:44:33,466 INFO spawned: 'consumer_00' with pid 297
+2017-10-04 16:44:33,467 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:33,468 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:33,469 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:33,470 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:33,611 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:33,628 INFO spawned: 'consumer_03' with pid 298
+2017-10-04 16:44:33,836 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:33,883 INFO spawned: 'consumer_01' with pid 305
+2017-10-04 16:44:33,941 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:34,558 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:34,562 INFO spawned: 'consumer_02' with pid 318
+2017-10-04 16:44:34,645 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:34,674 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:44:34,800 INFO spawned: 'consumer_00' with pid 323
+2017-10-04 16:44:34,911 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:34,968 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:35,023 INFO spawned: 'consumer_03' with pid 326
+2017-10-04 16:44:35,043 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:35,640 INFO spawned: 'consumer_01' with pid 339
+2017-10-04 16:44:35,642 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:35,804 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:35,829 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:35,908 INFO spawned: 'consumer_02' with pid 340
+2017-10-04 16:44:35,933 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:44:36,119 INFO spawned: 'consumer_00' with pid 352
+2017-10-04 16:44:36,120 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:36,274 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:36,888 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:36,892 INFO spawned: 'consumer_03' with pid 360
+2017-10-04 16:44:36,909 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:37,032 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:44:37,104 INFO spawned: 'consumer_04' with pid 361
+2017-10-04 16:44:37,117 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:37,148 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:37,216 INFO spawned: 'consumer_01' with pid 368
+2017-10-04 16:44:37,244 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:37,291 INFO spawned: 'consumer_02' with pid 369
+2017-10-04 16:44:37,702 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:44:38,315 INFO spawned: 'consumer_00' with pid 388
+2017-10-04 16:44:38,321 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:38,324 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:38,325 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:38,328 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:38,554 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:38,594 INFO spawned: 'consumer_03' with pid 389
+2017-10-04 16:44:38,622 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:44:38,687 INFO spawned: 'consumer_04' with pid 396
+2017-10-04 16:44:38,887 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:38,905 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:39,484 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:39,491 INFO spawned: 'consumer_01' with pid 409
+2017-10-04 16:44:39,497 INFO spawned: 'consumer_02' with pid 410
+2017-10-04 16:44:39,600 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:39,647 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:39,709 INFO spawned: 'consumer_03' with pid 411
+2017-10-04 16:44:39,710 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:39,745 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:44:39,836 INFO spawned: 'consumer_00' with pid 424
+2017-10-04 16:44:39,964 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:44:40,558 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:40,566 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:40,571 INFO spawned: 'consumer_04' with pid 437
+2017-10-04 16:44:40,733 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:40,734 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:40,773 INFO spawned: 'consumer_01' with pid 438
+2017-10-04 16:44:40,820 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:41,040 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:41,046 INFO spawned: 'consumer_02' with pid 445
+2017-10-04 16:44:41,221 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:41,284 INFO spawned: 'consumer_03' with pid 452
+2017-10-04 16:44:41,305 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:44:41,627 INFO spawned: 'consumer_00' with pid 465
+2017-10-04 16:44:41,629 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:41,756 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:44:41,841 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:41,846 INFO spawned: 'consumer_04' with pid 466
+2017-10-04 16:44:42,047 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:42,048 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:42,065 INFO spawned: 'consumer_01' with pid 473
+2017-10-04 16:44:42,182 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:42,337 INFO spawned: 'consumer_02' with pid 480
+2017-10-04 16:44:42,341 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:42,480 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:42,631 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:42,636 INFO spawned: 'consumer_03' with pid 493
+2017-10-04 16:44:42,834 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:44:42,911 INFO spawned: 'consumer_00' with pid 500
+2017-10-04 16:44:42,912 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:43,084 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:43,115 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:44:43,142 INFO spawned: 'consumer_04' with pid 501
+2017-10-04 16:44:43,160 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:43,405 INFO spawned: 'consumer_01' with pid 508
+2017-10-04 16:44:43,407 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:43,550 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:43,796 INFO spawned: 'consumer_02' with pid 521
+2017-10-04 16:44:43,796 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:43,948 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:43,993 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:44,058 INFO spawned: 'consumer_03' with pid 522
+2017-10-04 16:44:44,159 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:44,182 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:44:44,267 INFO spawned: 'consumer_00' with pid 529
+2017-10-04 16:44:44,403 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:44,429 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:44:44,433 INFO spawned: 'consumer_04' with pid 536
+2017-10-04 16:44:44,434 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:44,985 INFO spawned: 'consumer_01' with pid 549
+2017-10-04 16:44:44,986 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:45,071 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:45,172 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:45,178 INFO spawned: 'consumer_02' with pid 550
+2017-10-04 16:44:45,206 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:45,269 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:45,271 INFO spawned: 'consumer_03' with pid 551
+2017-10-04 16:44:45,408 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:44:45,410 INFO spawned: 'consumer_00' with pid 558
+2017-10-04 16:44:45,437 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:45,562 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:44:45,941 INFO spawned: 'consumer_04' with pid 577
+2017-10-04 16:44:46,064 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:46,100 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:46,175 INFO spawned: 'consumer_01' with pid 584
+2017-10-04 16:44:46,176 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:46,203 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:46,207 INFO spawned: 'consumer_02' with pid 585
+2017-10-04 16:44:46,287 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:46,308 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:46,326 INFO spawned: 'consumer_03' with pid 586
+2017-10-04 16:44:46,328 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:44:46,833 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:44:47,137 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:47,214 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:44:47,215 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:47,221 INFO spawned: 'consumer_02' with pid 605
+2017-10-04 16:44:47,248 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:47,754 INFO spawned: 'consumer_00' with pid 612
+2017-10-04 16:44:47,840 INFO spawned: 'consumer_04' with pid 613
+2017-10-04 16:44:47,841 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:48,389 INFO spawned: 'consumer_01' with pid 626
+2017-10-04 16:44:48,393 INFO spawned: 'consumer_03' with pid 627
+2017-10-04 16:44:48,477 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:44:48,604 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:44:49,122 INFO spawned: 'consumer_02' with pid 640
+2017-10-04 16:44:49,217 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:49,219 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:49,781 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:50,784 INFO spawned: 'consumer_00' with pid 647
+2017-10-04 16:44:50,789 INFO spawned: 'consumer_04' with pid 648
+2017-10-04 16:44:51,485 INFO spawned: 'consumer_01' with pid 661
+2017-10-04 16:44:51,487 INFO spawned: 'consumer_03' with pid 662
+2017-10-04 16:44:51,615 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:44:51,693 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:44:52,206 INFO spawned: 'consumer_02' with pid 675
+2017-10-04 16:44:52,325 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:52,381 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:52,901 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:54,906 INFO spawned: 'consumer_00' with pid 682
+2017-10-04 16:44:54,909 INFO spawned: 'consumer_04' with pid 683
+2017-10-04 16:44:55,483 INFO spawned: 'consumer_01' with pid 696
+2017-10-04 16:44:55,493 INFO spawned: 'consumer_03' with pid 697
+2017-10-04 16:44:55,574 INFO exited: consumer_00 (exit status 1; not expected)
+2017-10-04 16:44:55,616 INFO gave up: consumer_00 entered FATAL state, too many start retries too quickly
+2017-10-04 16:44:55,636 INFO exited: consumer_04 (exit status 1; not expected)
+2017-10-04 16:44:56,184 INFO spawned: 'consumer_02' with pid 710
+2017-10-04 16:44:56,186 INFO gave up: consumer_04 entered FATAL state, too many start retries too quickly
+2017-10-04 16:44:56,265 INFO exited: consumer_01 (exit status 1; not expected)
+2017-10-04 16:44:56,267 INFO gave up: consumer_01 entered FATAL state, too many start retries too quickly
+2017-10-04 16:44:56,395 INFO exited: consumer_03 (exit status 1; not expected)
+2017-10-04 16:44:56,753 INFO gave up: consumer_03 entered FATAL state, too many start retries too quickly
+2017-10-04 16:44:56,832 INFO exited: consumer_02 (exit status 1; not expected)
+2017-10-04 16:44:57,834 INFO gave up: consumer_02 entered FATAL state, too many start retries too quickly
+2017-10-04 16:44:59,602 WARN received SIGTERM indicating exit request
+2017-10-04 16:44:59,604 INFO waiting for quartz_00, wamp_00 to die
+2017-10-04 16:45:00,082 INFO stopped: wamp_00 (exit status 0)
+2017-10-04 16:45:01,139 INFO stopped: quartz_00 (exit status 0)
+2017-10-04 16:45:14,419 CRIT Supervisor running as root (no user in config file)
+2017-10-04 16:45:14,423 INFO supervisord started with pid 1
+2017-10-04 16:45:15,426 INFO spawned: 'quartz_00' with pid 16
+2017-10-04 16:45:15,430 INFO spawned: 'consumer_00' with pid 17
+2017-10-04 16:45:15,435 INFO spawned: 'consumer_01' with pid 18
+2017-10-04 16:45:15,440 INFO spawned: 'consumer_02' with pid 19
+2017-10-04 16:45:15,443 INFO spawned: 'consumer_03' with pid 20
+2017-10-04 16:45:15,450 INFO spawned: 'consumer_04' with pid 21
+2017-10-04 16:45:15,452 INFO spawned: 'wamp_00' with pid 22
+2017-10-04 16:45:16,429 INFO success: quartz_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:45:16,431 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:45:16,433 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:45:16,444 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:45:16,445 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:45:16,452 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:45:16,453 INFO success: wamp_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:50:16,549 INFO exited: consumer_00 (exit status 0; expected)
+2017-10-04 16:50:16,707 INFO spawned: 'consumer_00' with pid 59
+2017-10-04 16:50:16,755 INFO exited: consumer_04 (exit status 0; expected)
+2017-10-04 16:50:16,762 INFO spawned: 'consumer_04' with pid 60
+2017-10-04 16:50:16,763 INFO exited: consumer_03 (exit status 0; expected)
+2017-10-04 16:50:16,804 INFO spawned: 'consumer_03' with pid 61
+2017-10-04 16:50:16,806 INFO exited: consumer_01 (exit status 0; expected)
+2017-10-04 16:50:16,824 INFO spawned: 'consumer_01' with pid 65
+2017-10-04 16:50:16,826 INFO exited: consumer_02 (exit status 0; expected)
+2017-10-04 16:50:17,460 INFO spawned: 'consumer_02' with pid 87
+2017-10-04 16:50:17,963 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:50:17,964 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:50:17,965 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:50:17,966 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 16:50:18,983 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:09:07,918 INFO exited: consumer_02 (exit status 0; expected)
+2017-10-04 17:09:07,957 INFO spawned: 'consumer_02' with pid 94
+2017-10-04 17:09:07,976 INFO exited: consumer_04 (exit status 0; expected)
+2017-10-04 17:09:07,976 INFO exited: consumer_01 (exit status 0; expected)
+2017-10-04 17:09:07,987 INFO spawned: 'consumer_01' with pid 95
+2017-10-04 17:09:08,016 INFO spawned: 'consumer_04' with pid 96
+2017-10-04 17:09:08,047 INFO exited: consumer_03 (exit status 0; expected)
+2017-10-04 17:09:08,051 INFO spawned: 'consumer_03' with pid 97
+2017-10-04 17:09:08,053 INFO exited: consumer_00 (exit status 0; expected)
+2017-10-04 17:09:09,057 INFO spawned: 'consumer_00' with pid 122
+2017-10-04 17:09:09,058 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:09:09,058 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:09:09,059 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:09:09,059 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:09:10,768 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:20:55,092 INFO exited: consumer_03 (exit status 0; expected)
+2017-10-04 17:20:55,109 INFO spawned: 'consumer_03' with pid 129
+2017-10-04 17:20:55,119 INFO exited: consumer_01 (exit status 0; expected)
+2017-10-04 17:20:55,137 INFO spawned: 'consumer_01' with pid 130
+2017-10-04 17:20:55,138 INFO exited: consumer_04 (exit status 0; expected)
+2017-10-04 17:20:55,158 INFO spawned: 'consumer_04' with pid 131
+2017-10-04 17:20:55,189 INFO exited: consumer_02 (exit status 0; expected)
+2017-10-04 17:20:55,203 INFO spawned: 'consumer_02' with pid 132
+2017-10-04 17:20:55,232 INFO exited: consumer_00 (exit status 0; expected)
+2017-10-04 17:20:56,006 INFO spawned: 'consumer_00' with pid 157
+2017-10-04 17:20:56,125 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:20:56,146 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:20:56,159 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:20:56,197 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:20:57,655 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:25:56,073 INFO exited: consumer_03 (exit status 0; expected)
+2017-10-04 17:25:56,074 INFO exited: consumer_02 (exit status 0; expected)
+2017-10-04 17:25:56,131 INFO spawned: 'consumer_02' with pid 164
+2017-10-04 17:25:56,137 INFO spawned: 'consumer_03' with pid 165
+2017-10-04 17:25:56,146 INFO exited: consumer_04 (exit status 0; expected)
+2017-10-04 17:25:56,328 INFO spawned: 'consumer_04' with pid 178
+2017-10-04 17:25:56,352 INFO exited: consumer_01 (exit status 0; expected)
+2017-10-04 17:25:56,645 INFO spawned: 'consumer_01' with pid 185
+2017-10-04 17:25:56,674 INFO exited: consumer_00 (exit status 0; expected)
+2017-10-04 17:25:56,704 INFO spawned: 'consumer_00' with pid 186
+2017-10-04 17:25:57,138 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:25:57,139 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:25:58,255 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:25:58,256 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:25:58,257 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:30:56,805 INFO exited: consumer_02 (exit status 0; expected)
+2017-10-04 17:30:56,874 INFO spawned: 'consumer_02' with pid 199
+2017-10-04 17:30:56,898 INFO exited: consumer_03 (exit status 0; expected)
+2017-10-04 17:30:57,072 INFO spawned: 'consumer_03' with pid 206
+2017-10-04 17:30:57,092 INFO exited: consumer_04 (exit status 0; expected)
+2017-10-04 17:30:57,180 INFO spawned: 'consumer_04' with pid 211
+2017-10-04 17:30:57,206 INFO exited: consumer_01 (exit status 0; expected)
+2017-10-04 17:30:57,416 INFO spawned: 'consumer_01' with pid 220
+2017-10-04 17:30:57,443 INFO exited: consumer_00 (exit status 0; expected)
+2017-10-04 17:30:57,449 INFO spawned: 'consumer_00' with pid 221
+2017-10-04 17:30:57,976 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:30:58,106 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:30:59,171 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:30:59,172 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:30:59,173 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:35:57,447 INFO exited: consumer_02 (exit status 0; expected)
+2017-10-04 17:35:57,924 INFO spawned: 'consumer_02' with pid 234
+2017-10-04 17:35:57,948 INFO exited: consumer_03 (exit status 0; expected)
+2017-10-04 17:35:58,030 INFO spawned: 'consumer_03' with pid 241
+2017-10-04 17:35:58,052 INFO exited: consumer_04 (exit status 0; expected)
+2017-10-04 17:35:58,123 INFO spawned: 'consumer_04' with pid 242
+2017-10-04 17:35:58,142 INFO exited: consumer_01 (exit status 0; expected)
+2017-10-04 17:35:58,323 INFO spawned: 'consumer_01' with pid 255
+2017-10-04 17:35:58,340 INFO exited: consumer_00 (exit status 0; expected)
+2017-10-04 17:35:58,620 INFO spawned: 'consumer_00' with pid 262
+2017-10-04 17:35:58,938 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:35:59,165 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:35:59,166 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:36:00,188 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:36:00,189 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:40:58,697 INFO exited: consumer_03 (exit status 0; expected)
+2017-10-04 17:40:58,786 INFO spawned: 'consumer_03' with pid 269
+2017-10-04 17:40:58,815 INFO exited: consumer_02 (exit status 0; expected)
+2017-10-04 17:40:58,939 INFO spawned: 'consumer_02' with pid 276
+2017-10-04 17:40:58,964 INFO exited: consumer_04 (exit status 0; expected)
+2017-10-04 17:40:59,076 INFO spawned: 'consumer_04' with pid 277
+2017-10-04 17:40:59,119 INFO exited: consumer_01 (exit status 0; expected)
+2017-10-04 17:40:59,339 INFO spawned: 'consumer_01' with pid 290
+2017-10-04 17:40:59,383 INFO exited: consumer_00 (exit status 0; expected)
+2017-10-04 17:40:59,586 INFO spawned: 'consumer_00' with pid 297
+2017-10-04 17:40:59,923 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:40:59,946 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:41:00,318 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:41:00,338 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-04 17:41:01,580 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:14:24,322 INFO exited: consumer_00 (exit status 0; expected)
+2017-10-05 08:14:24,327 INFO exited: consumer_01 (exit status 0; expected)
+2017-10-05 08:14:24,333 INFO exited: consumer_03 (exit status 0; expected)
+2017-10-05 08:14:24,373 INFO spawned: 'consumer_00' with pid 305
+2017-10-05 08:14:24,376 INFO spawned: 'consumer_01' with pid 306
+2017-10-05 08:14:24,383 INFO spawned: 'consumer_03' with pid 307
+2017-10-05 08:14:24,395 INFO exited: consumer_02 (exit status 0; expected)
+2017-10-05 08:14:24,400 INFO exited: consumer_04 (exit status 0; expected)
+2017-10-05 08:14:25,406 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:14:25,406 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:14:25,409 INFO spawned: 'consumer_02' with pid 326
+2017-10-05 08:14:25,412 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:14:25,416 INFO spawned: 'consumer_04' with pid 327
+2017-10-05 08:14:27,294 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:14:27,295 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:19:25,789 INFO exited: consumer_00 (exit status 0; expected)
+2017-10-05 08:19:25,792 INFO exited: consumer_01 (exit status 0; expected)
+2017-10-05 08:19:25,793 INFO exited: consumer_03 (exit status 0; expected)
+2017-10-05 08:19:26,271 INFO spawned: 'consumer_00' with pid 340
+2017-10-05 08:19:26,278 INFO spawned: 'consumer_01' with pid 341
+2017-10-05 08:19:26,283 INFO spawned: 'consumer_03' with pid 342
+2017-10-05 08:19:26,310 INFO exited: consumer_04 (exit status 0; expected)
+2017-10-05 08:19:26,422 INFO spawned: 'consumer_04' with pid 343
+2017-10-05 08:19:26,451 INFO exited: consumer_02 (exit status 0; expected)
+2017-10-05 08:19:27,334 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:19:27,335 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:19:27,338 INFO spawned: 'consumer_02' with pid 368
+2017-10-05 08:19:27,339 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:19:27,433 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:19:28,902 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:24:27,365 INFO exited: consumer_01 (exit status 0; expected)
+2017-10-05 08:24:27,369 INFO spawned: 'consumer_01' with pid 375
+2017-10-05 08:24:27,387 INFO exited: consumer_03 (exit status 0; expected)
+2017-10-05 08:24:27,393 INFO spawned: 'consumer_03' with pid 376
+2017-10-05 08:24:27,394 INFO exited: consumer_00 (exit status 0; expected)
+2017-10-05 08:24:27,448 INFO spawned: 'consumer_00' with pid 377
+2017-10-05 08:24:27,463 INFO exited: consumer_04 (exit status 0; expected)
+2017-10-05 08:24:28,046 INFO spawned: 'consumer_04' with pid 396
+2017-10-05 08:24:28,092 INFO exited: consumer_02 (exit status 0; expected)
+2017-10-05 08:24:28,111 INFO spawned: 'consumer_02' with pid 397
+2017-10-05 08:24:28,627 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:24:28,628 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:24:28,629 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:24:29,684 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:24:29,685 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:29:28,177 INFO exited: consumer_03 (exit status 0; expected)
+2017-10-05 08:29:28,215 INFO spawned: 'consumer_03' with pid 410
+2017-10-05 08:29:28,243 INFO exited: consumer_01 (exit status 0; expected)
+2017-10-05 08:29:28,336 INFO spawned: 'consumer_01' with pid 411
+2017-10-05 08:29:28,357 INFO exited: consumer_00 (exit status 0; expected)
+2017-10-05 08:29:28,695 INFO spawned: 'consumer_00' with pid 424
+2017-10-05 08:29:28,727 INFO exited: consumer_02 (exit status 0; expected)
+2017-10-05 08:29:28,742 INFO spawned: 'consumer_02' with pid 425
+2017-10-05 08:29:28,745 INFO exited: consumer_04 (exit status 0; expected)
+2017-10-05 08:29:28,952 INFO spawned: 'consumer_04' with pid 438
+2017-10-05 08:29:29,583 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:29:29,584 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:29:29,804 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:29:29,804 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:29:30,830 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:34:28,975 INFO exited: consumer_03 (exit status 0; expected)
+2017-10-05 08:34:29,266 INFO spawned: 'consumer_03' with pid 445
+2017-10-05 08:34:29,284 INFO exited: consumer_01 (exit status 0; expected)
+2017-10-05 08:34:29,615 INFO spawned: 'consumer_01' with pid 452
+2017-10-05 08:34:29,636 INFO exited: consumer_02 (exit status 0; expected)
+2017-10-05 08:34:29,666 INFO spawned: 'consumer_02' with pid 453
+2017-10-05 08:34:29,695 INFO exited: consumer_00 (exit status 0; expected)
+2017-10-05 08:34:29,818 INFO spawned: 'consumer_00' with pid 461
+2017-10-05 08:34:29,870 INFO exited: consumer_04 (exit status 0; expected)
+2017-10-05 08:34:29,873 INFO spawned: 'consumer_04' with pid 467
+2017-10-05 08:34:30,455 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:34:30,690 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:34:30,691 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:34:30,817 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:34:31,824 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:39:30,068 INFO exited: consumer_03 (exit status 0; expected)
+2017-10-05 08:39:30,607 INFO spawned: 'consumer_03' with pid 480
+2017-10-05 08:39:30,630 INFO exited: consumer_02 (exit status 0; expected)
+2017-10-05 08:39:30,697 INFO spawned: 'consumer_02' with pid 481
+2017-10-05 08:39:30,716 INFO exited: consumer_04 (exit status 0; expected)
+2017-10-05 08:39:30,724 INFO spawned: 'consumer_04' with pid 485
+2017-10-05 08:39:30,727 INFO exited: consumer_01 (exit status 0; expected)
+2017-10-05 08:39:30,958 INFO spawned: 'consumer_01' with pid 501
+2017-10-05 08:39:30,978 INFO exited: consumer_00 (exit status 0; expected)
+2017-10-05 08:39:31,396 INFO spawned: 'consumer_00' with pid 508
+2017-10-05 08:39:31,698 INFO success: consumer_02 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:39:31,699 INFO success: consumer_03 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:39:31,996 INFO success: consumer_01 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:39:31,997 INFO success: consumer_04 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:39:33,016 INFO success: consumer_00 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2017-10-05 08:41:42,422 WARN received SIGTERM indicating exit request
+2017-10-05 08:41:42,424 INFO waiting for quartz_00, consumer_00, consumer_01, consumer_02, consumer_03, consumer_04, wamp_00 to die
+2017-10-05 08:41:42,640 INFO stopped: wamp_00 (exit status 0)
+2017-10-05 08:41:42,692 INFO stopped: consumer_00 (exit status 0)
+2017-10-05 08:41:42,789 INFO stopped: consumer_01 (exit status 0)
+2017-10-05 08:41:43,230 INFO stopped: consumer_04 (exit status 0)
+2017-10-05 08:41:43,232 INFO stopped: consumer_03 (exit status 0)
+2017-10-05 08:41:43,233 INFO stopped: consumer_02 (exit status 0)
+2017-10-05 08:41:43,370 INFO stopped: quartz_00 (exit status 0)

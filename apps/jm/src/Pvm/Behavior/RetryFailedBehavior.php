@@ -1,19 +1,20 @@
 <?php
 namespace App\Pvm\Behavior;
 
+use App\Infra\Pvm\NotAllowedTransitionException;
+use App\Model\Job;
+use App\Model\JobAction;
+use App\Model\PvmToken;
+use App\Service\ChangeJobStateService;
 use App\Topics;
-use App\JobStatus;
 use App\Model\JobResult;
-use App\Model\Process;
 use App\Storage\JobStorage;
 use App\Storage\ProcessExecutionStorage;
-use Comrade\Shared\Model\Job;
 use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Token;
-use function Makasim\Values\get_value;
+use Formapro\Pvm\Transition;
 use function Makasim\Values\get_values;
-use function Makasim\Values\set_value;
 
 class RetryFailedBehavior implements Behavior
 {
@@ -33,48 +34,61 @@ class RetryFailedBehavior implements Behavior
     private $producer;
 
     /**
-     * @param ProcessExecutionStorage $processExecutionStorage
-     * @param JobStorage              $jobStorage
-     * @param ProducerInterface       $producer
+     * @var ChangeJobStateService
      */
+    private $changeJobStateService;
+
     public function __construct(
         ProcessExecutionStorage $processExecutionStorage,
         JobStorage $jobStorage,
-        ProducerInterface $producer
+        ProducerInterface $producer,
+        ChangeJobStateService $changeJobStateService
     ) {
         $this->processExecutionStorage = $processExecutionStorage;
         $this->jobStorage = $jobStorage;
         $this->producer = $producer;
+        $this->changeJobStateService = $changeJobStateService;
     }
 
     /**
+     * @param PvmToken $token
+     *
      * {@inheritdoc}
      */
     public function execute(Token $token)
     {
-        /** @var Process $process */
-        $process = $token->getProcess();
+        try {
+            /** @var Job $job */
+            $job = $this->changeJobStateService->change($token->getJobId(), JobAction::RETRY, function(Job $job, Transition $transition) {
+                $result = JobResult::createFor($transition->getTo()->getLabel());
+                $job->addResult($result);
+                $job->setCurrentResult($result);
 
-        return $this->jobStorage->lockByJobId($process->getTokenJobId($token), function(Job $job) use ($token) {
-            if (false == $job->getCurrentResult()->isFailed()) {
-                return ['complete'];
-            }
+                $job->getRetryFailedPolicy()->incrementRetryAttempts();
 
-            $retryLimit = $job->getRetryFailedPolicy()->getRetryLimit();
+                return $job;
+            });
+        } catch (NotAllowedTransitionException $e) {
+            return 'finalize';
+        }
 
-            $retryAttempts = get_value($job, 'retryAttempts', 0);
-            if ($retryAttempts > $retryLimit) {
-                return ['failed'];
-            }
+        $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
+        $retryPolicy = $job->getRetryFailedPolicy();
+        if ($retryPolicy->getRetryAttempts() <= $retryPolicy->getRetryLimit()) {
+            return $job->getCurrentResult()->getStatus();
+        }
 
-            $jobResult = JobResult::createFor(JobStatus::STATUS_NEW);
-            set_value($job, 'retryAttempts', ++$retryAttempts);
-            $job->addResult($jobResult);
-            $job->setCurrentResult($jobResult);
-            $this->jobStorage->update($job);
-            $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
+        /** @var Job $job */
+        $job = $this->changeJobStateService->changeInFlow($job->getId(), JobAction::FAIL, function(Job $job, Transition $transition) {
+            $result = JobResult::createFor($transition->getTo()->getLabel());
+            $job->addResult($result);
+            $job->setCurrentResult($result);
 
-            return ['retry'];
+            return $job;
         });
+
+        $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
+
+        return 'finalize';
     }
 }

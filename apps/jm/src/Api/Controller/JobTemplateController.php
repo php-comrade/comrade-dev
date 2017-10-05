@@ -3,13 +3,15 @@ namespace App\Api\Controller;
 
 use App\Commands;
 use App\Infra\JsonSchema\SchemaValidator;
-use App\Service\ScheduleJobService;
+use App\Service\JobStateMachine;
 use App\Storage\JobTemplateStorage;
-use Comrade\Shared\Message\AddTrigger;
+use App\Storage\ProcessStorage;
 use Comrade\Shared\Message\CreateJob;
 use Comrade\Shared\Message\ScheduleJob;
 use Enqueue\Client\ProducerInterface;
 use Enqueue\Util\JSON;
+use Formapro\Pvm\Visual\GraphVizVisual;
+use Graphp\GraphViz\GraphViz;
 use function Makasim\Values\get_values;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,7 +26,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class JobTemplateController
 {
     /**
-     * @Extra\Route("/job-templates")
+     * @Extra\Route("/create-job")
      * @Extra\Method("POST")
      *
      * @param Request $request
@@ -64,17 +66,16 @@ class JobTemplateController
     }
 
     /**
-     * @Extra\Route("/add-trigger")
+     * @Extra\Route("/schedule-job")
      * @Extra\Method("POST")
      *
      * @param Request $request
      * @param SchemaValidator $schemaValidator
-     * @param JobTemplateStorage $jobTemplateStorage
-     * @param ScheduleJobService $scheduleJobService
+     * @param ProducerInterface $producer
      *
      * @return Response
      */
-    public function addTriggerAction(Request $request, SchemaValidator $schemaValidator, JobTemplateStorage $jobTemplateStorage, ProducerInterface $producer)
+    public function scheduleJobAction(Request $request, SchemaValidator $schemaValidator, ProducerInterface $producer)
     {
         try {
             $data = JSON::decode($request->getContent());
@@ -82,26 +83,13 @@ class JobTemplateController
             throw new BadRequestHttpException('The content is not valid json.', null, $e);
         }
 
-        if ($errors = $schemaValidator->validate($data, AddTrigger::SCHEMA)) {
+        if ($errors = $schemaValidator->validate($data, ScheduleJob::SCHEMA)) {
             return new JsonResponse($errors, 400);
         }
 
-        $addTrigger = AddTrigger::create($data);
+        $producer->sendCommand(Commands::SCHEDULE_JOB, $data);
 
-
-        if (false == $jobTemplate = $jobTemplateStorage->findOne(['templateId' => $addTrigger->getJobTemplateId()])) {
-            throw new NotFoundHttpException(sprintf('The job template with id "%s" could not be found', $addTrigger->getJobTemplateId()));
-        }
-
-        $trigger = $addTrigger->getTrigger();
-        $jobTemplate->addTrigger($trigger);
-        $jobTemplateStorage->update($jobTemplate);
-
-        $producer->sendCommand(Commands::SCHEDULE_JOB, ScheduleJob::createForSingle($jobTemplate, $trigger));
-
-        return new JsonResponse([
-            'jobTemplate' => get_values($jobTemplate),
-        ]);
+        return new JsonResponse('OK');
     }
 
     /**
@@ -128,5 +116,59 @@ class JobTemplateController
         $response->setEncodingOptions(JsonResponse::DEFAULT_ENCODING_OPTIONS | JSON_PRETTY_PRINT);
 
         return $response;
+    }
+
+    /**
+     * @Extra\Route("/job-template/{id}/flow-graph.gv")
+     * @Extra\Method("GET")
+     *
+     * @param string $id
+     * @param JobTemplateStorage $jobTemplateStorage
+     * @param ProcessStorage $processStorage
+     * @return Response
+     */
+    public function getFlowGraphDotAction(string $id, JobTemplateStorage $jobTemplateStorage, ProcessStorage $processStorage)
+    {
+        if (false == $jobTemplate = $jobTemplateStorage->findOne(['templateId' => $id])) {
+            throw new NotFoundHttpException(sprintf('Job template %s was not found', $id));
+        }
+
+        $processId = $jobTemplate->getProcessTemplateId();
+        if (false == $process = $processStorage->findOne(['id' => $processId])) {
+            throw new NotFoundHttpException(sprintf('Process %s was not found', $processId));
+        }
+
+        $graph = (new GraphVizVisual())->createGraph($process);
+
+        return new Response(
+            (new GraphViz())->createScript($graph),
+            200,
+            ['Content-Type' => 'text/vnd.graphviz']
+        );
+    }
+
+    /**
+     * @Extra\Route("/job-template/{id}/state-graph.gv")
+     * @Extra\Method("GET")
+     *
+     * @param string $id
+     * @param JobTemplateStorage $jobTemplateStorage
+     * @param ProcessStorage $processStorage
+     * @return Response
+     */
+    public function getStateGraphDotAction(string $id, JobTemplateStorage $jobTemplateStorage, ProcessStorage $processStorage)
+    {
+        if (false == $jobTemplate = $jobTemplateStorage->findOne(['templateId' => $id])) {
+            throw new NotFoundHttpException(sprintf('Job template %s was not found', $id));
+        }
+
+        $sm = new JobStateMachine($jobTemplate);
+        $graph = (new GraphVizVisual())->createGraph($sm->getProcess());
+
+        return new Response(
+            (new GraphViz())->createScript($graph),
+            200,
+            ['Content-Type' => 'text/vnd.graphviz']
+        );
     }
 }

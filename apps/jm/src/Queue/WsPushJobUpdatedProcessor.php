@@ -38,7 +38,7 @@ class WsPushJobUpdatedProcessor implements PsrProcessor, TopicSubscriberInterfac
         try {
             $data = JSON::decode($message->getBody());
 
-            $this->client->publish(Topics::UPDATE_JOB, $data);
+            $this->client->publish(Topics::JOB_UPDATED, $data);
 
             return self::ACK;
         } catch (\Throwable $e) {
@@ -53,6 +53,6 @@ class WsPushJobUpdatedProcessor implements PsrProcessor, TopicSubscriberInterfac
      */
     public static function getSubscribedTopics()
     {
-        return [Topics::UPDATE_JOB];
+        return [Topics::JOB_UPDATED];
     }
 }

@@ -27,10 +27,10 @@ class MetricsController
     {
         $response = new JsonResponse([
             'metrics' => [
-                'successJobsLastMinute' => $metricsStorage->countJobsPerPeriod(new \DateTime('-1 minute'), new \DateTime(), [JobStatus::STATUS_COMPLETED]),
-                'successJobsLastHour' => $metricsStorage->countJobsPerPeriod(new \DateTime('-1 hour'), new \DateTime(), [JobStatus::STATUS_COMPLETED]),
-                'successJobsLastDay' => $metricsStorage->countJobsPerPeriod(new \DateTime('today'), new \DateTime(), [JobStatus::STATUS_COMPLETED]),
-                'failedJobsLastHour' => $metricsStorage->countJobsPerPeriod(new \DateTime('-1 hour'), new \DateTime(), [JobStatus::STATUS_FAILED]),
+                'successJobsLastMinute' => $metricsStorage->countJobsPerPeriod(new \DateTime('-1 minute'), new \DateTime(), [JobStatus::COMPLETED]),
+                'successJobsLastHour' => $metricsStorage->countJobsPerPeriod(new \DateTime('-1 hour'), new \DateTime(), [JobStatus::COMPLETED]),
+                'successJobsLastDay' => $metricsStorage->countJobsPerPeriod(new \DateTime('today'), new \DateTime(), [JobStatus::COMPLETED]),
+                'failedJobsLastHour' => $metricsStorage->countJobsPerPeriod(new \DateTime('-1 hour'), new \DateTime(), [JobStatus::FAILED]),
             ],
         ]);
         $response->setEncodingOptions(JsonResponse::DEFAULT_ENCODING_OPTIONS | JSON_PRETTY_PRINT);

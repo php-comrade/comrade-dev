@@ -4,8 +4,9 @@ namespace App;
 
 use App\Infra\DependencyInjection\RegisterPvmBehaviorPass;
 use App\Infra\Yadm\ObjectBuilderHook;
-use App\Model\JobResult;
-use App\Model\Process;
+use App\Message\ExecuteJob;
+use App\Model\PvmProcess;
+use App\Model\PvmToken;
 use Comrade\Shared\ComradeClassMap;
 use Formapro\Pvm\PvmClassMap;
 use function Makasim\Values\register_cast_hooks;
@@ -90,7 +91,7 @@ final class Kernel extends BaseKernel
         register_cast_hooks();
         register_object_hooks();
 
-        register_hook(Process::class, 'post_build_sub_object', function($object, $context, $contextKey) {
+        register_hook(PvmProcess::class, 'post_build_sub_object', function($object, $context, $contextKey) {
             if (method_exists($object, 'setProcess')) {
                 $object->setProcess($context);
             }
@@ -101,8 +102,15 @@ final class Kernel extends BaseKernel
             (new PvmClassMap())->get(),
             [
                 // comrade service classes here
-                JobResult::SCHEMA => JobResult::class,
-                Process::SCHEMA => Process::class,
+                \Formapro\Pvm\Process::SCHEMA => \App\Model\PvmProcess::class,
+                \Formapro\Pvm\Token::SCHEMA => \App\Model\PvmToken::class,
+                ExecuteJob::SCHEMA => ExecuteJob::class,
+
+                // overwrites
+                \Comrade\Shared\Model\JobResult::SCHEMA => \App\Model\JobResult::class,
+                \Comrade\Shared\Model\JobTemplate::SCHEMA => \App\Model\JobTemplate::class,
+                \Comrade\Shared\Model\Job::SCHEMA => \App\Model\Job::class,
+                \Comrade\Shared\Model\RetryFailedPolicy::SCHEMA => \App\Model\RetryFailedPolicy::class,
             ]
         )))->register();
     }

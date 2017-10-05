@@ -1,6 +1,7 @@
 <?php
 namespace App\Pvm\Behavior;
 
+use App\Model\PvmToken;
 use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Enqueue\HandleAsyncTransitionProcessor;
@@ -24,9 +25,9 @@ class NotifyParentProcessBehavior implements Behavior
     }
 
     /**
-     * @param Token $token
+     * @param PvmToken $token
      *
-     * @return Transition[]
+     * {@inheritdoc}
      */
     public function execute(Token $token)
     {

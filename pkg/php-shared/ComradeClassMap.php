@@ -1,7 +1,6 @@
 <?php
 namespace Comrade\Shared;
 
-use Comrade\Shared\Message\AddTrigger;
 use Comrade\Shared\Message\CreateJob;
 use Comrade\Shared\Message\GetJob;
 use Comrade\Shared\Message\GetJobChart;
@@ -10,6 +9,7 @@ use Comrade\Shared\Message\GetTimeline;
 use Comrade\Shared\Message\RunJob;
 use Comrade\Shared\Message\RunSubJobsResult;
 use Comrade\Shared\Message\ScheduleJob;
+use Comrade\Shared\Message\RunnerResult;
 use Comrade\Shared\Model\CronTrigger;
 use Comrade\Shared\Model\ExclusivePolicy;
 use Comrade\Shared\Model\GracePeriodPolicy;
@@ -27,6 +27,7 @@ use Comrade\Shared\Model\SubJob;
 use Comrade\Shared\Model\SubJobPolicy;
 use Comrade\Shared\Model\SubJobTemplate;
 use Comrade\Shared\Message\JobResult as JobResultMessage;
+use Comrade\Shared\Model\SubJobTrigger;
 use Comrade\Shared\Model\Throwable;
 
 class ComradeClassMap
@@ -60,18 +61,20 @@ class ComradeClassMap
             CronTrigger::SCHEMA => CronTrigger::class,
             SimpleTrigger::SCHEMA => SimpleTrigger::class,
             NowTrigger::SCHEMA => NowTrigger::class,
+            SubJobTrigger::SCHEMA => SubJobTrigger::class,
 
             // messages
             RunSubJobsResult::SCHEMA => RunSubJobsResult::class,
             JobResultMessage::SCHEMA => JobResultMessage::class,
             CreateJob::SCHEMA => CreateJob::class,
             RunJob::SCHEMA => RunJob::class,
-            AddTrigger::SCHEMA => AddTrigger::class,
             GetTimeline::SCHEMA => GetTimeline::class,
             ScheduleJob::SCHEMA => ScheduleJob::class,
+            \Comrade\Shared\Message\Part\SubJob::SCHEMA => \Comrade\Shared\Message\Part\SubJob::class,
             GetJob::SCHEMA => GetJob::class,
             GetSubJobs::SCHEMA => GetSubJobs::class,
             GetJobChart::SCHEMA => GetJobChart::class,
+            RunnerResult::SCHEMA => RunnerResult::class,
         ], $classMap);
     }
 

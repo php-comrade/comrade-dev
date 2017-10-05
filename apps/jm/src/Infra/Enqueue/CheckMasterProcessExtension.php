@@ -11,14 +11,14 @@ class CheckMasterProcessExtension implements ExtensionInterface
 
     public function onBeforeReceive(Context $context)
     {
-        if (false == $mPid = getenv('MASTER_PROCESS_PID')) {
-            throw new \LogicException('The extension rely on MASTER_PROCESS_PID env var set but it is not set.');
-        }
-
-        if (false == posix_kill($mPid, 0)) {
-            $context->setExecutionInterrupted(true);
-
-            $context->getLogger()->info('[CheckMasterProcessExtension] The master process exited. So do I');
-        }
+//        if (false == $mPid = getenv('MASTER_PROCESS_PID')) {
+//            throw new \LogicException('The extension rely on MASTER_PROCESS_PID env var set but it is not set.');
+//        }
+//
+//        if (false == posix_kill($mPid, 0)) {
+//            $context->setExecutionInterrupted(true);
+//
+//            $context->getLogger()->info('[CheckMasterProcessExtension] The master process exited. So do I');
+//        }
     }
 }

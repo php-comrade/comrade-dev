@@ -5,7 +5,7 @@ use App\Topics;
 use App\Infra\Uuid;
 use App\JobStatus;
 use App\Model\JobResult;
-use App\Model\Process;
+use App\Model\PvmProcess;
 use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessExecutionStorage;
@@ -16,6 +16,7 @@ use function Makasim\Values\build_object;
 use function Makasim\Values\get_values;
 use function Makasim\Values\set_value;
 use function Makasim\Yadm\unset_object_id;
+use Psr\Log\LoggerInterface;
 
 class BuildAndExecuteProcessService
 {
@@ -43,83 +44,73 @@ class BuildAndExecuteProcessService
      * @var ProducerInterface
      */
     private $producer;
-
     /**
-     * @param ProcessExecutionStorage $processExecutionStorage
-     * @param ProcessEngine           $processEngine
-     * @param JobStorage              $jobStorage
-     * @param JobTemplateStorage      $jobTemplateStorage
-     * @param ProducerInterface       $producer
+     * @var LoggerInterface
      */
+    private $logger;
+
     public function __construct(
         ProcessExecutionStorage $processExecutionStorage,
         ProcessEngine $processEngine,
         JobStorage $jobStorage,
         JobTemplateStorage $jobTemplateStorage,
-        ProducerInterface $producer
+        ProducerInterface $producer,
+        LoggerInterface $logger
     ) {
         $this->processExecutionStorage = $processExecutionStorage;
         $this->jobStorage = $jobStorage;
         $this->jobTemplateStorage = $jobTemplateStorage;
         $this->processEngine = $processEngine;
         $this->producer = $producer;
+        $this->logger = $logger;
     }
 
-    public function buildAndRun(Process $templateProcess):Process
+    public function buildAndRun(PvmProcess $templateProcess): PvmProcess
     {
         return $this->run($this->build($templateProcess));
     }
 
-    public function build(Process $templateProcess):Process
+    public function build(PvmProcess $templateProcess): PvmProcess
     {
-        /** @var Process $process */
-        $process = build_object(Process::class, get_values($templateProcess));
+        /** @var PvmProcess $process */
+        $process = build_object(PvmProcess::class, get_values($templateProcess));
 
         unset_object_id($process);
         set_value($process, 'templateId', $process->getId());
         $process->setId(Uuid::generate());
         $this->processExecutionStorage->insert($process);
 
-        foreach ($process->getJobTemplateIds() as $jobTemplateId) {
-            $jobTemplate = $this->jobTemplateStorage->findOne(['templateId' => $jobTemplateId]);
-
-            $job = Job::createFromTemplate($jobTemplate);
-            $job->setId(Uuid::generate());
-            $job->setCreatedAt(new \DateTime('now'));
-
-            $this->jobStorage->insert($job);
-
-            $process->map($job->getTemplateId(), $job->getId());
+        if (false == $jobTemplate = $this->jobTemplateStorage->findOne(['templateId' => $process->getJobTemplateId()])) {
+            throw new \LogicException(sprintf('Job template "%s" could not be found', $process->getJobTemplateId()));
         }
-        $this->processExecutionStorage->update($process);
 
-        foreach ($process->getJobIds() as $jobId) {
-            if (false == $job = $this->jobStorage->findOne(['id' => $jobId])) {
-                throw new \LogicException(sprintf('The job with id "%s" could not be found', $jobId));
-            }
+        $job = Job::createFromTemplate($jobTemplate);
+        $job->setId(Uuid::generate());
+        $job->setProcessId($process->getId());
+        $job->setCreatedAt(new \DateTime('now'));
 
-            $job->setProcessId($process->getId());
+        $result = JobResult::createFor(JobStatus::NEW);
+        $job->addResult($result);
+        $job->setCurrentResult($result);
 
-            $result = JobResult::createFor(JobStatus::STATUS_NEW);
-            $job->addResult($result);
-            $job->setCurrentResult($result);
+        $this->jobStorage->insert($job);
 
-            $this->jobStorage->update($job);
-            $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
-        }
+        $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
+
+        $process->setJobId($job->getId());
         $this->processExecutionStorage->update($process);
 
         return $process;
     }
 
-    public function run(Process $process):Process
+    public function run(PvmProcess $process): PvmProcess
     {
         try {
             foreach ($process->getTransitions() as $transition) {
                 if ($transition->getFrom() === null) {
                     $token = $process->createToken($transition);
 
-                    $this->processEngine->proceed($token);
+                    $this->processEngine->proceed($token, $this->logger);
                 }
             }
         } finally {

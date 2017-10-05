@@ -7,12 +7,12 @@ class JobStatus extends \Comrade\Shared\Model\JobStatus
 {
     public static function isNew(JobResult $result):bool
     {
-        return static::isEqual(static::STATUS_NEW, $result->getStatus());
+        return static::isEqual(static::NEW, $result->getStatus());
     }
 
     public static function isRunning(JobResult $result):bool
     {
-        return static::isEqual(static::STATUS_RUNNING, $result->getStatus());
+        return static::isEqual(static::RUNNING, $result->getStatus());
     }
 
     public static function isDone(JobResult $result):bool
@@ -22,17 +22,17 @@ class JobStatus extends \Comrade\Shared\Model\JobStatus
 
     public static function isCanceled(JobResult $result):bool
     {
-        return static::isSame(static::STATUS_CANCELED, $result->getStatus());
+        return static::isSame(static::CANCELED, $result->getStatus());
     }
 
     public static function isCompleted(JobResult $result):bool
     {
-        return static::isSame(static::STATUS_COMPLETED, $result->getStatus());
+        return static::isSame(static::COMPLETED, $result->getStatus());
     }
 
     public static function isFailed(JobResult $result):bool
     {
-        return static::isSame(static::STATUS_FAILED, $result->getStatus());
+        return static::isSame(static::FAILED, $result->getStatus());
     }
 
     public static function isRunSubJobs(JobResult $result):bool
@@ -47,17 +47,16 @@ class JobStatus extends \Comrade\Shared\Model\JobStatus
 
     public static function isTerminated(JobResult $result):bool
     {
-        return static::isSame(static::STATUS_TERMINATED, $result->getStatus());
+        return static::isSame(static::TERMINATED, $result->getStatus());
     }
 
     public static function getDoneStatuses():array
     {
         return [
-            JobStatus::STATUS_DONE,
-            JobStatus::STATUS_FAILED,
-            JobStatus::STATUS_COMPLETED,
-            JobStatus::STATUS_CANCELED,
-            JobStatus::STATUS_TERMINATED
+            JobStatus::FAILED,
+            JobStatus::COMPLETED,
+            JobStatus::CANCELED,
+            JobStatus::TERMINATED
         ];
     }
 
