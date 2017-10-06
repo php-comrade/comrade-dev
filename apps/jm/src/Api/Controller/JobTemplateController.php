@@ -3,6 +3,7 @@ namespace App\Api\Controller;
 
 use App\Commands;
 use App\Infra\JsonSchema\SchemaValidator;
+use App\JobStatus;
 use App\Service\JobStateMachine;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessStorage;
@@ -10,7 +11,8 @@ use Comrade\Shared\Message\CreateJob;
 use Comrade\Shared\Message\ScheduleJob;
 use Enqueue\Client\ProducerInterface;
 use Enqueue\Util\JSON;
-use Formapro\Pvm\Visual\GraphVizVisual;
+use Formapro\Pvm\Visual\VisualizeFlow;
+use Formapro\Pvm\Visual\VisualizeStateMachine;
 use Graphp\GraphViz\GraphViz;
 use function Makasim\Values\get_values;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
@@ -138,7 +140,7 @@ class JobTemplateController
             throw new NotFoundHttpException(sprintf('Process %s was not found', $processId));
         }
 
-        $graph = (new GraphVizVisual())->createGraph($process);
+        $graph = (new VisualizeFlow())->createGraph($process);
 
         return new Response(
             (new GraphViz())->createScript($graph),
@@ -163,7 +165,7 @@ class JobTemplateController
         }
 
         $sm = new JobStateMachine($jobTemplate);
-        $graph = (new GraphVizVisual())->createGraph($sm->getProcess());
+        $graph = (new VisualizeStateMachine())->createGraph($sm->getProcess(), JobStatus::NEW);
 
         return new Response(
             (new GraphViz())->createScript($graph),

@@ -15,7 +15,8 @@ use Comrade\Shared\Message\GetTimeline;
 use Comrade\Shared\Model\Job;
 use Enqueue\Client\ProducerInterface;
 use Enqueue\Util\JSON;
-use Formapro\Pvm\Visual\GraphVizVisual;
+use Formapro\Pvm\Visual\VisualizeFlow;
+use Formapro\Pvm\Visual\VisualizeStateMachine;
 use Graphp\GraphViz\GraphViz;
 use function Makasim\Values\get_values;
 use Quartz\Core\Trigger;
@@ -308,7 +309,7 @@ class JobController
             throw new NotFoundHttpException(sprintf('Process %s was not found', $processId));
         }
 
-        $graph = (new GraphVizVisual())->createGraph($process);
+        $graph = (new VisualizeFlow())->createGraph($process);
 
         return new Response(
             (new GraphViz())->createScript($graph),
@@ -333,7 +334,7 @@ class JobController
         }
 
         $sm = new JobStateMachine($job);
-        $graph = (new GraphVizVisual())->createGraph($sm->getProcess());
+        $graph = (new VisualizeStateMachine())->createGraph($sm->getProcess(), $job->getCurrentResult()->getStatus());
 
         return new Response(
             (new GraphViz())->createScript($graph),
