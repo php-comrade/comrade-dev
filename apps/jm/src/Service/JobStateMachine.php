@@ -49,10 +49,17 @@ class JobStateMachine
         }
 
         if ($job->getRunSubJobsPolicy()) {
-            $runningSubJobs = $process->createNode();
-            $runningSubJobs->setLabel('run_sub_jobs');
+            $runningSubJobs = $this->createState(JobStatus::RUNNING_SUB_JOBS);
 
-            $process->createTransition($running, $runningSubJobs, 'run_sub_jobs');
+            $process->createTransition($running, $runningSubJobs, JobAction::RUN_SUB_JOBS);
+            $process->createTransition($runningSubJobs, $completed, JobAction::COMPLETE);
+            $process->createTransition($runningSubJobs, $failed, JobAction::FAIL);
+            $process->createTransition($runningSubJobs, $canceled, JobAction::CANCEL);
+            $process->createTransition($runningSubJobs, $terminated, JobAction::TERMINATE);
+        }
+
+        if ($job->getSubJobPolicy()) {
+            $process->createTransition($new, $terminated, JobAction::TERMINATE);
         }
 
         if ($exclusivePolicy = $job->getExclusivePolicy()) {

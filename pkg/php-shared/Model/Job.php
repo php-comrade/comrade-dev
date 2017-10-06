@@ -18,14 +18,6 @@ class Job extends JobTemplate
      */
     protected $values = [];
 
-    public static function createFromTemplate(JobTemplate $jobTemplate) : Job
-    {
-        $values = get_values($jobTemplate);
-        unset($values['schema']);
-
-        return static::create($values);
-    }
-
     /**
      * @return string
      */
@@ -82,5 +74,13 @@ class Job extends JobTemplate
     public function getCurrentResult():JobResult
     {
         return get_object($this, 'currentResult');
+    }
+
+    public static function createFromTemplate(JobTemplate $jobTemplate): Job
+    {
+        $values = get_values($jobTemplate);
+        unset($values['schema']);
+
+        return static::create($values);
     }
 }

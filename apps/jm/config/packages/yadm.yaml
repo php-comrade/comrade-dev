@@ -13,6 +13,7 @@ yadm:
             collection: 'job'
             database: '%mongo_database%'
             pessimistic_lock: true
+            hydrator_class: 'App\Infra\Yadm\SchemaBasedHydrator'
 
         trigger:
             class: 'Comrade\Shared\Model\Trigger'

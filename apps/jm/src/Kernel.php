@@ -6,7 +6,6 @@ use App\Infra\DependencyInjection\RegisterPvmBehaviorPass;
 use App\Infra\Yadm\ObjectBuilderHook;
 use App\Message\ExecuteJob;
 use App\Model\PvmProcess;
-use App\Model\PvmToken;
 use Comrade\Shared\ComradeClassMap;
 use Formapro\Pvm\PvmClassMap;
 use function Makasim\Values\register_cast_hooks;
@@ -110,6 +109,7 @@ final class Kernel extends BaseKernel
                 \Comrade\Shared\Model\JobResult::SCHEMA => \App\Model\JobResult::class,
                 \Comrade\Shared\Model\JobTemplate::SCHEMA => \App\Model\JobTemplate::class,
                 \Comrade\Shared\Model\Job::SCHEMA => \App\Model\Job::class,
+                \Comrade\Shared\Model\SubJob::SCHEMA => \App\Model\SubJob::class,
                 \Comrade\Shared\Model\RetryFailedPolicy::SCHEMA => \App\Model\RetryFailedPolicy::class,
             ]
         )))->register();

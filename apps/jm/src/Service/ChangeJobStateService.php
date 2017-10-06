@@ -2,6 +2,7 @@
 namespace App\Service;
 
 use App\Infra\Pvm\NotAllowedTransitionException;
+use App\Model\JobResult;
 use App\Storage\JobStorage;
 use Comrade\Shared\Model\Job;
 use Formapro\Pvm\Exception\InterruptExecutionException;
@@ -46,6 +47,31 @@ class ChangeJobStateService
     {
         try {
             return $this->change($jobId, $action, $onChange);
+        } catch (NotAllowedTransitionException $e) {
+            throw new InterruptExecutionException($e->getMessage(), null, $e);
+        }
+    }
+
+    public function transition(string $jobId, string $action, callable $onChange = null): Job
+    {
+        return $this->change($jobId, $action, function(Job $job, Transition $transition) use ($onChange) {
+            $result = JobResult::createFor($transition->getTo()->getLabel());
+
+            $job->addResult($result);
+            $job->setCurrentResult($result);
+
+            if ($onChange) {
+                call_user_func($onChange, $job, $transition);
+            }
+
+            return $job;
+        });
+    }
+
+    public function transitionInFlow(string $jobId, string $action, callable $onChange = null): Job
+    {
+        try {
+            return $this->transition($jobId, $action, $onChange);
         } catch (NotAllowedTransitionException $e) {
             throw new InterruptExecutionException($e->getMessage(), null, $e);
         }

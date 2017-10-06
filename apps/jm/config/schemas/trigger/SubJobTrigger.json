@@ -12,8 +12,10 @@
             "http://jm.forma-pro.com/schemas/trigger/SubJobTrigger.json"
           ]
         },
-        "templateParentId": { "$ref": "../uuid4.json" },
-        "payload": { "type": ["null", "string", "number", "object", "array"] }
+        "payload": { "type": ["null", "string", "number", "object", "array"] },
+        "parentJobId": { "$ref": "../uuid4.json" },
+        "parentToken": { "$ref": "../uuid4.json" },
+        "parentProcessId": { "$ref": "../uuid4.json" }
       }
     }]
 }

@@ -14,7 +14,6 @@ use Comrade\Shared\Model\QueueRunner;
 use Comrade\Shared\Model\RetryFailedPolicy;
 use Comrade\Shared\Model\RunSubJobsPolicy;
 use Comrade\Shared\Model\SubJobPolicy;
-use Comrade\Shared\Model\Trigger;
 use Enqueue\Client\ProducerInterface;
 use Makasim\Yadm\Registry;
 use MongoDB\Client;
@@ -69,7 +68,7 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $template->setGracePeriodPolicy($policy);
 
         $createJob = CreateJob::createFor($template);
-        $createJob->addTrigger($this->createTrigger($template));
+        $this->createTrigger($createJob);
 
         $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
     }
@@ -86,7 +85,7 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $template->setGracePeriodPolicy($policy);
 
         $createJob = CreateJob::createFor($template);
-        $createJob->addTrigger($this->createTrigger($template));
+        $this->createTrigger($createJob);
 
         $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
     }
@@ -107,7 +106,7 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $template->setRetryFailedPolicy($policy);
 
         $createJob = CreateJob::createFor($template);
-        $createJob->addTrigger($this->createTrigger($template));
+        $this->createTrigger($createJob);
 
         $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
     }
@@ -128,7 +127,7 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $template->setGracePeriodPolicy($policy);
 
         $createJob = CreateJob::createFor($template);
-        $createJob->addTrigger($this->createTrigger($template));
+        $this->createTrigger($createJob);
 
         $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
     }
@@ -145,7 +144,7 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $template->setGracePeriodPolicy($policy);
 
         $createJob = CreateJob::createFor($template);
-        $createJob->addTrigger($this->createTrigger($template));
+        $this->createTrigger($createJob);
 
         $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
     }
@@ -158,7 +157,7 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $parentTemplate->setRunner(QueueRunner::createFor('demo_run_sub_tasks'));
 
         $policy = GracePeriodPolicy::create();
-        $policy->setPeriod(5);
+        $policy->setPeriod(300);
         $parentTemplate->setGracePeriodPolicy($policy);
 
         $policy = RunSubJobsPolicy::create();
@@ -166,7 +165,7 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $parentTemplate->setRunSubJobsPolicy($policy);
 
         $createJob = CreateJob::createFor($parentTemplate);
-        $createJob->addTrigger($this->createTrigger($parentTemplate));
+        $this->createTrigger($createJob);
 
         $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
 
@@ -202,31 +201,39 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $template->setGracePeriodPolicy($policy);
 
         $createJob = CreateJob::createFor($template);
-        $createJob->addTrigger($this->createTrigger($template));
+        $this->createTrigger($createJob);
 
         $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
     }
 
-    private function createTrigger(JobTemplate $template): Trigger
+    private function createTrigger(CreateJob $createJob): void
     {
+        if ($this->trigger == 'none') {
+            return;
+        }
+
         if ($this->trigger == 'now') {
             $trigger = NowTrigger::create();
-            $trigger->setTemplateId($template->getTemplateId());
+            $trigger->setTemplateId($createJob->getJobTemplate()->getTemplateId());
 
-            return $trigger;
+            $createJob->addTrigger($trigger);
+
+            return;
         }
 
         if ($this->trigger == 'cron') {
             $trigger = CronTrigger::create();
-            $trigger->setTemplateId($template->getTemplateId());
+            $trigger->setTemplateId($createJob->getJobTemplate()->getTemplateId());
             $trigger->setStartAt(new \DateTime('now'));
             $trigger->setMisfireInstruction(CronTrigger::MISFIRE_INSTRUCTION_FIRE_ONCE_NOW);
             $trigger->setExpression(sprintf('*/%d * * * *', rand(5, 10)));
 
-            return $trigger;
+            $createJob->addTrigger($trigger);
+
+            return;
         }
 
-        throw new \LogicException(sprintf('The trigger "%s" is not supported are "now", "cron"', $this->trigger));
+        throw new \LogicException(sprintf('The trigger "%s" is not supported are "now", "cron", "none"', $this->trigger));
     }
 
     private function getProducer(): ProducerInterface

@@ -10,4 +10,12 @@ use App\Model\PvmProcess;
  */
 class ProcessExecutionStorage extends ProcessStorage
 {
+    public function getOneByJobId(string $jobId): PvmProcess
+    {
+        if (false == $process = $this->findOne(['jobId' => $jobId])) {
+            throw new \LogicException(sprintf('The process for job "%s" could not be found', $jobId));
+        }
+
+        return $process;
+    }
 }

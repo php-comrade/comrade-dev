@@ -156,6 +156,10 @@ class HttpRunnerBehavior implements Behavior, SignalBehavior
 
         $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
 
+        if (JobStatus::RUNNING_SUB_JOBS === $job->getCurrentResult()->getStatus()) {
+            return 'run_sub_jobs';
+        }
+
         return 'finalize';
     }
 }

@@ -1,13 +1,12 @@
 <?php
 namespace App\Pvm\Behavior;
 
+use App\Commands;
 use App\Model\PvmToken;
+use Comrade\Shared\Model\SubJobTrigger;
 use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\Behavior;
-use Formapro\Pvm\Enqueue\HandleAsyncTransitionProcessor;
 use Formapro\Pvm\Token;
-use Formapro\Pvm\Transition;
-use function Makasim\Values\get_value;
 
 class NotifyParentProcessBehavior implements Behavior
 {
@@ -16,9 +15,6 @@ class NotifyParentProcessBehavior implements Behavior
      */
     private $producer;
 
-    /**
-     * @param ProducerInterface $producer
-     */
     public function __construct(ProducerInterface $producer)
     {
         $this->producer = $producer;
@@ -31,14 +27,17 @@ class NotifyParentProcessBehavior implements Behavior
      */
     public function execute(Token $token)
     {
-        $node = $token->getTransition()->getTo();
+        /** @var SubJobTrigger $trigger */
+        $trigger = $token->getProcess()->getTrigger();
+        if (false == $trigger instanceof SubJobTrigger) {
+            throw new \LogicException(sprintf('The trigger must be instance of "%s" but got "%s"', SubJobTrigger::class, get_class($trigger)));
+        }
 
-        $processId = get_value($node, 'parentProcessId');
-        $token = get_value($node, 'parentProcessToken');
-
-        $this->producer->sendCommand(HandleAsyncTransitionProcessor::COMMAND, [
-            'process' => $processId,
-            'token' => $token
+        $this->producer->sendCommand(Commands::PVM_HANDLE_ASYNC_TRANSITION, [
+            'process' => $trigger->getParentProcessId(),
+            'token' => $trigger->getParentToken(),
         ]);
+
+        return $token->getTransition()->getName();
     }
 }

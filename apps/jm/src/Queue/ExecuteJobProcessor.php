@@ -70,7 +70,7 @@ class ExecuteJobProcessor implements PsrProcessor, CommandSubscriberInterface
             return Result::reject(sprintf('The process template with id "%s" could not be found', $data['processTemplateId']));
         }
 
-        $this->buildAndExecuteProcessService->buildAndRun($processTemplate);
+        $this->buildAndExecuteProcessService->buildAndRun($processTemplate, $trigger);
 
         return self::ACK;
     }

@@ -1,6 +1,7 @@
 <?php
 namespace App\Pvm\Behavior;
 
+use App\JobStatus;
 use App\Model\PvmToken;
 use Comrade\Shared\Model\JobAction;
 use App\Service\ChangeJobStateService;
@@ -111,6 +112,10 @@ class QueueRunnerBehavior implements Behavior, SignalBehavior
         });
 
         $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
+
+        if (JobStatus::RUNNING_SUB_JOBS === $job->getCurrentResult()->getStatus()) {
+            return 'run_sub_jobs';
+        }
 
         return 'finalize';
     }

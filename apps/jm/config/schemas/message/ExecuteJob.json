@@ -8,7 +8,8 @@
       "oneOf": [
         { "$ref": "../trigger/SimpleTrigger.json" },
         { "$ref": "../trigger/CronTrigger.json" },
-        { "$ref": "../trigger/NowTrigger.json" }
+        { "$ref": "../trigger/NowTrigger.json" },
+        { "$ref": "../trigger/SubJobTrigger.json" }
       ]
     }
   },

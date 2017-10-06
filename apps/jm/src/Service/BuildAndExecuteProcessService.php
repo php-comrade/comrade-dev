@@ -10,6 +10,9 @@ use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessExecutionStorage;
 use Comrade\Shared\Model\Job;
+use Comrade\Shared\Model\SubJob;
+use Comrade\Shared\Model\SubJobTrigger;
+use Comrade\Shared\Model\Trigger;
 use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\ProcessEngine;
 use function Makasim\Values\build_object;
@@ -65,12 +68,12 @@ class BuildAndExecuteProcessService
         $this->logger = $logger;
     }
 
-    public function buildAndRun(PvmProcess $templateProcess): PvmProcess
+    public function buildAndRun(PvmProcess $templateProcess, Trigger $trigger): PvmProcess
     {
-        return $this->run($this->build($templateProcess));
+        return $this->run($this->build($templateProcess, $trigger));
     }
 
-    public function build(PvmProcess $templateProcess): PvmProcess
+    public function build(PvmProcess $templateProcess, Trigger $trigger): PvmProcess
     {
         /** @var PvmProcess $process */
         $process = build_object(PvmProcess::class, get_values($templateProcess));
@@ -78,13 +81,21 @@ class BuildAndExecuteProcessService
         unset_object_id($process);
         set_value($process, 'templateId', $process->getId());
         $process->setId(Uuid::generate());
+        $process->setTrigger($trigger);
         $this->processExecutionStorage->insert($process);
 
         if (false == $jobTemplate = $this->jobTemplateStorage->findOne(['templateId' => $process->getJobTemplateId()])) {
             throw new \LogicException(sprintf('Job template "%s" could not be found', $process->getJobTemplateId()));
         }
 
-        $job = Job::createFromTemplate($jobTemplate);
+        if ($trigger instanceof SubJobTrigger) {
+            /** @var SubJob $job */
+            $job = SubJob::createFromTemplate($jobTemplate);
+            $job->setParentId($trigger->getParentJobId());
+        } else {
+            $job = Job::createFromTemplate($jobTemplate);
+        }
+
         $job->setId(Uuid::generate());
         $job->setProcessId($process->getId());
         $job->setCreatedAt(new \DateTime('now'));

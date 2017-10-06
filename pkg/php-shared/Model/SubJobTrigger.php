@@ -10,14 +10,34 @@ class SubJobTrigger extends Trigger
 
     use CreateTrait;
 
-    public function getParentTemplateId(): string
+    public function getParentJobId(): string
     {
-        return get_value($this,'parentTemplateId');
+        return get_value($this,'parentJobId');
     }
 
-    public function setParentTemplateId(string $id): void
+    public function setParentJobId(string $id): void
     {
-        set_value($this, 'parentTemplateId', $id);
+        set_value($this, 'parentJobId', $id);
+    }
+
+    public function getParentProcessId(): string
+    {
+        return get_value($this,'parentProcessId');
+    }
+
+    public function setParentProcessId(string $id): void
+    {
+        set_value($this, 'parentProcessId', $id);
+    }
+
+    public function getParentToken(): string
+    {
+        return get_value($this,'parentToken');
+    }
+
+    public function setParentToken(string $id): void
+    {
+        set_value($this, 'parentToken', $id);
     }
 
     /**
@@ -34,19 +54,5 @@ class SubJobTrigger extends Trigger
     public function setPayload($payload): void
     {
         set_value($this, 'payload', $payload);
-    }
-
-    public static function createFor(JobTemplate $jobTemplate, $payload): SubJobTrigger
-    {
-        if (false == $jobTemplate->getSubJobPolicy()) {
-            throw new \LogicException(sprintf('The given jobTemplate "%s" is not sub job one.', $jobTemplate->getTemplateId()));
-        }
-
-        $trigger = static::create();
-        $trigger->setTemplateId($jobTemplate->getTemplateId());
-        $trigger->setParentTemplateId($jobTemplate->getSubJobPolicy()->getParentId());
-        $trigger->setPayload($payload);
-
-        return $trigger;
     }
 }

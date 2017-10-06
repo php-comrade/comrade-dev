@@ -1,17 +1,12 @@
 <?php
-namespace Comrade\Shared\Model;
+namespace App\Model;
 
 use function Makasim\Values\get_value;
 use function Makasim\Values\set_value;
 
 class SubJob extends Job
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/SubJob.json';
-
-    /**
-     * @var array
-     */
-    protected $values = [];
+    const SCHEMA = \Comrade\Shared\Model\SubJob::SCHEMA;
 
     /**
      * @param string $id

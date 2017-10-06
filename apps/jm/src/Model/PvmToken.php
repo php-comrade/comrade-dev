@@ -3,6 +3,7 @@ namespace App\Model;
 
 use Comrade\Shared\Message\RunnerResult;
 use function Makasim\Values\get_object;
+use function Makasim\Values\get_value;
 use function Makasim\Values\set_object;
 
 /**
@@ -18,6 +19,11 @@ class PvmToken extends \Formapro\Pvm\Token
     public function setRunnerResult(RunnerResult $runnerResult): void
     {
         set_object($this, 'runnerResult', $runnerResult);
+    }
+
+    public function hasRunnerResult(): bool
+    {
+        return (bool) get_value($this, 'runnerResult');
     }
 
     public function getRunnerResult(): RunnerResult
