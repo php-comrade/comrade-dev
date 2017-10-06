@@ -14,7 +14,7 @@ class Throwable
     /**
      * @var array
      */
-    private $values = [];
+    protected $values = [];
 
     public function getRaw() :string
     {

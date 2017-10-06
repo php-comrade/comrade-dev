@@ -15,6 +15,8 @@ use Enqueue\Util\JSON;
 use Interop\Queue\PsrContext;
 use Interop\Queue\PsrMessage;
 use Interop\Queue\PsrProcessor;
+use function Makasim\Values\get_value;
+use function Makasim\Values\get_values;
 
 class JobMetricsProcessor implements PsrProcessor, TopicSubscriberInterface
 {
@@ -55,7 +57,7 @@ class JobMetricsProcessor implements PsrProcessor, TopicSubscriberInterface
             return Result::ACK;
         }
 
-        if (false == JobStatus::isDone($job->getCurrentResult())) {
+        if (get_value($job, 'finishedAt', null, \DateTime::class)) {
             return Result::ack(sprintf(
                 'The job status "%s" is not one of the done statuses (%s). Metrics are not calculated for intermediate statuses. Ignoring.',
                 $job->getCurrentResult()->getStatus(),
@@ -63,14 +65,7 @@ class JobMetricsProcessor implements PsrProcessor, TopicSubscriberInterface
             ));
         }
 
-        $scheduledTime = null;
-        foreach ($job->getResults() as $result) {
-            if (JobStatus::isNew($result)) {
-                $scheduledTime = $result->getCreatedAt();
-                break;
-            }
-        }
-
+        $scheduledTime = get_value($job, 'startAt', null, \DateTime::class);
         if (false == $scheduledTime) {
             throw new \LogicException(sprintf('The job "%s" has done status but there is no running one which is exceptional case.', $job->getId()));
         }
@@ -97,6 +92,6 @@ class JobMetricsProcessor implements PsrProcessor, TopicSubscriberInterface
      */
     public static function getSubscribedTopics()
     {
-        return [Topics::UPDATE_JOB];
+        return [Topics::JOB_UPDATED];
     }
 }

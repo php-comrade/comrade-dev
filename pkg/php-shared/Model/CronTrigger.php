@@ -5,7 +5,7 @@ use Makasim\Values\CastTrait;
 use function Makasim\Values\get_value;
 use function Makasim\Values\set_value;
 
-class CronTrigger implements Trigger
+class CronTrigger extends Trigger
 {
     const SCHEMA = 'http://jm.forma-pro.com/schemas/trigger/CronTrigger.json';
 
@@ -17,14 +17,8 @@ class CronTrigger implements Trigger
 
     const MISFIRE_INSTRUCTION_IGNORE_MISFIRE_POLICY = 'ignore_misfire_policy';
 
-
     use CreateTrait;
     use CastTrait;
-
-    /**
-     * @var array
-     */
-    private $values = [];
 
     public function setStartAt(\DateTime $startAt):void
     {

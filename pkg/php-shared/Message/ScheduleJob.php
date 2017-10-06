@@ -2,13 +2,10 @@
 namespace Comrade\Shared\Message;
 
 use Comrade\Shared\Model\CreateTrait;
-use Comrade\Shared\Model\JobTemplate;
 use Comrade\Shared\Model\Trigger;
-use function Makasim\Values\get_objects;
-use function Makasim\Values\get_value;
+use function Makasim\Values\get_object;
 use function Makasim\Values\get_values;
-use function Makasim\Values\set_objects;
-use function Makasim\Values\set_value;
+use function Makasim\Values\set_object;
 
 class ScheduleJob implements \JsonSerializable
 {
@@ -19,40 +16,16 @@ class ScheduleJob implements \JsonSerializable
     /**
      * @var array
      */
-    private $values = [];
+    protected $values = [];
 
-    /**
-     * @return string
-     */
-    public function getJobTemplateId(): string
+    public function setTrigger(Trigger $trigger): void
     {
-        return get_value($this,'jobTemplateId');
+        set_object($this, 'trigger', $trigger);
     }
 
-    /**
-     * @param string $id
-     */
-    public function setJobTemplateId(string $id):void
+    public function getTrigger(): Trigger
     {
-        set_value($this, 'jobTemplateId', $id);
-    }
-
-    /**
-     * @param \Traversable|Trigger[] $triggers
-     *
-     * @return void
-     */
-    public function setTriggers(\Traversable $triggers):void
-    {
-        set_objects($this, 'triggers', iterator_to_array($triggers));
-    }
-
-    /**
-     * @return \Traversable|Trigger[]
-     */
-    public function getTriggers():\Traversable
-    {
-        return get_objects($this, 'triggers');
+        return get_object($this, 'trigger');
     }
 
     /**
@@ -63,20 +36,10 @@ class ScheduleJob implements \JsonSerializable
         return get_values($this);
     }
 
-    public static function createFor(JobTemplate $jobTemplate):ScheduleJob
+    public static function createFor(Trigger $trigger): ScheduleJob
     {
         $message = static::create();
-        $message->setJobTemplateId($jobTemplate->getTemplateId());
-        $message->setTriggers($jobTemplate->getTriggers());
-
-        return $message;
-    }
-
-    public static function createForSingle(JobTemplate $jobTemplate, Trigger $trigger):ScheduleJob
-    {
-        $message = static::create();
-        $message->setJobTemplateId($jobTemplate->getTemplateId());
-        $message->setTriggers(new \ArrayObject([$trigger]));
+        $message->setTrigger($trigger);
 
         return $message;
     }

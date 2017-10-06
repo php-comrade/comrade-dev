@@ -1,7 +1,7 @@
 <?php
 namespace App\Storage;
 
-use Comrade\Shared\Model\Job;
+use App\Model\Job;
 use function Makasim\Yadm\get_object_id;
 use Makasim\Yadm\Storage;
 
@@ -16,7 +16,7 @@ class JobStorage extends Storage
      * @param string $id
      * @return Job
      */
-    public function getOneById(string $id):Job
+    public function getOneById(string $id): Job
     {
         if (false == $job = $this->findOne(['id' => $id])) {
             throw new \LogicException(sprintf('The job with id "%s" could not be found', $id));
@@ -30,9 +30,17 @@ class JobStorage extends Storage
      *
      * @return Job[]|\Traversable
      */
-    public function findSubJobs(string $jobId):\Traversable
+    public function findSubJobs(string $jobId): \Traversable
     {
         return $this->find(['parentId' => $jobId]);
+    }
+
+    public function countFinishedSubJobs(string $parentJobId): int
+    {
+        return $this->count([
+            'parentId' => $parentJobId,
+            'finishedAt' => ['$exists' => true]
+        ]);
     }
 
     /**

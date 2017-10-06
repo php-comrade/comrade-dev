@@ -4,22 +4,13 @@
   "type": "object",
   "properties": {
     "templateId": { "$ref" : "http://jm.forma-pro.com/schemas/uuid4.json" },
-    "processTemplateId": { "$ref" : "http://jm.forma-pro.com/schemas/uuid4.json" },
     "name": { "type": "string"},
     "details": { "type": ["null", "string", "number", "object", "array"] },
     "gracePeriodPolicy": { "$ref": "policy/GracePeriodPolicy.json" },
     "retryFailedPolicy": { "$ref": "policy/RetryFailedPolicy.json" },
     "runSubJobsPolicy": { "$ref": "policy/RunSubJobsPolicy.json" },
+    "subJobPolicy": { "$ref": "policy/SubJobPolicy.json" },
     "exclusivePolicy": { "$ref": "policy/ExclusivePolicy.json" },
-    "triggers": {
-      "type": "array",
-      "minItems": 1,
-      "items": { "oneOf": [
-        { "$ref": "trigger/SimpleTrigger.json" },
-        { "$ref": "trigger/CronTrigger.json" },
-        { "$ref": "trigger/NowTrigger.json" }
-      ]}
-    },
     "runner": {
       "oneOf": [
         { "$ref": "runner/QueueRunner.json" },
@@ -27,5 +18,5 @@
       ]
     }
   },
-  "required": ["templateId", "processTemplateId", "name", "runner"]
+  "required": ["templateId", "name", "runner"]
 }

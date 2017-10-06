@@ -38,12 +38,12 @@ class JobMetrics
         return get_value($this, 'jobId');
     }
 
-    public function getStatus():int
+    public function getStatus(): string
     {
         return get_value($this, 'status');
     }
 
-    public function setStatus(int $status):  void
+    public function setStatus(string $status):  void
     {
         set_value($this, 'status', $status);
     }

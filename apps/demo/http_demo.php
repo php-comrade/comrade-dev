@@ -2,9 +2,7 @@
 
 use Comrade\Shared\ComradeClassMap;
 use Comrade\Shared\Message\RunJob;
-use Comrade\Shared\Model\JobResult;
-use Comrade\Shared\Message\JobResult as JobResultMessage;
-use Comrade\Shared\Model\JobStatus;
+use Comrade\Shared\Model\JobAction;
 use function Makasim\Values\register_cast_hooks;
 use function Makasim\Values\register_global_hook;
 use function Makasim\Values\register_object_hooks;
@@ -51,10 +49,7 @@ if ('/demo_success_job' === $path) {
     $httpResponse = $runner->run($httpRequest, function(RunJob $runJob) {
         do_something_important(rand(2, 6));
 
-        $jobResultMessage = JobResultMessage::create();
-        $jobResultMessage->setResult(JobResult::createFor(JobStatus::STATUS_COMPLETED));
-
-        return $jobResultMessage;
+        return JobAction::COMPLETE;
     });
 
     send($httpResponse);

@@ -3,9 +3,13 @@ namespace Comrade\Shared\Message;
 
 use Comrade\Shared\Model\CreateTrait;
 use Comrade\Shared\Model\JobTemplate;
+use Comrade\Shared\Model\Trigger;
+use function Makasim\Values\add_object;
 use function Makasim\Values\get_object;
+use function Makasim\Values\get_objects;
 use function Makasim\Values\get_values;
 use function Makasim\Values\set_object;
+use function Makasim\Values\set_value;
 
 class CreateJob implements \JsonSerializable
 {
@@ -16,7 +20,7 @@ class CreateJob implements \JsonSerializable
     /**
      * @var array
      */
-    private $values = [];
+    protected $values = [];
 
     /**
      * @return JobTemplate|object
@@ -32,6 +36,27 @@ class CreateJob implements \JsonSerializable
     public function setJobTemplate(JobTemplate $jobTemplate): void
     {
         set_object($this, 'jobTemplate', $jobTemplate);
+    }
+
+    public function addTrigger(Trigger $trigger): void
+    {
+        add_object($this, 'triggers', $trigger);
+    }
+
+    /**
+     * @return \Traversable|Trigger[]
+     */
+    public function getTriggers(): \Traversable
+    {
+        return get_objects($this, 'triggers');
+    }
+
+    /**
+     * @return void
+     */
+    public function removeTriggers(): void
+    {
+        set_value($this, 'triggers', null);
     }
 
     public static function createFor(JobTemplate $jobTemplate): CreateJob

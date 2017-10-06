@@ -13,7 +13,7 @@ class QueueRunner implements Runner
     /**
      * @var array
      */
-    private $values = [];
+    protected $values = [];
 
     public function setQueue(string $queue):void
     {

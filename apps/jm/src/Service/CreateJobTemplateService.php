@@ -1,14 +1,13 @@
 <?php
 namespace App\Service;
 
-use App\Commands;
+use App\Infra\Uuid;
 use App\Topics;
 use App\Model\ExclusiveJob;
 use App\Storage\ExclusiveJobStorage;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessStorage;
-use Comrade\Shared\Message\ScheduleJob;
-use Comrade\Shared\Model\JobTemplate;
+use App\Model\JobTemplate;
 use Enqueue\Client\ProducerInterface;
 use function Makasim\Values\get_values;
 
@@ -65,6 +64,7 @@ class CreateJobTemplateService
      */
     public function create(JobTemplate $jobTemplate):void
     {
+        $jobTemplate->setProcessTemplateId(Uuid::generate());
         $jobTemplate->setCreatedAt(new \DateTime('now'));
 
         $processTemplate = $this->createProcessForJobService->createProcess($jobTemplate);
@@ -80,6 +80,5 @@ class CreateJobTemplateService
         }
 
         $this->producer->sendEvent(Topics::JOB_TEMPLATE_UPDATED, get_values($jobTemplate));
-        $this->producer->sendCommand(Commands::SCHEDULE_JOB, ScheduleJob::createFor($jobTemplate));
     }
 }

@@ -10,7 +10,7 @@ class GracePeriodPolicy implements Policy
 
     const SCHEMA = 'http://jm.forma-pro.com/schemas/policy/GracePeriodPolicy.json';
 
-    private $values = [];
+    protected $values = [];
 
     public function setPeriod(int $period):void
     {

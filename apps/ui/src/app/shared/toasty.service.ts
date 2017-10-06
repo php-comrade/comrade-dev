@@ -22,21 +22,21 @@ export class ToastyService {
   }
 
   jobIsUpdated(job: Job): void {
-    if (job.currentResult.status == 36 /** completed */) {
+    if (job.currentResult.status == 'completed') {
       const toastOptions:ToastOptions = {
         title: "Job completed",
         msg: `<a href="/job/${job.id}/view">${job.name}</a>`
       };
 
       this.toastyService.success(toastOptions);
-    } else if (job.currentResult.status == 12 /** canceled */ || job.currentResult.status == 132 /** terminated */) {
+    } else if (job.currentResult.status == 'canceled' || job.currentResult.status == 'terminated') {
       const toastOptions:ToastOptions = {
         title: "Job canceled",
         msg: `<a href="/job/${job.id}/view">${job.name}</a>`
       };
 
       this.toastyService.warning(toastOptions);
-    } else if (job.currentResult.status == 68 /** failed */ ) {
+    } else if (job.currentResult.status == 'failed') {
       const toastOptions:ToastOptions = {
         title: "Job failed",
         msg: `<a href="/job/${job.id}/view">${job.name}</a>`,

@@ -2,10 +2,11 @@
 namespace App\Pvm\Behavior;
 
 use App\Commands;
+use App\Model\JobAction;
+use App\Model\PvmToken;
+use App\Service\ChangeJobStateService;
 use App\Topics;
-use App\JobStatus;
 use App\Model\JobResult;
-use App\Model\Process;
 use App\Storage\JobStorage;
 use Comrade\Shared\Model\Job;
 use Enqueue\Client\ProducerInterface;
@@ -14,6 +15,8 @@ use Formapro\Pvm\Exception\InterruptExecutionException;
 use Formapro\Pvm\Exception\WaitExecutionException;
 use Formapro\Pvm\SignalBehavior;
 use Formapro\Pvm\Token;
+use Formapro\Pvm\Transition;
+use function Makasim\Values\get_value;
 use function Makasim\Values\get_values;
 use Quartz\Bridge\Enqueue\EnqueueResponseJob;
 use Quartz\Bridge\Scheduler\RemoteScheduler;
@@ -23,11 +26,6 @@ use Quartz\Core\TriggerBuilder;
 
 class GracePeriodPolicyBehavior implements Behavior, SignalBehavior
 {
-    /**
-     * @var JobStorage
-     */
-    private $jobStorage;
-
     /**
      * @var RemoteScheduler
      */
@@ -39,28 +37,35 @@ class GracePeriodPolicyBehavior implements Behavior, SignalBehavior
     private $producer;
 
     /**
-     * @param JobStorage        $jobStorage
-     * @param RemoteScheduler   $remoteScheduler
-     * @param ProducerInterface $producer
+     * @var JobStorage
      */
+    private $jobStorage;
+
+    /**
+     * @var ChangeJobStateService
+     */
+    private $changeJobStateService;
+
     public function __construct(
-        JobStorage $jobStorage,
         RemoteScheduler $remoteScheduler,
-        ProducerInterface $producer
+        ProducerInterface $producer,
+        JobStorage $jobStorage,
+        ChangeJobStateService $changeJobStateService
     ) {
-        $this->jobStorage = $jobStorage;
         $this->remoteScheduler = $remoteScheduler;
         $this->producer = $producer;
+        $this->changeJobStateService = $changeJobStateService;
+        $this->jobStorage = $jobStorage;
     }
 
     /**
+     * @param PvmToken $token
+     *
      * {@inheritdoc}
      */
     public function execute(Token $token)
     {
-        /** @var Process $process */
-        $process = $token->getProcess();
-        $job = $this->jobStorage->getOneById($process->getTokenJobId($token));
+        $job = $this->jobStorage->getOneById($token->getJobId());
         $policy = $job->getGracePeriodPolicy();
 
         $quartzJob = JobBuilder::newJob(EnqueueResponseJob::class)->build();
@@ -69,40 +74,40 @@ class GracePeriodPolicyBehavior implements Behavior, SignalBehavior
             ->withSchedule(SimpleScheduleBuilder::simpleSchedule())
             ->setJobData([
                 'command' => Commands::PVM_HANDLE_ASYNC_TRANSITION,
-                'process' => $process->getId(),
+                'process' => $token->getProcess()->getId(),
                 'token' => $token->getId(),
             ])
             ->startAt(new \DateTime(sprintf('now + %d seconds', $policy->getPeriod())))
             ->build();
 
         $this->remoteScheduler->scheduleJob($trigger, $quartzJob);
-        $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
 
         throw new WaitExecutionException;
     }
 
     /**
+     * @param PvmToken $token
+     *
      * {@inheritdoc}
      */
     public function signal(Token $token)
     {
-        /** @var Process $process */
-        $process = $token->getProcess();
+        $job = $this->jobStorage->getOneById($token->getJobId());
 
-        return $this->jobStorage->lockByJobId($process->getTokenJobId($token), function(Job $job) {
-            $result = $job->getCurrentResult();
-            if ($result->isDone() || $result->isRunSubJobs() || $result->isRunningSubJobs()) {
-                throw new InterruptExecutionException();
-            }
+        if (get_value($job, 'finishedAt')) {
+            throw new InterruptExecutionException();
+        }
 
-            $jobResult = JobResult::createFor(JobStatus::STATUS_FAILED);
-            $job->addResult($jobResult);
-            $job->setCurrentResult($jobResult);
+        /** @var Job $job */
+        $job = $this->changeJobStateService->changeInFlow($job->getId(), JobAction::FAIL, function(Job $job, Transition $transition) {
+            $result = JobResult::createFor($transition->getTo()->getLabel(), new \DateTime('now'));
 
-            $this->jobStorage->update($job);
-            $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
+            $job->addResult($result);
+            $job->setCurrentResult($result);
 
-            return ['failed'];
+            return $job;
         });
+
+        $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
     }
 }

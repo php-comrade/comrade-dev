@@ -5,7 +5,7 @@ class Topics
 {
     const CREATE_JOB = 'job_manager.create_job';
 
-    const UPDATE_JOB = 'job_manager.update_job';
+    const JOB_UPDATED = 'comrade.job_updated';
 
     const JOB_TEMPLATE_UPDATED = 'comrade.job_template_updated';
 

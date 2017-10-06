@@ -2,22 +2,24 @@
 namespace App\Pvm\Behavior;
 
 use App\Commands;
-use App\Topics;
+use App\Message\ExecuteJob;
+use App\Model\JobAction;
+use App\Model\PvmProcess;
+use App\Model\PvmToken;
+use App\Service\ChangeJobStateService;
+use App\Storage\JobTemplateStorage;
+use App\Storage\ProcessExecutionStorage;
 use App\JobStatus;
-use App\Model\JobResult;
-use App\Model\Process;
-use App\Service\CreateProcessForSubJobsService;
 use App\Storage\JobStorage;
-use App\Storage\ProcessStorage;
-use Comrade\Shared\Model\Job;
+use Comrade\Shared\Model\SubJobTrigger;
 use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\Behavior;
-use Formapro\Pvm\Exception\WaitExecutionException;
-use Formapro\Pvm\SignalBehavior;
+use Formapro\Pvm\Exception\InterruptExecutionException;
 use Formapro\Pvm\Token;
-use function Makasim\Values\get_values;
+use Formapro\Pvm\Transition;
+use function Makasim\Values\set_value;
 
-class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
+class RunSubJobsProcessBehavior implements Behavior
 {
     /**
      * @var JobStorage
@@ -25,99 +27,107 @@ class RunSubJobsProcessBehavior implements Behavior, SignalBehavior
     private $jobStorage;
 
     /**
+     * @var JobTemplateStorage
+     */
+    private $jobTemplateStorage;
+
+    /**
      * @var ProducerInterface
      */
     private $producer;
 
     /**
-     * @var ProcessStorage
+     * @var ChangeJobStateService
      */
-    private $processStorage;
+    private $changeJobStateService;
 
     /**
-     * @var CreateProcessForSubJobsService
+     * @var ProcessExecutionStorage
      */
-    private $createProcessForSubJobsService;
+    private $processExecutionStorage;
 
-    /**
-     * @param JobStorage $jobStorage
-     * @param ProcessStorage $processStorage
-     * @param CreateProcessForSubJobsService $createProcessForSubJobsService
-     * @param ProducerInterface $producer
-     */
     public function __construct(
         JobStorage $jobStorage,
-        ProcessStorage $processStorage,
-        ProducerInterface $producer,
-        CreateProcessForSubJobsService $createProcessForSubJobsService
-    ) {
+        JobTemplateStorage $jobTemplateStorage,
+        ChangeJobStateService $changeJobStateService,
+        ProcessExecutionStorage $processExecutionStorage,
+        ProducerInterface $producer
+    )
+    {
         $this->jobStorage = $jobStorage;
-        $this->processStorage = $processStorage;
+        $this->changeJobStateService = $changeJobStateService;
         $this->producer = $producer;
-        $this->createProcessForSubJobsService = $createProcessForSubJobsService;
+        $this->jobTemplateStorage = $jobTemplateStorage;
+        $this->processExecutionStorage = $processExecutionStorage;
     }
 
     /**
+     * @param PvmToken $token
+     *
      * {@inheritdoc}
      */
     public function execute(Token $token)
     {
-        /** @var Process $process */
-        $process = $token->getProcess();
-        $job = $this->jobStorage->getOneById($process->getTokenJobId($token));
-
-        if (false == $job->getCurrentResult()->isRunSubJobs()) {
-            throw new \LogicException('The process comes to this task but its status is not "run_sub_jobs"');
+        $job = $this->jobStorage->getOneById($token->getJobId());
+        if (JobStatus::RUNNING_SUB_JOBS !== $job->getCurrentResult()->getStatus()) {
+            throw new InterruptExecutionException();
         }
 
-        $jobResult = JobResult::createFor(JobStatus::STATUS_RUNNING_SUB_JOBS);
-        $job->addResult($jobResult);
-        $job->setCurrentResult($jobResult);
-        $this->jobStorage->update($job);
-        $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
+        $triggers = $this->createSubJobstriggers($token);
+        foreach ($triggers as $trigger) {
+            $this->producer->sendCommand(Commands::EXECUTE_JOB, ExecuteJob::createFor($trigger));
+        }
 
-        /** @var Job[] $subJobs */
-        $subJobs = $this->jobStorage->find(['parentId' => $job->getId()]);
-        $process = $this->createProcessForSubJobsService->createProcess($token, $subJobs);
-        $this->processStorage->insert($process);
+        return 'wait_sub_jobs';
+    }
 
-        $this->producer->sendCommand(Commands::EXECUTE_PROCESS, ['processTemplateId' => $process->getId()]);
+    private function findSubJobNotificationTransition(PvmProcess $process): Transition
+    {
+        /** @var Transition $waitSubJobsTransition */
+        $waitSubJobsTransition = null;
+        foreach ($process->getTransitions() as $transition) {
+            if ($transition->getName() === 'sub_job_notification') {
+                return $transition;
+            }
+        }
 
-        throw new WaitExecutionException();
+        throw new \LogicException('The transition with name "sub_job_notification" was not found.');
     }
 
     /**
-     * {@inheritdoc}
+     * @param PvmToken $token
+     *
+     * @return SubJobTrigger[]
      */
-    public function signal(Token $token)
+    private function createSubJobstriggers(PvmToken $token): array
     {
-        /** @var Process $process */
-        $process = $token->getProcess();
+        $job = $this->jobStorage->getOneById($token->getJobId());
+        $subJobs = $token->getRunnerResult()->getSubJobs();
 
-        return $this->jobStorage->lockByJobId($process->getTokenJobId($token), function(Job $job) {
-            if ($job->getRunSubJobsPolicy()->isMarkParentJobAsFailed()) {
-                foreach ($this->jobStorage->findSubJobs($job->getId()) as $subJob) {
-                    if ($subJob->getCurrentResult()->isFailed()) {
-                        $jobResult = JobResult::createFor(JobStatus::STATUS_FAILED);
-                        $job->addResult($jobResult);
-                        $job->setCurrentResult($jobResult);
+        $freshProcess = $this->processExecutionStorage->getOneByToken($token->getId());
+        $subJobNotificationTransition = $this->findSubJobNotificationTransition($freshProcess);
 
-                        $this->jobStorage->update($job);
-                        $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
-
-                        return ['failed'];
-                    }
-                }
+        $triggers = [];
+        foreach ($subJobs as $subJob) {
+            if (false == $subJobTemplate = $this->jobTemplateStorage->findSubJobTemplate($job->getTemplateId(), $subJob->getName())) {
+                throw new \LogicException(sprintf('Sub job with name "%s" for parent job  with id "%s" could not be found', $subJob->getName(), $job->getTemplateId()));
             }
 
-            $jobResult = JobResult::createFor(JobStatus::STATUS_COMPLETED);
-            $job->addResult($jobResult);
-            $job->setCurrentResult($jobResult);
+            $notifyToken = $freshProcess->createToken($subJobNotificationTransition);
+            set_value($notifyToken, 'notifyToken', true);
 
-            $this->jobStorage->update($job);
-            $this->producer->sendEvent(Topics::UPDATE_JOB, get_values($job));
+            $trigger = SubJobTrigger::create();
+            $trigger->setTemplateId($subJobTemplate->getTemplateId());
+            $trigger->setPayload($subJob->getPayload());
+            $trigger->setParentJobId($job->getId());
+            $trigger->setParentProcessId($token->getProcess()->getId());
+            $trigger->setParentToken($notifyToken->getId());
 
-            return ['completed'];
-        });
+            $triggers[] = $trigger;
+        }
+
+        $this->processExecutionStorage->update($freshProcess);
+
+        return $triggers;
     }
 }

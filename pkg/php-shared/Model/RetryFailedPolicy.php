@@ -10,7 +10,7 @@ class RetryFailedPolicy implements Policy
 
     const SCHEMA = 'http://jm.forma-pro.com/schemas/policy/RetryFailedPolicy.json';
 
-    private $values = [];
+    protected $values = [];
 
     /**
      * @param int $retryLimit

@@ -85,6 +85,10 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
             return;
         }
 
+        if (false == $context->getPsrMessage()) {
+            return;
+        }
+
         if (StoreInternalErrorProcessor::PROCESSOR_NAME == $context->getPsrMessage()->getProperty(Config::PARAMETER_PROCESSOR_NAME)) {
             // do not try to store errors happened while trying to store another error. it must end up being an endless cycle.
             return;

@@ -44,22 +44,23 @@ class JobResult extends OriginalJobResult {
                       <job-status class="float-left" [status]="result.status"></job-status>
                   </div>
 
-                  <div class="col-2" *ngIf="result.error">
-                      <a (click)="showError(result.error)" href="javascript:void(0)">error</a>
-                  </div>
+                  <!--<div class="col-2" *ngIf="result.error">-->
+                      <!--<a (click)="showError(result.error)" href="javascript:void(0)">error</a>-->
+                  <!--</div>-->
 
-                  <div class="col-2" *ngIf="result.metrics">
-                      <a (click)="showMetrics(result.metrics)" href="javascript:void(0)">metrics</a>
-                  </div>
+                  <!--<div class="col-2" *ngIf="result.metrics">-->
+                      <!--<a (click)="showMetrics(result.metrics)" href="javascript:void(0)">metrics</a>-->
+                  <!--</div>-->
               </div>
           </div>
           <div class="col-6">
-              <div class="col-12" *ngIf="metrics">
-                  <prettyjson [obj]="metrics"></prettyjson>
-              </div>
-              <div class="col-12" *ngIf="error">
-                  <prettyjson [obj]="error"></prettyjson>
-              </div>
+              <job-state-graph [jobId]="job.id" [updatedAt]="job.currentResult.createdAt.unix"></job-state-graph>
+              <!--<div class="col-12" *ngIf="metrics">-->
+                  <!--<prettyjson [obj]="metrics"></prettyjson>-->
+              <!--</div>-->
+              <!--<div class="col-12" *ngIf="error">-->
+                  <!--<prettyjson [obj]="error"></prettyjson>-->
+              <!--</div>-->
           </div>
       </div>
   `,
@@ -113,7 +114,7 @@ export class JobViewExecutionComponent implements OnChanges {
       jobResult.isSubJob = false;
       results.push(jobResult);
 
-      if (this.showSubJobsStatuses && jobResult.status == 18 /** running sub jobs */ && this.subJobs) {
+      if (this.showSubJobsStatuses && jobResult.status == 'running_sub_jobs' && this.subJobs) {
         this.subJobs.forEach((job: SubJob) => {
           if (!job.currentResult) {
             return;

@@ -14,12 +14,12 @@ class ExclusivePolicy implements Policy
 
     const MARK_JOB_AS_FAILED = 'mark_job_as_failed';
 
-    private $values = [];
+    protected $values = [];
 
     /**
      * @param string $action
      */
-    public function setOnFailedSubJob(string $action):void
+    public function setOnDuplicateRun(string $action): void
     {
         set_value($this, 'onDuplicateRun', $action);
     }
@@ -27,7 +27,7 @@ class ExclusivePolicy implements Policy
     /**
      * @return string
      */
-    public function getOnFailedSubJob(): string
+    public function getOnDuplicateRun(): string
     {
         return get_value($this, 'onDuplicateRun');
     }
@@ -35,16 +35,16 @@ class ExclusivePolicy implements Policy
     /**
      * @return bool
      */
-    public function isMarkParentJobAsFailed():bool
+    public function isMarkJobAsFailedOnDuplicateRun(): bool
     {
-        return $this->getOnFailedSubJob() === static::MARK_JOB_AS_FAILED;
+        return $this->getOnDuplicateRun() === static::MARK_JOB_AS_FAILED;
     }
 
     /**
      * @return bool
      */
-    public function isMarkParentJobAsCanceled():bool
+    public function isMarkJobAsCanceledOnDuplicateRun(): bool
     {
-        return $this->getOnFailedSubJob() === static::MARK_JOB_AS_CANCELED;
+        return $this->getOnDuplicateRun() === static::MARK_JOB_AS_CANCELED;
     }
 }

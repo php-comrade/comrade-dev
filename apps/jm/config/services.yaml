@@ -19,7 +19,7 @@ services:
     App\Storage\ProcessExecutionStorage: '@yadm.process_execution.storage'
     App\Infra\Error\ErrorStorage: '@yadm.error.storage'
     App\Storage\JobMetricsStorage: '@yadm.job_metrics.storage'
-
+    App\Storage\TriggerStorage: '@yadm.trigger.storage'
 
     Enqueue\Client\ProducerInterface:
         alias: 'enqueue.client.producer'
@@ -103,6 +103,8 @@ services:
         arguments:
             - '@yadm.client'
             - '%mongo_database%'
+
+    App\Service\ChangeJobStateService: ~
 
     App\Infra\Enqueue\CheckMasterProcessExtension:
         autowire: false

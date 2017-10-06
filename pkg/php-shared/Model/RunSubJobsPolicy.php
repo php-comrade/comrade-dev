@@ -14,7 +14,7 @@ class RunSubJobsPolicy implements Policy
 
     const MARK_JOB_AS_COMPLETED = 'mark_job_as_completed';
 
-    private $values = [];
+    protected $values = [];
 
     /**
      * @param string $action

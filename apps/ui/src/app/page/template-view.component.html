@@ -36,14 +36,6 @@
     </div>
     <div class="row">
       <div class="col-3">
-        Process Template Id:
-      </div>
-      <div class="col-6">
-        {{jobTemplate.processTemplateId}}
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-3">
         Name:
       </div>
       <div class="col-6">
@@ -78,10 +70,14 @@
     <show-grace-period-policy *ngIf="jobTemplate.gracePeriodPolicy" [policy]="jobTemplate.gracePeriodPolicy"></show-grace-period-policy>
     <show-retry-failed-policy *ngIf="jobTemplate.retryFailedPolicy" [policy]="jobTemplate.retryFailedPolicy"></show-retry-failed-policy>
     <show-run-sub-jobs-policy *ngIf="jobTemplate.runSubJobsPolicy" [policy]="jobTemplate.runSubJobsPolicy"></show-run-sub-jobs-policy>
+    <policy-show-sub-job *ngIf="jobTemplate.subJobPolicy" [policy]="jobTemplate.subJobPolicy"></policy-show-sub-job>
   </div>
 
   <div *ngIf="tab == 'graph'">
-    <process-graph-image [processId]="jobTemplate.processTemplateId"></process-graph-image>
+    <h4>Flow graph:</h4>
+    <job-flow-graph *ngIf="jobTemplate" [updatedAt]="jobTemplate.createdAt.unix" [jobTemplateId]="jobTemplate.templateId"></job-flow-graph>
+    <h4>State graph:</h4>
+    <job-state-graph *ngIf="jobTemplate" [updatedAt]="jobTemplate.createdAt.unix" [jobTemplateId]="jobTemplate.templateId"></job-state-graph>
   </div>
 
   <div *ngIf="tab === 'timeline'">

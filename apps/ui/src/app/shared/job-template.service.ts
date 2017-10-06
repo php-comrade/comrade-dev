@@ -7,11 +7,10 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import {CreateJob} from "./messages/create-job";
 import {Observable} from "rxjs/Observable";
-import {AddTrigger} from "./messages/add-trigger";
-import {SimpleTrigger} from "./simple-trigger";
-import {Date} from "./date";
 import "rxjs/add/operator/share";
 import {HttpService} from "./http.service";
+import {ScheduleJob} from "./messages/schedule-job";
+import {NowTrigger} from "./now-trigger";
 
 @Injectable()
 export class JobTemplateService {
@@ -28,26 +27,17 @@ export class JobTemplateService {
         return this.http.get(`/api/job-templates/${id}`).map((res: Response) => res.json().data);
     }
 
-    runNow(jobTemplate: JobTemplate): Observable<JobTemplate> {
-        let moment = require('moment');
+    runNow(jobTemplate: JobTemplate): Observable<Response> {
+        const trigger = new NowTrigger();
+        trigger.templateId = jobTemplate.templateId;
 
-        const simpleTrigger = new SimpleTrigger();
-        simpleTrigger.misfireInstruction = 'fire_now';
-        simpleTrigger.startAt = Date.fromMoment(moment());
-        simpleTrigger.repeatCount = 0;
-        simpleTrigger.intervalInSeconds = 0;
-
-        const addTrigger = new AddTrigger(jobTemplate.templateId, simpleTrigger);
-
-        return this.http.post('/api/add-trigger', addTrigger)
-            .map((response: Response) => response.json().jobTemplate as JobTemplate)
-            .catch((response: Response) => Observable.throw(response));
+        return this.http.post('/api/schedule-job', new ScheduleJob(trigger))
+            .catch((response: Response) => Observable.throw(response))
+        ;
     }
 
-    create(jobTemplate: JobTemplate): Observable<Response> {
-        let createJob = new CreateJob(jobTemplate);
-
-        return this.http.post('/api/job-templates', createJob);
+    create(createJob: CreateJob): Observable<Response> {
+        return this.http.post('/api/create-job', createJob);
     }
 
     private handleError(error: any): Promise<any> {

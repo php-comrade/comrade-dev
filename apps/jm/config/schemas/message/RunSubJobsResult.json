@@ -6,15 +6,8 @@
     {
       "type": "object",
       "properties": {
-        "jobTemplates": {
-          "type": "array",
-          "items": {
-            "$ref": "../JobTemplate.json"
-          }
-        },
-        "processTemplateId": { "$ref" : "../uuid4.json" }
-      },
-      "required": ["jobTemplates", "processTemplateId"]
+        "subJobs": { "$ref": "../trigger/NowTrigger.json" }
+      }
     }
   ]
 }

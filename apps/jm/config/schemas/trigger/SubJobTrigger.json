@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "id": "http://jm.forma-pro.com/schemas/trigger/SubJobTrigger.json",
+  "allOf": [
+    { "$ref": "Trigger.json" },
+    {
+      "type": "object",
+      "properties": {
+        "schema": {
+          "type": "string",
+          "enum": [
+            "http://jm.forma-pro.com/schemas/trigger/SubJobTrigger.json"
+          ]
+        },
+        "payload": { "type": ["null", "string", "number", "object", "array"] },
+        "parentJobId": { "$ref": "../uuid4.json" },
+        "parentToken": { "$ref": "../uuid4.json" },
+        "parentProcessId": { "$ref": "../uuid4.json" }
+      }
+    }]
+}

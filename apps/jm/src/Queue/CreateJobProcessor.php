@@ -6,7 +6,9 @@ use App\Infra\JsonSchema\Errors;
 use App\Infra\JsonSchema\SchemaValidator;
 use App\Service\CreateJobTemplateService;
 use Comrade\Shared\Message\CreateJob;
+use Comrade\Shared\Message\ScheduleJob;
 use Enqueue\Client\CommandSubscriberInterface;
+use Enqueue\Client\ProducerInterface;
 use Enqueue\Consumption\QueueSubscriberInterface;
 use Enqueue\Consumption\Result;
 use Interop\Queue\PsrContext;
@@ -27,15 +29,23 @@ class CreateJobProcessor implements PsrProcessor, CommandSubscriberInterface, Qu
     private $createJobTemplateService;
 
     /**
+     * @var ProducerInterface
+     */
+    private $producer;
+
+    /**
      * @param SchemaValidator $schemaValidator
      * @param CreateJobTemplateService $createJobTemplateService
+     * @param ProducerInterface $producer
      */
     public function __construct(
         SchemaValidator $schemaValidator,
-        CreateJobTemplateService $createJobTemplateService
+        CreateJobTemplateService $createJobTemplateService,
+        ProducerInterface $producer
     ) {
         $this->schemaValidator = $schemaValidator;
         $this->createJobTemplateService = $createJobTemplateService;
+        $this->producer = $producer;
     }
 
     /**
@@ -48,7 +58,12 @@ class CreateJobProcessor implements PsrProcessor, CommandSubscriberInterface, Qu
             return Result::reject(Errors::toString($errors, 'Message schema validation has failed.'));
         }
 
-        $this->createJobTemplateService->create(CreateJob::create($data)->getJobTemplate());
+        $createJob = CreateJob::create($data);
+        $this->createJobTemplateService->create($createJob->getJobTemplate());
+
+        foreach ($createJob->getTriggers() as $trigger) {
+            $this->producer->sendCommand(Commands::SCHEDULE_JOB, ScheduleJob::createFor($trigger));
+        }
 
         return self::ACK;
     }

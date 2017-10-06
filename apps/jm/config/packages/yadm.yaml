@@ -2,17 +2,24 @@ yadm:
     mongo_uri: '%env(MONGO_DSN)%'
     models:
         job_template:
-            class: 'Comrade\Shared\Model\JobTemplate'
+            class: 'App\Model\JobTemplate'
             storage_class: 'App\Storage\JobTemplateStorage'
             collection: 'job_template'
             database: '%mongo_database%'
 
         job:
-            class: 'Comrade\Shared\Model\Job'
+            class: 'App\Model\Job'
             storage_class: 'App\Storage\JobStorage'
             collection: 'job'
             database: '%mongo_database%'
             pessimistic_lock: true
+            hydrator_class: 'App\Infra\Yadm\SchemaBasedHydrator'
+
+        trigger:
+            class: 'Comrade\Shared\Model\Trigger'
+            storage_class: 'App\Storage\TriggerStorage'
+            collection: 'trigger'
+            database: '%mongo_database%'
 
         job_metrics:
             class: 'Comrade\Shared\Model\JobMetrics'
@@ -29,13 +36,13 @@ yadm:
             pessimistic_lock: true
 
         process:
-            class: 'App\Model\Process'
+            class: 'App\Model\PvmProcess'
             storage_class: 'App\Storage\ProcessStorage'
             collection: 'pvm_process'
             database: '%mongo_database%'
 
         process_execution:
-            class: 'App\Model\Process'
+            class: 'App\Model\PvmProcess'
             storage_class: 'App\Storage\ProcessExecutionStorage'
             collection: 'pvm_process_execution'
             database: '%mongo_database%'

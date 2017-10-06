@@ -53,7 +53,10 @@ class StoreInternalErrorProcessor implements PsrProcessor, TopicSubscriberInterf
     public static function getSubscribedTopics()
     {
         return [
-            Topics::INTERNAL_ERROR => ['processorName' => self::PROCESSOR_NAME]
+            Topics::INTERNAL_ERROR => [
+                'processorName' => self::PROCESSOR_NAME,
+                'queueName' => 'store_internal_error',
+            ]
         ];
     }
 }

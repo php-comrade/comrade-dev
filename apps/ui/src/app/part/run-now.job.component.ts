@@ -23,9 +23,8 @@ export class RunNowJobComponent {
     runNow(jobTemplate: JobTemplate, event):void {
         event.stopPropagation();
 
-        this.jobTemplateService.runNow(jobTemplate).subscribe(
-        (jobTemplate: JobTemplate) => this.onRunSucceeded.emit(jobTemplate),
-        (error: Error) => this.onRunFailed.emit(error)
-        );
+        this.jobTemplateService.runNow(jobTemplate).subscribe({
+          error: (error: Error) => this.onRunFailed.emit(error)
+        });
     }
 }

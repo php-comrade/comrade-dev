@@ -22,7 +22,7 @@ export class CurrentJobService {
         this.currentJobId = new ReplaySubject(1);
         this.currentJob = new ReplaySubject(1);
 
-        wamp.topic('job_manager.update_job')
+        wamp.topic('comrade.job_updated')
             .map((event: EventMessage) => event.args[0])
             .withLatestFrom(this.currentJobId)
             .filter(([job, currentJobId]) => job.id === currentJobId)

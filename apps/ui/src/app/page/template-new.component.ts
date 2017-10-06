@@ -13,6 +13,8 @@ import {GracePeriodPolicy} from "../shared/grace-period-policy";
 import {RetryFailedPolicy} from "../shared/retry-failed-policy";
 import {RunSubJobsPolicy} from "../shared/run-sub-jobs-policy";
 import {Title} from "@angular/platform-browser";
+import {SubJobPolicy} from "../shared/sub-job-policy";
+import {CreateJob} from "../shared/messages/create-job";
 
 @Component({
   selector: 'template-new',
@@ -30,17 +32,22 @@ export class TemplateNewComponent implements OnInit {
   addGracePeriodPolicy: boolean = false;
   addRetryFailedPolicy: boolean = false;
   addRunSubJobsPolicy: boolean = false;
+  addSubJobPolicy: boolean = false;
+
+  createJob: CreateJob;
 
   constructor(private jobTemplateService: JobTemplateService, private router: Router, private titleService: Title) {
     this.jobTemplate = new JobTemplate();
     this.jobTemplate.templateId = uuid.v4();
-    this.jobTemplate.processTemplateId = uuid.v4();
     this.submitted = false;
     this.message = '';
+
+
+    this.createJob = new CreateJob(this.jobTemplate);
   }
 
   ngOnInit():void {
-      this.titleService.setTitle('JM. New template');
+      this.titleService.setTitle('New job - Comrade');
   }
 
   onFormChange(): void {
@@ -50,7 +57,7 @@ export class TemplateNewComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
-    this.jobTemplateService.create(this.jobTemplate)
+    this.jobTemplateService.create(this.createJob)
         .catch(res => { throw res })
         .subscribe(
             res => this.router.navigate(['/template', this.jobTemplate.templateId, 'view', 'summary']),
@@ -92,8 +99,12 @@ export class TemplateNewComponent implements OnInit {
       this.addRunSubJobsPolicy = !this.addRunSubJobsPolicy;
   }
 
+  triggerSubJobPolicy(): void {
+    this.addSubJobPolicy = !this.addSubJobPolicy;
+  }
+
   onTriggerAdded(trigger: Trigger) {
-    this.jobTemplate.addTrigger(trigger);
+    this.createJob.addTrigger(trigger);
 
     if (trigger instanceof CronTrigger) {
       this.addCronTrigger = false;
@@ -127,6 +138,12 @@ export class TemplateNewComponent implements OnInit {
       this.addRunSubJobsPolicy = false;
   }
 
+  onSubJobPolicyAdded(policy: SubJobPolicy) {
+    this.jobTemplate.subJobPolicy = policy;
+
+    this.addSubJobPolicy = false;
+  }
+
   onRunnerAdded(runner: Runner) {
     this.jobTemplate.runner = runner;
 
@@ -136,7 +153,7 @@ export class TemplateNewComponent implements OnInit {
 
   onRemoveTrigger(trigger: Trigger)
   {
-    this.jobTemplate.removeTrigger(trigger);
+    this.createJob.removeTrigger(trigger);
   }
 
   onRemoveExclusivePolicy() {
@@ -153,6 +170,10 @@ export class TemplateNewComponent implements OnInit {
 
   onRemoveRunSubJobsPolicy() {
       this.jobTemplate.runSubJobsPolicy = null;
+  }
+
+  onRemoveSubJobPolicy() {
+    this.jobTemplate.subJobPolicy = null;
   }
 
   onRemoveRunner() {

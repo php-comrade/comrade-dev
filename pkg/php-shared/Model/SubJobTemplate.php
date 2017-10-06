@@ -14,7 +14,7 @@ class SubJobTemplate extends JobTemplate
     /**
      * @var array
      */
-    private $values = [];
+    protected $values = [];
 
     /**
      * @param string $id

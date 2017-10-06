@@ -19,12 +19,12 @@ class JobResult
         getValue as public;
     }
 
-    public function getStatus():int
+    public function getStatus(): string
     {
         return get_value($this, 'status');
     }
 
-    public function setStatus(int $status) : void
+    public function setStatus(string $status) : void
     {
         set_value($this, 'status', $status);
     }
@@ -32,7 +32,7 @@ class JobResult
     /**
      * @param \DateTime $date
      */
-    public function setCreatedAt(\DateTime $date):void
+    public function setCreatedAt(\DateTime $date): void
     {
         set_value($this, 'createdAt', $date);
     }
@@ -40,7 +40,7 @@ class JobResult
     /**
      * @return \DateTime|null
      */
-    public function getCreatedAt(): ?\DateTime
+    public function getCreatedAt(): \DateTime
     {
         return get_value($this, 'createdAt', null, \DateTime::class);
     }
@@ -66,12 +66,12 @@ class JobResult
     }
 
     /**
-     * @param int $status
+     * @param string $status
      * @param \DateTime|null $dateTime
      *
      * @return object|static
      */
-    public static function createFor(int $status, \DateTime $dateTime = null)
+    public static function createFor(string $status, \DateTime $dateTime = null)
     {
         $result = static::create();
         $result->setStatus($status);

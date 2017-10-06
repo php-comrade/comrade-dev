@@ -1,16 +1,22 @@
 <?php
 namespace App\Service;
 
-use App\Model\Process;
+use App\Model\PvmProcess;
 use App\Pvm\Behavior\ExclusivePolicyBehavior;
+use App\Pvm\Behavior\FinalizeJobBehavior;
 use App\Pvm\Behavior\GracePeriodPolicyBehavior;
 use App\Pvm\Behavior\HttpRunnerBehavior;
 use App\Pvm\Behavior\IdleBehavior;
+use App\Pvm\Behavior\NotifyParentProcessBehavior;
 use App\Pvm\Behavior\RetryFailedBehavior;
 use App\Pvm\Behavior\QueueRunnerBehavior;
 use App\Pvm\Behavior\RunSubJobsProcessBehavior;
+use App\Pvm\Behavior\StartJobBehavior;
+use App\Pvm\Behavior\StartSubJobBehavior;
+use App\Pvm\Behavior\WaitSubJobsProcessBehavior;
 use Comrade\Shared\Model\HttpRunner;
-use Comrade\Shared\Model\JobTemplate;
+use App\Model\JobTemplate;
+use Comrade\Shared\Model\JobStatus;
 use Comrade\Shared\Model\QueueRunner;
 
 class CreateProcessForJobService
@@ -18,16 +24,17 @@ class CreateProcessForJobService
     /**
      * @param JobTemplate $jobTemplate
      *
-     * @return Process
+     * @return PvmProcess
      */
-    public function createProcess(JobTemplate $jobTemplate) : Process
+    public function createProcess(JobTemplate $jobTemplate) : PvmProcess
     {
-        $process = Process::create();
+        $process = PvmProcess::create();
         $process->setId($jobTemplate->getProcessTemplateId());
+        $process->setJobTemplateId($jobTemplate->getTemplateId());
 
         $startTask = $process->createNode();
         $startTask->setLabel('Start process');
-        $startTask->setBehavior(IdleBehavior::class);
+        $startTask->setBehavior(StartJobBehavior::class);
         $process->createTransition(null, $startTask);
 
         $runner = $jobTemplate->getRunner();
@@ -35,69 +42,87 @@ class CreateProcessForJobService
             $runnerTask = $process->createNode();
             $runnerTask->setLabel('Queue runner');
             $runnerTask->setBehavior(QueueRunnerBehavior::class);
-            $process->addNodeJobTemplate($runnerTask, $jobTemplate);
             $startToRunTransition = $process->createTransition($startTask, $runnerTask);
         } elseif ($runner instanceof  HttpRunner) {
             $runnerTask = $process->createNode();
             $runnerTask->setLabel('Http runner');
             $runnerTask->setBehavior(HttpRunnerBehavior::class);
-            $process->addNodeJobTemplate($runnerTask, $jobTemplate);
             $startToRunTransition = $process->createTransition($startTask, $runnerTask);
         } else {
             throw new \LogicException(sprintf('The runner "%s" is not supported.', get_class($runner)));
         }
 
-        $jobCompletedTask = $process->createNode();
-        $jobCompletedTask->setLabel('Completed');
-        $jobCompletedTask->setBehavior(IdleBehavior::class);
-        $runJobToCompletedTransition = $process->createTransition($runnerTask, $jobCompletedTask, 'completed');
+        $finalizeJobTask = $process->createNode();
+        $finalizeJobTask->setLabel('Finalize');
+        $finalizeJobTask->setBehavior(FinalizeJobBehavior::class);
+        $runToFinalizeTransition = $process->createTransition($runnerTask, $finalizeJobTask, 'finalize');
 
-        $jobFailedTask = $process->createNode();
-        $jobFailedTask->setLabel('Failed');
-        $jobFailedTask->setBehavior(IdleBehavior::class);
-        $runJobToFailedTransition = $process->createTransition($runnerTask, $jobFailedTask, 'failed');
+        if ($subJobPolicy = $jobTemplate->getSubJobPolicy()) {
+            $startSubJobTask = $process->createNode();
+            $startSubJobTask->setLabel('Start sub job');
+            $startSubJobTask->setBehavior(StartSubJobBehavior::class);
 
-        if ($policy = $jobTemplate->getExclusivePolicy()) {
+            $startToRunTransition = $process->breakTransition($startToRunTransition, $startSubJobTask);
+            $process->createTransition($startSubJobTask, $finalizeJobTask, 'finalize');
+
+            $startTask = $startSubJobTask;
+        }
+
+        if ($exclusivePolicy = $jobTemplate->getExclusivePolicy()) {
             $policyTask = $process->createNode();
             $policyTask->setLabel('Exclusive job');
             $policyTask->setBehavior(ExclusivePolicyBehavior::class);
-            $process->addNodeJobTemplate($policyTask, $jobTemplate);
 
-            $startToRunTransition = $process->breakTransition($startToRunTransition, $policyTask);
-            $process->createTransition($policyTask, $jobFailedTask, 'failed');
+            $startToRunTransition = $process->breakTransition($startToRunTransition, $policyTask, $startToRunTransition->getName());
+            $process->createTransition($policyTask, $finalizeJobTask, 'finalize');
         }
 
-        if ($policy = $jobTemplate->getGracePeriodPolicy()) {
-            $policyTask = $process->createNode();
-            $policyTask->setLabel('Grace period '.$jobTemplate->getGracePeriodPolicy()->getPeriod().' seconds');
-            $policyTask->setBehavior(GracePeriodPolicyBehavior::class);
-            $process->addNodeJobTemplate($policyTask, $jobTemplate);
+        if ($gracePeriod = $jobTemplate->getGracePeriodPolicy()) {
+            $gracePeriodTask = $process->createNode();
+            $gracePeriodTask->setLabel('Grace period '.$jobTemplate->getGracePeriodPolicy()->getPeriod().' seconds');
+            $gracePeriodTask->setBehavior(GracePeriodPolicyBehavior::class);
 
-            $transition = $process->createTransition($startTask, $policyTask);
+            $transition = $process->createTransition($startTask, $gracePeriodTask);
             $transition->setAsync(true);
 
-            $process->createTransition($policyTask, $jobFailedTask, 'failed');
+            $process->createTransition($gracePeriodTask, $finalizeJobTask);
         }
 
-        if ($policy = $jobTemplate->getRetryFailedPolicy()) {
-            $policyTask = $process->createNode();
-            $policyTask->setLabel('Retries '.$policy->getRetryLimit());
-            $policyTask->setBehavior(RetryFailedBehavior::class);
-            $process->addNodeJobTemplate($policyTask, $jobTemplate);
+        if ($retryPolicy = $jobTemplate->getRetryFailedPolicy()) {
+            $retryTask = $process->createNode();
+            $retryTask->setLabel('Retries '.$retryPolicy->getRetryLimit());
+            $retryTask->setBehavior(RetryFailedBehavior::class);
 
-            $runJobToFailedTransition = $process->breakTransition($runJobToFailedTransition, $policyTask, 'failed');
-            $process->createTransition($policyTask, $runnerTask, 'retry');
+            $runToFinalizeTransition = $process->breakTransition($runToFinalizeTransition, $retryTask, 'finalize');
+            $retryToRunTransition = $process->createTransition($retryTask, $runnerTask, JobStatus::RETRYING);
         }
 
-        if ($policy = $jobTemplate->getRunSubJobsPolicy()) {
-            $policyTask = $process->createNode();
-            $policyTask->setLabel('Run sub jobs');
-            $policyTask->setBehavior(RunSubJobsProcessBehavior::class);
-            $process->addNodeJobTemplate($policyTask, $jobTemplate);
+        if ($subJobPolicy = $jobTemplate->getSubJobPolicy()) {
+            $notifyParentTask = $process->createNode();
+            $notifyParentTask->setLabel('Notify parent');
+            $notifyParentTask->setBehavior(NotifyParentProcessBehavior::class);
 
-            $process->createTransition($runnerTask, $policyTask, 'run_sub_jobs');
-            $process->createTransition($policyTask, $jobFailedTask, 'failed');
-            $process->createTransition($policyTask, $jobCompletedTask, 'completed');
+            $runToFinalizeTransition = $process->breakTransition($runToFinalizeTransition, $notifyParentTask, 'finalize');
+        }
+
+        if ($runSubJobsPolicy = $jobTemplate->getRunSubJobsPolicy()) {
+            $runSubJobsTask = $process->createNode();
+            $runSubJobsTask->setLabel('Run sub jobs');
+            $runSubJobsTask->setBehavior(RunSubJobsProcessBehavior::class);
+
+            $waitSubJobsTask = $process->createNode();
+            $waitSubJobsTask->setLabel('Wait sub jobs');
+            $waitSubJobsTask->setBehavior(WaitSubJobsProcessBehavior::class);
+
+            $subJobNotificationTask = $process->createNode();
+            $subJobNotificationTask->setLabel('Notification from sub job');
+            $subJobNotificationTask->setBehavior(IdleBehavior::class);
+
+            $runnerToRunSubJobsTransition = $process->createTransition($runnerTask, $runSubJobsTask, 'run_sub_jobs');
+            $runnerToRunSubJobsTransition->setAsync(true);
+            $process->createTransition($runSubJobsTask, $waitSubJobsTask, 'wait_sub_jobs');
+            $process->createTransition($subJobNotificationTask, $waitSubJobsTask, 'sub_job_notification');
+            $process->createTransition($waitSubJobsTask, $finalizeJobTask, 'finalize');
         }
 
         return $process;

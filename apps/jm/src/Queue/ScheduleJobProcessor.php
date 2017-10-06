@@ -56,12 +56,13 @@ class ScheduleJobProcessor implements PsrProcessor, CommandSubscriberInterface
         }
 
         $scheduleJob = ScheduleJob::create($data);
+        $trigger = $scheduleJob->getTrigger();
 
-        if (false == $jobTemplate = $this->jobTemplateStorage->findOne(['templateId' => $scheduleJob->getJobTemplateId()])) {
+        if (false == $jobTemplate = $this->jobTemplateStorage->findOne(['templateId' => $trigger->getTemplateId()])) {
             return self::REJECT;
         }
 
-        $this->scheduleJobService->schedule($jobTemplate, $scheduleJob->getTriggers());
+        $this->scheduleJobService->schedule($jobTemplate, $trigger);
 
         return self::ACK;
     }
