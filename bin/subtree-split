@@ -46,5 +46,5 @@ function remote()
 remote php-shared git@github.com:php-comrade/php-shared.git
 remote php-client git@github.com:php-comrade/php-client.git
 
-#split 'pkg/php-shared' php-shared
+split 'pkg/php-shared' php-shared
 split 'pkg/php-client' php-client
