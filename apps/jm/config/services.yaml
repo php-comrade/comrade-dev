@@ -10,6 +10,8 @@ services:
         autoconfigure: true
         public: true
 
+    Makasim\Yadm\ChangesCollector: '@yadm.changes_collector'
+
     Symfony\Component\EventDispatcher\EventDispatcherInterface: '@event_dispatcher'
 
     App\Storage\JobStorage: '@yadm.job.storage'

@@ -5,12 +5,11 @@ use App\Commands;
 use App\Model\JobResult;
 use App\Model\PvmToken;
 use App\Service\ChangeJobStateService;
+use App\Service\PersistJobService;
 use App\Topics;
 use App\JobStatus;
-use App\Model\PvmProcess;
 use App\Storage\JobStorage;
 use Comrade\Shared\Message\RunJob;
-use Comrade\Shared\Message\RunnerResult;
 use Comrade\Shared\Model\HttpRunner;
 use Comrade\Shared\Model\Job;
 use Comrade\Shared\Model\JobAction;
@@ -23,7 +22,6 @@ use Formapro\Pvm\SignalBehavior;
 use Formapro\Pvm\Token;
 use Formapro\Pvm\Transition;
 use GuzzleHttp\Exception\GuzzleException;
-use function Makasim\Values\get_object;
 use function Makasim\Values\get_values;
 
 class HttpRunnerBehavior implements Behavior, SignalBehavior
@@ -43,11 +41,21 @@ class HttpRunnerBehavior implements Behavior, SignalBehavior
      */
     private $changeJobStateService;
 
-    public function __construct(JobStorage $jobStorage, ProducerInterface $producer, ChangeJobStateService $changeJobStateService)
-    {
+    /**
+     * @var PersistJobService
+     */
+    private $persistJobService;
+
+    public function __construct(
+        JobStorage $jobStorage,
+        ProducerInterface $producer,
+        ChangeJobStateService $changeJobStateService,
+        PersistJobService $persistJobService
+    ) {
         $this->jobStorage = $jobStorage;
         $this->producer = $producer;
         $this->changeJobStateService = $changeJobStateService;
+        $this->persistJobService = $persistJobService;
     }
 
     /**
@@ -57,17 +65,7 @@ class HttpRunnerBehavior implements Behavior, SignalBehavior
      */
     public function execute(Token $token)
     {
-        /** @var Job $job */
-        $job = $this->changeJobStateService->changeInFlow($token->getJobId(), JobAction::RUN, function(Job $job, Transition $transition) {
-            $result = JobResult::createFor($transition->getTo()->getLabel(), new \DateTime('now'));
-
-            $job->addResult($result);
-            $job->setCurrentResult($result);
-
-            return $job;
-        });
-
-        $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
+        $job = $this->changeJobStateService->transitionInFlow($token->getJobId(), JobAction::RUN);
 
         /** @var HttpRunner $runner */
         $runner = $job->getRunner();
@@ -81,38 +79,16 @@ class HttpRunnerBehavior implements Behavior, SignalBehavior
             JSON::encode(RunJob::createFor($job, $token->getId()))
         );
 
-        $result = JobResult::create();
-        $result->setStatus(JobStatus::RUNNING);
-        $result->setCreatedAt(new \DateTime('now'));
-        $job->addResult($result);
-        $job->setCurrentResult($result);
-        $this->jobStorage->update($job);
-        $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
-
         try {
             $httpResponse = $client->send($httpRequest, ['http_errors' => true]);
             if ($httpResponse->getStatusCode() === 204) {
-                $this->changeJobStateService->changeInFlow($job->getId(), JobAction::COMPLETE, function(Job $job, Transition $transition) {
-                    $result = JobResult::createFor($transition->getTo()->getLabel(), new \DateTime('now'));
-
-                    $job->addResult($result);
-                    $job->setCurrentResult($result);
-
-                    return $job;
-                });
+                $this->changeJobStateService->transitionInFlow($job->getId(), JobAction::COMPLETE);
             } elseif ($httpResponse->getStatusCode() === 200) {
                 $this->producer->sendCommand(Commands::HANDLE_RUNNER_RESULT, $httpResponse->getBody()->getContents());
 
                 throw  new WaitExecutionException();
             } else {
-                $this->changeJobStateService->changeInFlow($job->getId(), JobAction::FAIL, function(Job $job, Transition $transition) {
-                    $result = JobResult::createFor($transition->getTo()->getLabel(), new \DateTime('now'));
-
-                    $job->addResult($result);
-                    $job->setCurrentResult($result);
-
-                    return $job;
-                });
+                $this->changeJobStateService->transitionInFlow($job->getId(), JobAction::FAIL);
             }
         } catch (GuzzleException $e) {
             $this->changeJobStateService->changeInFlow($job->getId(), JobAction::FAIL, function(Job $job, Transition $transition) use ($e) {
@@ -153,8 +129,6 @@ class HttpRunnerBehavior implements Behavior, SignalBehavior
 
             return $job;
         });
-
-        $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
 
         if (JobStatus::RUNNING_SUB_JOBS === $job->getCurrentResult()->getStatus()) {
             return 'run_sub_jobs';

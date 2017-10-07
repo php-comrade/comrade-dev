@@ -54,7 +54,7 @@ class JobResult extends OriginalJobResult {
               </div>
           </div>
           <div class="col-6">
-              <job-state-graph [jobId]="job.id" [updatedAt]="job.currentResult.createdAt.unix"></job-state-graph>
+              <job-state-graph [jobId]="job.id" [updatedAt]="job.updatedAt"></job-state-graph>
               <!--<div class="col-12" *ngIf="metrics">-->
                   <!--<prettyjson [obj]="metrics"></prettyjson>-->
               <!--</div>-->
@@ -109,7 +109,6 @@ export class JobViewExecutionComponent implements OnChanges {
     const results: JobResult[] = [];
 
     // for some reason the code stops working if this commented out. at least in chrome.
-    console.log("Refreshing");
     this.job.results.forEach((jobResult: JobResult) => {
       jobResult.isSubJob = false;
       results.push(jobResult);

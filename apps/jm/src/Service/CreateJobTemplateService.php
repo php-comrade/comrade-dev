@@ -66,6 +66,7 @@ class CreateJobTemplateService
     {
         $jobTemplate->setProcessTemplateId(Uuid::generate());
         $jobTemplate->setCreatedAt(new \DateTime('now'));
+        $jobTemplate->setUpdatedAt(new \DateTime('now'));
 
         $processTemplate = $this->createProcessForJobService->createProcess($jobTemplate);
 

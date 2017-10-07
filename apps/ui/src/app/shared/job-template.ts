@@ -12,6 +12,7 @@ export class JobTemplate {
     name: string;
     templateId: string;
     createdAt: Date;
+    updatedAt: Date;
     details: any;
     runner: Runner;
     exclusivePolicy: ExclusivePolicy;
@@ -20,6 +21,6 @@ export class JobTemplate {
     runSubJobsPolicy: RunSubJobsPolicy;
     subJobPolicy: SubJobPolicy;
 
-  /** @deprecated */
-  triggers: Trigger[] = [];
+    /** @deprecated */
+    triggers: Trigger[] = [];
 }

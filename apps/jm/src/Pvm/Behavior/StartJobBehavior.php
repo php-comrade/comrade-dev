@@ -2,6 +2,7 @@
 namespace App\Pvm\Behavior;
 
 use App\Model\PvmToken;
+use App\Service\PersistJobService;
 use App\Storage\JobStorage;
 use App\Topics;
 use Enqueue\Client\ProducerInterface;
@@ -20,14 +21,14 @@ class StartJobBehavior implements Behavior
     private $jobStorage;
 
     /**
-     * @var ProducerInterface
+     * @var PersistJobService
      */
-    private $producer;
+    private $persistJobService;
 
-    public function __construct(JobStorage $jobStorage, ProducerInterface $producer)
+    public function __construct(JobStorage $jobStorage, PersistJobService $persistJobService)
     {
         $this->jobStorage = $jobStorage;
-        $this->producer = $producer;
+        $this->persistJobService = $persistJobService;
     }
 
     /**
@@ -45,8 +46,6 @@ class StartJobBehavior implements Behavior
 
         set_value($job, 'startAt', new \DateTime('now'));
 
-        $this->jobStorage->update($job);
-
-        $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
+        $this->persistJobService->persist($job);
     }
 }

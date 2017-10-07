@@ -24,9 +24,16 @@ export class CurrentJobService {
 
         wamp.topic('comrade.job_updated')
             .map((event: EventMessage) => event.args[0])
-            .withLatestFrom(this.currentJobId)
-            .filter(([job, currentJobId]) => job.id === currentJobId)
-            .map(([job, currentJobId]) => job)
+            .withLatestFrom(this.currentJob)
+            .filter(([job, currentJob]) => {
+                if (!currentJob) {
+                    return false;
+                }
+
+                return job.id === currentJob.id;
+            })
+            .filter(([job, currentJob]) => job.updatedAt.unix >= currentJob.updatedAt.unix)
+            .map(([job, currentJob]) => job)
             .subscribe((job: Job) => this.currentJob.next(job))
         ;
 

@@ -72,8 +72,15 @@ class WaitSubJobsProcessBehavior implements Behavior, SignalBehavior
             throw new WaitExecutionException();
         }
 
-        $this->jobStorage->lockByJobId($token->getJobId(), function(Job $job) use ($token) {
-            if (get_value($token->getTransition()->getTo(), 'sub_jobs_finished', false)) {
+        $node = $token->getTransition()->getTo();
+        if (get_value($node, 'sub_jobs_finished', false)) {
+            return;
+        }
+
+        $this->jobStorage->lockByJobId($token->getJobId(), function(Job $job) use ($token, $node) {
+            $freshProcess = $this->processExecutionStorage->getOneByToken($token->getId());
+            $freshNode = $freshProcess->getNode($node->getId());
+            if ($freshNode->getValue('sub_jobs_finished', false)) {
                 return;
             }
 
@@ -82,8 +89,8 @@ class WaitSubJobsProcessBehavior implements Behavior, SignalBehavior
             $totalSubJobsNumber = count($tokenWithRunnerResult->getRunnerResult()->getSubJobs());
             $finishedSubJobsNumber = $this->jobStorage->countFinishedSubJobs($job->getId());
             if ($totalSubJobsNumber === $finishedSubJobsNumber) {
-                set_value($token->getTransition()->getTo(), 'sub_jobs_finished', true);
-                $this->processExecutionStorage->update($token->getProcess());
+                set_value($freshNode, 'sub_jobs_finished', true);
+                $this->processExecutionStorage->update($freshProcess);
 
                 $this->producer->sendCommand(Commands::PVM_HANDLE_ASYNC_TRANSITION, [
                     'process' => $tokenWithRunnerResult->getProcess()->getId(),

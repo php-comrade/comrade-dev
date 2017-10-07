@@ -45,7 +45,6 @@ export class JobViewComponent implements OnInit {
           });
 
       this.currentSubJobsService.getCurrentSubJobs().subscribe((jobs: SubJob[]) => {
-        console.log('Sub Jobs Updated');
         this.subJobs = jobs;
       });
   }

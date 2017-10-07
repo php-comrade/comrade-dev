@@ -59,35 +59,19 @@ class RetryFailedBehavior implements Behavior
     {
         try {
             /** @var Job $job */
-            $job = $this->changeJobStateService->change($token->getJobId(), JobAction::RETRY, function(Job $job, Transition $transition) {
-                $result = JobResult::createFor($transition->getTo()->getLabel());
-                $job->addResult($result);
-                $job->setCurrentResult($result);
-
+            $job = $this->changeJobStateService->transitionInFlow($token->getJobId(), JobAction::RETRY, function(Job $job) {
                 $job->getRetryFailedPolicy()->incrementRetryAttempts();
-
-                return $job;
             });
         } catch (NotAllowedTransitionException $e) {
             return 'finalize';
         }
 
-        $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
         $retryPolicy = $job->getRetryFailedPolicy();
         if ($retryPolicy->getRetryAttempts() <= $retryPolicy->getRetryLimit()) {
             return $job->getCurrentResult()->getStatus();
         }
 
-        /** @var Job $job */
-        $job = $this->changeJobStateService->changeInFlow($job->getId(), JobAction::FAIL, function(Job $job, Transition $transition) {
-            $result = JobResult::createFor($transition->getTo()->getLabel());
-            $job->addResult($result);
-            $job->setCurrentResult($result);
-
-            return $job;
-        });
-
-        $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
+        $this->changeJobStateService->transitionInFlow($job->getId(), JobAction::FAIL);
 
         return 'finalize';
     }

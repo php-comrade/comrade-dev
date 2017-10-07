@@ -7,7 +7,7 @@ import {Job} from "../shared/job";
       <td>{{job.id}}</td>
       <td>{{job.name}}</td>
       <td><time-ago [date]="job.createdAt"></time-ago></td>
-      <td><time-ago [date]="job.currentResult.createdAt"></time-ago></td>
+      <td><time-ago [date]="job.updatedAt"></time-ago></td>
       <td>
           <job-status [status]="job.currentResult.status"></job-status>
       </td>

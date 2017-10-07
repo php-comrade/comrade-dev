@@ -12,8 +12,6 @@ import {Job} from "../shared/job";
             <tr *ngFor="let job of jobs" job-list-row [viewButton]="viewButton" [job]="job"></tr>
           </tbody>
       </table>
-      
-      
   `,
 })
 export class JobListComponent{

@@ -47,10 +47,16 @@ class BuildAndExecuteProcessService
      * @var ProducerInterface
      */
     private $producer;
+
     /**
      * @var LoggerInterface
      */
     private $logger;
+
+    /**
+     * @var PersistJobService
+     */
+    private $persistJobService;
 
     public function __construct(
         ProcessExecutionStorage $processExecutionStorage,
@@ -58,7 +64,8 @@ class BuildAndExecuteProcessService
         JobStorage $jobStorage,
         JobTemplateStorage $jobTemplateStorage,
         ProducerInterface $producer,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        PersistJobService $persistJobService
     ) {
         $this->processExecutionStorage = $processExecutionStorage;
         $this->jobStorage = $jobStorage;
@@ -66,6 +73,7 @@ class BuildAndExecuteProcessService
         $this->processEngine = $processEngine;
         $this->producer = $producer;
         $this->logger = $logger;
+        $this->persistJobService = $persistJobService;
     }
 
     public function buildAndRun(PvmProcess $templateProcess, Trigger $trigger): PvmProcess
@@ -104,9 +112,7 @@ class BuildAndExecuteProcessService
         $job->addResult($result);
         $job->setCurrentResult($result);
 
-        $this->jobStorage->insert($job);
-
-        $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
+        $this->persistJobService->persist($job);
 
         $process->setJobId($job->getId());
         $this->processExecutionStorage->update($process);

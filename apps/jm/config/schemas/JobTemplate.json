@@ -16,7 +16,9 @@
         { "$ref": "runner/QueueRunner.json" },
         { "$ref": "runner/HttpRunner.json" }
       ]
-    }
+    },
+    "createdAt": { "$ref": "date.json" },
+    "updatedAt": { "$ref": "date.json" }
   },
   "required": ["templateId", "name", "runner"]
 }

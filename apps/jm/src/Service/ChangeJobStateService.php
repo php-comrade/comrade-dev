@@ -2,9 +2,9 @@
 namespace App\Service;
 
 use App\Infra\Pvm\NotAllowedTransitionException;
+use App\Model\Job;
 use App\Model\JobResult;
 use App\Storage\JobStorage;
-use Comrade\Shared\Model\Job;
 use Formapro\Pvm\Exception\InterruptExecutionException;
 use Formapro\Pvm\Transition;
 
@@ -15,9 +15,15 @@ class ChangeJobStateService
      */
     private $jobStorage;
 
-    public function __construct(JobStorage $jobStorage)
+    /**
+     * @var PersistJobService
+     */
+    private $persistJobService;
+
+    public function __construct(JobStorage $jobStorage, PersistJobService $persistJobService)
     {
         $this->jobStorage = $jobStorage;
+        $this->persistJobService = $persistJobService;
     }
 
     public function can(Job $job, string $action): ?Transition
@@ -37,7 +43,7 @@ class ChangeJobStateService
 
             $result = call_user_func($onChange, $job, $transition);
 
-            $jobStorage->update($job);
+            $this->persistJobService->persist($job);
 
             return $result;
         });

@@ -156,4 +156,14 @@ class JobTemplate
     {
         return get_value($this, 'createdAt', null, \DateTime::class);
     }
+
+    public function setUpdatedAt(\DateTime $date): void
+    {
+        set_value($this, 'updatedAt', $date);
+    }
+
+    public function getUpdatedAt(): \DateTime
+    {
+        return get_value($this, 'updatedAt', null, \DateTime::class);
+    }
 }

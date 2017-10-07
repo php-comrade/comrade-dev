@@ -6,12 +6,9 @@ use App\Model\JobAction;
 use App\Model\PvmToken;
 use App\Service\ChangeJobStateService;
 use App\Storage\JobStorage;
-use App\Topics;
 use Comrade\Shared\Model\SubJob;
-use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Token;
-use function Makasim\Values\get_values;
 
 class StartSubJobBehavior implements Behavior
 {
@@ -21,22 +18,13 @@ class StartSubJobBehavior implements Behavior
     private $jobStorage;
 
     /**
-     * @var ProducerInterface
-     */
-    private $producer;
-
-    /**
      * @var ChangeJobStateService
      */
     private $changeJobStateService;
 
-    public function __construct(
-        JobStorage $jobStorage,
-        ProducerInterface $producer,
-        ChangeJobStateService $changeJobStateService
-    ) {
+    public function __construct(JobStorage $jobStorage, ChangeJobStateService $changeJobStateService)
+    {
         $this->jobStorage = $jobStorage;
-        $this->producer = $producer;
         $this->changeJobStateService = $changeJobStateService;
     }
 
@@ -53,8 +41,6 @@ class StartSubJobBehavior implements Behavior
 
         if ($parentJob->getCurrentResult()->getStatus() !== JobStatus::RUNNING_SUB_JOBS) {
             $this->changeJobStateService->transitionInFlow($job->getId(), JobAction::TERMINATE);
-
-            $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
 
             return 'finalize';
         }

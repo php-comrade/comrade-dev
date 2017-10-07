@@ -121,10 +121,10 @@ export class TimelineComponent implements OnInit {
 
     private sortJobs(jobs: Job[]): Job[] {
         return jobs.sort(function(left, right) {
-            if (left.currentResult.createdAt.unix > right.currentResult.createdAt.unix) {
+            if (left.createdAt.unix > right.createdAt.unix) {
                 return -1;
             }
-            if (left.currentResult.createdAt.unix < right.currentResult.createdAt.unix) {
+            if (left.createdAt.unix < right.createdAt.unix) {
                 return 1;
             }
 

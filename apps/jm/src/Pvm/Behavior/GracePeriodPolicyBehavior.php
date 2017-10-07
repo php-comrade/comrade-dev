@@ -5,19 +5,14 @@ use App\Commands;
 use App\Model\JobAction;
 use App\Model\PvmToken;
 use App\Service\ChangeJobStateService;
-use App\Topics;
-use App\Model\JobResult;
+use App\Service\PersistJobService;
 use App\Storage\JobStorage;
-use Comrade\Shared\Model\Job;
-use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Exception\InterruptExecutionException;
 use Formapro\Pvm\Exception\WaitExecutionException;
 use Formapro\Pvm\SignalBehavior;
 use Formapro\Pvm\Token;
-use Formapro\Pvm\Transition;
 use function Makasim\Values\get_value;
-use function Makasim\Values\get_values;
 use Quartz\Bridge\Enqueue\EnqueueResponseJob;
 use Quartz\Bridge\Scheduler\RemoteScheduler;
 use Quartz\Core\JobBuilder;
@@ -32,11 +27,6 @@ class GracePeriodPolicyBehavior implements Behavior, SignalBehavior
     private $remoteScheduler;
 
     /**
-     * @var ProducerInterface
-     */
-    private $producer;
-
-    /**
      * @var JobStorage
      */
     private $jobStorage;
@@ -46,16 +36,22 @@ class GracePeriodPolicyBehavior implements Behavior, SignalBehavior
      */
     private $changeJobStateService;
 
+    /**
+     * @var PersistJobService
+     */
+    private $persistJobService;
+
     public function __construct(
         RemoteScheduler $remoteScheduler,
-        ProducerInterface $producer,
         JobStorage $jobStorage,
-        ChangeJobStateService $changeJobStateService
+        ChangeJobStateService $changeJobStateService,
+        PersistJobService $persistJobService
     ) {
         $this->remoteScheduler = $remoteScheduler;
-        $this->producer = $producer;
         $this->changeJobStateService = $changeJobStateService;
         $this->jobStorage = $jobStorage;
+
+        $this->persistJobService = $persistJobService;
     }
 
     /**
@@ -98,16 +94,6 @@ class GracePeriodPolicyBehavior implements Behavior, SignalBehavior
             throw new InterruptExecutionException();
         }
 
-        /** @var Job $job */
-        $job = $this->changeJobStateService->changeInFlow($job->getId(), JobAction::FAIL, function(Job $job, Transition $transition) {
-            $result = JobResult::createFor($transition->getTo()->getLabel(), new \DateTime('now'));
-
-            $job->addResult($result);
-            $job->setCurrentResult($result);
-
-            return $job;
-        });
-
-        $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
+        $this->changeJobStateService->transitionInFlow($job->getId(), JobAction::FAIL);
     }
 }

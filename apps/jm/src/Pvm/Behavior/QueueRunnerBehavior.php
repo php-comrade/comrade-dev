@@ -63,16 +63,7 @@ class QueueRunnerBehavior implements Behavior, SignalBehavior
      */
     public function execute(Token $token)
     {
-        $job = $this->changeJobStateService->changeInFlow($token->getJobId(), JobAction::RUN, function(Job $job, Transition $transition) {
-            $result = JobResult::createFor($transition->getTo()->getLabel(), new \DateTime('now'));
-
-            $job->addResult($result);
-            $job->setCurrentResult($result);
-
-            return $job;
-        });
-
-        $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
+        $job = $this->changeJobStateService->transitionInFlow($token->getJobId(), JobAction::RUN);
 
         /** @var QueueRunner $runner */
         $runner = $job->getRunner();
@@ -110,8 +101,6 @@ class QueueRunnerBehavior implements Behavior, SignalBehavior
 
             return $job;
         });
-
-        $this->producer->sendEvent(Topics::JOB_UPDATED, get_values($job));
 
         if (JobStatus::RUNNING_SUB_JOBS === $job->getCurrentResult()->getStatus()) {
             return 'run_sub_jobs';
