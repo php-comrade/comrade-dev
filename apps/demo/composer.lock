@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-comrade/php-client.git",
-                "reference": "8968072e72e347e5622402a53ff84dca29fe566c"
+                "reference": "ac458013b92ae79b64671b4061e7f9d13042e13b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-comrade/php-client/zipball/8968072e72e347e5622402a53ff84dca29fe566c",
-                "reference": "8968072e72e347e5622402a53ff84dca29fe566c",
+                "url": "https://api.github.com/repos/php-comrade/php-client/zipball/ac458013b92ae79b64671b4061e7f9d13042e13b",
+                "reference": "ac458013b92ae79b64671b4061e7f9d13042e13b",
                 "shasum": ""
             },
             "require": {
@@ -46,7 +46,7 @@
                 "Job Manager",
                 "client"
             ],
-            "time": "2017-09-29T12:14:11+00:00"
+            "time": "2017-10-05T16:02:14+00:00"
         },
         {
             "name": "comrade/shared",
@@ -54,12 +54,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-comrade/php-shared.git",
-                "reference": "438a8c2157f70fbcc6613e32585faf2b50871136"
+                "reference": "706a518fa37779979d97524f60d3a7a453addaec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-comrade/php-shared/zipball/438a8c2157f70fbcc6613e32585faf2b50871136",
-                "reference": "438a8c2157f70fbcc6613e32585faf2b50871136",
+                "url": "https://api.github.com/repos/php-comrade/php-shared/zipball/706a518fa37779979d97524f60d3a7a453addaec",
+                "reference": "706a518fa37779979d97524f60d3a7a453addaec",
                 "shasum": ""
             },
             "require": {
@@ -88,7 +88,7 @@
                 "message",
                 "model"
             ],
-            "time": "2017-09-29T12:14:11+00:00"
+            "time": "2017-10-07T13:57:16+00:00"
         },
         {
             "name": "enqueue/amqp-ext",
@@ -874,16 +874,16 @@
         },
         {
             "name": "symfony/console",
-            "version": "v3.3.9",
+            "version": "v3.3.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "a1e1b01293a090cb9ae2ddd221a3251a4a7e4abf"
+                "reference": "116bc56e45a8e5572e51eb43ab58c769a352366c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/a1e1b01293a090cb9ae2ddd221a3251a4a7e4abf",
-                "reference": "a1e1b01293a090cb9ae2ddd221a3251a4a7e4abf",
+                "url": "https://api.github.com/repos/symfony/console/zipball/116bc56e45a8e5572e51eb43ab58c769a352366c",
+                "reference": "116bc56e45a8e5572e51eb43ab58c769a352366c",
                 "shasum": ""
             },
             "require": {
@@ -938,20 +938,20 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2017-09-06T16:40:18+00:00"
+            "time": "2017-10-02T06:42:24+00:00"
         },
         {
             "name": "symfony/debug",
-            "version": "v3.3.9",
+            "version": "v3.3.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "8beb24eec70b345c313640962df933499373a944"
+                "reference": "eb95d9ce8f18dcc1b3dfff00cb624c402be78ffd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/8beb24eec70b345c313640962df933499373a944",
-                "reference": "8beb24eec70b345c313640962df933499373a944",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/eb95d9ce8f18dcc1b3dfff00cb624c402be78ffd",
+                "reference": "eb95d9ce8f18dcc1b3dfff00cb624c402be78ffd",
                 "shasum": ""
             },
             "require": {
@@ -994,7 +994,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2017-09-01T13:23:39+00:00"
+            "time": "2017-10-02T06:42:24+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1057,16 +1057,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v3.3.9",
+            "version": "v3.3.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "b7666e9b438027a1ea0e1ee813ec5042d5d7f6f0"
+                "reference": "fdf89e57a723a29baf536e288d6e232c059697b1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/b7666e9b438027a1ea0e1ee813ec5042d5d7f6f0",
-                "reference": "b7666e9b438027a1ea0e1ee813ec5042d5d7f6f0",
+                "url": "https://api.github.com/repos/symfony/process/zipball/fdf89e57a723a29baf536e288d6e232c059697b1",
+                "reference": "fdf89e57a723a29baf536e288d6e232c059697b1",
                 "shasum": ""
             },
             "require": {
@@ -1102,7 +1102,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2017-07-29T21:54:42+00:00"
+            "time": "2017-10-02T06:42:24+00:00"
         }
     ],
     "packages-dev": [],
