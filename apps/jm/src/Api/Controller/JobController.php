@@ -4,6 +4,7 @@ namespace App\Api\Controller;
 use App\Commands;
 use App\Infra\JsonSchema\SchemaValidator;
 use App\JobStatus;
+use App\Message\ExecuteJob;
 use App\Model\JobResult;
 use App\Service\JobStateMachine;
 use App\Storage\JobStorage;
@@ -259,11 +260,16 @@ class JobController
         ]);
         $rawJobs = [];
         foreach ($triggers as $trigger) {
-            if (false == isset($trigger->getJobDataMap()['jobTemplateId'])) {
+            $jobDataMap = $trigger->getJobDataMap();
+            if (false == isset($jobDataMap['schema'])) {
+                continue;
+            }
+            if ($jobDataMap['schema'] !== ExecuteJob::SCHEMA) {
                 continue;
             }
 
-            if (false == $jobTemplate = $jobTemplateStorage->findOne(['templateId' => $trigger->getJobDataMap()['jobTemplateId']])) {
+            $executeJob = ExecuteJob::create($jobDataMap);
+            if (false == $jobTemplate = $jobTemplateStorage->findOne(['templateId' => $executeJob->getTrigger()->getTemplateId()])) {
                 continue;
             }
 
@@ -272,6 +278,7 @@ class JobController
             $job->setId('xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
             $job->setTemplateId($jobTemplate->getTemplateId());
             $job->setCreatedAt($trigger->getNextFireTime());
+            $job->setUpdatedAt($trigger->getNextFireTime());
             $job->setDetails($jobTemplate->getDetails());
 
             $jobStatus = JobResult::createFor(JobStatus::NEW, $trigger->getNextFireTime());

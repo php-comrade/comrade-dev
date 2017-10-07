@@ -62,7 +62,7 @@ class CreateJobTemplateService
     /**
      * @param JobTemplate $jobTemplate
      */
-    public function create(JobTemplate $jobTemplate):void
+    public function create(JobTemplate $jobTemplate): void
     {
         $jobTemplate->setProcessTemplateId(Uuid::generate());
         $jobTemplate->setCreatedAt(new \DateTime('now'));
