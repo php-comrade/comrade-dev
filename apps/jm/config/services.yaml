@@ -108,22 +108,12 @@ services:
 
     App\Service\ChangeJobStateService: ~
 
-    App\Infra\Enqueue\CheckMasterProcessExtension:
-        autowire: false
-        arguments:
-            - '%kernel.project_dir%/var/workers.pid'
-        tags:
-            - { name: 'enqueue.consumption.extension' }
-
     App\Api\Controller\:
         resource: '../src/Api/Controller'
         public: true
         tags: ['controller.service_arguments']
 
     Quartz\Bridge\Scheduler\RemoteScheduler: '@quartz.remote.scheduler'
-
-    Quartz\Bridge\Swoole\CheckMasterProcessSubscriber:
-        tags: [{ name: 'kernel.event_subscriber' }]
 
     App\Infra\ThruwayClient:
         arguments: ['%env(WAMP_DSN)%', '%env(WAMP_REALM)%']
