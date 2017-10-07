@@ -80,6 +80,8 @@ services:
       - MONGO_DSN=mongodb://mongo:27017
       - WAMP_DSN=ws://jms:9090
       - WAMP_REALM=realm1
+      - WAMP_SERVER_HOST=0.0.0.0
+      - WAMP_SERVER_PORT=9090
     ports:
       - '9090:9090'
 
@@ -100,7 +102,7 @@ services:
 
   seeds:
     image: 'formapro/comrade:latest'
-    entrypoint: 'php bin/console comrade:load-demo-fixtures --drop --trigger="cron"'
+    entrypoint: 'php bin/console comrade:load-demo-fixtures --drop --trigger=cron'
     depends_on:
       - 'rabbitmq'
       - 'mongo'

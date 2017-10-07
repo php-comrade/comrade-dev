@@ -20,7 +20,7 @@ interface Job extends JobModel {
       <div *ngIf="jobs">
           <table class="table table-striped table-hover table-bordered">
               <thead>
-              <tr job-list-header-row></tr>
+                  <tr job-list-header-row></tr>
               </thead>
               <tbody>
               <ng-container  *ngFor="let job of jobs; let i = index;">

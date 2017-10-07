@@ -10,6 +10,7 @@ import {HttpService} from "../shared/http.service";
 import {Moment} from "moment";
 import {until} from "selenium-webdriver";
 import {Response} from "@angular/http";
+import {JobStatus} from "../shared/job-status";
 
 interface ChartItem {
     avrDuration: number;
@@ -259,11 +260,10 @@ export class TemplateViewChartComponent implements OnInit {
       Date.fromMoment(until),
     );
     getJobChart.statuses = [
-        4 /* done */,
-        68 /* failed */,
-        36 /* completed */,
-        12 /* canceled */,
-        132 /* terminated */
+        JobStatus.COMPLETED,
+        JobStatus.FAILED,
+        JobStatus.TERMINATED,
+        JobStatus.CANCELED
     ];
 
     this.httpService.post('/api/metrics/chart', getJobChart)
