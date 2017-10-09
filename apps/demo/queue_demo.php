@@ -61,7 +61,7 @@ $queueConsumer = new QueueConsumer($c, new ChainExtension([
 
 $queueConsumer->bind('demo_success_job', function(PsrMessage $message) use ($runner) {
     $runner->run($message, function(RunJob $runJob) {
-        do_something_important(rand(2, 6));
+        do_something_important(rand(200, 1000));
 
         return JobAction::COMPLETE;
     });
@@ -71,7 +71,7 @@ $queueConsumer->bind('demo_success_job', function(PsrMessage $message) use ($run
 
 $queueConsumer->bind('demo_success_on_third_attempt', function(PsrMessage $message) use ($runner) {
     $runner->run($message, function(RunJob $runJob) {
-        do_something_important(rand(2, 6));
+        do_something_important(rand(200, 1000));
 
         return get_value($runJob->getJob(), 'retryFailedPolicy.retryAttempts') > 2 ? JobAction::COMPLETE : JobAction::FAIL;
     });
@@ -81,7 +81,7 @@ $queueConsumer->bind('demo_success_on_third_attempt', function(PsrMessage $messa
 
 $queueConsumer->bind('demo_random_job', function(PsrMessage $message) use ($runner) {
     $runner->run($message, function(RunJob $runJob) {
-        do_something_important(rand(2, 6));
+        do_something_important(rand(200, 1000));
 
         $actions = [JobAction::FAIL, JobAction::COMPLETE, JobAction::COMPLETE, JobAction::COMPLETE, JobAction::COMPLETE, JobAction::COMPLETE, JobAction::COMPLETE];
 
@@ -93,7 +93,7 @@ $queueConsumer->bind('demo_random_job', function(PsrMessage $message) use ($runn
 
 $queueConsumer->bind('demo_run_sub_tasks', function(PsrMessage $message) use ($runner) {
     $runner->run($message, function(RunJob $runJob) {
-        do_something_important(rand(2, 6));
+        do_something_important(rand(200, 1000));
 
         $message = RunnerResult::createFor($runJob, JobAction::RUN_SUB_JOBS);
 
@@ -110,7 +110,7 @@ $queueConsumer->bind('demo_run_sub_tasks', function(PsrMessage $message) use ($r
 
 $queueConsumer->bind('demo_failed_job', function(PsrMessage $message) use ($runner) {
     $runner->run($message, function(RunJob $runJob) {
-        do_something_important(rand(2, 6));
+        do_something_important(rand(200, 1000));
 
         return JobAction::FAIL;
     });
@@ -121,7 +121,7 @@ $queueConsumer->bind('demo_failed_job', function(PsrMessage $message) use ($runn
 $queueConsumer->bind('demo_failed_with_exception_job', function(PsrMessage $message) use ($runner) {
     try {
         $runner->run($message, function (RunJob $runJob) {
-            do_something_important(rand(2, 6));
+            do_something_important(rand(200, 1000));
 
             throw new \LogicException('Something went wrong');
         });
@@ -134,12 +134,11 @@ $queueConsumer->consume();
 
 function do_something_important($timeout)
 {
-    $limit = microtime(true) + $timeout;
+    $limit = microtime(true) + ($timeout / 1000);
 
     $memoryConsumed = false;
     
     while (microtime(true) < $limit) {
-
         if ($memoryConsumed) {
             foreach (range(1000000, 5000000) as $index) {
                 $arr[] = $index;
@@ -147,7 +146,5 @@ function do_something_important($timeout)
 
             $memoryConsumed = true;
         }
-
-        usleep(10000);
     }
 }
