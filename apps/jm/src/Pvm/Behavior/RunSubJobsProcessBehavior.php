@@ -73,7 +73,12 @@ class RunSubJobsProcessBehavior implements Behavior
             throw new InterruptExecutionException();
         }
 
-        $triggers = $this->createSubJobstriggers($token);
+        $triggers = $this->createSubJobsTriggers($token);
+
+        $job->getRunSubJobsPolicy()->setCreatedSubJobsCount(count($triggers));
+        $job->getRunSubJobsPolicy()->setFinished(false);
+        $this->jobStorage->update($job);
+
         foreach ($triggers as $trigger) {
             $this->producer->sendCommand(Commands::EXECUTE_JOB, ExecuteJob::createFor($trigger));
         }
@@ -99,7 +104,7 @@ class RunSubJobsProcessBehavior implements Behavior
      *
      * @return SubJobTrigger[]
      */
-    private function createSubJobstriggers(PvmToken $token): array
+    private function createSubJobsTriggers(PvmToken $token): array
     {
         $job = $this->jobStorage->getOneById($token->getJobId());
         $subJobs = $token->getRunnerResult()->getSubJobs();

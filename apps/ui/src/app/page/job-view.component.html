@@ -93,9 +93,9 @@
     </div>
     <div *ngIf="tab == 'graph'">
         <h4>Flow graph:</h4>
-        <job-flow-graph *ngIf="job" [jobId]="job.id" [updatedAt]="updatedAt"></job-flow-graph>
+        <job-flow-graph *ngIf="job" [jobId]="job.id" [updatedAt]="job.updatedAt"></job-flow-graph>
         <h4>State graph:</h4>
-        <job-state-graph *ngIf="job" [jobId]="job.id" [updatedAt]="updatedAt"></job-state-graph>
+        <job-state-graph *ngIf="job" [jobId]="job.id" [updatedAt]="job.updatedAt"></job-state-graph>
     </div>
     <div *ngIf="tab === 'raw'">
         <prettyjson [obj]="job"></prettyjson>

@@ -16,8 +16,6 @@ use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Exception\WaitExecutionException;
 use Formapro\Pvm\SignalBehavior;
 use Formapro\Pvm\Token;
-use function Makasim\Values\get_value;
-use function Makasim\Values\set_value;
 
 class WaitSubJobsProcessBehavior implements Behavior, SignalBehavior
 {
@@ -72,32 +70,35 @@ class WaitSubJobsProcessBehavior implements Behavior, SignalBehavior
             throw new WaitExecutionException();
         }
 
-        $node = $token->getTransition()->getTo();
-        if (get_value($node, 'sub_jobs_finished', false)) {
+        $job = $this->jobStorage->getOneById($token->getJobId());
+        if ($job->getRunSubJobsPolicy()->isFinished()) {
             return;
         }
 
-        $this->jobStorage->lockByJobId($token->getJobId(), function(Job $job) use ($token, $node) {
-            $freshProcess = $this->processExecutionStorage->getOneByToken($token->getId());
-            $freshNode = $freshProcess->getNode($node->getId());
-            if ($freshNode->getValue('sub_jobs_finished', false)) {
-                return;
+        $isFinishedNow = $this->jobStorage->lockByJobId($token->getJobId(), function(Job $job) use ($token) {
+            $policy = $job->getRunSubJobsPolicy();
+            if ($policy->isFinished()) {
+                return false;
             }
 
+            $policy->setFinishedSubJobsCount($this->jobStorage->countFinishedSubJobs($job->getId()));
+            if ($policy->getCreatedSubJobsCount() === $policy->getFinishedSubJobsCount()) {
+                $policy->setFinished(true);
+            }
+
+            $this->jobStorage->update($job);
+
+            return $policy->isFinished();
+        });
+
+        if ($isFinishedNow) {
             $tokenWithRunnerResult = $this->findTokenWithRunnerResult($token->getProcess());
 
-            $totalSubJobsNumber = count($tokenWithRunnerResult->getRunnerResult()->getSubJobs());
-            $finishedSubJobsNumber = $this->jobStorage->countFinishedSubJobs($job->getId());
-            if ($totalSubJobsNumber === $finishedSubJobsNumber) {
-                set_value($freshNode, 'sub_jobs_finished', true);
-                $this->processExecutionStorage->update($freshProcess);
-
-                $this->producer->sendCommand(Commands::PVM_HANDLE_ASYNC_TRANSITION, [
-                    'process' => $tokenWithRunnerResult->getProcess()->getId(),
-                    'token' => $tokenWithRunnerResult->getId(),
-                ]);
-            }
-        });
+            $this->producer->sendCommand(Commands::PVM_HANDLE_ASYNC_TRANSITION, [
+                'process' => $tokenWithRunnerResult->getProcess()->getId(),
+                'token' => $tokenWithRunnerResult->getId(),
+            ]);
+        }
     }
 
     /**

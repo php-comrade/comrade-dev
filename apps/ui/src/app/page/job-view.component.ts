@@ -20,8 +20,6 @@ export class JobViewComponent implements OnInit {
 
   tab: string = 'summary';
 
-  updatedAt: number;
-
   constructor(
       private currentJobService: CurrentJobService,
       private route: ActivatedRoute,
@@ -41,7 +39,6 @@ export class JobViewComponent implements OnInit {
           })
           .subscribe((job: Job) => {
               this.job = job;
-              this.updatedAt = Date.now();
           });
 
       this.currentSubJobsService.getCurrentSubJobs().subscribe((jobs: SubJob[]) => {

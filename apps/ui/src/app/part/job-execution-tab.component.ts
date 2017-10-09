@@ -6,6 +6,7 @@ import {JobResultMetrics} from "../shared/job-result-metrics";
 import {JobResultError} from "../shared/job-result-error";
 import {JobResult as OriginalJobResult} from "../shared/job-result";
 import {SubJob} from "../shared/sub-job";
+import {JobStatus} from "../shared/job-status";
 
 class JobResult extends OriginalJobResult {
   isSubJob: boolean;
@@ -134,7 +135,7 @@ export class JobExecutionTabComponent implements OnChanges {
       jobResult.isSubJob = false;
       results.push(jobResult);
 
-      if (this.showSubJobsStatuses && jobResult.status == 'running_sub_jobs' && this.subJobs) {
+      if (this.showSubJobsStatuses && jobResult.status == JobStatus.RUNNING_SUB_JOBS && this.subJobs) {
         this.subJobs.forEach((job: SubJob) => {
           if (!job.currentResult) {
             return;

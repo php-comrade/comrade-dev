@@ -111,6 +111,7 @@ final class Kernel extends BaseKernel
                 \Comrade\Shared\Model\Job::SCHEMA => \App\Model\Job::class,
                 \Comrade\Shared\Model\SubJob::SCHEMA => \App\Model\SubJob::class,
                 \Comrade\Shared\Model\RetryFailedPolicy::SCHEMA => \App\Model\RetryFailedPolicy::class,
+                \Comrade\Shared\Model\RunSubJobsPolicy::SCHEMA => \App\Model\RunSubJobsPolicy::class,
             ]
         )))->register();
     }

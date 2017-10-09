@@ -34,7 +34,9 @@ export class CurrentSubJobsService {
               let subJobs = [...this.subJobs];
               const index = subJobs.findIndex((job: Job) => job.id === updatedJob.id);
               if (~index) {
-                subJobs[index] = updatedJob;
+                if (updatedJob.updatedAt.unix >= subJobs[index].updatedAt.unix) {
+                  subJobs[index] = updatedJob;
+                }
               } else {
                 subJobs.push(updatedJob);
               }
