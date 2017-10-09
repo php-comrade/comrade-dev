@@ -12,7 +12,7 @@ class JobResult extends OriginalJobResult {
 }
 
 @Component({
-  selector: 'job-view-execution',
+  selector: 'job-execution-tab',
   template: `
       <div class="clearfix mt-2"></div>
       
@@ -43,29 +43,50 @@ class JobResult extends OriginalJobResult {
                       <span class="float-left" *ngIf="result.isSubJob">&nbsp;&nbsp;</span>
                       <job-status class="float-left" [status]="result.status"></job-status>
                   </div>
-
-                  <!--<div class="col-2" *ngIf="result.error">-->
-                      <!--<a (click)="showError(result.error)" href="javascript:void(0)">error</a>-->
-                  <!--</div>-->
-
-                  <!--<div class="col-2" *ngIf="result.metrics">-->
-                      <!--<a (click)="showMetrics(result.metrics)" href="javascript:void(0)">metrics</a>-->
-                  <!--</div>-->
               </div>
           </div>
           <div class="col-6">
               <job-state-graph [jobId]="job.id" [updatedAt]="job.updatedAt"></job-state-graph>
-              <!--<div class="col-12" *ngIf="metrics">-->
-                  <!--<prettyjson [obj]="metrics"></prettyjson>-->
-              <!--</div>-->
-              <!--<div class="col-12" *ngIf="error">-->
-                  <!--<prettyjson [obj]="error"></prettyjson>-->
-              <!--</div>-->
+          </div>
+      </div>
+
+      <hr class="clearfix mt-2" />
+
+      <div class="row pb-2">
+          <div class="col-6">
+              <div class="row pb-2" *ngFor="let result of results; let index = index">
+                  <div class="col-4" *ngIf="!index">
+                      <time-ago [date]="result.createdAt"></time-ago>
+                  </div>
+                  <div class="col-4" *ngIf="index">
+                      &nbsp;&nbsp;+{{ result.createdAt.unix - job.results[0].createdAt.unix }} sec
+                  </div>
+                  
+                  <div class="col-4">
+                      <span class="float-left" *ngIf="result.isSubJob">&nbsp;&nbsp;</span>
+                      <job-status class="float-left" [status]="result.status"></job-status>
+                  </div>
+                  <div class="col-2" *ngIf="result.error">
+                  <a (click)="showError(result.error)" href="javascript:void(0)">error</a>
+                  </div>
+
+                  <div class="col-2" *ngIf="result.metrics">
+                  <a (click)="showMetrics(result.metrics)" href="javascript:void(0)">metrics</a>
+                  </div>
+              </div>
+          </div>
+          <div class="col-6">
+              <div class="col-12" *ngIf="metrics">
+              <prettyjson [obj]="metrics"></prettyjson>
+              </div>
+              <div class="col-12" *ngIf="error">
+              <prettyjson [obj]="error"></prettyjson>
+              </div>
           </div>
       </div>
   `,
 })
-export class JobViewExecutionComponent implements OnChanges {
+export class JobExecutionTabComponent implements OnChanges {
   @Input() job: Job;
   @Input() subJobs: Job[];
 

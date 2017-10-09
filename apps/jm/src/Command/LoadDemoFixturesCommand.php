@@ -78,7 +78,7 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $template = JobTemplate::create();
         $template->setName('demo_failed_job');
         $template->setTemplateId(Uuid::generate());
-        $template->setRunner(QueueRunner::createFor('demo_failed_job'));
+        $template->setRunner(QueueRunner::createFor('demo_failed_with_exception_job'));
 
         $policy = GracePeriodPolicy::create();
         $policy->setPeriod(20);

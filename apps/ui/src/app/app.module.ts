@@ -56,11 +56,11 @@ import {LandingComponent} from "./page/landing.component";
 import {TemplateViewChartComponent} from "./part/template-view-chart.component";
 import {ChartsModule} from "ng2-charts";
 import {ToastyService} from "./shared/toasty.service";
-import {JobViewExecutionComponent} from "./part/job-view-execution.component";
 import {CurrentSubJobsService} from "./shared/current-sub-jobs.service";
 import {PolicyNewSubJobComponent} from "./part/policy-new-sub-job.component";
 import {PolicyShowSubJobComponent} from "./part/policy-show-sub-job.component";
 import {JobStateGraphComponent} from "./part/job-state-graph.component";
+import {JobExecutionTabComponent} from "./part/job-execution-tab.component";
 
 
 @NgModule({
@@ -94,7 +94,7 @@ import {JobStateGraphComponent} from "./part/job-state-graph.component";
     JobFlowGraphComponent,
     JobStateGraphComponent,
     JobViewComponent,
-    JobViewExecutionComponent,
+    JobExecutionTabComponent,
     JobListComponent,
     JobListRowComponent,
     JobListHeaderRowComponent,

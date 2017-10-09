@@ -1,7 +1,6 @@
 <?php
 namespace App\Infra\Error;
 
-use Enqueue\Util\JSON;
 use Makasim\Values\ValuesTrait;
 
 class Error implements \JsonSerializable

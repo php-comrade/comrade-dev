@@ -89,7 +89,7 @@
     </div>
 
     <div *ngIf="tab == 'execution'">
-        <job-view-execution [job]="job" [subJobs]="subJobs"></job-view-execution>
+        <job-execution-tab [job]="job" [subJobs]="subJobs"></job-execution-tab>
     </div>
     <div *ngIf="tab == 'graph'">
         <h4>Flow graph:</h4>

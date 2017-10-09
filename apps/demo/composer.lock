@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-comrade/php-client.git",
-                "reference": "ac458013b92ae79b64671b4061e7f9d13042e13b"
+                "reference": "1e19b6cf8a8ff8631ef2fb11bd74ab5c29fcd126"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-comrade/php-client/zipball/ac458013b92ae79b64671b4061e7f9d13042e13b",
-                "reference": "ac458013b92ae79b64671b4061e7f9d13042e13b",
+                "url": "https://api.github.com/repos/php-comrade/php-client/zipball/1e19b6cf8a8ff8631ef2fb11bd74ab5c29fcd126",
+                "reference": "1e19b6cf8a8ff8631ef2fb11bd74ab5c29fcd126",
                 "shasum": ""
             },
             "require": {
@@ -46,7 +46,7 @@
                 "Job Manager",
                 "client"
             ],
-            "time": "2017-10-05T16:02:14+00:00"
+            "time": "2017-10-09T08:25:25+00:00"
         },
         {
             "name": "comrade/shared",
