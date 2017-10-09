@@ -16,7 +16,7 @@ services:
 
   jmc:
     image: 'formapro/comrade:latest'
-    entrypoint: 'php bin/console enqueue:consume --setup-broker --receive-timeout=200 --time-limit="+20 minute" -vvv'
+    entrypoint: 'php bin/console enqueue:consume --setup-broker --receive-timeout=200 --time-limit="+3600 seconds" --memory-limit=100 -vvv'
     depends_on:
       - 'rabbitmq'
       - 'mongo'
@@ -45,7 +45,7 @@ services:
 
   jmqr:
     image: 'formapro/comrade:latest'
-    entrypoint: 'php bin/console enqueue:consume quartz_rpc --setup-broker --receive-timeout=5000 --time-limit="+20 minute" -vvv'
+    entrypoint: 'php bin/console enqueue:consume quartz_rpc --setup-broker --receive-timeout=5000 --time-limit="+3600 seconds" -vvv'
     depends_on:
       - 'rabbitmq'
       - 'mongo'
@@ -59,7 +59,7 @@ services:
 
   jmqe:
     image: 'formapro/comrade:latest'
-    entrypoint: 'php bin/console enqueue:consume store_internal_error --setup-broker --receive-timeout=5000 --time-limit="+20 minute" -vvv'
+    entrypoint: 'php bin/console enqueue:consume store_internal_error --setup-broker --receive-timeout=5000 --time-limit="+3600 seconds" -vvv'
     depends_on:
       - 'rabbitmq'
       - 'mongo'
