@@ -119,11 +119,13 @@ $queueConsumer->bind('demo_failed_job', function(PsrMessage $message) use ($runn
 });
 
 $queueConsumer->bind('demo_failed_with_exception_job', function(PsrMessage $message) use ($runner) {
-    $runner->run($message, function(RunJob $runJob) {
-        do_something_important(rand(2, 6));
+    try {
+        $runner->run($message, function (RunJob $runJob) {
+            do_something_important(rand(2, 6));
 
-        throw new \LogicException('Something went wrong');
-    });
+            throw new \LogicException('Something went wrong');
+        });
+    } catch (\LogicException $e) {}
 
     return Result::ACK;
 });
