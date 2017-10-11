@@ -5,9 +5,12 @@
         "php": "^7.1",
         "cboden/ratchet": "0.4.x-dev",
         "comrade/shared": "*@dev",
-        "enqueue/amqp-ext": "^0.7.6",
-        "enqueue/enqueue": "^0.7.11@dev",
-        "enqueue/enqueue-bundle": "^0.7.11@dev",
+        "enqueue/amqp-ext": "^0.8@dev",
+        "enqueue/amqp-bunny": "^0.8@dev",
+        "enqueue/enqueue": "^0.8@dev",
+        "enqueue/amqp-tools": "^0.8@dev",
+        "enqueue/async-event-dispatcher": "^0.8@dev",
+        "enqueue/enqueue-bundle": "^0.8@dev",
         "formapro/pvm": "dev-master",
         "graphp/graphviz": "^0.2",
         "guzzlehttp/guzzle": "^6.3",
@@ -39,7 +42,7 @@
         "voryx/thruway": "^0.5@dev"
     },
     "require-dev": {
-        "enqueue/null": "^0.7@dev"
+        "enqueue/null": "^0.8@dev"
     },
     "config": {
         "platform": {

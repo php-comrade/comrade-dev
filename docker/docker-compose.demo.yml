@@ -9,25 +9,25 @@ services:
       - 'rabbitmq'
       - 'mongo'
     environment:
-      - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume
+      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&receive_method=basic_consume&persisted=1
       - MONGO_DSN=mongodb://mongo:27017
       - WAMP_DSN=ws://jms:9090
       - WAMP_REALM=realm1
 
   jmc:
     image: 'formapro/comrade:latest'
-    entrypoint: 'php bin/console enqueue:consume --setup-broker --receive-timeout=200 --time-limit="+3600 seconds" --memory-limit=100 -vvv'
+    entrypoint: 'php bin/console enqueue:consume --setup-broker --receive-timeout=10000 --time-limit="+3600 seconds" --memory-limit=100 -vvv'
     depends_on:
       - 'rabbitmq'
       - 'mongo'
       - 'jms'
     environment:
-      - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume
+      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&receive_method=basic_consume&persisted=1
       - MONGO_DSN=mongodb://mongo:27017
       - WAMP_DSN=ws://jms:9090
       - WAMP_REALM=realm1
     deploy:
-      replicas: 5
+      replicas: 7
 
   jmq:
     image: 'formapro/comrade:latest'
@@ -36,7 +36,7 @@ services:
       - 'rabbitmq'
       - 'mongo'
     environment:
-      - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume
+      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&receive_method=basic_consume&persisted=1
       - MONGO_DSN=mongodb://mongo:27017
       - WAMP_DSN=ws://jms:9090
       - WAMP_REALM=realm1
@@ -50,25 +50,13 @@ services:
       - 'rabbitmq'
       - 'mongo'
     environment:
-      - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume
+      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&pre_fetch_count=1&receive_method=basic_consume&persisted=1
       - MONGO_DSN=mongodb://mongo:27017
       - WAMP_DSN=ws://jms:9090
       - WAMP_REALM=realm1
     deploy:
       replicas: 2
-
-  jmqe:
-    image: 'formapro/comrade:latest'
-    entrypoint: 'php bin/console enqueue:consume store_internal_error --setup-broker --receive-timeout=5000 --time-limit="+3600 seconds" -vvv'
-    depends_on:
-      - 'rabbitmq'
-      - 'mongo'
-    environment:
-      - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume
-      - MONGO_DSN=mongodb://mongo:27017
-      - WAMP_DSN=ws://jms:9090
-      - WAMP_REALM=realm1
-
+      
   jmw:
     image: 'formapro/comrade:latest'
     entrypoint: 'php bin/wamp_server.php'
@@ -76,7 +64,7 @@ services:
       - 'rabbitmq'
       - 'mongo'
     environment:
-      - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume
+      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&receive_method=basic_consume&persisted=1
       - MONGO_DSN=mongodb://mongo:27017
       - WAMP_DSN=ws://jms:9090
       - WAMP_REALM=realm1
@@ -96,7 +84,7 @@ services:
     depends_on:
       - 'rabbitmq'
     environment:
-      - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume
+      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&receive_method=basic_consume&persisted=1
     deploy:
       replicas: 3
 
@@ -107,7 +95,7 @@ services:
       - 'rabbitmq'
       - 'mongo'
     environment:
-      - ENQUEUE_DSN=amqp://guest:guest@rabbitmq:5672/jm?pre_fetch_count=1&receive_method=basic_consume
+      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&receive_method=basic_consume&persisted=1
       - MONGO_DSN=mongodb://mongo:27017
     deploy:
       mode: global

@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-docker-compose up -d --remove-orphans --scale jmc=5 --scale jmqr=2 --scale jmdq=3
-trap "docker-compose stop jmc jmq jmw jmdq jmdh jmqr jmce ui; killall fswatch" SIGTERM  SIGINT
+docker-compose up -d --remove-orphans --scale jmc=5 --scale jmdq=2
+trap "docker-compose stop jmc jmq jmw jmqr jmdq jmdh ui; killall fswatch" SIGTERM  SIGINT
 
 fswatch -or -l 2 apps/jm pkg | xargs -n1 -I{} docker-compose restart jmc &
 fswatch -or -l 2 apps/demo pkg  | xargs -n1 -I{} docker-compose restart jmdq &
 
-docker-compose logs --tail=0 -f jm jmc jmq jmw jmdq jmdh jmqr jmce ui
+docker-compose logs --tail=0 -f jm jmc jmq jmw jmqr jmdq jmdh ui

@@ -14,6 +14,7 @@ use Enqueue\Consumption\Extension\SignalExtension;
 use Enqueue\Consumption\QueueConsumer;
 use Enqueue\Consumption\Result;
 use function Enqueue\dsn_to_context;
+use Interop\Amqp\AmqpContext;
 use Interop\Queue\PsrMessage;
 use function Makasim\Values\get_value;
 use function Makasim\Values\register_cast_hooks;
@@ -42,7 +43,7 @@ register_global_hook('get_object_class', function(array $values) {
     }
 });
 
-/** @var \Enqueue\AmqpExt\AmqpContext $c */
+/** @var AmqpContext $c */
 $c = dsn_to_context(getenv('ENQUEUE_DSN'));
 
 $runner = new ClientQueueRunner($c);
