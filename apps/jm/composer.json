@@ -3,10 +3,10 @@
     "license": "MIT",
     "require": {
         "php": "^7.1",
-        "cboden/ratchet": "0.4.x-dev",
+        "cboden/ratchet": "^0.4@dev",
         "comrade/shared": "*@dev",
-        "enqueue/amqp-ext": "^0.8@dev",
         "enqueue/amqp-bunny": "^0.8@dev",
+        "enqueue/amqp-ext": "^0.8@dev",
         "enqueue/enqueue": "^0.8@dev",
         "enqueue/amqp-tools": "^0.8@dev",
         "enqueue/async-event-dispatcher": "^0.8@dev",

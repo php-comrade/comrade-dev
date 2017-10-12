@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "aba7c97c7b3ee07f7c0eddd92e451330",
+    "content-hash": "01196c1a5772352d4b53be24bc979b68",
     "packages": [
         {
             "name": "bunny/bunny",
@@ -75,17 +75,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-comrade/php-client.git",
-                "reference": "1e19b6cf8a8ff8631ef2fb11bd74ab5c29fcd126"
+                "reference": "b9ab7a192a17242f811cf74fd4cab5ec745ebe7b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-comrade/php-client/zipball/1e19b6cf8a8ff8631ef2fb11bd74ab5c29fcd126",
-                "reference": "1e19b6cf8a8ff8631ef2fb11bd74ab5c29fcd126",
+                "url": "https://api.github.com/repos/php-comrade/php-client/zipball/b9ab7a192a17242f811cf74fd4cab5ec745ebe7b",
+                "reference": "b9ab7a192a17242f811cf74fd4cab5ec745ebe7b",
                 "shasum": ""
             },
             "require": {
                 "comrade/shared": "*@dev",
-                "enqueue/enqueue": "^0.7",
+                "enqueue/enqueue": "^0.8@dev",
                 "guzzlehttp/guzzle": "^6.3",
                 "php": ">=7.1"
             },
@@ -109,7 +109,7 @@
                 "Job Manager",
                 "client"
             ],
-            "time": "2017-10-09T08:25:25+00:00"
+            "time": "2017-10-11T11:03:28+00:00"
         },
         {
             "name": "comrade/shared",
@@ -159,12 +159,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/amqp-bunny.git",
-                "reference": "20a7bc37c8b374657c7059972ffa5e05e5d79d62"
+                "reference": "a41e036060711061d955c1d7baba39fc638e2e60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/amqp-bunny/zipball/20a7bc37c8b374657c7059972ffa5e05e5d79d62",
-                "reference": "20a7bc37c8b374657c7059972ffa5e05e5d79d62",
+                "url": "https://api.github.com/repos/php-enqueue/amqp-bunny/zipball/a41e036060711061d955c1d7baba39fc638e2e60",
+                "reference": "a41e036060711061d955c1d7baba39fc638e2e60",
                 "shasum": ""
             },
             "require": {
@@ -178,7 +178,7 @@
                 "enqueue/null": "^0.8@dev",
                 "enqueue/test": "^0.8@dev",
                 "phpunit/phpunit": "~5.4.0",
-                "queue-interop/queue-spec": "^0.5.1@dev",
+                "queue-interop/queue-spec": "^0.5.3@dev",
                 "symfony/config": "^2.8|^3",
                 "symfony/dependency-injection": "^2.8|^3"
             },
@@ -210,7 +210,66 @@
                 "messaging",
                 "queue"
             ],
-            "time": "2017-10-11T07:45:39+00:00"
+            "time": "2017-10-12T11:26:29+00:00"
+        },
+        {
+            "name": "enqueue/amqp-ext",
+            "version": "0.8.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-enqueue/amqp-ext.git",
+                "reference": "06a30d965a162b62645bbb7ec2122beec9d68eda"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-enqueue/amqp-ext/zipball/06a30d965a162b62645bbb7ec2122beec9d68eda",
+                "reference": "06a30d965a162b62645bbb7ec2122beec9d68eda",
+                "shasum": ""
+            },
+            "require": {
+                "enqueue/amqp-tools": "^0.8@dev",
+                "ext-amqp": "^1.9.1",
+                "php": ">=5.6",
+                "queue-interop/amqp-interop": "^0.7@dev"
+            },
+            "require-dev": {
+                "empi89/php-amqp-stubs": "*@dev",
+                "enqueue/enqueue": "^0.8@dev",
+                "enqueue/null": "^0.8@dev",
+                "enqueue/test": "^0.8@dev",
+                "phpunit/phpunit": "~5.4.0",
+                "queue-interop/queue-spec": "^0.5.3@dev",
+                "symfony/config": "^2.8|^3",
+                "symfony/dependency-injection": "^2.8|^3"
+            },
+            "suggest": {
+                "enqueue/enqueue": "If you'd like to use advanced features like Client abstract layer or Symfony integration features"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.8.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Enqueue\\AmqpExt\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Message Queue Amqp Transport",
+            "keywords": [
+                "AMQP",
+                "messaging",
+                "queue"
+            ],
+            "time": "2017-10-12T11:26:29+00:00"
         },
         {
             "name": "enqueue/amqp-tools",
@@ -264,20 +323,20 @@
         },
         {
             "name": "enqueue/enqueue",
-            "version": "0.7.18",
+            "version": "0.8.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/enqueue.git",
-                "reference": "5cf6bbe4da3f7065c479cf0b634b6b6e94b35920"
+                "reference": "3ba8ba6559884d54af599acbb1e592b1c071d295"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/5cf6bbe4da3f7065c479cf0b634b6b6e94b35920",
-                "reference": "5cf6bbe4da3f7065c479cf0b634b6b6e94b35920",
+                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/3ba8ba6559884d54af599acbb1e592b1c071d295",
+                "reference": "3ba8ba6559884d54af599acbb1e592b1c071d295",
                 "shasum": ""
             },
             "require": {
-                "enqueue/null": "^0.7@dev",
+                "enqueue/null": "^0.8@dev",
                 "php": ">=5.6",
                 "psr/log": "^1",
                 "queue-interop/queue-interop": "^0.6@dev",
@@ -285,20 +344,20 @@
             },
             "require-dev": {
                 "empi89/php-amqp-stubs": "*@dev",
-                "enqueue/amqp-bunny": "^0.7@dev",
-                "enqueue/amqp-ext": "^0.7@dev",
-                "enqueue/amqp-lib": "^0.7@dev",
-                "enqueue/dbal": "^0.7@dev",
-                "enqueue/fs": "^0.7@dev",
-                "enqueue/gearman": "^0.7@dev",
-                "enqueue/gps": "^0.7@dev",
-                "enqueue/pheanstalk": "^0.7@dev",
-                "enqueue/rdkafka": "^0.7@dev",
-                "enqueue/redis": "^0.7@dev",
-                "enqueue/simple-client": "^0.7@dev",
-                "enqueue/sqs": "^0.7@dev",
-                "enqueue/stomp": "^0.7@dev",
-                "enqueue/test": "^0.7@dev",
+                "enqueue/amqp-bunny": "^0.8@dev",
+                "enqueue/amqp-ext": "^0.8@dev",
+                "enqueue/amqp-lib": "^0.8@dev",
+                "enqueue/dbal": "^0.8@dev",
+                "enqueue/fs": "^0.8@dev",
+                "enqueue/gearman": "^0.8@dev",
+                "enqueue/gps": "^0.8@dev",
+                "enqueue/pheanstalk": "^0.8@dev",
+                "enqueue/rdkafka": "^0.8@dev",
+                "enqueue/redis": "^0.8@dev",
+                "enqueue/simple-client": "^0.8@dev",
+                "enqueue/sqs": "^0.8@dev",
+                "enqueue/stomp": "^0.8@dev",
+                "enqueue/test": "^0.8@dev",
                 "phpunit/phpunit": "~5.5",
                 "symfony/config": "^2.8|^3",
                 "symfony/console": "^2.8|^3",
@@ -320,7 +379,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.7.x-dev"
+                    "dev-master": "0.8.x-dev"
                 }
             },
             "autoload": {
@@ -345,20 +404,20 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2017-10-10T12:55:51+00:00"
+            "time": "2017-10-11T11:56:31+00:00"
         },
         {
             "name": "enqueue/null",
-            "version": "0.7.6",
+            "version": "0.8.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/null.git",
-                "reference": "783882757215a5764a35a6fb553da13b7fdbdc82"
+                "reference": "ecd1f6b8e6dbcba5f3a31f6f9d934594323a7af7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/null/zipball/783882757215a5764a35a6fb553da13b7fdbdc82",
-                "reference": "783882757215a5764a35a6fb553da13b7fdbdc82",
+                "url": "https://api.github.com/repos/php-enqueue/null/zipball/ecd1f6b8e6dbcba5f3a31f6f9d934594323a7af7",
+                "reference": "ecd1f6b8e6dbcba5f3a31f6f9d934594323a7af7",
                 "shasum": ""
             },
             "require": {
@@ -366,17 +425,17 @@
                 "queue-interop/queue-interop": "^0.6@dev"
             },
             "require-dev": {
-                "enqueue/enqueue": "^0.7@dev",
-                "enqueue/test": "^0.7@dev",
+                "enqueue/enqueue": "^0.8@dev",
+                "enqueue/test": "^0.8@dev",
                 "phpunit/phpunit": "~5.5",
-                "queue-interop/queue-spec": "^0.5@dev",
+                "queue-interop/queue-spec": "^0.5.3@dev",
                 "symfony/config": "^2.8|^3",
                 "symfony/dependency-injection": "^2.8|^3"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.7.x-dev"
+                    "dev-master": "0.8.x-dev"
                 }
             },
             "autoload": {
@@ -397,7 +456,7 @@
                 "queue",
                 "testing"
             ],
-            "time": "2017-08-16T07:38:27+00:00"
+            "time": "2017-10-12T11:26:29+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -1262,8 +1321,11 @@
     "stability-flags": {
         "comrade/shared": 20,
         "comrade/client": 20,
+        "enqueue/amqp-ext": 20,
         "enqueue/amqp-bunny": 20,
-        "enqueue/amqp-tools": 20
+        "enqueue/amqp-tools": 20,
+        "enqueue/null": 20,
+        "enqueue/enqueue": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

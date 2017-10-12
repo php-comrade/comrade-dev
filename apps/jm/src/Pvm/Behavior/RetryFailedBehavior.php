@@ -6,23 +6,13 @@ use App\Model\Job;
 use App\Model\JobAction;
 use App\Model\PvmToken;
 use App\Service\ChangeJobStateService;
-use App\Topics;
-use App\Model\JobResult;
 use App\Storage\JobStorage;
-use App\Storage\ProcessExecutionStorage;
 use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Token;
-use Formapro\Pvm\Transition;
-use function Makasim\Values\get_values;
 
 class RetryFailedBehavior implements Behavior
 {
-    /**
-     * @var ProcessExecutionStorage
-     */
-    private $processExecutionStorage;
-
     /**
      * @var JobStorage
      */
@@ -39,12 +29,10 @@ class RetryFailedBehavior implements Behavior
     private $changeJobStateService;
 
     public function __construct(
-        ProcessExecutionStorage $processExecutionStorage,
         JobStorage $jobStorage,
         ProducerInterface $producer,
         ChangeJobStateService $changeJobStateService
     ) {
-        $this->processExecutionStorage = $processExecutionStorage;
         $this->jobStorage = $jobStorage;
         $this->producer = $producer;
         $this->changeJobStateService = $changeJobStateService;

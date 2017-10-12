@@ -9,7 +9,7 @@ services:
       - 'rabbitmq'
       - 'mongo'
     environment:
-      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&receive_method=basic_consume&persisted=1
+      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&qos_prefetch_count=3&receive_method=basic_consume&persisted=1
       - MONGO_DSN=mongodb://mongo:27017
       - WAMP_DSN=ws://jms:9090
       - WAMP_REALM=realm1
@@ -22,12 +22,12 @@ services:
       - 'mongo'
       - 'jms'
     environment:
-      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&receive_method=basic_consume&persisted=1
+      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&qos_prefetch_count=3&receive_method=basic_consume&persisted=1
       - MONGO_DSN=mongodb://mongo:27017
       - WAMP_DSN=ws://jms:9090
       - WAMP_REALM=realm1
     deploy:
-      replicas: 7
+      replicas: 2
 
   jmq:
     image: 'formapro/comrade:latest'
@@ -36,7 +36,7 @@ services:
       - 'rabbitmq'
       - 'mongo'
     environment:
-      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&receive_method=basic_consume&persisted=1
+      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&qos_prefetch_count=3&receive_method=basic_consume&persisted=1
       - MONGO_DSN=mongodb://mongo:27017
       - WAMP_DSN=ws://jms:9090
       - WAMP_REALM=realm1
@@ -50,7 +50,7 @@ services:
       - 'rabbitmq'
       - 'mongo'
     environment:
-      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&pre_fetch_count=1&receive_method=basic_consume&persisted=1
+      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&qos_prefetch_count=3&receive_method=basic_consume&persisted=1
       - MONGO_DSN=mongodb://mongo:27017
       - WAMP_DSN=ws://jms:9090
       - WAMP_REALM=realm1
@@ -64,7 +64,7 @@ services:
       - 'rabbitmq'
       - 'mongo'
     environment:
-      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&receive_method=basic_consume&persisted=1
+      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&qos_prefetch_count=3&receive_method=basic_consume&persisted=1
       - MONGO_DSN=mongodb://mongo:27017
       - WAMP_DSN=ws://jms:9090
       - WAMP_REALM=realm1
@@ -84,9 +84,9 @@ services:
     depends_on:
       - 'rabbitmq'
     environment:
-      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&receive_method=basic_consume&persisted=1
+      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&qos_prefetch_count=3&receive_method=basic_consume&persisted=1
     deploy:
-      replicas: 3
+      replicas: 2
 
   seeds:
     image: 'formapro/comrade:latest'
@@ -95,7 +95,7 @@ services:
       - 'rabbitmq'
       - 'mongo'
     environment:
-      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&receive_method=basic_consume&persisted=1
+      - ENQUEUE_DSN=amqp+bunny://guest:guest@rabbitmq:5672/jm?connect_timeout=30&qos_prefetch_count=3&receive_method=basic_consume&persisted=1
       - MONGO_DSN=mongodb://mongo:27017
     deploy:
       mode: global
