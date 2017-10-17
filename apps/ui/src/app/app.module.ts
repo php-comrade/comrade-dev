@@ -61,6 +61,7 @@ import {PolicyNewSubJobComponent} from "./part/policy-new-sub-job.component";
 import {PolicyShowSubJobComponent} from "./part/policy-show-sub-job.component";
 import {JobStateGraphComponent} from "./part/job-state-graph.component";
 import {JobExecutionTabComponent} from "./part/job-execution-tab.component";
+import {TemplateTriggersComponent} from "./part/template-triggers.component";
 
 
 @NgModule({
@@ -102,6 +103,7 @@ import {JobExecutionTabComponent} from "./part/job-execution-tab.component";
     ApiBaseUrlComponent,
     LandingComponent,
     TemplateViewChartComponent,
+    TemplateTriggersComponent,
     PolicyNewSubJobComponent,
     PolicyShowSubJobComponent,
   ],

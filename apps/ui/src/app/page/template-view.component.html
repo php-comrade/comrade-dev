@@ -60,7 +60,7 @@
     </div>
 
     <h3 class="mt-4">Triggers: </h3>
-    <list-triggers [triggers]="jobTemplate.triggers" [showRemove]="false"></list-triggers>
+    <template-triggers *ngIf="jobTemplate" [template]="jobTemplate"></template-triggers>
 
     <h3 class="mt-4">Runner: </h3>
     <runner-list *ngIf="jobTemplate.runner" [runner]="jobTemplate.runner"></runner-list>

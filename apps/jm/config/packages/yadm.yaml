@@ -20,6 +20,7 @@ yadm:
             storage_class: 'App\Storage\TriggerStorage'
             collection: 'trigger'
             database: '%mongo_database%'
+            hydrator_class: 'App\Infra\Yadm\SchemaBasedHydrator'
 
         job_metrics:
             class: 'Comrade\Shared\Model\JobMetrics'

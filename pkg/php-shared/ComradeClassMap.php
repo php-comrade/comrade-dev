@@ -6,6 +6,7 @@ use Comrade\Shared\Message\GetJob;
 use Comrade\Shared\Message\GetJobChart;
 use Comrade\Shared\Message\GetSubJobs;
 use Comrade\Shared\Message\GetTimeline;
+use Comrade\Shared\Message\GetTriggers;
 use Comrade\Shared\Message\RunJob;
 use Comrade\Shared\Message\RunSubJobsResult;
 use Comrade\Shared\Message\ScheduleJob;
@@ -75,6 +76,7 @@ class ComradeClassMap
             GetSubJobs::SCHEMA => GetSubJobs::class,
             GetJobChart::SCHEMA => GetJobChart::class,
             RunnerResult::SCHEMA => RunnerResult::class,
+            GetTriggers::SCHEMA => GetTriggers::class,
         ], $classMap);
     }
 

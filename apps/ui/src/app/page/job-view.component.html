@@ -75,9 +75,6 @@
             </div>
         </div>
 
-        <h3 class="mt-4">Triggers: </h3>
-        <list-triggers [triggers]="job.triggers" [showRemove]="false"></list-triggers>
-
         <h3 class="mt-4">Runner: </h3>
         <runner-list *ngIf="job.runner" [runner]="job.runner"></runner-list>
 

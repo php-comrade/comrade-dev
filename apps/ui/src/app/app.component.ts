@@ -28,12 +28,12 @@ export class AppComponent implements OnInit {
     }
 
     this.wamp.getWampBaseUrl().subscribe(() => {
-      // this.wamp.topic('job_manager.internal_error')
-      //   .map((e: EventMessage) => e.args[0] as ServerError)
-      //   .subscribe((error: ServerError) => {
-      //     this.toastyService.serverError(error);
-      //   })
-      // ;
+      this.wamp.topic('job_manager.internal_error')
+        .map((e: EventMessage) => e.args[0] as ServerError)
+        .subscribe((error: ServerError) => {
+          this.toastyService.serverError(error);
+        })
+      ;
       this.wamp.topic('comrade.job_updated')
         .map((e: EventMessage) => e.args[0] as Job)
         .subscribe((job: Job) => {

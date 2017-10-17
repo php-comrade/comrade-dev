@@ -13,6 +13,10 @@ export class CreateJob {
         this.triggers = [...this.triggers, trigger];
     }
 
+    getTriggers(): Trigger[] {
+        return this.triggers;
+    }
+
     removeTrigger(trigger: Trigger)
     {
         this.triggers = this.triggers.filter(currentTrigger => currentTrigger !== trigger);

@@ -7,8 +7,11 @@ use App\JobStatus;
 use App\Service\JobStateMachine;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessStorage;
+use App\Storage\TriggerStorage;
 use Comrade\Shared\Message\CreateJob;
+use Comrade\Shared\Message\GetTriggers;
 use Comrade\Shared\Message\ScheduleJob;
+use Comrade\Shared\Model\Trigger;
 use Enqueue\Client\ProducerInterface;
 use Enqueue\Util\JSON;
 use Formapro\Pvm\Visual\VisualizeFlow;
@@ -118,6 +121,44 @@ class JobTemplateController
         $response->setEncodingOptions(JsonResponse::DEFAULT_ENCODING_OPTIONS | JSON_PRETTY_PRINT);
 
         return $response;
+    }
+
+    /**
+     * @Extra\Route("/get-triggers")
+     * @Extra\Method("POST")
+     *
+     * @param Request $request
+     * @param SchemaValidator $schemaValidator
+     * @param TriggerStorage $triggerStorage
+     *
+     * @return JsonResponse
+     */
+    public function getTriggersAction(Request $request, SchemaValidator $schemaValidator, TriggerStorage $triggerStorage)
+    {
+        try {
+            $data = JSON::decode($request->getContent());
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException('The content is not valid json.', null, $e);
+        }
+
+        if ($errors = $schemaValidator->validate($data, GetTriggers::SCHEMA)) {
+            return new JsonResponse($errors, 400);
+        }
+
+        $getTriggers = GetTriggers::create($data);
+
+        /** @var Trigger[] $triggers */
+        $triggers = $triggerStorage->find(['templateId' => $getTriggers->getTemplateId()]);
+
+        $rawTriggers = [];
+        foreach ($triggers as $trigger) {
+            $rawTriggers[] = get_values($trigger);
+        }
+
+        return new JsonResponse([
+            'templateId' => $getTriggers->getTemplateId(),
+            'triggers' => $rawTriggers,
+        ]);
     }
 
     /**

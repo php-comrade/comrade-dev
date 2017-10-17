@@ -21,7 +21,7 @@
   </div>
 
   <h3>Triggers: </h3>
-  <list-triggers (onRemoveTrigger)="onRemoveTrigger($event)" [triggers]="jobTemplate.triggers" [showRemove]="true"></list-triggers>
+  <list-triggers (onRemoveTrigger)="onRemoveTrigger($event)" [triggers]="createJob.getTriggers()" [showRemove]="true"></list-triggers>
 
   <a class="nav-link" *ngIf="!addCronTrigger" (click)="triggerCronTrigger()" href="javascript:void(0)">Add cron trigger</a>
   <div *ngIf="addCronTrigger">
