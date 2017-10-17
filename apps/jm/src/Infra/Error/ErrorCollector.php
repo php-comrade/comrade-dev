@@ -10,6 +10,7 @@ use Enqueue\Consumption\Context;
 use Enqueue\Consumption\EmptyExtensionTrait;
 use Enqueue\Consumption\ExtensionInterface;
 use Enqueue\Consumption\Result;
+use Interop\Queue\Exception;
 use Interop\Queue\PsrMessage;
 use Interop\Queue\PsrProcessor;
 use Symfony\Component\Console\ConsoleEvents;
@@ -50,7 +51,9 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
             $error->setValue('response', $this->convertResponse($response));
         }
 
-        $this->producer->sendEvent(Topics::INTERNAL_ERROR, $error);
+        try {
+            $this->producer->sendEvent(Topics::INTERNAL_ERROR, $error);
+        } catch (Exception $e) {}
     }
 
     public function onCliException(ConsoleErrorEvent $event):void
@@ -60,7 +63,9 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
         $error->setValue('cli.argv', array_key_exists('argv', $_SERVER) ? $_SERVER['argv'] : []);
         $error->setValue('cli.command', implode(' ', $error->getValue('cli.argv')));
 
-        $this->producer->sendEvent(Topics::INTERNAL_ERROR, $error);
+        try {
+            $this->producer->sendEvent(Topics::INTERNAL_ERROR, $error);
+        } catch (Exception $e) {}
     }
 
     public function onPostReceived(Context $context)
@@ -76,7 +81,9 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
         $error->setValue('queue.result.status', (string) $result);
         $error->setValue('queue.result.reason', $result instanceof Result ? $result->getReason() : '');
 
-        $this->producer->sendEvent(Topics::INTERNAL_ERROR, $error);
+        try {
+            $this->producer->sendEvent(Topics::INTERNAL_ERROR, $error);
+        } catch (Exception $e) {}
     }
 
     public function onInterrupted(Context $context)
@@ -99,7 +106,9 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
         $error->setValue('error', $this->convertThrowable($context->getException()));
         $error->setValue('queue.message', $this->convertQueueMessage($context->getPsrMessage()));
 
-        $this->producer->sendEvent(Topics::INTERNAL_ERROR, $error);
+        try {
+            $this->producer->sendEvent(Topics::INTERNAL_ERROR, $error);
+        } catch (Exception $e) {}
     }
 
     /**

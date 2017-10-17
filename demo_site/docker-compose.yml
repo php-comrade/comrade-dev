@@ -1,0 +1,92 @@
+version: '3'
+
+services:
+  jm:
+    image: 'formapro/comrade:latest'
+    ports:
+      - "81:80"
+    depends_on:
+      - 'rabbitmq'
+      - 'mongo'
+    env_file: '/.env'
+
+  jmc:
+    image: 'formapro/comrade:latest'
+    entrypoint: 'php bin/console enqueue:consume --setup-broker --receive-timeout=10000 --time-limit="+3600 seconds" --memory-limit=100 -vvv'
+    depends_on:
+      - 'rabbitmq'
+      - 'mongo'
+      - 'jms'
+    env_file: '/.env'
+    deploy:
+      replicas: 2
+
+  jmq:
+    image: 'formapro/comrade:latest'
+    entrypoint: 'php bin/console quartz:scheduler -vvv'
+    depends_on:
+      - 'rabbitmq'
+      - 'mongo'
+    env_file: '/.env'
+    deploy:
+      mode: 'global'
+
+  jmqr:
+    image: 'formapro/comrade:latest'
+    entrypoint: 'php bin/console enqueue:consume quartz_rpc --setup-broker --receive-timeout=5000 --time-limit="+3600 seconds" -vvv'
+    depends_on:
+      - 'rabbitmq'
+      - 'mongo'
+    env_file: '/.env'
+    deploy:
+      replicas: 2
+      
+  jmw:
+    image: 'formapro/comrade:latest'
+    entrypoint: 'php bin/wamp_server.php'
+    depends_on:
+      - 'rabbitmq'
+      - 'mongo'
+    env_file: '/.env'
+    ports:
+      - '9090:9090'
+
+  ui:
+    image: 'formapro/comrade-ui:latest'
+    ports:
+      - "80:80"
+
+  jmd:
+    image: 'formapro/comrade-demo:latest'
+    entrypoint: 'php queue_demo.php'
+    depends_on:
+      - 'rabbitmq'
+    env_file: '/.env'
+    deploy:
+      replicas: 2
+
+  seeds:
+    image: 'formapro/comrade:latest'
+    entrypoint: 'php bin/console comrade:load-demo-fixtures --drop --trigger=cron'
+    depends_on:
+      - 'rabbitmq'
+      - 'mongo'
+    env_file: '/.env'
+    deploy:
+      mode: 'global'
+      restart_policy:
+        condition: 'none'
+
+  rabbitmq:
+    image: 'enqueue/rabbitmq:latest'
+    environment:
+      - 'RABBITMQ_DEFAULT_USER=comrade'
+      - 'RABBITMQ_DEFAULT_PASS=comrade123'
+      - 'RABBITMQ_DEFAULT_VHOST=comrade'
+    deploy:
+      mode: 'global'
+
+  mongo:
+    image: 'mongo:3'
+    deploy:
+      mode: 'global'

@@ -107,6 +107,7 @@ class BuildAndExecuteProcessService
         $job->setId(Uuid::generate());
         $job->setProcessId($process->getId());
         $job->setCreatedAt(new \DateTime('now'));
+        $job->setUpdatedAt(new \DateTime('now'));
 
         $result = JobResult::createFor(JobStatus::NEW);
         $job->addResult($result);

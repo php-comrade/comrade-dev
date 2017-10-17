@@ -52,7 +52,7 @@ export class LateServerErrorsComponent implements OnInit {
             })
         ;
 
-        this.titleService.setTitle('JM. Server errors');
+        this.titleService.setTitle('Comrade - Server errors');
 
         this.refresh();
 

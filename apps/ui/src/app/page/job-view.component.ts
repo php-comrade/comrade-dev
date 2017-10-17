@@ -28,7 +28,7 @@ export class JobViewComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-      this.titleService.setTitle('JM. Job view');
+      this.titleService.setTitle('Comrade - Job view');
 
       this.route.params
           .do((params: Params) => this.tab = params['tab'])

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "47d720ee8abb021c62077bc1feaa3465",
+    "content-hash": "e49b12ca95eda033d8e57ef7dad0aef2",
     "packages": [
         {
             "name": "bunny/bunny",
@@ -677,12 +677,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/amqp-bunny.git",
-                "reference": "a41e036060711061d955c1d7baba39fc638e2e60"
+                "reference": "a7a19663e1ddca77e96e306a4402a6bd7b0e7b52"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/amqp-bunny/zipball/a41e036060711061d955c1d7baba39fc638e2e60",
-                "reference": "a41e036060711061d955c1d7baba39fc638e2e60",
+                "url": "https://api.github.com/repos/php-enqueue/amqp-bunny/zipball/a7a19663e1ddca77e96e306a4402a6bd7b0e7b52",
+                "reference": "a7a19663e1ddca77e96e306a4402a6bd7b0e7b52",
                 "shasum": ""
             },
             "require": {
@@ -728,7 +728,7 @@
                 "messaging",
                 "queue"
             ],
-            "time": "2017-10-12T11:26:29+00:00"
+            "time": "2017-10-14T17:15:08+00:00"
         },
         {
             "name": "enqueue/amqp-ext",
@@ -736,17 +736,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/amqp-ext.git",
-                "reference": "06a30d965a162b62645bbb7ec2122beec9d68eda"
+                "reference": "4bd7de628ae2ef00e6b63ed156e7cb0e68343ea2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/amqp-ext/zipball/06a30d965a162b62645bbb7ec2122beec9d68eda",
-                "reference": "06a30d965a162b62645bbb7ec2122beec9d68eda",
+                "url": "https://api.github.com/repos/php-enqueue/amqp-ext/zipball/4bd7de628ae2ef00e6b63ed156e7cb0e68343ea2",
+                "reference": "4bd7de628ae2ef00e6b63ed156e7cb0e68343ea2",
                 "shasum": ""
             },
             "require": {
                 "enqueue/amqp-tools": "^0.8@dev",
-                "ext-amqp": "^1.9.1",
+                "ext-amqp": "^1.6",
                 "php": ">=5.6",
                 "queue-interop/amqp-interop": "^0.7@dev"
             },
@@ -787,7 +787,66 @@
                 "messaging",
                 "queue"
             ],
-            "time": "2017-10-12T11:26:29+00:00"
+            "time": "2017-10-13T21:03:34+00:00"
+        },
+        {
+            "name": "enqueue/amqp-lib",
+            "version": "0.8.x-dev",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-enqueue/amqp-lib.git",
+                "reference": "2ee378ac95c06b17574290d740c680937f1e9918"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-enqueue/amqp-lib/zipball/2ee378ac95c06b17574290d740c680937f1e9918",
+                "reference": "2ee378ac95c06b17574290d740c680937f1e9918",
+                "shasum": ""
+            },
+            "require": {
+                "enqueue/amqp-tools": "^0.8@dev",
+                "php": ">=5.6",
+                "php-amqplib/php-amqplib": "^2.7@dev",
+                "queue-interop/amqp-interop": "^0.7@dev",
+                "queue-interop/queue-interop": "^0.6@dev"
+            },
+            "require-dev": {
+                "enqueue/enqueue": "^0.8@dev",
+                "enqueue/null": "^0.8@dev",
+                "enqueue/test": "^0.8@dev",
+                "phpunit/phpunit": "~5.4.0",
+                "queue-interop/queue-spec": "^0.5.3@dev",
+                "symfony/config": "^2.8|^3",
+                "symfony/dependency-injection": "^2.8|^3"
+            },
+            "suggest": {
+                "enqueue/enqueue": "If you'd like to use advanced features like Client abstract layer or Symfony integration features"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.8.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Enqueue\\AmqpLib\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Message Queue Amqp Transport",
+            "keywords": [
+                "AMQP",
+                "messaging",
+                "queue"
+            ],
+            "time": "2017-10-13T21:03:34+00:00"
         },
         {
             "name": "enqueue/amqp-tools",
@@ -795,12 +854,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/amqp-tools.git",
-                "reference": "e3d7dd09b287a359c964eaab88ff728fec2f73c3"
+                "reference": "3a6b2eb1f9d00aa5d24171795061007588131c87"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/amqp-tools/zipball/e3d7dd09b287a359c964eaab88ff728fec2f73c3",
-                "reference": "e3d7dd09b287a359c964eaab88ff728fec2f73c3",
+                "url": "https://api.github.com/repos/php-enqueue/amqp-tools/zipball/3a6b2eb1f9d00aa5d24171795061007588131c87",
+                "reference": "3a6b2eb1f9d00aa5d24171795061007588131c87",
                 "shasum": ""
             },
             "require": {
@@ -837,7 +896,7 @@
                 "messaging",
                 "queue"
             ],
-            "time": "2017-10-11T07:32:25+00:00"
+            "time": "2017-10-17T11:44:42+00:00"
         },
         {
             "name": "enqueue/async-event-dispatcher",
@@ -904,12 +963,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/enqueue.git",
-                "reference": "3ba8ba6559884d54af599acbb1e592b1c071d295"
+                "reference": "a35d4036bcd5b25f2522b77a24a1f6dd2816f32f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/3ba8ba6559884d54af599acbb1e592b1c071d295",
-                "reference": "3ba8ba6559884d54af599acbb1e592b1c071d295",
+                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/a35d4036bcd5b25f2522b77a24a1f6dd2816f32f",
+                "reference": "a35d4036bcd5b25f2522b77a24a1f6dd2816f32f",
                 "shasum": ""
             },
             "require": {
@@ -981,7 +1040,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2017-10-11T11:56:31+00:00"
+            "time": "2017-10-17T11:44:42+00:00"
         },
         {
             "name": "enqueue/enqueue-bundle",
@@ -989,12 +1048,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/enqueue-bundle.git",
-                "reference": "55b54dac8dd42832a4a0e204d125b2793e3ff15a"
+                "reference": "5421a64a5b42dda50d1361c97af5be5160337874"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/enqueue-bundle/zipball/55b54dac8dd42832a4a0e204d125b2793e3ff15a",
-                "reference": "55b54dac8dd42832a4a0e204d125b2793e3ff15a",
+                "url": "https://api.github.com/repos/php-enqueue/enqueue-bundle/zipball/5421a64a5b42dda50d1361c97af5be5160337874",
+                "reference": "5421a64a5b42dda50d1361c97af5be5160337874",
                 "shasum": ""
             },
             "require": {
@@ -1047,7 +1106,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2017-10-03T13:12:28+00:00"
+            "time": "2017-10-17T11:44:42+00:00"
         },
         {
             "name": "enqueue/null",
@@ -1957,6 +2016,76 @@
             "time": "2017-09-27T21:40:39+00:00"
         },
         {
+            "name": "php-amqplib/php-amqplib",
+            "version": "v2.7.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-amqplib/php-amqplib.git",
+                "reference": "f48748546e398d846134c594dfca9070c4c3b356"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/f48748546e398d846134c594dfca9070c4c3b356",
+                "reference": "f48748546e398d846134c594dfca9070c4c3b356",
+                "shasum": ""
+            },
+            "require": {
+                "ext-bcmath": "*",
+                "ext-mbstring": "*",
+                "php": ">=5.3.0"
+            },
+            "replace": {
+                "videlalvaro/php-amqplib": "self.version"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8",
+                "scrutinizer/ocular": "^1.1",
+                "squizlabs/php_codesniffer": "^2.5"
+            },
+            "suggest": {
+                "ext-sockets": "Use AMQPSocketConnection"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.7-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhpAmqpLib\\": "PhpAmqpLib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-2.1"
+            ],
+            "authors": [
+                {
+                    "name": "Alvaro Videla",
+                    "role": "Original Maintainer"
+                },
+                {
+                    "name": "John Kelly",
+                    "email": "johnmkelly86@gmail.com",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Raúl Araya",
+                    "email": "nubeiro@gmail.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Formerly videlalvaro/php-amqplib.  This library is a pure PHP implementation of the AMQP protocol. It's been tested against RabbitMQ.",
+            "homepage": "https://github.com/php-amqplib/php-amqplib/",
+            "keywords": [
+                "message",
+                "queue",
+                "rabbitmq"
+            ],
+            "time": "2017-08-03T22:06:21+00:00"
+        },
+        {
             "name": "php-quartz/bridge",
             "version": "dev-master",
             "source": {
@@ -2398,12 +2527,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/queue-interop/queue-interop.git",
-                "reference": "12c808d02209fdbf4cba6e0fe17f4fbc2220cea2"
+                "reference": "7ba7a6ceca78f5b970f9588eeaba10a5fc3c40d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/queue-interop/queue-interop/zipball/12c808d02209fdbf4cba6e0fe17f4fbc2220cea2",
-                "reference": "12c808d02209fdbf4cba6e0fe17f4fbc2220cea2",
+                "url": "https://api.github.com/repos/queue-interop/queue-interop/zipball/7ba7a6ceca78f5b970f9588eeaba10a5fc3c40d6",
+                "reference": "7ba7a6ceca78f5b970f9588eeaba10a5fc3c40d6",
                 "shasum": ""
             },
             "require": {
@@ -2433,7 +2562,7 @@
                 "messaging",
                 "queue"
             ],
-            "time": "2017-09-08T07:07:18+00:00"
+            "time": "2017-10-17T11:37:11+00:00"
         },
         {
             "name": "ramsey/uuid",
@@ -2967,21 +3096,21 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v3.0.27",
+            "version": "v3.0.28",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "2651d2c70c5fec10beaa670c61fd8ff1e8b3869a"
+                "reference": "65eadf9e3fd5c47eee7986b306a5aed8affe6496"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/2651d2c70c5fec10beaa670c61fd8ff1e8b3869a",
-                "reference": "2651d2c70c5fec10beaa670c61fd8ff1e8b3869a",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/65eadf9e3fd5c47eee7986b306a5aed8affe6496",
+                "reference": "65eadf9e3fd5c47eee7986b306a5aed8affe6496",
                 "shasum": ""
             },
             "require": {
                 "doctrine/common": "~2.2",
-                "symfony/dependency-injection": "~2.3|~3.0|~4.0",
+                "symfony/dependency-injection": "~2.3|~3.0",
                 "symfony/framework-bundle": "~2.3|~3.0|~4.0"
             },
             "require-dev": {
@@ -3033,7 +3162,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2017-08-23T12:40:59+00:00"
+            "time": "2017-10-12T17:37:20+00:00"
         },
         {
             "name": "symfony/cache",
@@ -3687,16 +3816,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.0.29",
+            "version": "v1.0.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "c7fdacdc84f673f48ca52cb56602c027a3213fb3"
+                "reference": "9d5bd8866c4e603ecab4d34dfb7b55933a16fb36"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/c7fdacdc84f673f48ca52cb56602c027a3213fb3",
-                "reference": "c7fdacdc84f673f48ca52cb56602c027a3213fb3",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/9d5bd8866c4e603ecab4d34dfb7b55933a16fb36",
+                "reference": "9d5bd8866c4e603ecab4d34dfb7b55933a16fb36",
                 "shasum": ""
             },
             "require": {
@@ -3729,7 +3858,7 @@
                     "email": "fabien.potencier@gmail.com"
                 }
             ],
-            "time": "2017-10-07T15:35:19+00:00"
+            "time": "2017-10-16T23:06:15+00:00"
         },
         {
             "name": "symfony/framework-bundle",
@@ -4042,16 +4171,16 @@
         },
         {
             "name": "symfony/polyfill-apcu",
-            "version": "v1.5.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-apcu.git",
-                "reference": "cec32398a973a9bfe9d2f94f4b5d5e186b40b698"
+                "reference": "04f62674339602def515bff4bc6901fc1d4951e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-apcu/zipball/cec32398a973a9bfe9d2f94f4b5d5e186b40b698",
-                "reference": "cec32398a973a9bfe9d2f94f4b5d5e186b40b698",
+                "url": "https://api.github.com/repos/symfony/polyfill-apcu/zipball/04f62674339602def515bff4bc6901fc1d4951e8",
+                "reference": "04f62674339602def515bff4bc6901fc1d4951e8",
                 "shasum": ""
             },
             "require": {
@@ -4060,10 +4189,13 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Apcu\\": ""
+                },
                 "files": [
                     "bootstrap.php"
                 ]
@@ -4091,20 +4223,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-07-05T15:09:33+00:00"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.5.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "7c8fae0ac1d216eb54349e6a8baa57d515fe8803"
+                "reference": "2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/7c8fae0ac1d216eb54349e6a8baa57d515fe8803",
-                "reference": "7c8fae0ac1d216eb54349e6a8baa57d515fe8803",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296",
+                "reference": "2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296",
                 "shasum": ""
             },
             "require": {
@@ -4116,7 +4248,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -4150,20 +4282,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-14T15:44:48+00:00"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/polyfill-php56",
-            "version": "v1.5.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php56.git",
-                "reference": "e85ebdef569b84e8709864e1a290c40f156b30ca"
+                "reference": "265fc96795492430762c29be291a371494ba3a5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php56/zipball/e85ebdef569b84e8709864e1a290c40f156b30ca",
-                "reference": "e85ebdef569b84e8709864e1a290c40f156b30ca",
+                "url": "https://api.github.com/repos/symfony/polyfill-php56/zipball/265fc96795492430762c29be291a371494ba3a5b",
+                "reference": "265fc96795492430762c29be291a371494ba3a5b",
                 "shasum": ""
             },
             "require": {
@@ -4173,7 +4305,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -4206,20 +4338,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-14T15:44:48+00:00"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/polyfill-php70",
-            "version": "v1.5.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php70.git",
-                "reference": "b6482e68974486984f59449ecea1fbbb22ff840f"
+                "reference": "0442b9c0596610bd24ae7b5f0a6cdbbc16d9fcff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php70/zipball/b6482e68974486984f59449ecea1fbbb22ff840f",
-                "reference": "b6482e68974486984f59449ecea1fbbb22ff840f",
+                "url": "https://api.github.com/repos/symfony/polyfill-php70/zipball/0442b9c0596610bd24ae7b5f0a6cdbbc16d9fcff",
+                "reference": "0442b9c0596610bd24ae7b5f0a6cdbbc16d9fcff",
                 "shasum": ""
             },
             "require": {
@@ -4229,7 +4361,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -4265,20 +4397,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-06-14T15:44:48+00:00"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/polyfill-util",
-            "version": "v1.5.0",
+            "version": "v1.6.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-util.git",
-                "reference": "67925d1cf0b84bd234a83bebf26d4eb281744c6d"
+                "reference": "6e719200c8e540e0c0effeb31f96bdb344b94176"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-util/zipball/67925d1cf0b84bd234a83bebf26d4eb281744c6d",
-                "reference": "67925d1cf0b84bd234a83bebf26d4eb281744c6d",
+                "url": "https://api.github.com/repos/symfony/polyfill-util/zipball/6e719200c8e540e0c0effeb31f96bdb344b94176",
+                "reference": "6e719200c8e540e0c0effeb31f96bdb344b94176",
                 "shasum": ""
             },
             "require": {
@@ -4287,7 +4419,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.5-dev"
+                    "dev-master": "1.6-dev"
                 }
             },
             "autoload": {
@@ -4317,7 +4449,7 @@
                 "polyfill",
                 "shim"
             ],
-            "time": "2017-07-05T15:09:33+00:00"
+            "time": "2017-10-11T12:05:26+00:00"
         },
         {
             "name": "symfony/process",
@@ -5501,8 +5633,9 @@
     "stability-flags": {
         "cboden/ratchet": 20,
         "comrade/shared": 20,
-        "enqueue/amqp-bunny": 20,
         "enqueue/amqp-ext": 20,
+        "enqueue/amqp-lib": 20,
+        "enqueue/amqp-bunny": 20,
         "enqueue/enqueue": 20,
         "enqueue/amqp-tools": 20,
         "enqueue/async-event-dispatcher": 20,
