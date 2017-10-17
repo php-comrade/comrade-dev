@@ -60,6 +60,7 @@ services:
       - 'rabbitmq'
       - 'mongo'
       - 'jmw'
+      - 'jmdh'
     volumes:
       - './apps/jm:/jobs_dev/apps/jm:cached'
       - './pkg/php-shared:/jobs_dev/apps/jm/vendor/comrade/shared:cached'

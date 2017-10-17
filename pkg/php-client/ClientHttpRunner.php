@@ -34,12 +34,11 @@ class ClientHttpRunner
             $metrics = CollectMetrics::start();
 
             $result = call_user_func($worker, $runJob);
-
             if (is_string($result)) {
                 $result = RunnerResult::createFor($runJob, $result);
             }
 
-            if (false == $result instanceof  RunnerResult) {
+            if (false == $result instanceof RunnerResult) {
                 throw new \LogicException(sprintf('The worker must return instance of "%s" or action (string)', RunnerResult::class));
             }
 
@@ -56,8 +55,8 @@ class ClientHttpRunner
         }
     }
 
-    private function sendResult(\Comrade\Shared\Message\JobResult $jobResultMessage): ResponseInterface
+    private function sendResult(RunnerResult $runnerResult): ResponseInterface
     {
-        return new Response(200, ['Content-Type' => 'application/json'], JSON::encode($jobResultMessage));
+        return new Response(200, ['Content-Type' => 'application/json'], JSON::encode($runnerResult));
     }
 }

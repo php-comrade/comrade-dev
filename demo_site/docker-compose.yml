@@ -17,6 +17,7 @@ services:
       - 'rabbitmq'
       - 'mongo'
       - 'jms'
+      - 'jmdh'
     env_file: '/.env'
     deploy:
       replicas: 2
@@ -64,6 +65,17 @@ services:
     env_file: '/.env'
     deploy:
       replicas: 2
+
+  jmdh:
+    image: 'formapro/comrade-demo:latest'
+    entrypoint: "php -S 0.0.0.0:80 http_demo.php"
+    expose:
+      - '80'
+    depends_on:
+      - 'jm'
+    env_file: '/.env'
+    deploy:
+      mode: 'global'
 
   seeds:
     image: 'formapro/comrade:latest'

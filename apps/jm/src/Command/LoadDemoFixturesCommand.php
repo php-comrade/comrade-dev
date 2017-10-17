@@ -193,7 +193,7 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $template->setName('demo_http_runner_job');
         $template->setTemplateId(Uuid::generate());
 
-        $runner = HttpRunner::createFor('http://jmd/demo_success_job');
+        $runner = HttpRunner::createFor('http://jmdh/demo_success_job');
         $template->setRunner($runner);
 
         $policy = GracePeriodPolicy::create();
