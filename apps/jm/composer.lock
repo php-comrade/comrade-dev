@@ -173,12 +173,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-comrade/php-shared.git",
-                "reference": "706a518fa37779979d97524f60d3a7a453addaec"
+                "reference": "e1155f8b3ac25a30fad4c19fa151b21cb127a301"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-comrade/php-shared/zipball/706a518fa37779979d97524f60d3a7a453addaec",
-                "reference": "706a518fa37779979d97524f60d3a7a453addaec",
+                "url": "https://api.github.com/repos/php-comrade/php-shared/zipball/e1155f8b3ac25a30fad4c19fa151b21cb127a301",
+                "reference": "e1155f8b3ac25a30fad4c19fa151b21cb127a301",
                 "shasum": ""
             },
             "require": {
@@ -207,7 +207,7 @@
                 "message",
                 "model"
             ],
-            "time": "2017-10-07T13:57:16+00:00"
+            "time": "2017-10-17T14:47:29+00:00"
         },
         {
             "name": "doctrine/annotations",
