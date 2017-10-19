@@ -46,4 +46,13 @@ export class ToastyService {
       this.toastyService.error(toastOptions);
     }
   }
+
+  apiBaseUrlInvalid(apiBaseUrl: string): void {
+    const toastOptions:ToastOptions = {
+      title: `API URL is invalid`,
+      msg: `"${apiBaseUrl}" is out of work or invalid`
+    };
+
+    this.toastyService.error(toastOptions);
+  }
 }

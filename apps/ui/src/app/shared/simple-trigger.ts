@@ -2,7 +2,7 @@ import {Trigger} from "./trigger";
 import {Date} from "./date";
 
 export class SimpleTrigger extends Trigger {
-    schema: string = 'http://jm.forma-pro.com/schemas/trigger/SimpleTrigger.json';
+    schema: string = 'http://comrade.forma-pro.com/schemas/trigger/SimpleTrigger.json';
     startAt: Date;
     intervalInSeconds: number;
     repeatCount: number;

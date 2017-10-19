@@ -1,7 +1,7 @@
 {
   "$schema": "http://json-schema.org/schema#",
   "_description": "The patter is taken from https://mathiasbynens.be/demo/url-regex. @diegoperini version",
-  "id": "http://jm.forma-pro.com/schemas/url.json",
+  "id": "http://comrade.forma-pro.com/schemas/url.json",
   "type": "string",
   "pattern": "(https?://([-\\w\\.]+)+(:\\d+)?(/([\\w/_\\.]*(\\?\\S+)?)?)?)"
 }

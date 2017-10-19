@@ -7,7 +7,7 @@ use function Makasim\Values\set_value;
 
 class JobResultMetrics
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/JobResultMetrics.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/JobResultMetrics.json';
 
     use CreateTrait;
 

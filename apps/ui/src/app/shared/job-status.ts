@@ -1,5 +1,5 @@
 export class JobStatus {
-  schema: string = "http://jm.forma-pro.com/schemas/JobStatus.json";
+  schema: string = "http://comrade.forma-pro.com/schemas/JobStatus.json";
 
   public static NEW = 'new';
 

@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema#",
-  "id": "http://jm.forma-pro.com/schemas/policy/GracePeriodPolicy.json",
+  "id": "http://comrade.forma-pro.com/schemas/policy/GracePeriodPolicy.json",
   "type": "object",
   "properties": {
     "period": { "type": "integer" }

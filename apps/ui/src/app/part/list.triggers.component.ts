@@ -11,11 +11,11 @@ export class ListTriggersComponent {
     @Output() onRemoveTrigger = new EventEmitter<Trigger>();
 
     isCronTrigger(trigger: Trigger): boolean {
-        return trigger.schema == 'http://jm.forma-pro.com/schemas/trigger/CronTrigger.json';
+        return trigger.schema == 'http://comrade.forma-pro.com/schemas/trigger/CronTrigger.json';
     }
 
     isSimpleTrigger(trigger: Trigger): boolean {
-        return trigger.schema == 'http://jm.forma-pro.com/schemas/trigger/SimpleTrigger.json';
+        return trigger.schema == 'http://comrade.forma-pro.com/schemas/trigger/SimpleTrigger.json';
     }
 
     removeTrigger(trigger: Trigger) {

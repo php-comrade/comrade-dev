@@ -1,7 +1,7 @@
 import {Moment} from "moment/moment";
 
 export class Date {
-    schema: string = 'http://jm.forma-pro.com/schemas/date.json';
+    schema: string = 'http://comrade.forma-pro.com/schemas/date.json';
     unix: number;
     iso: string;
 

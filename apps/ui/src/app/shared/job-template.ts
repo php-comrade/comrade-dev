@@ -8,7 +8,7 @@ import {RunSubJobsPolicy} from "./run-sub-jobs-policy";
 import {SubJobPolicy} from "./sub-job-policy";
 
 export class JobTemplate {
-    schema: string = "http://jm.forma-pro.com/schemas/JobTemplate.json";
+    schema: string = "http://comrade.forma-pro.com/schemas/JobTemplate.json";
     name: string;
     templateId: string;
     createdAt: Date;

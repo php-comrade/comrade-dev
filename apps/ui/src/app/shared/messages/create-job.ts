@@ -2,7 +2,7 @@ import {JobTemplate} from "../job-template";
 import {Trigger} from "../trigger";
 
 export class CreateJob {
-    public schema: string = 'http://jm.forma-pro.com/schemas/message/CreateJob.json';
+    public schema: string = 'http://comrade.forma-pro.com/schemas/message/CreateJob.json';
 
     triggers: Trigger[] = [];
 

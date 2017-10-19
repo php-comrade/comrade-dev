@@ -11,7 +11,7 @@ use function Makasim\Values\set_value;
 
 class RunJob implements \JsonSerializable
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/message/RunJob.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/message/RunJob.json';
 
     use CreateTrait;
 

@@ -6,7 +6,7 @@ use function Makasim\Values\set_value;
 
 class NowTrigger extends Trigger
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/trigger/NowTrigger.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/trigger/NowTrigger.json';
 
     use CreateTrait;
 

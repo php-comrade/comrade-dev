@@ -9,7 +9,7 @@ use Makasim\Values\ValuesTrait;
 
 class JobMetrics
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/JobMetrics.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/JobMetrics.json';
 
     use CreateTrait;
     use CastTrait;

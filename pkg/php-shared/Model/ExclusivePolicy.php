@@ -8,7 +8,7 @@ class ExclusivePolicy implements Policy
 {
     use CreateTrait;
 
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/policy/ExclusivePolicy.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/policy/ExclusivePolicy.json';
 
     const MARK_JOB_AS_CANCELED = 'mark_job_as_canceled';
 

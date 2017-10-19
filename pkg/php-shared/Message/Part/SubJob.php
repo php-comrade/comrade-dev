@@ -7,7 +7,7 @@ use function Makasim\Values\set_value;
 
 class SubJob
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/message/part/SubJob.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/message/part/SubJob.json';
 
     use CreateTrait;
 

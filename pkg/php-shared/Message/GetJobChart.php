@@ -9,7 +9,7 @@ use function Makasim\Values\set_value;
 
 class GetJobChart implements \JsonSerializable
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/message/GetJobChart.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/message/GetJobChart.json';
 
     use CreateTrait;
     use CastTrait;

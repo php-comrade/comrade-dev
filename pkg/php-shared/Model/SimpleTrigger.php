@@ -7,7 +7,7 @@ use function Makasim\Values\set_value;
 
 class SimpleTrigger extends Trigger
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/trigger/SimpleTrigger.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/trigger/SimpleTrigger.json';
 
     use CreateTrait;
     use CastTrait;

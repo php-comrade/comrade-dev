@@ -6,7 +6,7 @@ use function Makasim\Values\set_value;
 
 abstract class Trigger
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/trigger/Trigger.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/trigger/Trigger.json';
 
     /**
      * @var array

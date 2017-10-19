@@ -10,7 +10,7 @@ use function Makasim\Values\set_value;
 
 class JobResult
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/JobResult.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/JobResult.json';
 
     use CreateTrait;
     use CastTrait;

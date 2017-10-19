@@ -19,11 +19,11 @@ export class RunnerListComponent {
     @Output() onRemoveRunner = new EventEmitter<Runner>();
 
     isQueueRunner(runner: Runner): boolean {
-        return runner.schema == 'http://jm.forma-pro.com/schemas/runner/QueueRunner.json';
+        return runner.schema == 'http://comrade.forma-pro.com/schemas/runner/QueueRunner.json';
     }
 
     isHttpRunner(runner: Runner): boolean {
-      return runner.schema == 'http://jm.forma-pro.com/schemas/runner/HttpRunner.json';
+      return runner.schema == 'http://comrade.forma-pro.com/schemas/runner/HttpRunner.json';
     }
 
     remove(runner: Runner) {

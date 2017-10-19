@@ -7,7 +7,7 @@ use function Makasim\Values\set_value;
 
 class CronTrigger extends Trigger
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/trigger/CronTrigger.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/trigger/CronTrigger.json';
 
     const MISFIRE_INSTRUCTION_FIRE_ONCE_NOW = 'fire_once_now';
 

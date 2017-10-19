@@ -6,7 +6,7 @@ use function Makasim\Values\set_value;
 
 class QueueRunner implements Runner
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/runner/QueueRunner.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/runner/QueueRunner.json';
 
     use CreateTrait;
 

@@ -8,7 +8,7 @@ class GracePeriodPolicy implements Policy
 {
     use CreateTrait;
 
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/policy/GracePeriodPolicy.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/policy/GracePeriodPolicy.json';
 
     protected $values = [];
 

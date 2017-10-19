@@ -1,5 +1,5 @@
 export class JobResultMetrics {
-  schema: string = "http://jm.forma-pro.com/schemas/JobResultMetrics.json";
+  schema: string = "http://comrade.forma-pro.com/schemas/JobResultMetrics.json";
   startTime: number;
   stopTime: number;
   duration: number;

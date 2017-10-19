@@ -6,7 +6,7 @@ use function Makasim\Values\set_value;
 
 class SubJobTrigger extends Trigger
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/trigger/SubJobTrigger.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/trigger/SubJobTrigger.json';
 
     use CreateTrait;
 

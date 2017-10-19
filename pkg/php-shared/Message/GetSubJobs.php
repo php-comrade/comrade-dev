@@ -8,7 +8,7 @@ use function Makasim\Values\set_value;
 
 class GetSubJobs implements \JsonSerializable
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/message/GetSubJobs.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/message/GetSubJobs.json';
 
     use CreateTrait;
 

@@ -8,7 +8,7 @@ class RunSubJobsPolicy implements Policy
 {
     use CreateTrait;
 
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/policy/RunSubJobsPolicy.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/policy/RunSubJobsPolicy.json';
 
     const MARK_JOB_AS_FAILED = 'mark_job_as_failed';
 

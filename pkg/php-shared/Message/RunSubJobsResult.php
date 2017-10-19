@@ -10,7 +10,7 @@ use function Makasim\Values\set_value;
 
 class RunSubJobsResult extends JobResult
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/message/RunSubJobsResult.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/message/RunSubJobsResult.json';
 
     /**
      * @return JobTemplate[]|\Traversable

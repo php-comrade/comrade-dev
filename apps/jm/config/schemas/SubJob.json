@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/schema#",
-  "id": "http://jm.forma-pro.com/schemas/SubJob.json",
+  "id": "http://comrade.forma-pro.com/schemas/SubJob.json",
   "type": "object",
   "allOf": [
     { "$ref": "Job.json" },

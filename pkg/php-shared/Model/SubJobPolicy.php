@@ -8,7 +8,7 @@ class SubJobPolicy implements Policy
 {
     use CreateTrait;
 
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/policy/SubJobPolicy.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/policy/SubJobPolicy.json';
 
     protected $values = [];
 

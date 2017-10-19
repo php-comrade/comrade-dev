@@ -8,7 +8,7 @@ class RetryFailedPolicy implements Policy
 {
     use CreateTrait;
 
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/policy/RetryFailedPolicy.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/policy/RetryFailedPolicy.json';
 
     protected $values = [];
 

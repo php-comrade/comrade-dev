@@ -1,5 +1,5 @@
 export class JobResultError {
-    schema: string = 'http://jm.forma-pro.com/schemas/throwable.json;';
+    schema: string = 'http://comrade.forma-pro.com/schemas/throwable.json;';
     raw: string;
     message: string;
     code: number;

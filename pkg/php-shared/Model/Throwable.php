@@ -7,7 +7,7 @@ use function Makasim\Values\get_value;
 
 class Throwable
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/throwable.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/throwable.json';
 
     use CreateTrait;
 

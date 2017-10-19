@@ -11,7 +11,7 @@ use function Makasim\Values\set_value;
 
 class JobTemplate
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/JobTemplate.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/JobTemplate.json';
 
     use CreateTrait;
     use CastTrait;

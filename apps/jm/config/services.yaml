@@ -55,7 +55,7 @@ services:
         autowire: false
         arguments:
             - '%kernel.root_dir%/../config/schemas'
-            - 'http://jm.forma-pro.com/schemas'
+            - 'http://comrade.forma-pro.com/schemas'
 
     JsonSchema\Uri\UriRetriever:
         autowire: false

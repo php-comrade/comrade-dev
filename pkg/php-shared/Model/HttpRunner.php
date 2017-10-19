@@ -6,7 +6,7 @@ use function Makasim\Values\set_value;
 
 class HttpRunner implements Runner
 {
-    const SCHEMA = 'http://jm.forma-pro.com/schemas/runner/HttpRunner.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/runner/HttpRunner.json';
 
     use CreateTrait;
 
