@@ -5,12 +5,7 @@
         "php": "^7.1",
         "comrade/shared": "*@dev",
         "comrade/client": "*@dev",
-        "enqueue/amqp-ext": "^0.8@dev",
-        "enqueue/amqp-lib": "^0.8@dev",
-        "enqueue/amqp-bunny": "^0.8@dev",
-        "enqueue/amqp-tools": "^0.8@dev",
-        "enqueue/null": "^0.8@dev",
-        "enqueue/enqueue": "^0.8@dev",
+        "enqueue/amqp-bunny": "^0.8",
         "symfony/process": "^3.3",
         "symfony/console": "^3.3"
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "e49b12ca95eda033d8e57ef7dad0aef2",
+    "content-hash": "0b6a701b6c9a205ab9339eb9101d341a",
     "packages": [
         {
             "name": "bunny/bunny",
@@ -673,16 +673,16 @@
         },
         {
             "name": "enqueue/amqp-bunny",
-            "version": "0.8.x-dev",
+            "version": "0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/amqp-bunny.git",
-                "reference": "a7a19663e1ddca77e96e306a4402a6bd7b0e7b52"
+                "reference": "70d0e792770544be29c4d0a2e79587943e4a975c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/amqp-bunny/zipball/a7a19663e1ddca77e96e306a4402a6bd7b0e7b52",
-                "reference": "a7a19663e1ddca77e96e306a4402a6bd7b0e7b52",
+                "url": "https://api.github.com/repos/php-enqueue/amqp-bunny/zipball/70d0e792770544be29c4d0a2e79587943e4a975c",
+                "reference": "70d0e792770544be29c4d0a2e79587943e4a975c",
                 "shasum": ""
             },
             "require": {
@@ -728,129 +728,11 @@
                 "messaging",
                 "queue"
             ],
-            "time": "2017-10-14T17:15:08+00:00"
-        },
-        {
-            "name": "enqueue/amqp-ext",
-            "version": "0.8.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-enqueue/amqp-ext.git",
-                "reference": "4bd7de628ae2ef00e6b63ed156e7cb0e68343ea2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/amqp-ext/zipball/4bd7de628ae2ef00e6b63ed156e7cb0e68343ea2",
-                "reference": "4bd7de628ae2ef00e6b63ed156e7cb0e68343ea2",
-                "shasum": ""
-            },
-            "require": {
-                "enqueue/amqp-tools": "^0.8@dev",
-                "ext-amqp": "^1.6",
-                "php": ">=5.6",
-                "queue-interop/amqp-interop": "^0.7@dev"
-            },
-            "require-dev": {
-                "empi89/php-amqp-stubs": "*@dev",
-                "enqueue/enqueue": "^0.8@dev",
-                "enqueue/null": "^0.8@dev",
-                "enqueue/test": "^0.8@dev",
-                "phpunit/phpunit": "~5.4.0",
-                "queue-interop/queue-spec": "^0.5.3@dev",
-                "symfony/config": "^2.8|^3",
-                "symfony/dependency-injection": "^2.8|^3"
-            },
-            "suggest": {
-                "enqueue/enqueue": "If you'd like to use advanced features like Client abstract layer or Symfony integration features"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.8.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Enqueue\\AmqpExt\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Message Queue Amqp Transport",
-            "keywords": [
-                "AMQP",
-                "messaging",
-                "queue"
-            ],
-            "time": "2017-10-13T21:03:34+00:00"
-        },
-        {
-            "name": "enqueue/amqp-lib",
-            "version": "0.8.x-dev",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-enqueue/amqp-lib.git",
-                "reference": "2ee378ac95c06b17574290d740c680937f1e9918"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/amqp-lib/zipball/2ee378ac95c06b17574290d740c680937f1e9918",
-                "reference": "2ee378ac95c06b17574290d740c680937f1e9918",
-                "shasum": ""
-            },
-            "require": {
-                "enqueue/amqp-tools": "^0.8@dev",
-                "php": ">=5.6",
-                "php-amqplib/php-amqplib": "^2.7@dev",
-                "queue-interop/amqp-interop": "^0.7@dev",
-                "queue-interop/queue-interop": "^0.6@dev"
-            },
-            "require-dev": {
-                "enqueue/enqueue": "^0.8@dev",
-                "enqueue/null": "^0.8@dev",
-                "enqueue/test": "^0.8@dev",
-                "phpunit/phpunit": "~5.4.0",
-                "queue-interop/queue-spec": "^0.5.3@dev",
-                "symfony/config": "^2.8|^3",
-                "symfony/dependency-injection": "^2.8|^3"
-            },
-            "suggest": {
-                "enqueue/enqueue": "If you'd like to use advanced features like Client abstract layer or Symfony integration features"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.8.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Enqueue\\AmqpLib\\": ""
-                },
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Message Queue Amqp Transport",
-            "keywords": [
-                "AMQP",
-                "messaging",
-                "queue"
-            ],
-            "time": "2017-10-13T21:03:34+00:00"
+            "time": "2017-10-18T14:35:03+00:00"
         },
         {
             "name": "enqueue/amqp-tools",
-            "version": "0.8.x-dev",
+            "version": "0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/amqp-tools.git",
@@ -900,7 +782,7 @@
         },
         {
             "name": "enqueue/async-event-dispatcher",
-            "version": "0.8.x-dev",
+            "version": "0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/async-event-dispatcher.git",
@@ -959,16 +841,16 @@
         },
         {
             "name": "enqueue/enqueue",
-            "version": "0.8.x-dev",
+            "version": "0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/enqueue.git",
-                "reference": "a35d4036bcd5b25f2522b77a24a1f6dd2816f32f"
+                "reference": "bddd869210e8fea982eb6f5b6dd5b3130c6eed8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/a35d4036bcd5b25f2522b77a24a1f6dd2816f32f",
-                "reference": "a35d4036bcd5b25f2522b77a24a1f6dd2816f32f",
+                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/bddd869210e8fea982eb6f5b6dd5b3130c6eed8d",
+                "reference": "bddd869210e8fea982eb6f5b6dd5b3130c6eed8d",
                 "shasum": ""
             },
             "require": {
@@ -1040,11 +922,11 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2017-10-17T11:44:42+00:00"
+            "time": "2017-10-19T09:28:50+00:00"
         },
         {
             "name": "enqueue/enqueue-bundle",
-            "version": "0.8.x-dev",
+            "version": "0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/enqueue-bundle.git",
@@ -1110,7 +992,7 @@
         },
         {
             "name": "enqueue/null",
-            "version": "0.8.x-dev",
+            "version": "0.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/null.git",
@@ -2014,76 +1896,6 @@
                 "random"
             ],
             "time": "2017-09-27T21:40:39+00:00"
-        },
-        {
-            "name": "php-amqplib/php-amqplib",
-            "version": "v2.7.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/php-amqplib/php-amqplib.git",
-                "reference": "f48748546e398d846134c594dfca9070c4c3b356"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/php-amqplib/php-amqplib/zipball/f48748546e398d846134c594dfca9070c4c3b356",
-                "reference": "f48748546e398d846134c594dfca9070c4c3b356",
-                "shasum": ""
-            },
-            "require": {
-                "ext-bcmath": "*",
-                "ext-mbstring": "*",
-                "php": ">=5.3.0"
-            },
-            "replace": {
-                "videlalvaro/php-amqplib": "self.version"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^4.8",
-                "scrutinizer/ocular": "^1.1",
-                "squizlabs/php_codesniffer": "^2.5"
-            },
-            "suggest": {
-                "ext-sockets": "Use AMQPSocketConnection"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.7-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "PhpAmqpLib\\": "PhpAmqpLib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "LGPL-2.1"
-            ],
-            "authors": [
-                {
-                    "name": "Alvaro Videla",
-                    "role": "Original Maintainer"
-                },
-                {
-                    "name": "John Kelly",
-                    "email": "johnmkelly86@gmail.com",
-                    "role": "Maintainer"
-                },
-                {
-                    "name": "Raúl Araya",
-                    "email": "nubeiro@gmail.com",
-                    "role": "Maintainer"
-                }
-            ],
-            "description": "Formerly videlalvaro/php-amqplib.  This library is a pure PHP implementation of the AMQP protocol. It's been tested against RabbitMQ.",
-            "homepage": "https://github.com/php-amqplib/php-amqplib/",
-            "keywords": [
-                "message",
-                "queue",
-                "rabbitmq"
-            ],
-            "time": "2017-08-03T22:06:21+00:00"
         },
         {
             "name": "php-quartz/bridge",
@@ -3816,16 +3628,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.0.30",
+            "version": "v1.0.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "9d5bd8866c4e603ecab4d34dfb7b55933a16fb36"
+                "reference": "7a2141630c5f8cabcd9e5201ef3db90a17d979dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/9d5bd8866c4e603ecab4d34dfb7b55933a16fb36",
-                "reference": "9d5bd8866c4e603ecab4d34dfb7b55933a16fb36",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/7a2141630c5f8cabcd9e5201ef3db90a17d979dc",
+                "reference": "7a2141630c5f8cabcd9e5201ef3db90a17d979dc",
                 "shasum": ""
             },
             "require": {
@@ -3858,7 +3670,7 @@
                     "email": "fabien.potencier@gmail.com"
                 }
             ],
-            "time": "2017-10-16T23:06:15+00:00"
+            "time": "2017-10-18T20:36:42+00:00"
         },
         {
             "name": "symfony/framework-bundle",
@@ -5633,13 +5445,6 @@
     "stability-flags": {
         "cboden/ratchet": 20,
         "comrade/shared": 20,
-        "enqueue/amqp-ext": 20,
-        "enqueue/amqp-lib": 20,
-        "enqueue/amqp-bunny": 20,
-        "enqueue/enqueue": 20,
-        "enqueue/amqp-tools": 20,
-        "enqueue/async-event-dispatcher": 20,
-        "enqueue/enqueue-bundle": 20,
         "formapro/pvm": 20,
         "makasim/values": 20,
         "makasim/yadm": 20,
@@ -5651,8 +5456,7 @@
         "symfony/config": 20,
         "thruway/pawl-transport": 20,
         "thruway/ratchet-transport": 20,
-        "voryx/thruway": 20,
-        "enqueue/null": 20
+        "voryx/thruway": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

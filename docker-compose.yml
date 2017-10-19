@@ -12,7 +12,6 @@ services:
     volumes:
       - './apps/jm:/jobs_dev/apps/jm:cached'
       - './pkg/php-shared:/jobs_dev/apps/jm/vendor/comrade/shared:cached'
-      - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
     env_file: 'apps/jm/.env'
     environment:
       - VIRTUAL_HOST=jm.loc
@@ -32,7 +31,6 @@ services:
     volumes:
       - './apps/jm:/jobs_dev/apps/jm:cached'
       - './pkg/php-shared:/jobs_dev/apps/jm/vendor/comrade/shared:cached'
-      - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
     env_file: 'apps/jm/.env'
 
   jmw:
@@ -46,7 +44,6 @@ services:
     volumes:
       - './apps/jm:/jobs_dev/apps/jm:cached'
       - './pkg/php-shared:/jobs_dev/apps/jm/vendor/comrade/shared:cached'
-      - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
     env_file: 'apps/jm/.env'
     ports:
       - '9090:9090'
@@ -64,7 +61,6 @@ services:
     volumes:
       - './apps/jm:/jobs_dev/apps/jm:cached'
       - './pkg/php-shared:/jobs_dev/apps/jm/vendor/comrade/shared:cached'
-      - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
     env_file: 'apps/jm/.env'
 
   jmqr:
@@ -78,7 +74,6 @@ services:
     volumes:
       - './apps/jm:/jobs_dev/apps/jm:cached'
       - './pkg/php-shared:/jobs_dev/apps/jm/vendor/comrade/shared:cached'
-      - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
     env_file: 'apps/jm/.env'
 
   jmdq:
@@ -92,7 +87,6 @@ services:
       - './apps/demo:/jobs_dev/apps/demo:cached'
       - './pkg/php-shared:/jobs_dev/apps/demo/vendor/comrade/shared:cached'
       - './pkg/php-client:/jobs_dev/apps/demo/vendor/comrade/client:cached'
-      - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
     env_file: 'apps/jm/.env'
 
   jmdh:
@@ -104,7 +98,6 @@ services:
       - './apps/demo:/jobs_dev/apps/demo:cached'
       - './pkg/php-shared:/jobs_dev/apps/demo/vendor/comrade/shared:cached'
       - './pkg/php-client:/jobs_dev/apps/demo/vendor/comrade/client:cached'
-      - './shared/amqp.so:/usr/lib/php/20160303/amqp.so'
     expose:
       - '80'
     environment:
