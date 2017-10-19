@@ -4,7 +4,7 @@ import 'rxjs/add/operator/filter';
 import {HttpService} from "../shared/http.service";
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/observable/of';
-import {Router} from "@angular/router";
+import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 
 @Component({
   selector: 'api-base-url',
@@ -41,15 +41,24 @@ export class ApiBaseUrlComponent implements OnInit {
 
     serverInfo: any;
 
-    constructor(private httpService: HttpService, private router: Router) {}
+    constructor(private httpService: HttpService, private router: Router, private route: ActivatedRoute) {}
 
     ngOnInit(): void {
-        const apiBaseUrl = this.httpService.getApiBaseUrl();
-        if (typeof apiBaseUrl !== 'undefined') {
-          this.apiBaseUrl = apiBaseUrl;
-        }
+      let apiBaseUrl = this.httpService.getApiBaseUrl();
+      if (typeof apiBaseUrl !== 'undefined') {
+        this.apiBaseUrl = apiBaseUrl;
+      }
 
-        this.testBaseUrl(this.apiBaseUrl);
+      this.testBaseUrl(this.apiBaseUrl);
+
+      this.route.queryParamMap.take(1).subscribe((params: ParamMap) => {
+        let apiBaseUrl = params.get('apiBaseUrl');
+        if (apiBaseUrl) {
+          this.apiBaseUrl = apiBaseUrl;
+
+          this.testBaseUrl(apiBaseUrl);
+        }
+      });
     }
 
     resetResult(): void {

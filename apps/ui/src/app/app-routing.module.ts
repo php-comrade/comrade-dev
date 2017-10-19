@@ -10,7 +10,6 @@ import {LateServerErrorsComponent} from "./page/late-server-errors.component";
 import {ApiBaseUrlComponent} from "./page/api-base-url.component";
 import {ApiGuard} from "./shared/api.guard";
 import {LandingComponent} from "./page/landing.component";
-import {ApiForceUrlComponent} from "./page/api-force-url.component";
 
 const routes: Routes = [
     { path: '', component: LandingComponent, canActivate: [ApiGuard] },
@@ -23,7 +22,6 @@ const routes: Routes = [
     { path: 'job/:id/view/:tab', component: JobViewComponent, canActivate: [ApiGuard] },
     { path: 'errors/late', component: LateServerErrorsComponent, canActivate: [ApiGuard] },
     { path: 'settings/base-url', component: ApiBaseUrlComponent },
-    { path: 'settings/force-url', component: ApiForceUrlComponent },
 ];
 
 @NgModule({

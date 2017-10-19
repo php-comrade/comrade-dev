@@ -61,7 +61,6 @@ import {PolicyNewSubJobComponent} from "./part/policy-new-sub-job.component";
 import {PolicyShowSubJobComponent} from "./part/policy-show-sub-job.component";
 import {JobStateGraphComponent} from "./part/job-state-graph.component";
 import {JobExecutionTabComponent} from "./part/job-execution-tab.component";
-import {ApiForceUrlComponent} from "./page/api-force-url.component";
 import {TemplateTriggersComponent} from "./part/template-triggers.component";
 
 
@@ -102,7 +101,6 @@ import {TemplateTriggersComponent} from "./part/template-triggers.component";
     JobListHeaderRowComponent,
     LateServerErrorsComponent,
     ApiBaseUrlComponent,
-    ApiForceUrlComponent,
     LandingComponent,
     TemplateViewChartComponent,
     TemplateTriggersComponent,
