@@ -28,8 +28,8 @@ class InfoController
         }
 
         return new JsonResponse([
-            'uri' => $request->getUri(),
             'title' => 'I am your comrade',
+            'uri' => $request->getUri(),
             'version' => $version,
             'build' => $build,
         ]);

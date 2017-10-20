@@ -12,7 +12,7 @@ services:
 
   jmc:
     image: 'formapro/comrade:latest'
-    entrypoint: 'php bin/console enqueue:consume --setup-broker --receive-timeout=10000 --time-limit="+3600 seconds" --memory-limit=100 -vvv'
+    entrypoint: 'php bin/console enqueue:consume --setup-broker --skip=quartz_rpc --receive-timeout=10000 --time-limit="+3600 seconds" --memory-limit=100 -vvv'
     depends_on:
       - 'rabbitmq'
       - 'mongo'
@@ -69,10 +69,6 @@ services:
   jmdh:
     image: 'formapro/comrade-demo:latest'
     entrypoint: "php -S 0.0.0.0:80 http_demo.php"
-    expose:
-      - '80'
-    depends_on:
-      - 'jm'
     env_file: '/.env'
     deploy:
       mode: 'global'
