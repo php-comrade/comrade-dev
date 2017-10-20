@@ -47,12 +47,12 @@ export class ToastyService {
     }
   }
 
-  apiBaseUrlInvalid(apiBaseUrl: string): void {
+  apiBaseUrlForced(apiBaseUrl: string): void {
     const toastOptions:ToastOptions = {
-      title: `API URL is invalid`,
-      msg: `"${apiBaseUrl}" is out of work or invalid`
+      title: `API URL was forced`,
+      msg: `The client uses "${apiBaseUrl}" endpoint now.`
     };
 
-    this.toastyService.error(toastOptions);
+    this.toastyService.success(toastOptions);
   }
 }

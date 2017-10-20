@@ -5,6 +5,7 @@ import {HttpService} from "../shared/http.service";
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/observable/of';
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
+import {ToastyService} from "../shared/toasty.service";
 
 @Component({
   selector: 'api-base-url',
@@ -41,24 +42,31 @@ export class ApiBaseUrlComponent implements OnInit {
 
     serverInfo: any;
 
-    constructor(private httpService: HttpService, private router: Router, private route: ActivatedRoute) {}
+    constructor(private httpService: HttpService, private router: Router, private route: ActivatedRoute, private toastyService: ToastyService) {}
 
     ngOnInit(): void {
+      this.route.queryParamMap.take(1).subscribe((params: ParamMap) => {
+        let apiBaseUrl = params.get('apiBaseUrl');
+        if (apiBaseUrl) {
+          this.httpService.getInfo(apiBaseUrl)
+            .catch(err => Observable.throw(err))
+            .subscribe(() => {
+                this.httpService.changeApiBaseUrl(apiBaseUrl, true);
+
+                this.toastyService.apiBaseUrlForced(apiBaseUrl);
+
+                this.router.navigate(['']);
+            })
+          ;
+        }
+      });
+
       let apiBaseUrl = this.httpService.getApiBaseUrl();
       if (typeof apiBaseUrl !== 'undefined') {
         this.apiBaseUrl = apiBaseUrl;
       }
 
       this.testBaseUrl(this.apiBaseUrl);
-
-      this.route.queryParamMap.take(1).subscribe((params: ParamMap) => {
-        let apiBaseUrl = params.get('apiBaseUrl');
-        if (apiBaseUrl) {
-          this.apiBaseUrl = apiBaseUrl;
-
-          this.testBaseUrl(apiBaseUrl);
-        }
-      });
     }
 
     resetResult(): void {
@@ -75,8 +83,12 @@ export class ApiBaseUrlComponent implements OnInit {
         this.httpService.getInfo(apiBaseUrl)
             .catch(err => Observable.throw(err))
             .subscribe(
-                res => this.serverInfo = res.json(),
-                err => this.serverInfo = false,
+                res => {
+                  this.serverInfo = res.json();
+                },
+                err => {
+                    this.serverInfo = false;
+                }
             )
         ;
     }

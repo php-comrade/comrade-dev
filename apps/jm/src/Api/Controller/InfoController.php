@@ -1,8 +1,10 @@
 <?php
 namespace App\Api\Controller;
 
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Extra;
+use Symfony\Component\HttpFoundation\Request;
 
 class InfoController
 {
@@ -11,10 +13,25 @@ class InfoController
      * @Extra\Route("/")
      * @Extra\Method("GET")
      */
-    public function infoAction()
+    public function infoAction(Request $request, ContainerInterface $container)
     {
+        $projectDir = $container->getParameter('kernel.project_dir');
+
+        $version = 'unknown';
+        if (file_exists($projectDir.'/config/version')) {
+            $version = trim(file_get_contents($projectDir.'/config/version'));
+        }
+
+        $build = 'unknown';
+        if (file_exists($projectDir.'/config/build')) {
+            $build = trim(file_get_contents($projectDir.'/config/build'));
+        }
+
         return new JsonResponse([
+            'uri' => $request->getUri(),
             'title' => 'I am your comrade',
+            'version' => $version,
+            'build' => $build,
         ]);
     }
 }

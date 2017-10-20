@@ -10,11 +10,14 @@ then
     exit 1
 fi
 
+./bin/update_build_info.sh;
+
 rm -rf build/jm-container
 
 cp -r apps/jm build/jm-container
 rm -rf build/jm-container/vendor
 rm -rf build/jm-container/var/cache
+rm -rf build/jm-container/var/logs
 rm -rf build/jm-container/var/logs
 rm -rf build/jm-container/.git
 
