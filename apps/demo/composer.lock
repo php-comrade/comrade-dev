@@ -75,17 +75,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-comrade/php-client.git",
-                "reference": "2dc1d9d6588dc843be6eb9f27041759e34523aa3"
+                "reference": "d2b5883de4447360855da424bb0c8636c711d53e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-comrade/php-client/zipball/2dc1d9d6588dc843be6eb9f27041759e34523aa3",
-                "reference": "2dc1d9d6588dc843be6eb9f27041759e34523aa3",
+                "url": "https://api.github.com/repos/php-comrade/php-client/zipball/d2b5883de4447360855da424bb0c8636c711d53e",
+                "reference": "d2b5883de4447360855da424bb0c8636c711d53e",
                 "shasum": ""
             },
             "require": {
                 "comrade/shared": "*@dev",
-                "enqueue/enqueue": "^0.8@dev",
+                "enqueue/enqueue": "^0.8",
                 "guzzlehttp/guzzle": "^6.3",
                 "php": ">=7.1"
             },
@@ -109,7 +109,7 @@
                 "Job Manager",
                 "client"
             ],
-            "time": "2017-10-17T15:24:13+00:00"
+            "time": "2017-10-19T12:30:00+00:00"
         },
         {
             "name": "comrade/shared",
@@ -117,12 +117,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-comrade/php-shared.git",
-                "reference": "e1155f8b3ac25a30fad4c19fa151b21cb127a301"
+                "reference": "0f6f8c3865b8de900a078962eb1d0c4e2437bde7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-comrade/php-shared/zipball/e1155f8b3ac25a30fad4c19fa151b21cb127a301",
-                "reference": "e1155f8b3ac25a30fad4c19fa151b21cb127a301",
+                "url": "https://api.github.com/repos/php-comrade/php-shared/zipball/0f6f8c3865b8de900a078962eb1d0c4e2437bde7",
+                "reference": "0f6f8c3865b8de900a078962eb1d0c4e2437bde7",
                 "shasum": ""
             },
             "require": {
@@ -151,7 +151,7 @@
                 "message",
                 "model"
             ],
-            "time": "2017-10-17T14:47:29+00:00"
+            "time": "2017-10-19T12:30:47+00:00"
         },
         {
             "name": "enqueue/amqp-bunny",
