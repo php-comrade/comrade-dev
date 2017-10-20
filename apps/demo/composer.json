@@ -7,8 +7,8 @@
         "comrade/client": "*@dev",
         "enqueue/amqp-bunny": "^0.8",
         "symfony/process": "^3.3",
-        "symfony/console": "^3.3"
-
+        "symfony/console": "^3.3",
+        "mongodb/mongodb": "^1"
     },
     "autoload": {
         "psr-4": {

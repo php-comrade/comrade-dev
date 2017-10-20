@@ -1,34 +1,58 @@
+#!/usr/bin/env php
 <?php
-namespace App\Command;
+require __DIR__.'/vendor/autoload.php';
 
-use App\Commands;
-use App\Infra\Uuid;
+use Comrade\Shared\ComradeClassMap;
 use Comrade\Shared\Message\CreateJob;
 use Comrade\Shared\Model\CronTrigger;
 use Comrade\Shared\Model\ExclusivePolicy;
 use Comrade\Shared\Model\GracePeriodPolicy;
 use Comrade\Shared\Model\HttpRunner;
-use App\Model\JobTemplate;
+use Comrade\Shared\Model\JobTemplate;
 use Comrade\Shared\Model\NowTrigger;
 use Comrade\Shared\Model\QueueRunner;
 use Comrade\Shared\Model\RetryFailedPolicy;
 use Comrade\Shared\Model\RunSubJobsPolicy;
 use Comrade\Shared\Model\SubJobPolicy;
-use Enqueue\Client\ProducerInterface;
-use Makasim\Yadm\Registry;
+use function Enqueue\dsn_to_context;
+use Enqueue\Util\JSON;
+use Enqueue\Util\UUID;
+use Interop\Amqp\AmqpContext;
+use Interop\Queue\PsrContext;
+use function Makasim\Values\register_cast_hooks;
+use function Makasim\Values\register_global_hook;
+use function Makasim\Values\register_object_hooks;
 use MongoDB\Client;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareInterface;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\Console\Application;
 
-class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
+class LoadDemoFixturesCommand extends Command
 {
-    use ContainerAwareTrait;
-
+    /**
+     * @var string
+     */
     private $trigger;
+
+    /**
+     * @var PsrContext
+     */
+    private $context;
+
+    /**
+     * @var Client
+     */
+    private $client;
+
+    public function __construct(PsrContext $context, Client $client)
+    {
+        $this->context = $context;
+        $this->client = $client;
+
+        parent::__construct();
+    }
 
     protected function configure()
     {
@@ -42,7 +66,8 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if ($input->getOption('drop')) {
-            $this->getMongoDbClient()->dropDatabase($this->container->getParameter('mongo_database'));
+            $db = parse_url(getenv('MONGO_DSN'), PHP_URL_PATH);
+            $this->client->dropDatabase(trim($db, '/'));
         }
 
         $this->trigger = $input->getOption('trigger');
@@ -70,7 +95,7 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $createJob = CreateJob::createFor($template);
         $this->createTrigger($createJob);
 
-        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
+        $this->sendCreateJob($createJob);
     }
 
     private function createDemoFailedJob()
@@ -87,7 +112,7 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $createJob = CreateJob::createFor($template);
         $this->createTrigger($createJob);
 
-        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
+        $this->sendCreateJob($createJob);
     }
 
     private function createDemoRetryJob()
@@ -108,7 +133,7 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $createJob = CreateJob::createFor($template);
         $this->createTrigger($createJob);
 
-        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
+        $this->sendCreateJob($createJob);
     }
 
     private function createDemoExclusiveJob()
@@ -129,7 +154,7 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $createJob = CreateJob::createFor($template);
         $this->createTrigger($createJob);
 
-        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
+        $this->sendCreateJob($createJob);
     }
 
     private function createDemoTimeoutedJob()
@@ -146,7 +171,7 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $createJob = CreateJob::createFor($template);
         $this->createTrigger($createJob);
 
-        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
+        $this->sendCreateJob($createJob);
     }
 
     private function createDemoJobWithSubJobs()
@@ -167,7 +192,7 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $createJob = CreateJob::createFor($parentTemplate);
         $this->createTrigger($createJob);
 
-        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
+        $this->sendCreateJob($createJob);
 
         $childTemplate = JobTemplate::create();
         $childTemplate->setName('demo_sub_job');
@@ -184,7 +209,7 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
 
         $createJob = CreateJob::createFor($childTemplate);
 
-        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
+        $this->sendCreateJob($createJob);
     }
 
     private function createDemoHttpRunnerJob()
@@ -203,7 +228,7 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         $createJob = CreateJob::createFor($template);
         $this->createTrigger($createJob);
 
-        $this->getProducer()->sendCommand(Commands::CREATE_JOB, $createJob);
+        $this->sendCreateJob($createJob);
     }
 
     private function createTrigger(CreateJob $createJob): void
@@ -236,18 +261,37 @@ class LoadDemoFixturesCommand extends Command implements ContainerAwareInterface
         throw new \LogicException(sprintf('The trigger "%s" is not supported are "now", "cron", "none"', $this->trigger));
     }
 
-    private function getProducer(): ProducerInterface
+    private function sendCreateJob(CreateJob $createJob)
     {
-        return $this->container->get(ProducerInterface::class);
-    }
+        $queue = $this->context->createQueue('comrade_create_job');
+        $message = $this->context->createMessage(JSON::encode($createJob));
 
-    private function getMongoDbClient(): Client
-    {
-        return $this->container->get('yadm.client');
-    }
-
-    private function getYadmRegistry(): Registry
-    {
-        return $this->container->get('yadm');
+        $this->context->createProducer()->send($queue, $message);
     }
 }
+
+register_cast_hooks();
+register_object_hooks();
+
+register_global_hook('get_object_class', function(array $values) {
+    if (isset($values['schema'])) {
+        $classMap = (new ComradeClassMap())->get();
+        if (false == array_key_exists($values['schema'], $classMap)) {
+            throw new \LogicException(sprintf('An object has schema set "%s" but there is no class for it', $values['schema']));
+        }
+
+        return $classMap[$values['schema']];
+    }
+});
+
+/** @var AmqpContext $queueContext */
+$queueContext = dsn_to_context(getenv('ENQUEUE_DSN'));
+$mongoClient = new Client(getenv('MONGO_DSN'));
+
+$command = new \LoadDemoFixturesCommand($queueContext, $mongoClient);
+
+$app = new Application('comrade-demo');
+$app->add($command);
+$app->setDefaultCommand($command->getName(), true);
+
+$app->run();

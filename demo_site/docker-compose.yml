@@ -78,8 +78,8 @@ services:
       mode: 'global'
 
   seeds:
-    image: 'formapro/comrade:latest'
-    entrypoint: 'php bin/console comrade:load-demo-fixtures --drop --trigger=cron'
+    image: 'formapro/comrade-demo:latest'
+    entrypoint: 'php load_demo_fixtures.php --drop --trigger=cron'
     depends_on:
       - 'rabbitmq'
       - 'mongo'
