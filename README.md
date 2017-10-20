@@ -80,7 +80,7 @@ The Comrade service will be available at `jm.loc` host and its UI at `ui.jm.loc`
 
 ## Online Demo
 
-The UI demo available at http://demo.comrade.forma-pro.com the Comrade service at http://demo.comrade.forma-pro.com:81
+The Comrade UI is available at [http://demo.comrade.forma-pro.com](http://ui.jm.loc/settings/base-url?apiBaseUrl=http://demo.comrade.forma-pro.com:81) and the service itself is at http://demo.comrade.forma-pro.com:81.
 
 ## Developed by Forma-Pro
 
