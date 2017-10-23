@@ -1,6 +1,7 @@
 <?php
 namespace Comrade\Shared\Model;
 
+use Comrade\Shared\ClassClosure;
 use Makasim\Values\CastTrait;
 use Makasim\Values\ValuesTrait;
 use function Makasim\Values\get_object;
@@ -52,7 +53,7 @@ class JobResult
 
     public function getError(): ?Throwable
     {
-        return get_object($this, 'error');
+        return get_object($this, 'error', ClassClosure::create());
     }
 
     public function setMetrics(JobResultMetrics $metrics): void
@@ -62,7 +63,7 @@ class JobResult
 
     public function getMetrics(): ?JobResultMetrics
     {
-        return get_object($this, 'metrics');
+        return get_object($this, 'metrics', ClassClosure::create());
     }
 
     /**

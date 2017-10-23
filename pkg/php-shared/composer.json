@@ -7,7 +7,7 @@
     "require": {
         "php": ">=7.1",
 
-        "makasim/values": "@dev"
+        "makasim/values": "^0.3"
     },
     "autoload": {
         "psr-4": { "Comrade\\Shared\\": "" }

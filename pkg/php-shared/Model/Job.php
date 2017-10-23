@@ -1,6 +1,7 @@
 <?php
 namespace Comrade\Shared\Model;
 
+use Comrade\Shared\ClassClosure;
 use function Makasim\Values\add_object;
 use function Makasim\Values\get_object;
 use function Makasim\Values\get_objects;
@@ -60,10 +61,10 @@ class Job extends JobTemplate
      */
     public function getResults():\Traversable
     {
-        return get_objects($this, 'results');
+        return get_objects($this, 'results', ClassClosure::create());
     }
 
-    public function setCurrentResult(JobResult $jobResult):void
+    public function setCurrentResult(JobResult $jobResult): void
     {
         set_object($this, 'currentResult', $jobResult);
     }
@@ -73,7 +74,7 @@ class Job extends JobTemplate
      */
     public function getCurrentResult():JobResult
     {
-        return get_object($this, 'currentResult');
+        return get_object($this, 'currentResult', ClassClosure::create());
     }
 
     public static function createFromTemplate(JobTemplate $jobTemplate): Job

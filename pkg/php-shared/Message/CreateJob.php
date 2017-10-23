@@ -1,6 +1,7 @@
 <?php
 namespace Comrade\Shared\Message;
 
+use Comrade\Shared\ClassClosure;
 use Comrade\Shared\Model\CreateTrait;
 use Comrade\Shared\Model\JobTemplate;
 use Comrade\Shared\Model\Trigger;
@@ -27,7 +28,7 @@ class CreateJob implements \JsonSerializable
      */
     public function getJobTemplate(): JobTemplate
     {
-        return get_object($this,'jobTemplate');
+        return get_object($this,'jobTemplate', ClassClosure::create());
     }
 
     /**
@@ -48,7 +49,7 @@ class CreateJob implements \JsonSerializable
      */
     public function getTriggers(): \Traversable
     {
-        return get_objects($this, 'triggers');
+        return get_objects($this, 'triggers', ClassClosure::create());
     }
 
     /**

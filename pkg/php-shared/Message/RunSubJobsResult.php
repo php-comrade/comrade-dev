@@ -1,6 +1,7 @@
 <?php
 namespace Comrade\Shared\Message;
 
+use Comrade\Shared\ClassClosure;
 use Comrade\Shared\Model\JobTemplate;
 use function Makasim\Values\add_object;
 use function Makasim\Values\get_objects;
@@ -15,9 +16,9 @@ class RunSubJobsResult extends JobResult
     /**
      * @return JobTemplate[]|\Traversable
      */
-    public function getJobTemplates():\Traversable
+    public function getJobTemplates(): \Traversable
     {
-        return get_objects($this,'jobTemplates');
+        return get_objects($this,'jobTemplates', ClassClosure::create());
     }
 
     /**

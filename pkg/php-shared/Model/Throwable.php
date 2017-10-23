@@ -46,9 +46,9 @@ class Throwable
         return get_value($this, 'trace');
     }
 
-    public function getPrevious() :Throwable
+    public function getPrevious(): ?Throwable
     {
-        return get_object($this, 'previous');
+        return get_object($this, 'previous', ClassClosure::create());
     }
 
     public static function createFromThrowable(\Throwable $error)

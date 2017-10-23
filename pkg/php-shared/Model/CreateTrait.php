@@ -1,6 +1,7 @@
 <?php
 namespace Comrade\Shared\Model;
 
+use Comrade\Shared\ClassClosure;
 use function Makasim\Values\build_object;
 
 trait CreateTrait
@@ -12,7 +13,7 @@ trait CreateTrait
      */
     public static function create(array $data = [])
     {
-        return build_object(null, array_replace([
+        return build_object(ClassClosure::create(), array_replace([
             'schema' => static::SCHEMA,
         ], $data));
     }

@@ -1,6 +1,7 @@
 <?php
 namespace Comrade\Shared\Model;
 
+use Comrade\Shared\ClassClosure;
 use function Makasim\Values\add_object;
 use Makasim\Values\CastTrait;
 use function Makasim\Values\get_object;
@@ -68,7 +69,7 @@ class JobTemplate
      */
     public function getGracePeriodPolicy(): ?GracePeriodPolicy
     {
-        return get_object($this, 'gracePeriodPolicy');
+        return get_object($this, 'gracePeriodPolicy', ClassClosure::create());
     }
 
     /**
@@ -84,7 +85,7 @@ class JobTemplate
      */
     public function getRetryFailedPolicy(): ?RetryFailedPolicy
     {
-        return get_object($this, 'retryFailedPolicy');
+        return get_object($this, 'retryFailedPolicy', ClassClosure::create());
     }
 
     /**
@@ -100,7 +101,7 @@ class JobTemplate
      */
     public function getRunSubJobsPolicy(): ?RunSubJobsPolicy
     {
-        return get_object($this, 'runSubJobsPolicy');
+        return get_object($this, 'runSubJobsPolicy', ClassClosure::create());
     }
 
     /**
@@ -113,7 +114,7 @@ class JobTemplate
 
     public function getSubJobPolicy(): ?SubJobPolicy
     {
-        return get_object($this, 'subJobPolicy');
+        return get_object($this, 'subJobPolicy', ClassClosure::create());
     }
 
     public function setSubJobPolicy(SubJobPolicy $runSubJobsPolicy = null): void
@@ -126,7 +127,7 @@ class JobTemplate
      */
     public function getExclusivePolicy(): ?ExclusivePolicy
     {
-        return get_object($this, 'exclusivePolicy');
+        return get_object($this, 'exclusivePolicy', ClassClosure::create());
     }
 
     /**
@@ -144,7 +145,7 @@ class JobTemplate
 
     public function getRunner(): Runner
     {
-        return get_object($this, 'runner');
+        return get_object($this, 'runner', ClassClosure::create());
     }
 
     public function setCreatedAt(\DateTime $date): void

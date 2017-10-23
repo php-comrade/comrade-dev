@@ -1,6 +1,7 @@
 <?php
 namespace Comrade\Shared\Message;
 
+use Comrade\Shared\ClassClosure;
 use Comrade\Shared\Message\Part\SubJob;
 use Comrade\Shared\Model\CreateTrait;
 use Comrade\Shared\Model\JobResultMetrics;
@@ -71,7 +72,7 @@ class RunnerResult implements \JsonSerializable
 
     public function getError(): ?Throwable
     {
-        return get_object($this, 'error');
+        return get_object($this, 'error', ClassClosure::create());
     }
 
     public function setMetrics(JobResultMetrics $metrics): void
@@ -81,7 +82,7 @@ class RunnerResult implements \JsonSerializable
 
     public function getMetrics(): ?JobResultMetrics
     {
-        return get_object($this, 'metrics');
+        return get_object($this, 'metrics', ClassClosure::create());
     }
 
     /**
@@ -89,7 +90,7 @@ class RunnerResult implements \JsonSerializable
      */
     public function getSubJobs(): \Traversable
     {
-        return get_objects($this,'subJobs');
+        return get_objects($this,'subJobs', ClassClosure::create());
     }
 
     public function addSubJob(SubJob $subJob): void

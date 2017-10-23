@@ -1,6 +1,7 @@
 <?php
 namespace Comrade\Shared\Message;
 
+use Comrade\Shared\ClassClosure;
 use Comrade\Shared\Model\CreateTrait;
 use Comrade\Shared\Model\Job;
 use function Makasim\Values\get_object;
@@ -23,9 +24,9 @@ class RunJob implements \JsonSerializable
     /**
      * @return Job|object
      */
-    public function getJob():Job
+    public function getJob(): Job
     {
-        return get_object($this,'job');
+        return get_object($this,'job', ClassClosure::create());
     }
 
     /**
@@ -39,7 +40,7 @@ class RunJob implements \JsonSerializable
     /**
      * @return string
      */
-    public function getToken():string
+    public function getToken(): string
     {
         return get_value($this,'token');
     }
