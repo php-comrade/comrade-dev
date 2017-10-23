@@ -24,6 +24,8 @@ final class ClassClosure
         if (array_key_exists('schema', $values) && array_key_exists($values['schema'], $classMap)) {
             return $classMap[$values['schema']];
         }
+
+        return null;
     }
 
     public static function create(): ClassClosure
