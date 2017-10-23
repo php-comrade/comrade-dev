@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a475ce1e82a63d2a2ebd59b6e88fe255",
+    "content-hash": "9fa3bf647bcef8ddaeb021fa51e6f7a2",
     "packages": [
         {
             "name": "bunny/bunny",
@@ -117,16 +117,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-comrade/php-shared.git",
-                "reference": "4730e86b3a1a72b3ef637d9a2813a9e4b9db3f22"
+                "reference": "a2a66583595589d860ef51ae04e01a68b7847ca1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-comrade/php-shared/zipball/4730e86b3a1a72b3ef637d9a2813a9e4b9db3f22",
-                "reference": "4730e86b3a1a72b3ef637d9a2813a9e4b9db3f22",
+                "url": "https://api.github.com/repos/php-comrade/php-shared/zipball/a2a66583595589d860ef51ae04e01a68b7847ca1",
+                "reference": "a2a66583595589d860ef51ae04e01a68b7847ca1",
                 "shasum": ""
             },
             "require": {
-                "makasim/values": "^0.3",
+                "makasim/values": "^0.3.1",
                 "php": ">=7.1"
             },
             "type": "library",
@@ -151,7 +151,7 @@
                 "message",
                 "model"
             ],
-            "time": "2017-10-23T10:56:40+00:00"
+            "time": "2017-10-23T16:35:08+00:00"
         },
         {
             "name": "enqueue/amqp-bunny",
