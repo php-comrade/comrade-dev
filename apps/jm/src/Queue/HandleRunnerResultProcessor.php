@@ -89,7 +89,6 @@ class HandleRunnerResultProcessor implements PsrProcessor, CommandSubscriberInte
         $this->processExecutionStorage->update($process);
 
         $this->producer->sendCommand(Commands::PVM_HANDLE_ASYNC_TRANSITION, [
-            'process' => $process->getId(),
             'token' => $token->getId(),
         ]);
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "fb7d51c739208816dce74ce4069990e3",
+    "content-hash": "a475ce1e82a63d2a2ebd59b6e88fe255",
     "packages": [
         {
             "name": "bunny/bunny",
@@ -117,16 +117,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-comrade/php-shared.git",
-                "reference": "0f6f8c3865b8de900a078962eb1d0c4e2437bde7"
+                "reference": "4730e86b3a1a72b3ef637d9a2813a9e4b9db3f22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-comrade/php-shared/zipball/0f6f8c3865b8de900a078962eb1d0c4e2437bde7",
-                "reference": "0f6f8c3865b8de900a078962eb1d0c4e2437bde7",
+                "url": "https://api.github.com/repos/php-comrade/php-shared/zipball/4730e86b3a1a72b3ef637d9a2813a9e4b9db3f22",
+                "reference": "4730e86b3a1a72b3ef637d9a2813a9e4b9db3f22",
                 "shasum": ""
             },
             "require": {
-                "makasim/values": "@dev",
+                "makasim/values": "^0.3",
                 "php": ">=7.1"
             },
             "type": "library",
@@ -151,7 +151,7 @@
                 "message",
                 "model"
             ],
-            "time": "2017-10-19T12:30:47+00:00"
+            "time": "2017-10-23T10:56:40+00:00"
         },
         {
             "name": "enqueue/amqp-bunny",
@@ -582,16 +582,16 @@
         },
         {
             "name": "makasim/values",
-            "version": "0.2.5",
+            "version": "0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/makasim/values.git",
-                "reference": "7cf59817ae825d424e09b03b300d6cc31684c26a"
+                "reference": "31ee4c5dc4dc87c23211125f8daf3243d86e0336"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/makasim/values/zipball/7cf59817ae825d424e09b03b300d6cc31684c26a",
-                "reference": "7cf59817ae825d424e09b03b300d6cc31684c26a",
+                "url": "https://api.github.com/repos/makasim/values/zipball/31ee4c5dc4dc87c23211125f8daf3243d86e0336",
+                "reference": "31ee4c5dc4dc87c23211125f8daf3243d86e0336",
                 "shasum": ""
             },
             "require": {
@@ -603,7 +603,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.2-dev"
+                    "dev-master": "0.3-dev"
                 }
             },
             "autoload": {
@@ -628,7 +628,7 @@
             "keywords": [
                 "model"
             ],
-            "time": "2017-05-30T10:48:01+00:00"
+            "time": "2017-10-23T11:38:22+00:00"
         },
         {
             "name": "mongodb/mongodb",

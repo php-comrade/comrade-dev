@@ -3,7 +3,6 @@
 set -x
 set -e
 
-
 if (( "$#" != 1 ))
 then
     echo "Tag has to be provided"

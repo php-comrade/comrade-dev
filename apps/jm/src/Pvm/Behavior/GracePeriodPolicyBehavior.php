@@ -70,7 +70,6 @@ class GracePeriodPolicyBehavior implements Behavior, SignalBehavior
             ->withSchedule(SimpleScheduleBuilder::simpleSchedule())
             ->setJobData([
                 'command' => Commands::PVM_HANDLE_ASYNC_TRANSITION,
-                'process' => $token->getProcess()->getId(),
                 'token' => $token->getId(),
             ])
             ->startAt(new \DateTime(sprintf('now + %d seconds', $policy->getPeriod())))

@@ -1,16 +1,23 @@
 <?php
 namespace App\Model;
 
+use Comrade\Shared\ClassClosure;
 use Comrade\Shared\Message\RunnerResult;
+use Formapro\Pvm\Process;
 use function Makasim\Values\get_object;
 use function Makasim\Values\get_value;
 use function Makasim\Values\set_object;
 
-/**
- * @method PvmProcess getProcess()
- */
 class PvmToken extends \Formapro\Pvm\Token
 {
+    /**
+     * @return PvmProcess
+     */
+    public function getProcess(): Process
+    {
+        return parent::getProcess();
+    }
+
     public function getJobId(): string
     {
         return $this->getProcess()->getJobId();
@@ -28,6 +35,6 @@ class PvmToken extends \Formapro\Pvm\Token
 
     public function getRunnerResult(): RunnerResult
     {
-        return get_object($this, 'runnerResult');
+        return get_object($this, 'runnerResult', ClassClosure::create());
     }
 }

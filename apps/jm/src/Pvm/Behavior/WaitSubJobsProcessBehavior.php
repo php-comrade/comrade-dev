@@ -95,7 +95,6 @@ class WaitSubJobsProcessBehavior implements Behavior, SignalBehavior
             $tokenWithRunnerResult = $this->findTokenWithRunnerResult($token->getProcess());
 
             $this->producer->sendCommand(Commands::PVM_HANDLE_ASYNC_TRANSITION, [
-                'process' => $tokenWithRunnerResult->getProcess()->getId(),
                 'token' => $tokenWithRunnerResult->getId(),
             ]);
         }

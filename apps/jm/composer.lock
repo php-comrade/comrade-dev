@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "0b6a701b6c9a205ab9339eb9101d341a",
+    "content-hash": "29cf893f3f7d185e77656e3bb2eb4a7d",
     "packages": [
         {
             "name": "bunny/bunny",
@@ -173,16 +173,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-comrade/php-shared.git",
-                "reference": "0f6f8c3865b8de900a078962eb1d0c4e2437bde7"
+                "reference": "4730e86b3a1a72b3ef637d9a2813a9e4b9db3f22"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-comrade/php-shared/zipball/0f6f8c3865b8de900a078962eb1d0c4e2437bde7",
-                "reference": "0f6f8c3865b8de900a078962eb1d0c4e2437bde7",
+                "url": "https://api.github.com/repos/php-comrade/php-shared/zipball/4730e86b3a1a72b3ef637d9a2813a9e4b9db3f22",
+                "reference": "4730e86b3a1a72b3ef637d9a2813a9e4b9db3f22",
                 "shasum": ""
             },
             "require": {
-                "makasim/values": "@dev",
+                "makasim/values": "^0.3",
                 "php": ">=7.1"
             },
             "type": "library",
@@ -207,7 +207,7 @@
                 "message",
                 "model"
             ],
-            "time": "2017-10-19T12:30:47+00:00"
+            "time": "2017-10-23T10:56:40+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -926,16 +926,16 @@
         },
         {
             "name": "enqueue/enqueue-bundle",
-            "version": "0.8.0",
+            "version": "0.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/enqueue-bundle.git",
-                "reference": "5421a64a5b42dda50d1361c97af5be5160337874"
+                "reference": "28f5b97564762f48a3a8d3ed53dbf8e9cc3f169f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/enqueue-bundle/zipball/5421a64a5b42dda50d1361c97af5be5160337874",
-                "reference": "5421a64a5b42dda50d1361c97af5be5160337874",
+                "url": "https://api.github.com/repos/php-enqueue/enqueue-bundle/zipball/28f5b97564762f48a3a8d3ed53dbf8e9cc3f169f",
+                "reference": "28f5b97564762f48a3a8d3ed53dbf8e9cc3f169f",
                 "shasum": ""
             },
             "require": {
@@ -952,6 +952,7 @@
                 "enqueue/amqp-lib": "^0.8@dev",
                 "enqueue/dbal": "^0.8@dev",
                 "enqueue/fs": "^0.8@dev",
+                "enqueue/gps": "^0.8@dev",
                 "enqueue/job-queue": "^0.8@dev",
                 "enqueue/redis": "^0.8@dev",
                 "enqueue/sqs": "^0.8@dev",
@@ -988,7 +989,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2017-10-17T11:44:42+00:00"
+            "time": "2017-10-23T09:43:22+00:00"
         },
         {
             "name": "enqueue/null",
@@ -1096,17 +1097,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/formapro/pvm.git",
-                "reference": "0af0abdacc34accfbda9b99f0b344a9285e2a64e"
+                "reference": "2fb184a03949acc6eb724574fbddfd183c7dc450"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/formapro/pvm/zipball/0af0abdacc34accfbda9b99f0b344a9285e2a64e",
-                "reference": "0af0abdacc34accfbda9b99f0b344a9285e2a64e",
+                "url": "https://api.github.com/repos/formapro/pvm/zipball/2fb184a03949acc6eb724574fbddfd183c7dc450",
+                "reference": "2fb184a03949acc6eb724574fbddfd183c7dc450",
                 "shasum": ""
             },
             "require": {
-                "makasim/values": "@dev",
-                "php": "^7",
+                "makasim/values": "^0.3.1",
+                "php": "^7.1",
                 "ramsey/uuid": "^3",
                 "symfony/console": "^3.1"
             },
@@ -1118,7 +1119,7 @@
             "type": "lib",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.1.x-dev"
+                    "dev-master": "0.2.x-dev"
                 }
             },
             "autoload": {
@@ -1138,7 +1139,7 @@
                 "process",
                 "workflow"
             ],
-            "time": "2017-10-06T08:20:35+00:00"
+            "time": "2017-10-23T16:24:12+00:00"
         },
         {
             "name": "g4/cron",
@@ -1456,16 +1457,16 @@
         },
         {
             "name": "justinrainbow/json-schema",
-            "version": "5.2.5",
+            "version": "5.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/justinrainbow/json-schema.git",
-                "reference": "0d4fda8efdf216ade084a7f0aad5637572ce9835"
+                "reference": "d283e11b6e14c6f4664cf080415c4341293e5bbd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/0d4fda8efdf216ade084a7f0aad5637572ce9835",
-                "reference": "0d4fda8efdf216ade084a7f0aad5637572ce9835",
+                "url": "https://api.github.com/repos/justinrainbow/json-schema/zipball/d283e11b6e14c6f4664cf080415c4341293e5bbd",
+                "reference": "d283e11b6e14c6f4664cf080415c4341293e5bbd",
                 "shasum": ""
             },
             "require": {
@@ -1518,20 +1519,20 @@
                 "json",
                 "schema"
             ],
-            "time": "2017-10-10T13:22:37+00:00"
+            "time": "2017-10-21T13:15:38+00:00"
         },
         {
             "name": "makasim/values",
-            "version": "dev-master",
+            "version": "0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/makasim/values.git",
-                "reference": "a2786800e5d5131df4e80142acb21ca12b3c2e66"
+                "reference": "31ee4c5dc4dc87c23211125f8daf3243d86e0336"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/makasim/values/zipball/a2786800e5d5131df4e80142acb21ca12b3c2e66",
-                "reference": "a2786800e5d5131df4e80142acb21ca12b3c2e66",
+                "url": "https://api.github.com/repos/makasim/values/zipball/31ee4c5dc4dc87c23211125f8daf3243d86e0336",
+                "reference": "31ee4c5dc4dc87c23211125f8daf3243d86e0336",
                 "shasum": ""
             },
             "require": {
@@ -1543,7 +1544,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "0.2-dev"
+                    "dev-master": "0.3-dev"
                 }
             },
             "autoload": {
@@ -1568,7 +1569,7 @@
             "keywords": [
                 "model"
             ],
-            "time": "2017-08-24T14:52:54+00:00"
+            "time": "2017-10-23T11:38:22+00:00"
         },
         {
             "name": "makasim/yadm",
@@ -1576,16 +1577,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/makasim/yadm.git",
-                "reference": "39aed7ad7e0b2ad17228ae4da30828307f0f0236"
+                "reference": "f03d3e5eaf792c9a8c2136b5dd0cd6bd42ea4604"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/makasim/yadm/zipball/39aed7ad7e0b2ad17228ae4da30828307f0f0236",
-                "reference": "39aed7ad7e0b2ad17228ae4da30828307f0f0236",
+                "url": "https://api.github.com/repos/makasim/yadm/zipball/f03d3e5eaf792c9a8c2136b5dd0cd6bd42ea4604",
+                "reference": "f03d3e5eaf792c9a8c2136b5dd0cd6bd42ea4604",
                 "shasum": ""
             },
             "require": {
-                "makasim/values": "^0.2.2",
+                "makasim/values": "^0.2.2|^0.3",
                 "mikemccabe/json-patch-php": "^0.1",
                 "mongodb/mongodb": "^1",
                 "php": "^7.0"
@@ -1624,7 +1625,7 @@
                 "odm",
                 "storage"
             ],
-            "time": "2017-06-09T07:52:44+00:00"
+            "time": "2017-10-20T12:19:56+00:00"
         },
         {
             "name": "makasim/yadm-bundle",
@@ -2460,25 +2461,29 @@
         },
         {
             "name": "ratchet/pawl",
-            "version": "v0.2.3",
+            "version": "v0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ratchetphp/Pawl.git",
-                "reference": "55256f590ab457fc9da57aa3f88e2edb5a2386c1"
+                "reference": "f8df4bc1675ca88a4e53bf1872e1e881b6a0b0de"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ratchetphp/Pawl/zipball/55256f590ab457fc9da57aa3f88e2edb5a2386c1",
-                "reference": "55256f590ab457fc9da57aa3f88e2edb5a2386c1",
+                "url": "https://api.github.com/repos/ratchetphp/Pawl/zipball/f8df4bc1675ca88a4e53bf1872e1e881b6a0b0de",
+                "reference": "f8df4bc1675ca88a4e53bf1872e1e881b6a0b0de",
                 "shasum": ""
             },
             "require": {
+                "evenement/evenement": "^3.0 || ^2.0",
                 "php": ">=5.4",
-                "ratchet/rfc6455": "^0.2.1",
-                "react/socket-client": "^0.5"
+                "ratchet/rfc6455": "^0.2.3",
+                "react/socket": "^1.0 || ^0.8 || ^0.7"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
             },
             "suggest": {
-                "reactivex/rxphp": "~1.1"
+                "reactivex/rxphp": "~2.0"
             },
             "type": "library",
             "autoload": {
@@ -2501,7 +2506,7 @@
                 "websocket",
                 "websocket client"
             ],
-            "time": "2017-01-02T20:05:47+00:00"
+            "time": "2017-10-22T21:14:18+00:00"
         },
         {
             "name": "ratchet/rfc6455",
@@ -2775,16 +2780,16 @@
         },
         {
             "name": "react/socket",
-            "version": "v0.8.2",
+            "version": "v0.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/socket.git",
-                "reference": "ee817e348abcf35c55b448a5cd3ef4eec88379e9"
+                "reference": "ce2b577c2d69ee071c3f9e552942c320caa87e0a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/socket/zipball/ee817e348abcf35c55b448a5cd3ef4eec88379e9",
-                "reference": "ee817e348abcf35c55b448a5cd3ef4eec88379e9",
+                "url": "https://api.github.com/repos/reactphp/socket/zipball/ce2b577c2d69ee071c3f9e552942c320caa87e0a",
+                "reference": "ce2b577c2d69ee071c3f9e552942c320caa87e0a",
                 "shasum": ""
             },
             "require": {
@@ -2794,12 +2799,11 @@
                 "react/event-loop": "^1.0 || ^0.5 || ^0.4 || ^0.3.5",
                 "react/promise": "^2.1 || ^1.2",
                 "react/promise-timer": "~1.0",
-                "react/stream": "^1.0 || ^0.7 || ^0.6 || ^0.5 || ^0.4.5"
+                "react/stream": "^1.0 || ^0.7.1"
             },
             "require-dev": {
                 "clue/block-react": "^1.1",
-                "phpunit/phpunit": "~4.8",
-                "react/stream": "^1.0 || ^0.7 || ^0.6"
+                "phpunit/phpunit": "~4.8"
             },
             "type": "library",
             "autoload": {
@@ -2819,75 +2823,33 @@
                 "reactphp",
                 "stream"
             ],
-            "time": "2017-08-25T09:08:33+00:00"
-        },
-        {
-            "name": "react/socket-client",
-            "version": "v0.5.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/reactphp/socket-client.git",
-                "reference": "5570838d436f056695e9a5eaf01dd5f80386dd26"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/socket-client/zipball/5570838d436f056695e9a5eaf01dd5f80386dd26",
-                "reference": "5570838d436f056695e9a5eaf01dd5f80386dd26",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.0",
-                "react/dns": "0.4.*|0.3.*",
-                "react/event-loop": "0.4.*|0.3.*",
-                "react/promise": "^2.1 || ^1.2",
-                "react/promise-timer": "~1.0",
-                "react/stream": "^0.4.5"
-            },
-            "require-dev": {
-                "clue/block-react": "^1.1"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "React\\SocketClient\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Async connector to open TCP/IP and SSL/TLS based connections.",
-            "keywords": [
-                "Socket"
-            ],
-            "time": "2016-12-24T11:19:15+00:00"
+            "time": "2017-09-16T17:16:49+00:00"
         },
         {
             "name": "react/stream",
-            "version": "v0.4.6",
+            "version": "v0.7.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/stream.git",
-                "reference": "44dc7f51ea48624110136b535b9ba44fd7d0c1ee"
+                "reference": "5c7db5261b3cc7e11b8ba765bed8ba31ee745f5c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/stream/zipball/44dc7f51ea48624110136b535b9ba44fd7d0c1ee",
-                "reference": "44dc7f51ea48624110136b535b9ba44fd7d0c1ee",
+                "url": "https://api.github.com/repos/reactphp/stream/zipball/5c7db5261b3cc7e11b8ba765bed8ba31ee745f5c",
+                "reference": "5c7db5261b3cc7e11b8ba765bed8ba31ee745f5c",
                 "shasum": ""
             },
             "require": {
-                "evenement/evenement": "^2.0|^1.0",
-                "php": ">=5.3.8"
+                "evenement/evenement": "^3.0 || ^2.0 || ^1.0",
+                "php": ">=5.3.8",
+                "react/event-loop": "^1.0 || ^0.5 || ^0.4 || ^0.3"
             },
             "require-dev": {
                 "clue/stream-filter": "~1.2",
-                "react/event-loop": "^0.4|^0.3",
-                "react/promise": "^2.0|^1.0"
+                "phpunit/phpunit": "^5.0 || ^4.8.10"
             },
             "suggest": {
-                "react/event-loop": "^0.4",
-                "react/promise": "^2.0"
+                "react/event-loop": "^0.4"
             },
             "type": "library",
             "autoload": {
@@ -2899,12 +2861,18 @@
             "license": [
                 "MIT"
             ],
-            "description": "Basic readable and writable stream interfaces that support piping.",
+            "description": "Event-driven readable and writable streams for non-blocking I/O in ReactPHP",
             "keywords": [
+                "event-driven",
+                "io",
+                "non-blocking",
                 "pipe",
-                "stream"
+                "reactphp",
+                "readable",
+                "stream",
+                "writable"
             ],
-            "time": "2017-01-25T14:44:14+00:00"
+            "time": "2017-10-11T17:58:46+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -5159,20 +5127,20 @@
         },
         {
             "name": "thruway/pawl-transport",
-            "version": "dev-master",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thruway/pawl-transport.git",
-                "reference": "db46b4bccea556a9ce24843cd136fd56554407cc"
+                "reference": "e1b352f26d395aeb49e95c92a8c648e1986ad644"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thruway/pawl-transport/zipball/db46b4bccea556a9ce24843cd136fd56554407cc",
-                "reference": "db46b4bccea556a9ce24843cd136fd56554407cc",
+                "url": "https://api.github.com/repos/thruway/pawl-transport/zipball/e1b352f26d395aeb49e95c92a8c648e1986ad644",
+                "reference": "e1b352f26d395aeb49e95c92a8c648e1986ad644",
                 "shasum": ""
             },
             "require": {
-                "ratchet/pawl": "^0.2.3"
+                "ratchet/pawl": "^0.3.1"
             },
             "type": "library",
             "autoload": {
@@ -5206,11 +5174,11 @@
                 "sockets",
                 "thruway"
             ],
-            "time": "2017-05-09T21:10:01+00:00"
+            "time": "2017-10-23T14:18:47+00:00"
         },
         {
             "name": "thruway/ratchet-transport",
-            "version": "dev-master",
+            "version": "0.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thruway/ratchet-transport.git",
@@ -5260,6 +5228,61 @@
                 "thruway"
             ],
             "time": "2017-10-03T13:38:44+00:00"
+        },
+        {
+            "name": "thruway/raw-socket-transport",
+            "version": "0.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thruway/raw-socket-transport.git",
+                "reference": "b43cfc87b45b0af8bdd53c3fe7a72c534f5c2c65"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thruway/raw-socket-transport/zipball/b43cfc87b45b0af8bdd53c3fe7a72c534f5c2c65",
+                "reference": "b43cfc87b45b0af8bdd53c3fe7a72c534f5c2c65",
+                "shasum": ""
+            },
+            "require": {
+                "react/socket": "^0.8.0",
+                "react/stream": "^0.7.0"
+            },
+            "require-dev": {
+                "voryx/thruway": "0.5.x-dev"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Thruway\\Transport\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Matt Bonneau",
+                    "email": "matt@bonneau.net",
+                    "role": "Developer"
+                },
+                {
+                    "name": "David Dan",
+                    "email": "davidwdan@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Raw Socket Transport for Thruway",
+            "keywords": [
+                "Autobahn",
+                "WAMP",
+                "WAMP2",
+                "client",
+                "server",
+                "sockets",
+                "thruway"
+            ],
+            "time": "2017-10-03T19:18:42+00:00"
         },
         {
             "name": "twig/twig",
@@ -5333,28 +5356,27 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/voryx/Thruway.git",
-                "reference": "59cf4559a2eaeadc5f15aec365b62633f93df577"
+                "reference": "4a374a233595b668370f4bb8490b8e3b7eed2d65"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/voryx/Thruway/zipball/59cf4559a2eaeadc5f15aec365b62633f93df577",
-                "reference": "59cf4559a2eaeadc5f15aec365b62633f93df577",
+                "url": "https://api.github.com/repos/voryx/Thruway/zipball/4a374a233595b668370f4bb8490b8e3b7eed2d65",
+                "reference": "4a374a233595b668370f4bb8490b8e3b7eed2d65",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.6",
                 "react/event-loop": "^0.4.3",
-                "symfony/event-dispatcher": "2.7 - 3",
+                "react/promise": "^2.3.0",
+                "symfony/event-dispatcher": "^2.7 | ^3",
                 "thruway/client": "^0.5.0",
-                "voryx/thruway-common": "^1.0"
+                "thruway/pawl-transport": "^0.5.0",
+                "thruway/ratchet-transport": "^0.5.0",
+                "thruway/raw-socket-transport": "^0.5.0",
+                "voryx/thruway-common": "^1.0.3"
             },
             "require-dev": {
-                "cboden/ratchet": "^0.4",
-                "phpunit/phpunit": "^5.5.4",
-                "ratchet/pawl": "socket-connector-dev as 0.2.3",
-                "thruway/pawl-transport": "dev-master",
-                "thruway/ratchet-transport": "dev-master",
-                "thruway/raw-socket-transport": "dev-master"
+                "phpunit/phpunit": "^5.5.4"
             },
             "type": "library",
             "autoload": {
@@ -5388,7 +5410,7 @@
                 "server",
                 "sockets"
             ],
-            "time": "2017-10-03T20:01:51+00:00"
+            "time": "2017-10-23T15:08:05+00:00"
         },
         {
             "name": "voryx/thruway-common",
@@ -5446,7 +5468,6 @@
         "cboden/ratchet": 20,
         "comrade/shared": 20,
         "formapro/pvm": 20,
-        "makasim/values": 20,
         "makasim/yadm": 20,
         "makasim/yadm-bundle": 20,
         "php-quartz/bridge": 20,

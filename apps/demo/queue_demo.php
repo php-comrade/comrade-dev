@@ -2,7 +2,6 @@
 namespace DemoApp;
 
 use Comrade\Client\ClientQueueRunner;
-use Comrade\Shared\ComradeClassMap;
 use Comrade\Shared\Message\RunnerResult;
 use Comrade\Shared\Message\Part\SubJob;
 use Comrade\Shared\Message\RunJob;
@@ -18,7 +17,6 @@ use Interop\Amqp\AmqpContext;
 use Interop\Queue\PsrMessage;
 use function Makasim\Values\get_value;
 use function Makasim\Values\register_cast_hooks;
-use function Makasim\Values\register_global_hook;
 use function Makasim\Values\register_object_hooks;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -31,17 +29,6 @@ $logger = new ConsoleLogger($output);
 
 register_cast_hooks();
 register_object_hooks();
-
-register_global_hook('get_object_class', function(array $values) {
-    if (isset($values['schema'])) {
-        $classMap = (new ComradeClassMap())->get();
-        if (false == array_key_exists($values['schema'], $classMap)) {
-            throw new \LogicException(sprintf('An object has schema set "%s" but there is no class for it', $values['schema']));
-        }
-
-        return $classMap[$values['schema']];
-    }
-});
 
 /** @var AmqpContext $c */
 $c = dsn_to_context(getenv('ENQUEUE_DSN'));

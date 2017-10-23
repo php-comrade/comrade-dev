@@ -2,6 +2,7 @@
 namespace App\Message;
 
 use App\Commands;
+use Comrade\Shared\ClassClosure;
 use Comrade\Shared\Model\CreateTrait;
 use Comrade\Shared\Model\Trigger;
 use function Makasim\Values\get_object;
@@ -27,7 +28,7 @@ class ExecuteJob implements \JsonSerializable
 
     public function getTrigger(): Trigger
     {
-        return get_object($this, 'trigger');
+        return get_object($this, 'trigger', ClassClosure::create());
     }
 
     /**

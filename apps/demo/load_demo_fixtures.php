@@ -2,7 +2,6 @@
 <?php
 require __DIR__.'/vendor/autoload.php';
 
-use Comrade\Shared\ComradeClassMap;
 use Comrade\Shared\Message\CreateJob;
 use Comrade\Shared\Model\CronTrigger;
 use Comrade\Shared\Model\ExclusivePolicy;
@@ -20,7 +19,6 @@ use Enqueue\Util\UUID;
 use Interop\Amqp\AmqpContext;
 use Interop\Queue\PsrContext;
 use function Makasim\Values\register_cast_hooks;
-use function Makasim\Values\register_global_hook;
 use function Makasim\Values\register_object_hooks;
 use MongoDB\Client;
 use Symfony\Component\Console\Command\Command;
@@ -272,17 +270,6 @@ class LoadDemoFixturesCommand extends Command
 
 register_cast_hooks();
 register_object_hooks();
-
-register_global_hook('get_object_class', function(array $values) {
-    if (isset($values['schema'])) {
-        $classMap = (new ComradeClassMap())->get();
-        if (false == array_key_exists($values['schema'], $classMap)) {
-            throw new \LogicException(sprintf('An object has schema set "%s" but there is no class for it', $values['schema']));
-        }
-
-        return $classMap[$values['schema']];
-    }
-});
 
 /** @var AmqpContext $queueContext */
 $queueContext = dsn_to_context(getenv('ENQUEUE_DSN'));

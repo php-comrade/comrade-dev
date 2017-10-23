@@ -34,7 +34,6 @@ class NotifyParentProcessBehavior implements Behavior
         }
 
         $this->producer->sendCommand(Commands::PVM_HANDLE_ASYNC_TRANSITION, [
-            'process' => $trigger->getParentProcessId(),
             'token' => $trigger->getParentToken(),
         ]);
 

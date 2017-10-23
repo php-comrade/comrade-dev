@@ -5,11 +5,7 @@ namespace App;
 use App\Infra\DependencyInjection\RegisterPvmBehaviorPass;
 use App\Infra\Yadm\ObjectBuilderHook;
 use App\Message\ExecuteJob;
-use App\Model\PvmProcess;
-use Comrade\Shared\ComradeClassMap;
-use Formapro\Pvm\PvmClassMap;
 use function Makasim\Values\register_cast_hooks;
-use function Makasim\Values\register_hook;
 use function Makasim\Values\register_object_hooks;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
@@ -90,16 +86,7 @@ final class Kernel extends BaseKernel
         register_cast_hooks();
         register_object_hooks();
 
-        register_hook(PvmProcess::class, 'post_build_sub_object', function($object, $context, $contextKey) {
-            if (method_exists($object, 'setProcess')) {
-                $object->setProcess($context);
-            }
-        });
-
-        (new ObjectBuilderHook(array_replace(
-            (new ComradeClassMap())->get(),
-            (new PvmClassMap())->get(),
-            [
+        (new ObjectBuilderHook([
                 // comrade service classes here
                 \Formapro\Pvm\Process::SCHEMA => \App\Model\PvmProcess::class,
                 \Formapro\Pvm\Token::SCHEMA => \App\Model\PvmToken::class,
@@ -112,7 +99,7 @@ final class Kernel extends BaseKernel
                 \Comrade\Shared\Model\SubJob::SCHEMA => \App\Model\SubJob::class,
                 \Comrade\Shared\Model\RetryFailedPolicy::SCHEMA => \App\Model\RetryFailedPolicy::class,
                 \Comrade\Shared\Model\RunSubJobsPolicy::SCHEMA => \App\Model\RunSubJobsPolicy::class,
-            ]
-        )))->register();
+        ]
+        ))->register();
     }
 }

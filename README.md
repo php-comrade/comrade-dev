@@ -130,13 +130,11 @@ use Comrade\Shared\Model\JobTemplate;
 use Comrade\Shared\Model\QueueRunner;
 use Comrade\Shared\Model\GracePeriodPolicy;
 use Comrade\Shared\Message\CreateJob;
-use Comrade\Shared\ComradeClassMap;
 use Comrade\Shared\Model\CronTrigger;
 use Enqueue\Util\UUID;
 use Enqueue\Util\JSON;
 use function Enqueue\dsn_to_context;
 use function Makasim\Values\register_cast_hooks;
-use function Makasim\Values\register_global_hook;
 use function Makasim\Values\register_object_hooks;
 use Interop\Queue\PsrContext;
 
@@ -144,17 +142,6 @@ require_once __DIR__.'/vendor/autoload.php';
 
 register_cast_hooks();
 register_object_hooks();
-
-register_global_hook('get_object_class', function(array $values) {
-    if (isset($values['schema'])) {
-        $classMap = (new ComradeClassMap())->get();
-        if (false == array_key_exists($values['schema'], $classMap)) {
-            throw new \LogicException(sprintf('An object has schema set "%s" but there is no class for it', $values['schema']));
-        }
-
-        return $classMap[$values['schema']];
-    }
-});
 
 /** @var PsrContext $queueContext */
 $context = dsn_to_context(getenv('ENQUEUE_DSN'));
@@ -192,7 +179,6 @@ The job worker could look like this:
 ```php
 <?php
 
-use Comrade\Shared\ComradeClassMap;
 use Comrade\Shared\Message\RunJob;
 use Comrade\Shared\Model\JobAction;
 use Comrade\Client\ClientQueueRunner;
@@ -202,21 +188,10 @@ use function Enqueue\dsn_to_context;
 use Enqueue\Consumption\QueueConsumer;
 use Enqueue\Consumption\Result;
 use function Makasim\Values\register_cast_hooks;
-use function Makasim\Values\register_global_hook;
 use function Makasim\Values\register_object_hooks;
 
 register_cast_hooks();
 register_object_hooks();
-register_global_hook('get_object_class', function(array $values) {
-    if (isset($values['schema'])) {
-        $classMap = (new ComradeClassMap())->get();
-        if (false == array_key_exists($values['schema'], $classMap)) {
-            throw new \LogicException(sprintf('An object has schema set "%s" but there is no class for it', $values['schema']));
-        }
-
-        return $classMap[$values['schema']];
-    }
-});
 
 /** @var PsrContext $c */
 $c = dsn_to_context(getenv('ENQUEUE_DSN'));

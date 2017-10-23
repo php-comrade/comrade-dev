@@ -1,10 +1,8 @@
 <?php
 
-use Comrade\Shared\ComradeClassMap;
 use Comrade\Shared\Message\RunJob;
 use Comrade\Shared\Model\JobAction;
 use function Makasim\Values\register_cast_hooks;
-use function Makasim\Values\register_global_hook;
 use function Makasim\Values\register_object_hooks;
 use Psr\Http\Message\ResponseInterface;
 
@@ -29,17 +27,6 @@ HTML;
 
 register_cast_hooks();
 register_object_hooks();
-
-register_global_hook('get_object_class', function(array $values) {
-    if (isset($values['schema'])) {
-        $classMap = (new ComradeClassMap())->get();
-        if (false == array_key_exists($values['schema'], $classMap)) {
-            throw new \LogicException(sprintf('An object has schema set "%s" but there is no class for it', $values['schema']));
-        }
-
-        return $classMap[$values['schema']];
-    }
-});
 
 $runner = new \Comrade\Client\ClientHttpRunner('http://jm');
 
