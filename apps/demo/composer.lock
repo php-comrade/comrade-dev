@@ -582,20 +582,20 @@
         },
         {
             "name": "makasim/values",
-            "version": "0.3.1",
+            "version": "0.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/makasim/values.git",
-                "reference": "31ee4c5dc4dc87c23211125f8daf3243d86e0336"
+                "reference": "5a03e8be0f1743588b171c06698f70af5cd26ccc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/makasim/values/zipball/31ee4c5dc4dc87c23211125f8daf3243d86e0336",
-                "reference": "31ee4c5dc4dc87c23211125f8daf3243d86e0336",
+                "url": "https://api.github.com/repos/makasim/values/zipball/5a03e8be0f1743588b171c06698f70af5cd26ccc",
+                "reference": "5a03e8be0f1743588b171c06698f70af5cd26ccc",
                 "shasum": ""
             },
             "require": {
-                "php": "^7"
+                "php": "^7.1"
             },
             "require-dev": {
                 "phpunit/phpunit": "^6"
@@ -628,7 +628,7 @@
             "keywords": [
                 "model"
             ],
-            "time": "2017-10-23T11:38:22+00:00"
+            "time": "2017-10-24T11:21:31+00:00"
         },
         {
             "name": "mongodb/mongodb",

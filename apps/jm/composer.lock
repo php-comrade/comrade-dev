@@ -1097,12 +1097,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/formapro/pvm.git",
-                "reference": "2fb184a03949acc6eb724574fbddfd183c7dc450"
+                "reference": "ed72e4c6e02a766f94c6d8f3698db8b8cc80f5cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/formapro/pvm/zipball/2fb184a03949acc6eb724574fbddfd183c7dc450",
-                "reference": "2fb184a03949acc6eb724574fbddfd183c7dc450",
+                "url": "https://api.github.com/repos/formapro/pvm/zipball/ed72e4c6e02a766f94c6d8f3698db8b8cc80f5cc",
+                "reference": "ed72e4c6e02a766f94c6d8f3698db8b8cc80f5cc",
                 "shasum": ""
             },
             "require": {
@@ -1139,7 +1139,7 @@
                 "process",
                 "workflow"
             ],
-            "time": "2017-10-23T16:24:12+00:00"
+            "time": "2017-10-24T11:34:59+00:00"
         },
         {
             "name": "g4/cron",
@@ -1523,20 +1523,20 @@
         },
         {
             "name": "makasim/values",
-            "version": "0.3.1",
+            "version": "0.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/makasim/values.git",
-                "reference": "31ee4c5dc4dc87c23211125f8daf3243d86e0336"
+                "reference": "5a03e8be0f1743588b171c06698f70af5cd26ccc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/makasim/values/zipball/31ee4c5dc4dc87c23211125f8daf3243d86e0336",
-                "reference": "31ee4c5dc4dc87c23211125f8daf3243d86e0336",
+                "url": "https://api.github.com/repos/makasim/values/zipball/5a03e8be0f1743588b171c06698f70af5cd26ccc",
+                "reference": "5a03e8be0f1743588b171c06698f70af5cd26ccc",
                 "shasum": ""
             },
             "require": {
-                "php": "^7"
+                "php": "^7.1"
             },
             "require-dev": {
                 "phpunit/phpunit": "^6"
@@ -1569,7 +1569,7 @@
             "keywords": [
                 "model"
             ],
-            "time": "2017-10-23T11:38:22+00:00"
+            "time": "2017-10-24T11:21:31+00:00"
         },
         {
             "name": "makasim/yadm",
@@ -1577,16 +1577,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/makasim/yadm.git",
-                "reference": "f03d3e5eaf792c9a8c2136b5dd0cd6bd42ea4604"
+                "reference": "522854b3af8a34b16dd7e1d228e0b8a2056559dd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/makasim/yadm/zipball/f03d3e5eaf792c9a8c2136b5dd0cd6bd42ea4604",
-                "reference": "f03d3e5eaf792c9a8c2136b5dd0cd6bd42ea4604",
+                "url": "https://api.github.com/repos/makasim/yadm/zipball/522854b3af8a34b16dd7e1d228e0b8a2056559dd",
+                "reference": "522854b3af8a34b16dd7e1d228e0b8a2056559dd",
                 "shasum": ""
             },
             "require": {
-                "makasim/values": "^0.2.2|^0.3",
+                "makasim/values": "^0.3.3",
                 "mikemccabe/json-patch-php": "^0.1",
                 "mongodb/mongodb": "^1",
                 "php": "^7.0"
@@ -1625,7 +1625,7 @@
                 "odm",
                 "storage"
             ],
-            "time": "2017-10-20T12:19:56+00:00"
+            "time": "2017-10-24T11:39:48+00:00"
         },
         {
             "name": "makasim/yadm-bundle",
@@ -2780,16 +2780,16 @@
         },
         {
             "name": "react/socket",
-            "version": "v0.8.4",
+            "version": "v0.8.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/reactphp/socket.git",
-                "reference": "ce2b577c2d69ee071c3f9e552942c320caa87e0a"
+                "reference": "d169d1ed24e39bf182781d72ddd224dbbd449aa8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/reactphp/socket/zipball/ce2b577c2d69ee071c3f9e552942c320caa87e0a",
-                "reference": "ce2b577c2d69ee071c3f9e552942c320caa87e0a",
+                "url": "https://api.github.com/repos/reactphp/socket/zipball/d169d1ed24e39bf182781d72ddd224dbbd449aa8",
+                "reference": "d169d1ed24e39bf182781d72ddd224dbbd449aa8",
                 "shasum": ""
             },
             "require": {
@@ -2802,8 +2802,8 @@
                 "react/stream": "^1.0 || ^0.7.1"
             },
             "require-dev": {
-                "clue/block-react": "^1.1",
-                "phpunit/phpunit": "~4.8"
+                "clue/block-react": "^1.2",
+                "phpunit/phpunit": "^5.0 || ^4.8"
             },
             "type": "library",
             "autoload": {
@@ -2823,7 +2823,7 @@
                 "reactphp",
                 "stream"
             ],
-            "time": "2017-09-16T17:16:49+00:00"
+            "time": "2017-10-23T21:45:58+00:00"
         },
         {
             "name": "react/stream",
