@@ -17,6 +17,11 @@ Comrade is job scheduler and manager service.
 * Standalone micro service,
 * Containerized
 
+## Online Demo
+
+The Comrade UI is available at [http://demo.comrade.forma-pro.com](http://demo.comrade.forma-pro.com/settings/base-url?apiBaseUrl=http://demo.comrade.forma-pro.com:81) and the service itself is at http://demo.comrade.forma-pro.com:81.
+
+
 ## Installation
 
 The best way to run Comrade in production is to use pre-build Docker containers.
@@ -108,10 +113,6 @@ $ bin/dup
 ```
 
 The Comrade service will be available at `jm.loc` host and its UI at `ui.jm.loc`.
-
-## Online Demo
-
-The Comrade UI is available at [http://demo.comrade.forma-pro.com](http://ui.jm.loc/settings/base-url?apiBaseUrl=http://demo.comrade.forma-pro.com:81) and the service itself is at http://demo.comrade.forma-pro.com:81.
 
 ## PHP client.
 
