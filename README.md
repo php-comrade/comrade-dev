@@ -203,7 +203,7 @@ $queueConsumer = new QueueConsumer($c);
 
 $queueConsumer->bind('demo_success_job', function(PsrMessage $message) use ($runner) {
     $runner->run($message, function(RunJob $runJob) {
-        do_something_important(rand(200, 1000));
+        // do your stuff here. 
 
         return JobAction::COMPLETE;
     });
