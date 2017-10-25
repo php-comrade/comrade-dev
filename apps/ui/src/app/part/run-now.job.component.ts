@@ -5,7 +5,7 @@ import { JobTemplateService } from "../shared/job-template.service";
 @Component({
   selector: 'job-run-now',
   template: `
-<button 
+<button *ngIf="!jobTemplate.subJobPolicy || !jobTemplate.runner"
   type="button" 
   class="btn btn-primary btn-sm" 
   (click)="runNow(jobTemplate, $event)"

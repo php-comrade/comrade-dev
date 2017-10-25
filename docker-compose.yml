@@ -60,7 +60,12 @@ services:
     volumes:
       - './apps/jm:/jobs_dev/apps/jm:cached'
       - './pkg/php-shared:/jobs_dev/apps/jm/vendor/comrade/shared:cached'
+      - './docker/xdebug.ini:/etc/php/7.1/fpm/conf.d/xdebug.ini'
+      - './docker/xdebug.ini:/etc/php/7.1/cli/conf.d/xdebug.ini'
     env_file: 'apps/jm/.env'
+    environment:
+      - PHP_IDE_CONFIG=serverName=dl.dev
+      - XDEBUG_CONFIG="idekey=PHPSTORM"
 
   jmqr:
     image: 'formapro/nginx-php-fpm:latest-all-exts'

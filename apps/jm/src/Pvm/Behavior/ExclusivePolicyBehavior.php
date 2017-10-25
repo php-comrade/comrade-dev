@@ -72,7 +72,7 @@ class ExclusivePolicyBehavior implements Behavior
         });
 
         if (get_value($job, 'exclusive')) {
-            return $token->getTransition()->getName();
+            return $token->getCurrentTransition()->getTransition()->getName();
         }
 
         $this->changeJobStateService->transitionInFlow($job->getId(), 'terminate_on_duplicate');

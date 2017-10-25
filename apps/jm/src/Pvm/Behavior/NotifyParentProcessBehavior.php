@@ -37,6 +37,6 @@ class NotifyParentProcessBehavior implements Behavior
             'token' => $trigger->getParentToken(),
         ]);
 
-        return $token->getTransition()->getName();
+        return $token->getCurrentTransition()->getTransition()->getName();
     }
 }

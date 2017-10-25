@@ -47,6 +47,7 @@ yadm:
             storage_class: 'App\Storage\ProcessExecutionStorage'
             collection: 'pvm_process_execution'
             database: '%mongo_database%'
+            pessimistic_lock: true
 
         error:
             class: 'App\Infra\Error\Error'

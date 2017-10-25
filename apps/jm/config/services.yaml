@@ -40,7 +40,13 @@ services:
         arguments:
             - '@App\Storage\ProcessExecutionStorage'
 
+    formapro.pvm.token_locker:
+        class: 'Formapro\Pvm\Yadm\MongoTokenLocker'
+        arguments:
+            - '@yadm.process_execution.pessimistic_lock'
+
     Formapro\Pvm\ProcessStorage: '@formapro.pvm.process_execution_storage'
+    Formapro\Pvm\TokenLockerInterface: '@formapro.pvm.token_locker'
 
     Formapro\Pvm\DefaultBehaviorRegistry: ~
 

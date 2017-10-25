@@ -3,8 +3,8 @@
 namespace App;
 
 use App\Infra\DependencyInjection\RegisterPvmBehaviorPass;
-use App\Infra\Yadm\ObjectBuilderHook;
 use App\Message\ExecuteJob;
+use Makasim\Values\ObjectBuilderHook;
 use function Makasim\Values\register_cast_hooks;
 use function Makasim\Values\register_object_hooks;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -99,7 +99,6 @@ final class Kernel extends BaseKernel
                 \Comrade\Shared\Model\SubJob::SCHEMA => \App\Model\SubJob::class,
                 \Comrade\Shared\Model\RetryFailedPolicy::SCHEMA => \App\Model\RetryFailedPolicy::class,
                 \Comrade\Shared\Model\RunSubJobsPolicy::SCHEMA => \App\Model\RunSubJobsPolicy::class,
-        ]
-        ))->register();
+        ]))->register();
     }
 }

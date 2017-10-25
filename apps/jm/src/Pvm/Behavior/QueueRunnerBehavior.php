@@ -5,9 +5,7 @@ use App\JobStatus;
 use App\Model\PvmToken;
 use Comrade\Shared\Model\JobAction;
 use App\Service\ChangeJobStateService;
-use App\Topics;
 use App\Model\JobResult;
-use App\Model\PvmProcess;
 use App\Storage\JobStorage;
 use Comrade\Shared\Message\RunJob;
 use Comrade\Shared\Model\Job;
@@ -20,7 +18,6 @@ use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Exception\WaitExecutionException;
 use Formapro\Pvm\SignalBehavior;
 use Formapro\Pvm\Token;
-use function Makasim\Values\get_values;
 
 class QueueRunnerBehavior implements Behavior, SignalBehavior
 {
