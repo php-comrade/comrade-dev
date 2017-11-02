@@ -155,21 +155,21 @@
         },
         {
             "name": "enqueue/amqp-bunny",
-            "version": "0.8.0",
+            "version": "0.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/amqp-bunny.git",
-                "reference": "70d0e792770544be29c4d0a2e79587943e4a975c"
+                "reference": "204e48dc4c14b14902c86a4ec8cffd78dbcc5adf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/amqp-bunny/zipball/70d0e792770544be29c4d0a2e79587943e4a975c",
-                "reference": "70d0e792770544be29c4d0a2e79587943e4a975c",
+                "url": "https://api.github.com/repos/php-enqueue/amqp-bunny/zipball/204e48dc4c14b14902c86a4ec8cffd78dbcc5adf",
+                "reference": "204e48dc4c14b14902c86a4ec8cffd78dbcc5adf",
                 "shasum": ""
             },
             "require": {
                 "bunny/bunny": "^0.2.4",
-                "enqueue/amqp-tools": "^0.8@dev",
+                "enqueue/amqp-tools": "^0.8.4@dev",
                 "php": ">=5.6",
                 "queue-interop/amqp-interop": "^0.7@dev"
             },
@@ -210,20 +210,20 @@
                 "messaging",
                 "queue"
             ],
-            "time": "2017-10-18T14:35:03+00:00"
+            "time": "2017-11-01T13:44:31+00:00"
         },
         {
             "name": "enqueue/amqp-tools",
-            "version": "0.8.0",
+            "version": "0.8.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/amqp-tools.git",
-                "reference": "3a6b2eb1f9d00aa5d24171795061007588131c87"
+                "reference": "d554cd149a542d7627ffefbdceff92bf813787f1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/amqp-tools/zipball/3a6b2eb1f9d00aa5d24171795061007588131c87",
-                "reference": "3a6b2eb1f9d00aa5d24171795061007588131c87",
+                "url": "https://api.github.com/repos/php-enqueue/amqp-tools/zipball/d554cd149a542d7627ffefbdceff92bf813787f1",
+                "reference": "d554cd149a542d7627ffefbdceff92bf813787f1",
                 "shasum": ""
             },
             "require": {
@@ -260,20 +260,20 @@
                 "messaging",
                 "queue"
             ],
-            "time": "2017-10-17T11:44:42+00:00"
+            "time": "2017-11-02T12:10:00+00:00"
         },
         {
             "name": "enqueue/enqueue",
-            "version": "0.8.0",
+            "version": "0.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/enqueue.git",
-                "reference": "bddd869210e8fea982eb6f5b6dd5b3130c6eed8d"
+                "reference": "4e41fdd7bc8e6eb79bbb5b615d9a3d270ecc22c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/bddd869210e8fea982eb6f5b6dd5b3130c6eed8d",
-                "reference": "bddd869210e8fea982eb6f5b6dd5b3130c6eed8d",
+                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/4e41fdd7bc8e6eb79bbb5b615d9a3d270ecc22c9",
+                "reference": "4e41fdd7bc8e6eb79bbb5b615d9a3d270ecc22c9",
                 "shasum": ""
             },
             "require": {
@@ -345,7 +345,7 @@
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2017-10-19T09:28:50+00:00"
+            "time": "2017-10-30T15:04:29+00:00"
         },
         {
             "name": "enqueue/null",
@@ -632,21 +632,23 @@
         },
         {
             "name": "mongodb/mongodb",
-            "version": "1.1.2",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mongodb/mongo-php-library.git",
-                "reference": "a307dd60e71e1291c60927ea4f3a1905146063f5"
+                "reference": "5cffeb33b893b6bb04195b99ddc3955a29252339"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mongodb/mongo-php-library/zipball/a307dd60e71e1291c60927ea4f3a1905146063f5",
-                "reference": "a307dd60e71e1291c60927ea4f3a1905146063f5",
+                "url": "https://api.github.com/repos/mongodb/mongo-php-library/zipball/5cffeb33b893b6bb04195b99ddc3955a29252339",
+                "reference": "5cffeb33b893b6bb04195b99ddc3955a29252339",
                 "shasum": ""
             },
             "require": {
-                "ext-mongodb": "^1.2.0",
-                "php": ">=5.4"
+                "ext-hash": "*",
+                "ext-json": "*",
+                "ext-mongodb": "^1.3.0",
+                "php": ">=5.5"
             },
             "require-dev": {
                 "phpunit/phpunit": "^4.8"
@@ -686,7 +688,7 @@
                 "mongodb",
                 "persistence"
             ],
-            "time": "2017-02-16T18:40:32+00:00"
+            "time": "2017-10-27T19:42:57+00:00"
         },
         {
             "name": "paragonie/random_compat",

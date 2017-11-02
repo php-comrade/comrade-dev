@@ -63,6 +63,9 @@ class LoadDemoFixturesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        // wait for services to start.
+        sleep(10);
+
         if ($input->getOption('drop')) {
             $db = parse_url(getenv('MONGO_DSN'), PHP_URL_PATH);
             $this->client->dropDatabase(trim($db, '/'));

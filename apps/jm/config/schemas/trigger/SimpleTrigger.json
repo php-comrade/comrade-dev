@@ -6,12 +6,7 @@
     {
       "type": "object",
       "properties": {
-        "schema": {
-          "type": "string",
-          "enum": [
-            "http://comrade.forma-pro.com/schemas/trigger/SimpleTrigger.json"
-          ]
-        },
+        "schema": { "type": "string", "enum": ["http://comrade.forma-pro.com/schemas/trigger/SimpleTrigger.json"]},
         "startAt": {
           "$ref": "../date.json"
         },

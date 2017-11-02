@@ -6,12 +6,7 @@
     {
       "type": "object",
       "properties": {
-        "schema": {
-          "type": "string",
-          "enum": [
-            "http://comrade.forma-pro.com/schemas/trigger/NowTrigger.json"
-          ]
-        },
+        "schema": { "type": "string", "enum": ["http://comrade.forma-pro.com/schemas/trigger/NowTrigger.json"]},
         "payload": { "type": ["null", "string", "number", "object", "array"] }
       }
     }]
