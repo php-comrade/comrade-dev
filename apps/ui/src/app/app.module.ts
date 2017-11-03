@@ -63,7 +63,6 @@ import {JobStateGraphComponent} from "./part/job-state-graph.component";
 import {JobExecutionTabComponent} from "./part/job-execution-tab.component";
 import {TemplateTriggersComponent} from "./part/template-triggers.component";
 
-
 @NgModule({
   declarations: [
     AppComponent,

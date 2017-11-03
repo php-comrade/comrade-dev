@@ -19,7 +19,7 @@ Comrade is job scheduler and manager service.
 
 ## Online Demo
 
-The Comrade UI is available at [http://demo.comrade.forma-pro.com](http://demo.comrade.forma-pro.com/settings/base-url?apiBaseUrl=http://demo.comrade.forma-pro.com:81) and the service itself is at http://demo.comrade.forma-pro.com:81.
+The Comrade UI is available at [http://demo.comrade.forma-pro.com](http://demo.comrade.forma-pro.com/?apiBaseUrl=http%3A%2F%2Fdemo.comrade.forma-pro.com:81) and the service itself is at http://demo.comrade.forma-pro.com:81.
 
 
 ## Installation

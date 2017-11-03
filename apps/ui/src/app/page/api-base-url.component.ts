@@ -4,7 +4,7 @@ import 'rxjs/add/operator/filter';
 import {HttpService} from "../shared/http.service";
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/observable/of';
-import {ActivatedRoute, ParamMap, Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {ToastyService} from "../shared/toasty.service";
 
 @Component({
@@ -45,22 +45,6 @@ export class ApiBaseUrlComponent implements OnInit {
     constructor(private httpService: HttpService, private router: Router, private route: ActivatedRoute, private toastyService: ToastyService) {}
 
     ngOnInit(): void {
-      this.route.queryParamMap.take(1).subscribe((params: ParamMap) => {
-        let apiBaseUrl = params.get('apiBaseUrl');
-        if (apiBaseUrl) {
-          this.httpService.getInfo(apiBaseUrl)
-            .catch(err => Observable.throw(err))
-            .subscribe(() => {
-                this.httpService.changeApiBaseUrl(apiBaseUrl, true);
-
-                this.toastyService.apiBaseUrlForced(apiBaseUrl);
-
-                this.router.navigate(['']);
-            })
-          ;
-        }
-      });
-
       let apiBaseUrl = this.httpService.getApiBaseUrl();
       if (typeof apiBaseUrl !== 'undefined') {
         this.apiBaseUrl = apiBaseUrl;

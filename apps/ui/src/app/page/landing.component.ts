@@ -4,6 +4,8 @@ import 'rxjs/add/operator/map';
 import {Response} from "@angular/http";
 import {WampService} from "../shared/wamp.service";
 import {EventMessage} from "thruway.js/htdocs/thruway.js/src/Messages/EventMessage";
+import {ActivatedRoute, ParamMap} from "@angular/router";
+import {ToastyService} from "../shared/toasty.service";
 
 interface GlobalMetrics {
     successJobsLastMinute: number,
@@ -15,12 +17,17 @@ interface GlobalMetrics {
 @Component({
   selector: 'landing',
   template: `
-      <div class="row">
+      <div *ngIf="apiBaseUrl" class="row">
           <div class="col-3">
               Connected to:
           </div>
           <div class="col-6">
               {{ this.apiBaseUrl }} (<a routerLink="/settings/base-url">change</a>)
+          </div>
+      </div>
+      <div *ngIf="!apiBaseUrl" class="row">
+          <div class="col-6">
+              Please <a routerLink="/settings/base-url">connect</a> to Comrade server first:
           </div>
       </div>
       <div *ngIf="globalMetrics" class="row">
@@ -55,7 +62,7 @@ interface GlobalMetrics {
               {{ globalMetrics.failedJobsLastHour }}
           </div>
       </div>
-      <div *ngIf="!globalMetrics" class="row">
+      <div *ngIf="apiBaseUrl && !globalMetrics" class="row">
           <div class="col-3">
               Loading statistics
           </div>
@@ -67,21 +74,40 @@ export class LandingComponent implements OnInit {
 
   globalMetrics: GlobalMetrics;
 
-  constructor(private httpService: HttpService, private wamp: WampService) {}
+  constructor(
+    private httpService: HttpService,
+    private wamp: WampService,
+    private route: ActivatedRoute,
+    private toastyService: ToastyService
+  ) {}
 
   ngOnInit(): void {
-      this.apiBaseUrl = this.httpService.getApiBaseUrl();
+      this.route.queryParamMap.subscribe((params: ParamMap) => {
+          let url = params.get('apiBaseUrl');
+          if (!url) {
+              return;
+          }
 
-      this.httpService.get('/api/metrics/global')
+          this.httpService.getInfo(url).subscribe(() => {
+              this.httpService.changeApiBaseUrl(url, true);
+              this.toastyService.apiBaseUrlForced(url);
+          });
+      });
+
+      this.httpService.getApiBaseUrlObservable().subscribe((apiBaseUrl) => {
+        this.apiBaseUrl = apiBaseUrl;
+
+        this.httpService.get('/api/metrics/global')
           .map((res: Response) => res.json().metrics)
           .subscribe((metrics: GlobalMetrics) => this.globalMetrics = metrics)
-      ;
+        ;
 
-      this.wamp.topic('comrade.job_updated')
+        this.wamp.topic('comrade.job_updated')
           .map((event: EventMessage) => event.args[0])
           .switchMap(() => this.httpService.get('/api/metrics/global'))
           .map((res: Response) => res.json().metrics)
           .subscribe((metrics: GlobalMetrics) => this.globalMetrics = metrics)
-      ;
+        ;
+      });
   }
 }

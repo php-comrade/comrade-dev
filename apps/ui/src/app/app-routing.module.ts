@@ -12,7 +12,7 @@ import {ApiGuard} from "./shared/api.guard";
 import {LandingComponent} from "./page/landing.component";
 
 const routes: Routes = [
-    { path: '', component: LandingComponent, canActivate: [ApiGuard] },
+    { path: '', component: LandingComponent },
     { path: 'timeline', component: TimelineComponent, canActivate: [ApiGuard] },
     { path: 'template/list',  component: TemplateListComponent, canActivate: [ApiGuard] },
     { path: 'template/new',  component: TemplateNewComponent, canActivate: [ApiGuard] },
