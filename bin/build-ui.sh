@@ -22,7 +22,7 @@ rm -rf build/ui-container/node_modules
 
 cp docker/ui/release/Dockerfile build/ui-container
 cp docker/ui/release/nginx.conf build/ui-container
-(cd build/ui-container; docker build --rm --force-rm --tag "formapro/comrade-ui:$1" .)
+(cd build/ui-container; docker build --rm --pull --force-rm --tag "formapro/comrade-ui:$1" .)
 
 docker login --username="$DOCKER_USER" --password="$DOCKER_PASSWORD"
 docker push "formapro/comrade-ui:$1"

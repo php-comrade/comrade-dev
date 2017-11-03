@@ -35,7 +35,7 @@ cp -f docker/jm/release/.env build/jm-container
 (cd build/jm-container; ENQUEUE_DSN=amqp: MONGO_DSN=mongodb://localhost:27017 bin/console cache:warmup)
 
 cp docker/jm/release/Dockerfile build/jm-container
-(cd build/jm-container; docker build --rm --force-rm --tag "formapro/comrade:$1" .)
+(cd build/jm-container; docker build --rm --pull --force-rm --tag "formapro/comrade:$1" .)
 
 docker login --username="$DOCKER_USER" --password="$DOCKER_PASSWORD"
 docker push "formapro/comrade:$1"
