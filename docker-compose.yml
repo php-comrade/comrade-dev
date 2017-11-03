@@ -50,7 +50,7 @@ services:
   jmc:
     image: 'formapro/nginx-php-fpm:latest-all-exts'
     restart: 'always'
-    entrypoint: 'php bin/console enqueue:consume --setup-broker --skip=quartz_rpc --receive-timeout=10000 --time-limit="+3600 seconds" --memory-limit=100 -vvv'
+    entrypoint: 'php bin/console enqueue:consume --setup-broker --skip=quartz_rpc --receive-timeout=10000 --time-limit="+3600 seconds" --memory-limit=300 -vvv'
     working_dir: '/jobs_dev/apps/jm'
     depends_on:
       - 'rabbitmq'
@@ -70,7 +70,7 @@ services:
   jmqr:
     image: 'formapro/nginx-php-fpm:latest-all-exts'
     restart: 'always'
-    entrypoint: 'php bin/console enqueue:consume quartz_rpc --setup-broker --receive-timeout=10000 --time-limit="+3600 seconds" --memory-limit=100 -vvv'
+    entrypoint: 'php bin/console enqueue:consume quartz_rpc --setup-broker --receive-timeout=10000 --time-limit="+3600 seconds" --memory-limit=300 -vvv'
     working_dir: '/jobs_dev/apps/jm'
     depends_on:
       - 'rabbitmq'
