@@ -73,6 +73,10 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
         if (PsrProcessor::REJECT !== (string) $context->getResult()) {
             return;
         }
+        if (StoreInternalErrorProcessor::PROCESSOR_NAME == $context->getPsrMessage()->getProperty(Config::PARAMETER_PROCESSOR_NAME)) {
+            // do not try to store rejections happened while trying to store an error. it must end up being an endless cycle.
+            return;
+        }
 
         $error = $this->createNewError();
         $error->setValue('queue.message', $this->convertQueueMessage($context->getPsrMessage()));
@@ -92,19 +96,21 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
             return;
         }
 
-        if (false == $context->getPsrMessage()) {
-            return;
-        }
-
-        if (StoreInternalErrorProcessor::PROCESSOR_NAME == $context->getPsrMessage()->getProperty(Config::PARAMETER_PROCESSOR_NAME)) {
+        if ($context->getPsrMessage() && StoreInternalErrorProcessor::PROCESSOR_NAME == $context->getPsrMessage()->getProperty(Config::PARAMETER_PROCESSOR_NAME)) {
             // do not try to store errors happened while trying to store another error. it must end up being an endless cycle.
             return;
         }
 
-
         $error = $this->createNewError();
         $error->setValue('error', $this->convertThrowable($context->getException()));
-        $error->setValue('queue.message', $this->convertQueueMessage($context->getPsrMessage()));
+
+        if ($context->getPsrMessage()) {
+            $error->setValue('queue.message', $this->convertQueueMessage($context->getPsrMessage()));
+        }
+        if ($result = $context->getResult()) {
+            $error->setValue('queue.result.status', (string) $result);
+            $error->setValue('queue.result.reason', $result instanceof Result ? $result->getReason() : '');
+        }
 
         try {
             $this->producer->sendEvent(Topics::INTERNAL_ERROR, $error);
@@ -161,12 +167,13 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
         return $rawError;
     }
 
-    private function convertQueueMessage(PsrMessage $message):array
+    private function convertQueueMessage(PsrMessage $message): array
     {
         return [
-            'properties' => $message->getProperties(),
-            'headers' => $message->getHeaders(),
-            'body' => $message->getBody(),
+            // key might contain a dot and mongodb complains on it"
+            'properties' => json_encode($message->getProperties()),
+            'headers' => json_encode($message->getHeaders()),
+            'body' => str_pad($message->getBody(), 1000, ' [...]'),
             'isRedelivered' => $message->isRedelivered(),
             'topicName' => $message->getProperty(Config::PARAMETER_TOPIC_NAME),
             'processorName' => $message->getProperty(Config::PARAMETER_PROCESSOR_NAME),
