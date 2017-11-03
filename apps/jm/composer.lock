@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "b724e973ffe520e56cf030938cef4085",
+    "content-hash": "c8345b7b5dc1fc2092ec344a9ff352aa",
     "packages": [
         {
             "name": "bunny/bunny",
@@ -1097,12 +1097,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/formapro/pvm.git",
-                "reference": "5db9225841edefbf835dd6cfcb61ef1169fd2355"
+                "reference": "d5e989a77eb1540a93e69abacc446b3d7937292d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/formapro/pvm/zipball/5db9225841edefbf835dd6cfcb61ef1169fd2355",
-                "reference": "5db9225841edefbf835dd6cfcb61ef1169fd2355",
+                "url": "https://api.github.com/repos/formapro/pvm/zipball/d5e989a77eb1540a93e69abacc446b3d7937292d",
+                "reference": "d5e989a77eb1540a93e69abacc446b3d7937292d",
                 "shasum": ""
             },
             "require": {
@@ -1139,7 +1139,7 @@
                 "process",
                 "workflow"
             ],
-            "time": "2017-10-25T12:25:02+00:00"
+            "time": "2017-11-03T12:51:51+00:00"
         },
         {
             "name": "g4/cron",
@@ -3598,16 +3598,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.0.38",
+            "version": "v1.0.39",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "321a45a4668a583107e7474d077b5b58fdae2b44"
+                "reference": "1f769098ee289320e1b86404bde02825cbae9488"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/321a45a4668a583107e7474d077b5b58fdae2b44",
-                "reference": "321a45a4668a583107e7474d077b5b58fdae2b44",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/1f769098ee289320e1b86404bde02825cbae9488",
+                "reference": "1f769098ee289320e1b86404bde02825cbae9488",
                 "shasum": ""
             },
             "require": {
@@ -3640,7 +3640,7 @@
                     "email": "fabien.potencier@gmail.com"
                 }
             ],
-            "time": "2017-10-31T23:27:40+00:00"
+            "time": "2017-11-02T23:43:15+00:00"
         },
         {
             "name": "symfony/framework-bundle",

@@ -47,7 +47,7 @@ class RetryFailedBehavior implements Behavior
     {
         try {
             /** @var Job $job */
-            $job = $this->changeJobStateService->transitionInFlow($token->getJobId(), JobAction::RETRY, function(Job $job) {
+            $job = $this->changeJobStateService->transition($token->getJobId(), JobAction::RETRY, function(Job $job) {
                 $job->getRetryFailedPolicy()->incrementRetryAttempts();
             });
         } catch (NotAllowedTransitionException $e) {
