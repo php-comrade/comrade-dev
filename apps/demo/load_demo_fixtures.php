@@ -63,8 +63,8 @@ class LoadDemoFixturesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // wait for services to start.
-        sleep(10);
+        $this->waitForService(getenv('MONGO_DSN'));
+        $this->waitForService(getenv('ENQUEUE_DSN'));
 
         if ($input->getOption('drop')) {
             $db = parse_url(getenv('MONGO_DSN'), PHP_URL_PATH);
@@ -268,6 +268,30 @@ class LoadDemoFixturesCommand extends Command
         $message = $this->context->createMessage(JSON::encode($createJob));
 
         $this->context->createProducer()->send($queue, $message);
+    }
+
+    private function waitForService($dsn)
+    {
+        $fp = null;
+        $limit = time() + 20;
+        $host = parse_url($dsn, PHP_URL_HOST);
+        $port = parse_url($dsn, PHP_URL_PORT);
+
+        try {
+            do {
+                usleep(100000);
+
+                $fp = fsockopen($host, $port);
+            } while (false == is_resource($fp) || $limit < time());
+
+            if (false == $fp) {
+                throw new \LogicException(sprintf('Failed to connect to "%s:%s"', $host, $port));
+            }
+        } finally {
+            if (is_resource($fp)) {
+                fclose($fp);
+            }
+        }
     }
 }
 
