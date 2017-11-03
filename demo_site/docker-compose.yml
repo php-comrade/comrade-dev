@@ -73,18 +73,6 @@ services:
     deploy:
       mode: 'global'
 
-  seeds:
-    image: 'formapro/comrade-demo:latest'
-    entrypoint: 'php load_demo_fixtures.php --drop --trigger=cron -vvv'
-    depends_on:
-      - 'rabbitmq'
-      - 'mongo'
-    env_file: '/.env'
-    deploy:
-      mode: 'global'
-      restart_policy:
-        condition: 'none'
-
   rabbitmq:
     image: 'enqueue/rabbitmq:latest'
     environment:
