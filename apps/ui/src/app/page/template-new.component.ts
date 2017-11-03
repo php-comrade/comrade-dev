@@ -104,6 +104,8 @@ export class TemplateNewComponent implements OnInit {
   }
 
   onTriggerAdded(trigger: Trigger) {
+    trigger.templateId = this.jobTemplate.templateId;
+
     this.createJob.addTrigger(trigger);
 
     if (trigger instanceof CronTrigger) {
