@@ -5,6 +5,7 @@ use App\Topics;
 use App\Infra\Error\Error;
 use App\Infra\Error\ErrorStorage;
 use Enqueue\Client\TopicSubscriberInterface;
+use Enqueue\Consumption\Result;
 use Enqueue\Util\JSON;
 use Interop\Queue\PsrContext;
 use Interop\Queue\PsrMessage;
@@ -33,16 +34,20 @@ class StoreInternalErrorProcessor implements PsrProcessor, TopicSubscriberInterf
      */
     public function process(PsrMessage $psrMessage, PsrContext $psrContext)
     {
-        $data = JSON::decode($psrMessage->getBody());
+        try {
+            $data = JSON::decode($psrMessage->getBody());
 
-        if (false == is_array($data)) {
-            throw new \LogicException('Data must be an array');
+            if (false == is_array($data)) {
+                throw new \LogicException('Data must be an array');
+            }
+
+            $error = new Error();
+            set_values($error, $data);
+
+            $this->errorStorage->insert($error);
+        } catch (\Throwable $e) {
+            return Result::reject(sprintf('%s: %s in %s line %s', get_class($e), $e->getMessage(), $e->getFile(), $e->getLine()));
         }
-
-        $error = new Error();
-        set_values($error, $data);
-
-        $this->errorStorage->insert($error);
 
         return self::ACK;
     }
