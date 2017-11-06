@@ -22,6 +22,7 @@ use Comrade\Shared\Model\JobTemplate;
 use Comrade\Shared\Model\NowTrigger;
 use Comrade\Shared\Model\QueueRunner;
 use Comrade\Shared\Model\RetryFailedPolicy;
+use Comrade\Shared\Model\RunDependentJobPolicy;
 use Comrade\Shared\Model\RunSubJobsPolicy;
 use Comrade\Shared\Model\SimpleTrigger;
 use Comrade\Shared\Model\SubJob;
@@ -53,6 +54,7 @@ final class ClassClosure
         SimpleTrigger::SCHEMA => SimpleTrigger::class,
         NowTrigger::SCHEMA => NowTrigger::class,
         SubJobTrigger::SCHEMA => SubJobTrigger::class,
+        RunDependentJobPolicy::SCHEMA => RunDependentJobPolicy::class,
 
         // messages
         RunSubJobsResult::SCHEMA => RunSubJobsResult::class,

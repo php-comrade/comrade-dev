@@ -3,6 +3,7 @@ namespace Comrade\Shared\Model;
 
 use Comrade\Shared\ClassClosure;
 use function Makasim\Values\add_object;
+use function Makasim\Values\add_value;
 use Makasim\Values\CastTrait;
 use function Makasim\Values\get_object;
 use function Makasim\Values\get_objects;
@@ -136,6 +137,22 @@ class JobTemplate
     public function setExclusivePolicy(ExclusivePolicy $exclusivePolicy = null): void
     {
         set_object($this, 'exclusivePolicy', $exclusivePolicy);
+    }
+
+    /**
+     * @param  RunDependentJobPolicy
+     */
+    public function addRunDependentJobPolicy(RunDependentJobPolicy $policy): void
+    {
+        add_object($this, 'runDependentJobPolicies', $policy);
+    }
+
+    /**
+     * @return RunDependentJobPolicy[]
+     */
+    public function getRunDependentJobPolicies(): \Traversable
+    {
+        return get_objects($this, 'runDependentJobPolicies', ClassClosure::create());
     }
 
     public function setRunner(Runner $executor): void

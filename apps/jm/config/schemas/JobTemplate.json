@@ -11,6 +11,10 @@
     "runSubJobsPolicy": { "$ref": "policy/RunSubJobsPolicy.json" },
     "subJobPolicy": { "$ref": "policy/SubJobPolicy.json" },
     "exclusivePolicy": { "$ref": "policy/ExclusivePolicy.json" },
+    "runDependentJobPolicies": {
+      "type": "array",
+      "items": { "$ref": "policy/RunDependentJobPolicy.json" }
+    },
     "runner": {
       "oneOf": [
         { "$ref": "runner/QueueRunner.json" },
