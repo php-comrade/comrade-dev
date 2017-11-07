@@ -130,7 +130,7 @@ services:
       - VIRTUAL_PORT=15672
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
-      - RABBITMQ_DEFAULT_VHOST=jm
+      - RABBITMQ_DEFAULT_VHOST=comrade
 
   mongo:
     image: 'mongo:3'

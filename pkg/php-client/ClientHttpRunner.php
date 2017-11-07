@@ -34,12 +34,17 @@ class ClientHttpRunner
             $metrics = CollectMetrics::start();
 
             $result = call_user_func($worker, $runJob);
-            if (is_string($result)) {
+            if (in_array($result, JobAction::getActions())) {
                 $result = RunnerResult::createFor($runJob, $result);
-            }
-
-            if (false == $result instanceof RunnerResult) {
-                throw new \LogicException(sprintf('The worker must return instance of "%s" or action (string)', RunnerResult::class));
+                $result->setResultPayload('');
+            } elseif(is_string($result)) {
+                $result = RunnerResult::createFor($runJob, JobAction::COMPLETE);
+                $result->setResultPayload($result);
+            } elseif ($result instanceof RunnerResult) {
+                // do nothing
+            } else {
+                $result = RunnerResult::createFor($runJob, JobAction::COMPLETE);
+                $result->setResultPayload(JSON::encode($result));
             }
 
             $result->setMetrics($metrics->stop()->getMetrics());

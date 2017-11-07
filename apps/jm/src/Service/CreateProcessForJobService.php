@@ -10,6 +10,7 @@ use App\Pvm\Behavior\IdleBehavior;
 use App\Pvm\Behavior\NotifyParentProcessBehavior;
 use App\Pvm\Behavior\RetryFailedBehavior;
 use App\Pvm\Behavior\QueueRunnerBehavior;
+use App\Pvm\Behavior\RunDependentJobsBehavior;
 use App\Pvm\Behavior\RunSubJobsProcessBehavior;
 use App\Pvm\Behavior\StartJobBehavior;
 use App\Pvm\Behavior\StartSubJobBehavior;
@@ -123,6 +124,15 @@ class CreateProcessForJobService
             $process->createTransition($runSubJobsTask, $waitSubJobsTask, 'wait_sub_jobs');
             $process->createTransition($subJobNotificationTask, $waitSubJobsTask, 'sub_job_notification');
             $process->createTransition($waitSubJobsTask, $finalizeJobTask, 'finalize');
+        }
+
+        if ($jobTemplate->getRunDependentJobPolicies()) {
+            $runDependentJobsTask = $process->createNode();
+            $runDependentJobsTask->setLabel('Run dependent jobs');
+            $runDependentJobsTask->setBehavior(RunDependentJobsBehavior::class);
+
+            $transition = $process->createTransition($finalizeJobTask, $runDependentJobsTask);
+            $transition->setAsync(true);
         }
 
         return $process;

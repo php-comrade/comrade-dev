@@ -50,19 +50,35 @@ class JobTemplate
     }
 
     /**
-     * @return array
+     * @return mixed
      */
-    public function getDetails(): ?array
+    public function getPayload()
     {
-        return get_value($this, 'details', []);
+        return get_value($this, 'payload');
     }
 
     /**
-     * @param array $details
+     * @param mixed
      */
-    public function setDetails($details): void
+    public function setPayload($payload): void
     {
-        set_value($this, 'details', $details);
+        set_value($this, 'payload', $payload);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResultPayload()
+    {
+        return get_value($this, 'resultPayload');
+    }
+
+    /**
+     * @param mixed
+     */
+    public function setResultPayload($payload): void
+    {
+        set_value($this, 'resultPayload', $payload);
     }
 
     /**
@@ -150,9 +166,9 @@ class JobTemplate
     /**
      * @return RunDependentJobPolicy[]
      */
-    public function getRunDependentJobPolicies(): \Traversable
+    public function getRunDependentJobPolicies(): array
     {
-        return get_objects($this, 'runDependentJobPolicies', ClassClosure::create());
+        return iterator_to_array(get_objects($this, 'runDependentJobPolicies', ClassClosure::create()));
     }
 
     public function setRunner(Runner $executor): void

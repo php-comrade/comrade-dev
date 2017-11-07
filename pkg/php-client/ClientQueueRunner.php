@@ -4,6 +4,8 @@ namespace Comrade\Client;
 use Comrade\Shared\Message\RunnerResult;
 use Comrade\Shared\Message\RunJob;
 use Comrade\Shared\Model\JobAction;
+use Comrade\Shared\Model\JobResult;
+use Comrade\Shared\Model\Runner;
 use Comrade\Shared\Model\Throwable;
 use Enqueue\Util\JSON;
 use Interop\Queue\PsrContext;
@@ -33,12 +35,14 @@ class ClientQueueRunner
             $metrics = CollectMetrics::start();
 
             $result = call_user_func($worker, $runJob);
-            if (is_string($result)) {
+            if ($result instanceof RunnerResult) {
+                // do nothing
+            } else if (in_array($result, JobAction::getActions())) {
                 $result = RunnerResult::createFor($runJob, $result);
-            }
-
-            if (false == $result instanceof RunnerResult) {
-                throw new \LogicException(sprintf('The worker must return instance of "%s" or action (string)', RunnerResult::class));
+            } else {
+                $resultPayload = $result;
+                $result = RunnerResult::createFor($runJob, JobAction::COMPLETE);
+                $result->setResultPayload($resultPayload);
             }
 
             $result->setMetrics($metrics->stop()->getMetrics());

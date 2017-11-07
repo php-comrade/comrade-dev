@@ -126,6 +126,7 @@ class HttpRunnerBehavior implements Behavior, SignalBehavior
 
             $job->addResult($result);
             $job->setCurrentResult($result);
+            $job->setResultPayload($runnerResult->getResultPayload());
 
             return $job;
         });

@@ -20,7 +20,7 @@ class RunDependentJobPolicy implements Policy
 
     public function isRunAlways(): bool
     {
-        get_value($this,' runAlways', false);
+        return get_value($this,'runAlways', false);
     }
 
     public function addRunOnStatus(string $status): void
@@ -33,7 +33,7 @@ class RunDependentJobPolicy implements Policy
      */
     public function getRunOnStatus(): array
     {
-        return iterator_to_array(get_value($this,'runOnStatus', []));
+        return get_value($this,'runOnStatus', []);
     }
 
     public function getTemplateId(): string

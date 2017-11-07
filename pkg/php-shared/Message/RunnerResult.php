@@ -65,6 +65,22 @@ class RunnerResult implements \JsonSerializable
         return get_value($this,'timestamp');
     }
 
+    /**
+     * @return mixed
+     */
+    public function getResultPayload()
+    {
+        return get_value($this, 'resultPayload');
+    }
+
+    /**
+     * @param mixed
+     */
+    public function setResultPayload($payload): void
+    {
+        set_value($this, 'resultPayload', $payload);
+    }
+
     public function setError(Throwable $error)
     {
         set_object($this, 'error', $error);

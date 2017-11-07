@@ -35,7 +35,7 @@ $c = dsn_to_context(getenv('ENQUEUE_DSN'));
 
 $runner = new ClientQueueRunner($c);
 
-foreach (['demo_success_job', 'demo_failed_job', 'demo_failed_with_exception_job', 'demo_success_sub_job', 'demo_run_sub_tasks', 'demo_random_job', 'demo_success_on_third_attempt'] as $queueName) {
+foreach (['demo_success_job', 'demo_failed_job', 'demo_failed_with_exception_job', 'demo_success_with_result', 'demo_run_sub_tasks', 'demo_random_job', 'demo_success_on_third_attempt', 'demo_dependent_job', 'demo_second_dependent_job'] as $queueName) {
     $q = $c->createQueue($queueName);
     $q->addFlag(AMQP_DURABLE);
     $c->declareQueue($q);
@@ -52,6 +52,16 @@ $queueConsumer->bind('demo_success_job', function(PsrMessage $message) use ($run
         do_something_important(rand(200, 1000));
 
         return JobAction::COMPLETE;
+    });
+
+    return Result::ACK;
+});
+
+$queueConsumer->bind('demo_success_with_result', function(PsrMessage $message) use ($runner) {
+    $runner->run($message, function(RunJob $runJob) {
+        do_something_important(rand(200, 1000));
+
+        return $runJob->getJob()->getId().'_'.uniqid();
     });
 
     return Result::ACK;
@@ -101,6 +111,30 @@ $queueConsumer->bind('demo_failed_job', function(PsrMessage $message) use ($runn
         do_something_important(rand(200, 1000));
 
         return JobAction::FAIL;
+    });
+
+    return Result::ACK;
+});
+
+$queueConsumer->bind('demo_dependent_job', function(PsrMessage $message) use ($runner) {
+    $runner->run($message, function(RunJob $runJob) {
+        do_something_important(rand(200, 1000));
+
+        return ['first' => ['foo' => 'fooVal']];
+    });
+
+    return Result::ACK;
+});
+
+$queueConsumer->bind('demo_second_dependent_job', function(PsrMessage $message) use ($runner) {
+    $runner->run($message, function(RunJob $runJob) {
+        do_something_important(rand(200, 1000));
+
+        if (false == is_array($runJob->getJob()->getPayload())) {
+            return JobAction::FAIL;
+        }
+
+        return array_replace($runJob->getJob()->getPayload(), ['second' => ['bar' => 'barVal']]);
     });
 
     return Result::ACK;

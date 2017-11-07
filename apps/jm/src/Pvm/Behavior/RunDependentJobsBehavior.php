@@ -56,6 +56,7 @@ class RunDependentJobsBehavior implements Behavior
             if ($policy->isRunAlways() || in_array($job->getCurrentResult()->getStatus(), $policy->getRunOnStatus())) {
                 $trigger = NowTrigger::create();
                 $trigger->setTemplateId($policy->getTemplateId());
+                $trigger->setPayload($job->getResultPayload());
 
                 $triggers[] = $trigger;
             }

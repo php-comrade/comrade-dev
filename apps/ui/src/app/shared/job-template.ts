@@ -13,7 +13,7 @@ export class JobTemplate {
     templateId: string;
     createdAt: Date;
     updatedAt: Date;
-    details: any;
+    payload: any;
     runner: Runner;
     exclusivePolicy: ExclusivePolicy;
     gracePeriodPolicy: GracePeriodPolicy;

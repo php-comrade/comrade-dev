@@ -7,10 +7,12 @@ use Comrade\Shared\Model\CronTrigger;
 use Comrade\Shared\Model\ExclusivePolicy;
 use Comrade\Shared\Model\GracePeriodPolicy;
 use Comrade\Shared\Model\HttpRunner;
+use Comrade\Shared\Model\JobStatus;
 use Comrade\Shared\Model\JobTemplate;
 use Comrade\Shared\Model\NowTrigger;
 use Comrade\Shared\Model\QueueRunner;
 use Comrade\Shared\Model\RetryFailedPolicy;
+use Comrade\Shared\Model\RunDependentJobPolicy;
 use Comrade\Shared\Model\RunSubJobsPolicy;
 use Comrade\Shared\Model\SubJobPolicy;
 use function Enqueue\dsn_to_context;
@@ -80,6 +82,7 @@ class LoadDemoFixturesCommand extends Command
         $this->createDemoTimeoutedJob();
         $this->createDemoJobWithSubJobs();
         $this->createDemoHttpRunnerJob();
+        $this->createDemoDependentJobs();
     }
 
     private function createDemoSuccessJob()
@@ -188,6 +191,7 @@ class LoadDemoFixturesCommand extends Command
 
         $policy = RunSubJobsPolicy::create();
         $policy->setOnFailedSubJob(RunSubJobsPolicy::MARK_JOB_AS_FAILED);
+        $policy->setResultPayloadKey('subJobs.results');
         $parentTemplate->setRunSubJobsPolicy($policy);
 
         $createJob = CreateJob::createFor($parentTemplate);
@@ -198,7 +202,7 @@ class LoadDemoFixturesCommand extends Command
         $childTemplate = JobTemplate::create();
         $childTemplate->setName('demo_sub_job');
         $childTemplate->setTemplateId(Uuid::generate());
-        $childTemplate->setRunner(QueueRunner::createFor('demo_random_job'));
+        $childTemplate->setRunner(QueueRunner::createFor('demo_success_with_result'));
 
         $policy = GracePeriodPolicy::create();
         $policy->setPeriod(20);
@@ -209,6 +213,56 @@ class LoadDemoFixturesCommand extends Command
         $childTemplate->setSubJobPolicy($policy);
 
         $createJob = CreateJob::createFor($childTemplate);
+
+        $this->sendCreateJob($createJob);
+    }
+
+    private function createDemoDependentJobs()
+    {
+        $secondTemplate = JobTemplate::create();
+        $secondTemplate->setName('demo_second_dependent_job');
+        $secondTemplate->setTemplateId(Uuid::generate());
+        $secondTemplate->setRunner(QueueRunner::createFor('demo_second_dependent_job'));
+
+        $policy = GracePeriodPolicy::create();
+        $policy->setPeriod(300);
+        $secondTemplate->setGracePeriodPolicy($policy);
+
+        $this->sendCreateJob(CreateJob::createFor($secondTemplate));
+
+        $thirdTemplate = JobTemplate::create();
+        $thirdTemplate->setName('demo_third_dependent_job');
+        $thirdTemplate->setTemplateId(Uuid::generate());
+        $thirdTemplate->setRunner(QueueRunner::createFor('demo_success_job'));
+
+        $policy = GracePeriodPolicy::create();
+        $policy->setPeriod(300);
+        $thirdTemplate->setGracePeriodPolicy($policy);
+
+        $this->sendCreateJob(CreateJob::createFor($thirdTemplate));
+
+        $firstTemplate = JobTemplate::create();
+        $firstTemplate->setName('demo_dependent_jobs');
+        $firstTemplate->setTemplateId(Uuid::generate());
+        $firstTemplate->setRunner(QueueRunner::createFor('demo_dependent_job'));
+
+        $policy = GracePeriodPolicy::create();
+        $policy->setPeriod(300);
+        $firstTemplate->setGracePeriodPolicy($policy);
+
+        $policy = RunDependentJobPolicy::create();
+        $policy->setRunAlways(true);
+        $policy->setTemplateId($secondTemplate->getTemplateId());
+        $firstTemplate->addRunDependentJobPolicy($policy);
+
+        $policy = RunDependentJobPolicy::create();
+        $policy->setRunAlways(false);
+        $policy->addRunOnStatus(JobStatus::FAILED);
+        $policy->setTemplateId($thirdTemplate->getTemplateId());
+        $firstTemplate->addRunDependentJobPolicy($policy);
+
+        $createJob = CreateJob::createFor($firstTemplate);
+        $this->createTrigger($createJob);
 
         $this->sendCreateJob($createJob);
     }

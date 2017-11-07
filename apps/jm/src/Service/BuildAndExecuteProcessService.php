@@ -109,6 +109,10 @@ class BuildAndExecuteProcessService
         $job->setCreatedAt(new \DateTime('now'));
         $job->setUpdatedAt(new \DateTime('now'));
 
+        if (null !== $trigger->getPayload()) {
+            $job->setPayload($trigger->getPayload());
+        }
+
         $result = JobResult::createFor(JobStatus::NEW);
         $job->addResult($result);
         $job->setCurrentResult($result);

@@ -279,7 +279,7 @@ class JobController
             $job->setTemplateId($jobTemplate->getTemplateId());
             $job->setCreatedAt($trigger->getNextFireTime());
             $job->setUpdatedAt($trigger->getNextFireTime());
-            $job->setDetails($jobTemplate->getDetails());
+            $job->setPayload($jobTemplate->getPayload());
 
             $jobStatus = JobResult::createFor(JobStatus::NEW, $trigger->getNextFireTime());
             $job->setCurrentResult($jobStatus);
