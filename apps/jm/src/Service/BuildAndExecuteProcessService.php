@@ -9,6 +9,7 @@ use App\Model\PvmProcess;
 use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessExecutionStorage;
+use Comrade\Shared\Model\DependentJobTrigger;
 use Comrade\Shared\Model\Job;
 use Comrade\Shared\Model\SubJob;
 use Comrade\Shared\Model\SubJobTrigger;
@@ -109,7 +110,7 @@ class BuildAndExecuteProcessService
         $job->setCreatedAt(new \DateTime('now'));
         $job->setUpdatedAt(new \DateTime('now'));
 
-        if (null !== $trigger->getPayload()) {
+        if ($trigger instanceof DependentJobTrigger || $trigger instanceof SubJobTrigger) {
             $job->setPayload($trigger->getPayload());
         }
 

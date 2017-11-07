@@ -12,6 +12,7 @@ use Comrade\Shared\Message\RunSubJobsResult;
 use Comrade\Shared\Message\ScheduleJob;
 use Comrade\Shared\Message\RunnerResult;
 use Comrade\Shared\Model\CronTrigger;
+use Comrade\Shared\Model\DependentJobTrigger;
 use Comrade\Shared\Model\ExclusivePolicy;
 use Comrade\Shared\Model\GracePeriodPolicy;
 use Comrade\Shared\Model\HttpRunner;
@@ -54,6 +55,7 @@ final class ClassClosure
         SimpleTrigger::SCHEMA => SimpleTrigger::class,
         NowTrigger::SCHEMA => NowTrigger::class,
         SubJobTrigger::SCHEMA => SubJobTrigger::class,
+        DependentJobTrigger::SCHEMA => DependentJobTrigger::class,
         RunDependentJobPolicy::SCHEMA => RunDependentJobPolicy::class,
 
         // messages

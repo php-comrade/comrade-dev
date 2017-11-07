@@ -6,6 +6,7 @@ use App\Message\ExecuteJob;
 use App\Model\PvmToken;
 use App\Storage\JobTemplateStorage;
 use App\Storage\JobStorage;
+use Comrade\Shared\Model\DependentJobTrigger;
 use Comrade\Shared\Model\NowTrigger;
 use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\Behavior;
@@ -54,7 +55,7 @@ class RunDependentJobsBehavior implements Behavior
             }
 
             if ($policy->isRunAlways() || in_array($job->getCurrentResult()->getStatus(), $policy->getRunOnStatus())) {
-                $trigger = NowTrigger::create();
+                $trigger = DependentJobTrigger::create();
                 $trigger->setTemplateId($policy->getTemplateId());
                 $trigger->setPayload($job->getResultPayload());
 
