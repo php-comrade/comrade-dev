@@ -101,6 +101,7 @@ class BuildAndExecuteProcessService
             /** @var SubJob $job */
             $job = SubJob::createFromTemplate($jobTemplate);
             $job->setParentId($trigger->getParentJobId());
+            set_value($job, 'subJob', true);
         } else {
             $job = Job::createFromTemplate($jobTemplate);
         }
@@ -109,6 +110,11 @@ class BuildAndExecuteProcessService
         $job->setProcessId($process->getId());
         $job->setCreatedAt(new \DateTime('now'));
         $job->setUpdatedAt(new \DateTime('now'));
+
+        if ($trigger instanceof DependentJobTrigger) {
+            set_value($job, 'dependentJob', true);
+            set_value($job, 'parentId', $trigger->getParentJobId());
+        }
 
         if ($trigger instanceof DependentJobTrigger || $trigger instanceof SubJobTrigger) {
             $job->setPayload($trigger->getPayload());

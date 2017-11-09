@@ -26,13 +26,19 @@ class JobStorage extends Storage
     }
 
     /**
-     * @param string $jobId
-     *
      * @return Job[]|\Traversable
      */
     public function findSubJobs(string $jobId): \Traversable
     {
-        return $this->find(['parentId' => $jobId]);
+        return $this->find(['parentId' => $jobId, 'subJob' => true,]);
+    }
+
+    /**
+     * @return Job[]|\Traversable
+     */
+    public function getDependentJobs(string $jobId): \Traversable
+    {
+        return $this->find(['parentId' => $jobId, 'dependentJob' => true,]);
     }
 
     public function countFinishedSubJobs(string $parentJobId): int

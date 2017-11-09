@@ -11,6 +11,8 @@ use App\Storage\TriggerStorage;
 use Comrade\Shared\Message\CreateJob;
 use Comrade\Shared\Message\GetTriggers;
 use Comrade\Shared\Message\ScheduleJob;
+use Comrade\Shared\Message\SearchTemplates;
+use Comrade\Shared\Message\SearchTemplatesResult;
 use Comrade\Shared\Model\Trigger;
 use Enqueue\Client\ProducerInterface;
 use Enqueue\Util\JSON;
@@ -71,6 +73,41 @@ class JobTemplateController
     }
 
     /**
+     * @Extra\Route("/search-templates")
+     * @Extra\Method("POST")
+     */
+    public function searchAction(Request $request, SchemaValidator $schemaValidator, JobTemplateStorage $storage)
+    {
+        try {
+            $data = JSON::decode($request->getContent());
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException('The content is not valid json.', null, $e);
+        }
+
+        if ($errors = $schemaValidator->validate($data, SearchTemplates::SCHEMA)) {
+            return new JsonResponse($errors, 400);
+        }
+
+        $query = SearchTemplates::create($data);
+
+        $templates = $storage->find(
+            ['$or' => [
+                ['name' => ['$regex' => '.*'.$query->getTerm().'.*']],
+                ['id' => ['$regex' => '.*'.$query->getTerm().'.*']],
+            ]],
+            ['limit' => $query->getLimit(), 'sort' => ['createdAt.unix' => -1]]
+        );
+
+        $result = SearchTemplatesResult::create();
+
+        foreach ($templates as $template) {
+            $result->addJobTemplate($template);
+        }
+
+        return new JsonResponse($result);
+    }
+
+    /**
      * @Extra\Route("/schedule-job")
      * @Extra\Method("POST")
      *
@@ -109,7 +146,7 @@ class JobTemplateController
     {
         $rawJobTemplates = [];
         foreach($jobTemplateStorage->find([], [
-            'limit' => 10,
+            'limit' => 50,
             'sort' => ['createdAt.unix' => -1],
         ]) as $jobTemplate) {
             $rawJobTemplates[] = get_values($jobTemplate);

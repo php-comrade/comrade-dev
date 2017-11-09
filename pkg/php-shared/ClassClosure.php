@@ -2,6 +2,8 @@
 namespace Comrade\Shared;
 
 use Comrade\Shared\Message\CreateJob;
+use Comrade\Shared\Message\GetDependentJobs;
+use Comrade\Shared\Message\GetDependentJobsResult;
 use Comrade\Shared\Message\GetJob;
 use Comrade\Shared\Message\GetJobChart;
 use Comrade\Shared\Message\GetSubJobs;
@@ -11,6 +13,8 @@ use Comrade\Shared\Message\RunJob;
 use Comrade\Shared\Message\RunSubJobsResult;
 use Comrade\Shared\Message\ScheduleJob;
 use Comrade\Shared\Message\RunnerResult;
+use Comrade\Shared\Message\SearchTemplates;
+use Comrade\Shared\Message\SearchTemplatesResult;
 use Comrade\Shared\Model\CronTrigger;
 use Comrade\Shared\Model\DependentJobTrigger;
 use Comrade\Shared\Model\ExclusivePolicy;
@@ -71,6 +75,10 @@ final class ClassClosure
         GetJobChart::SCHEMA => GetJobChart::class,
         RunnerResult::SCHEMA => RunnerResult::class,
         GetTriggers::SCHEMA => GetTriggers::class,
+        SearchTemplates::SCHEMA => SearchTemplates::class,
+        SearchTemplatesResult::SCHEMA => SearchTemplatesResult::class,
+        GetDependentJobs::SCHEMA => GetDependentJobs::class,
+        GetDependentJobsResult::SCHEMA => GetDependentJobsResult::class,
     ];
 
     /**
