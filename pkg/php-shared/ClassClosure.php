@@ -2,6 +2,8 @@
 namespace Comrade\Shared;
 
 use Comrade\Shared\Message\CreateJob;
+use Comrade\Shared\Message\GetDependentJobs;
+use Comrade\Shared\Message\GetDependentJobsResult;
 use Comrade\Shared\Message\GetJob;
 use Comrade\Shared\Message\GetJobChart;
 use Comrade\Shared\Message\GetSubJobs;
@@ -11,7 +13,10 @@ use Comrade\Shared\Message\RunJob;
 use Comrade\Shared\Message\RunSubJobsResult;
 use Comrade\Shared\Message\ScheduleJob;
 use Comrade\Shared\Message\RunnerResult;
+use Comrade\Shared\Message\SearchTemplates;
+use Comrade\Shared\Message\SearchTemplatesResult;
 use Comrade\Shared\Model\CronTrigger;
+use Comrade\Shared\Model\DependentJobTrigger;
 use Comrade\Shared\Model\ExclusivePolicy;
 use Comrade\Shared\Model\GracePeriodPolicy;
 use Comrade\Shared\Model\HttpRunner;
@@ -22,6 +27,7 @@ use Comrade\Shared\Model\JobTemplate;
 use Comrade\Shared\Model\NowTrigger;
 use Comrade\Shared\Model\QueueRunner;
 use Comrade\Shared\Model\RetryFailedPolicy;
+use Comrade\Shared\Model\RunDependentJobPolicy;
 use Comrade\Shared\Model\RunSubJobsPolicy;
 use Comrade\Shared\Model\SimpleTrigger;
 use Comrade\Shared\Model\SubJob;
@@ -53,6 +59,8 @@ final class ClassClosure
         SimpleTrigger::SCHEMA => SimpleTrigger::class,
         NowTrigger::SCHEMA => NowTrigger::class,
         SubJobTrigger::SCHEMA => SubJobTrigger::class,
+        DependentJobTrigger::SCHEMA => DependentJobTrigger::class,
+        RunDependentJobPolicy::SCHEMA => RunDependentJobPolicy::class,
 
         // messages
         RunSubJobsResult::SCHEMA => RunSubJobsResult::class,
@@ -67,6 +75,10 @@ final class ClassClosure
         GetJobChart::SCHEMA => GetJobChart::class,
         RunnerResult::SCHEMA => RunnerResult::class,
         GetTriggers::SCHEMA => GetTriggers::class,
+        SearchTemplates::SCHEMA => SearchTemplates::class,
+        SearchTemplatesResult::SCHEMA => SearchTemplatesResult::class,
+        GetDependentJobs::SCHEMA => GetDependentJobs::class,
+        GetDependentJobsResult::SCHEMA => GetDependentJobsResult::class,
     ];
 
     /**

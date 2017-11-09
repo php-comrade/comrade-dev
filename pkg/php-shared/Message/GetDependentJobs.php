@@ -6,9 +6,9 @@ use function Makasim\Values\get_value;
 use function Makasim\Values\get_values;
 use function Makasim\Values\set_value;
 
-class GetSubJobs implements \JsonSerializable
+class GetDependentJobs implements \JsonSerializable
 {
-    const SCHEMA = 'http://comrade.forma-pro.com/schemas/message/GetSubJobs.json';
+    const SCHEMA = 'http://comrade.forma-pro.com/schemas/message/GetDependentJobs.json';
 
     use CreateTrait;
 

@@ -1,26 +1,19 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {JobStatus} from "../shared/job-status";
 
 class Status {
-    id: string;
-    title: string;
-    badgeModifier: string;
-
-    constructor(id: string, title: string, badgeModifier: string) {
-        this.id = id;
-        this.title = title;
-        this.badgeModifier = badgeModifier;
-    }
+    constructor(public id: string, public title: string, public badgeModifier: string) {}
 }
 
 const statuses = [
-  new Status('new', 'New', 'badge-default'),
-  new Status('running', 'Running', 'badge-info'),
-  new Status('running_sub_jobs', 'Running sub jobs', 'badge-info'),
-  new Status('retrying', 'Retrying', 'badge-info'),
-  new Status('canceled', 'Cancelled', 'badge-default'),
-  new Status('completed', 'Completed', 'badge-success'),
-  new Status('failed', 'Failed', 'badge-danger'),
-  new Status('terminated', 'Terminated', 'badge-default'),
+  new Status(JobStatus.NEW, 'New', 'badge-default'),
+  new Status(JobStatus.RUNNING, 'Running', 'badge-info'),
+  new Status(JobStatus.RUNNING_SUB_JOBS, 'Running sub jobs', 'badge-info'),
+  new Status(JobStatus.RETRYING, 'Retrying', 'badge-info'),
+  new Status(JobStatus.CANCELED, 'Cancelled', 'badge-default'),
+  new Status(JobStatus.COMPLETED, 'Completed', 'badge-success'),
+  new Status(JobStatus.FAILED, 'Failed', 'badge-danger'),
+  new Status(JobStatus.TERMINATED, 'Terminated', 'badge-default'),
 ];
 
 @Component({

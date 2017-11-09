@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "id": "http://comrade.forma-pro.com/schemas/message/SearchTemplatesResult.json",
+  "type": "object",
+  "properties": {
+    "templates": {
+      "type": "array",
+      "items": { "$ref": "../JobTemplate.json" }
+    }
+  }
+}

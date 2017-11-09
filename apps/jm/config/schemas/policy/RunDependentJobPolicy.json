@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "id": "http://comrade.forma-pro.com/schemas/policy/RunDependentJobPolicy.json",
+  "type": "object",
+  "properties": {
+    "schema": { "type": "string", "enum": ["http://comrade.forma-pro.com/schemas/policy/RunDependentJobPolicy.json"] },
+    "runAlways": { "type": "boolean" },
+    "runOnStatus": {
+      "type": "array",
+      "items": { "$ref": "../JobStatus.json" }
+    },
+    "templateId": { "$ref": "../uuid4.json" }
+  },
+  "required": ["templateId"]
+}

@@ -23,6 +23,9 @@
         <li *ngIf="job.runSubJobsPolicy" class="nav-item">
             <a class="nav-link" routerLinkActive="active" [routerLink]="['/job', job.id, 'view', 'sub-jobs' ]">Sub jobs</a>
         </li>
+        <li *ngIf="job.runDependentJobPolicies && job.runDependentJobPolicies.length" class="nav-item">
+            <a class="nav-link" routerLinkActive="active" [routerLink]="['/job', job.id, 'view', 'dependent-jobs' ]">Dependent jobs</a>
+        </li>
     </ul>
 
     <div *ngIf="tab == 'summary'">
@@ -60,10 +63,10 @@
         </div>
         <div class="row">
             <div class="col-3">
-                Details:
+                Payload:
             </div>
             <div class="col-6">
-                {{job.details | json }}
+                {{job.payload | json }}
             </div>
         </div>
         <div class="row">
@@ -83,6 +86,9 @@
         <show-grace-period-policy *ngIf="job.gracePeriodPolicy" [policy]="job.gracePeriodPolicy"></show-grace-period-policy>
         <show-retry-failed-policy *ngIf="job.retryFailedPolicy" [policy]="job.retryFailedPolicy"></show-retry-failed-policy>
         <show-run-sub-jobs-policy *ngIf="job.runSubJobsPolicy" [policy]="job.runSubJobsPolicy"></show-run-sub-jobs-policy>
+        <ng-container *ngIf="job">
+            <policy-show-run-dependent-job *ngFor="let policy of job.runDependentJobPolicies" [policy]="policy"></policy-show-run-dependent-job>
+        </ng-container>
     </div>
 
     <div *ngIf="tab == 'execution'">
@@ -100,5 +106,9 @@
 
     <div *ngIf="tab === 'sub-jobs'">
         <job-list [jobs]="subJobs" [viewButton]="true"></job-list>
+    </div>
+
+    <div *ngIf="tab === 'dependent-jobs'">
+        <job-list [jobs]="dependentJobs" [viewButton]="true"></job-list>
     </div>
 </div>

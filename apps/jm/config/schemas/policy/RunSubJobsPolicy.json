@@ -3,7 +3,8 @@
   "id": "http://comrade.forma-pro.com/schemas/policy/RunSubJobsPolicy.json",
   "type": "object",
   "properties": {
-    "onFailedSubJob": { "type": "string", "enum": ["mark_job_as_failed", "mark_job_as_completed" ] }
+    "onFailedSubJob": { "type": "string", "enum": ["mark_job_as_failed", "mark_job_as_completed" ] },
+    "resultPayloadKey": { "type": "string" }
   },
   "required": ["onFailedSubJob"]
 }

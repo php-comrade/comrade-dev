@@ -3,6 +3,7 @@ namespace Comrade\Shared\Model;
 
 use Comrade\Shared\ClassClosure;
 use function Makasim\Values\add_object;
+use function Makasim\Values\add_value;
 use Makasim\Values\CastTrait;
 use function Makasim\Values\get_object;
 use function Makasim\Values\get_objects;
@@ -49,19 +50,35 @@ class JobTemplate
     }
 
     /**
-     * @return array
+     * @return mixed
      */
-    public function getDetails(): ?array
+    public function getPayload()
     {
-        return get_value($this, 'details', []);
+        return get_value($this, 'payload');
     }
 
     /**
-     * @param array $details
+     * @param mixed
      */
-    public function setDetails($details): void
+    public function setPayload($payload): void
     {
-        set_value($this, 'details', $details);
+        set_value($this, 'payload', $payload);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getResultPayload()
+    {
+        return get_value($this, 'resultPayload');
+    }
+
+    /**
+     * @param mixed
+     */
+    public function setResultPayload($payload): void
+    {
+        set_value($this, 'resultPayload', $payload);
     }
 
     /**
@@ -136,6 +153,22 @@ class JobTemplate
     public function setExclusivePolicy(ExclusivePolicy $exclusivePolicy = null): void
     {
         set_object($this, 'exclusivePolicy', $exclusivePolicy);
+    }
+
+    /**
+     * @param  RunDependentJobPolicy
+     */
+    public function addRunDependentJobPolicy(RunDependentJobPolicy $policy): void
+    {
+        add_object($this, 'runDependentJobPolicies', $policy);
+    }
+
+    /**
+     * @return RunDependentJobPolicy[]
+     */
+    public function getRunDependentJobPolicies(): array
+    {
+        return iterator_to_array(get_objects($this, 'runDependentJobPolicies', ClassClosure::create()));
     }
 
     public function setRunner(Runner $executor): void

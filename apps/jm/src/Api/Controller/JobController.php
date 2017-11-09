@@ -10,6 +10,8 @@ use App\Service\JobStateMachine;
 use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessExecutionStorage;
+use Comrade\Shared\Message\GetDependentJobs;
+use Comrade\Shared\Message\GetDependentJobsResult;
 use Comrade\Shared\Message\GetJob;
 use Comrade\Shared\Message\GetSubJobs;
 use Comrade\Shared\Message\GetTimeline;
@@ -132,6 +134,42 @@ class JobController
         return new JsonResponse([
             'subJobs' => $rawSubJobs,
         ]);
+    }
+
+    /**
+     * @Extra\Route("/get-dependent-jobs")
+     * @Extra\Method("POST")
+     *
+     * @param Request $request
+     * @param JobStorage $jobStorage
+     * @param SchemaValidator $schemaValidator
+     *
+     * @return JsonResponse
+     */
+    public function getDependentJobsAction(Request $request, JobStorage $jobStorage, SchemaValidator $schemaValidator)
+    {
+        try {
+            $data = JSON::decode($request->getContent());
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException('The content is not valid json.', null, $e);
+        }
+
+        if ($errors = $schemaValidator->validate($data, GetDependentJobs::SCHEMA)) {
+            return new JsonResponse($errors, 400);
+        }
+
+        $getDependentJobs = GetDependentJobs::create($data);
+
+        if (false == $job = $jobStorage->findOne(['id' => $getDependentJobs->getJobId()])) {
+            throw new NotFoundHttpException(sprintf('The job with id "%s" could not be found', $getDependentJobs->getJobId()));
+        }
+
+        $result = GetDependentJobsResult::create();
+        foreach ($jobStorage->find(['parentId' => $getDependentJobs->getJobId()]) as $dependentJob) {
+            $result->addJob($dependentJob);
+        }
+
+        return new JsonResponse($result);
     }
 
     /**
@@ -279,7 +317,7 @@ class JobController
             $job->setTemplateId($jobTemplate->getTemplateId());
             $job->setCreatedAt($trigger->getNextFireTime());
             $job->setUpdatedAt($trigger->getNextFireTime());
-            $job->setDetails($jobTemplate->getDetails());
+            $job->setPayload($jobTemplate->getPayload());
 
             $jobStatus = JobResult::createFor(JobStatus::NEW, $trigger->getNextFireTime());
             $job->setCurrentResult($jobStatus);

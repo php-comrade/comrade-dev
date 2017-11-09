@@ -5,12 +5,17 @@
   "properties": {
     "templateId": { "$ref" : "http://comrade.forma-pro.com/schemas/uuid4.json" },
     "name": { "type": "string"},
-    "details": { "type": ["null", "string", "number", "object", "array"] },
+    "payload": { "type": ["null", "string", "number", "object", "array"] },
+    "resultPayload": { "type": ["null", "string", "number", "object", "array"] },
     "gracePeriodPolicy": { "$ref": "policy/GracePeriodPolicy.json" },
     "retryFailedPolicy": { "$ref": "policy/RetryFailedPolicy.json" },
     "runSubJobsPolicy": { "$ref": "policy/RunSubJobsPolicy.json" },
     "subJobPolicy": { "$ref": "policy/SubJobPolicy.json" },
     "exclusivePolicy": { "$ref": "policy/ExclusivePolicy.json" },
+    "runDependentJobPolicies": {
+      "type": "array",
+      "items": { "$ref": "policy/RunDependentJobPolicy.json" }
+    },
     "runner": {
       "oneOf": [
         { "$ref": "runner/QueueRunner.json" },

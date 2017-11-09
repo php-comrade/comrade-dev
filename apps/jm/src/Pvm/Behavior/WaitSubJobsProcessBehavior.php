@@ -16,6 +16,7 @@ use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Exception\WaitExecutionException;
 use Formapro\Pvm\SignalBehavior;
 use Formapro\Pvm\Token;
+use function Makasim\Values\array_set;
 
 class WaitSubJobsProcessBehavior implements Behavior, SignalBehavior
 {
@@ -112,7 +113,11 @@ class WaitSubJobsProcessBehavior implements Behavior, SignalBehavior
         }
 
         $job = $this->jobStorage->getOneById($token->getJobId());
+        $subJobsResult = [];
+
         foreach ($this->jobStorage->findSubJobs($job->getId()) as $subJob) {
+            $subJobsResult[] = $subJob->getResultPayload();
+
             if ($subJob->getCurrentResult()->getStatus() === JobStatus::FAILED && $job->getRunSubJobsPolicy()->isMarkParentJobAsFailed()) {
                 $this->changeJobStateService->transitionInFlow($job->getId(), JobAction::FAIL);
 
@@ -121,6 +126,22 @@ class WaitSubJobsProcessBehavior implements Behavior, SignalBehavior
         }
 
         $this->changeJobStateService->transitionInFlow($job->getId(), JobAction::COMPLETE);
+
+        if ($resultPayloadKey = $job->getRunSubJobsPolicy()->getResultPayloadKey()) {
+            $payloadResult = $job->getResultPayload();
+            if (null === $payloadResult) {
+                $payloadResult = [];
+            }
+
+            if (false == is_array($payloadResult)) {
+                throw new \LogicException('Cannot set sub jobs result to parent job result cuz parent job result is not array');
+            }
+
+            array_set($resultPayloadKey, $subJobsResult, $payloadResult);
+            $job->setResultPayload($payloadResult);
+
+            $this->jobStorage->update($job);
+        }
 
         return 'finalize';
     }

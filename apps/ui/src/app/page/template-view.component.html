@@ -44,10 +44,10 @@
     </div>
     <div class="row">
       <div class="col-3">
-        Details:
+        Payload:
       </div>
       <div class="col-6">
-        {{jobTemplate.details | json }}
+        {{jobTemplate.payload | json }}
       </div>
     </div>
     <div class="row">
@@ -71,6 +71,9 @@
     <show-retry-failed-policy *ngIf="jobTemplate.retryFailedPolicy" [policy]="jobTemplate.retryFailedPolicy"></show-retry-failed-policy>
     <show-run-sub-jobs-policy *ngIf="jobTemplate.runSubJobsPolicy" [policy]="jobTemplate.runSubJobsPolicy"></show-run-sub-jobs-policy>
     <policy-show-sub-job *ngIf="jobTemplate.subJobPolicy" [policy]="jobTemplate.subJobPolicy"></policy-show-sub-job>
+    <ng-container *ngIf="jobTemplate">
+      <policy-show-run-dependent-job *ngFor="let policy of jobTemplate.runDependentJobPolicies" [policy]="policy"></policy-show-run-dependent-job>
+    </ng-container>
   </div>
 
   <div *ngIf="tab == 'graph'">

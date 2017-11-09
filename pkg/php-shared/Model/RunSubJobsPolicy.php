@@ -16,34 +16,32 @@ class RunSubJobsPolicy implements Policy
 
     protected $values = [];
 
-    /**
-     * @param string $action
-     */
-    public function setOnFailedSubJob(string $action):void
+    public function setOnFailedSubJob(string $action): void
     {
         set_value($this, 'onFailedSubJob', $action);
     }
 
-    /**
-     * @return string
-     */
     public function getOnFailedSubJob(): string
     {
         return get_value($this, 'onFailedSubJob');
     }
 
-    /**
-     * @return bool
-     */
-    public function isMarkParentJobAsFailed():bool
+    public function setResultPayloadKey(string $key = null): void
+    {
+        set_value($this, 'resultPayloadKey', $key);
+    }
+
+    public function getResultPayloadKey(): ?string
+    {
+        return get_value($this, 'resultPayloadKey');
+    }
+
+    public function isMarkParentJobAsFailed(): bool
     {
         return $this->getOnFailedSubJob() === static::MARK_JOB_AS_FAILED;
     }
 
-    /**
-     * @return bool
-     */
-    public function isMarkParentJobAsCompleted():bool
+    public function isMarkParentJobAsCompleted(): bool
     {
         return $this->getOnFailedSubJob() === static::MARK_JOB_AS_COMPLETED;
     }

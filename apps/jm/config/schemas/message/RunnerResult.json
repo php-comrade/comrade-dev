@@ -10,6 +10,7 @@
     "metrics": { "$ref": "../JobResultMetrics.json" },
     "error": { "$ref": "../throwable.json" },
     "timestamp": { "type": "integer" },
+    "payload": { "type": ["null", "string", "number", "object", "array"] },
     "subJobs": {
       "type": "array",
       "item": { "$ref": "part/SubJob.json" }
