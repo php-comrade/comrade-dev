@@ -15,6 +15,7 @@ import {RunSubJobsPolicy} from "../shared/run-sub-jobs-policy";
 import {Title} from "@angular/platform-browser";
 import {SubJobPolicy} from "../shared/sub-job-policy";
 import {CreateJob} from "../shared/messages/create-job";
+import {RunDependentJobPolicy} from "../shared/run-dependent-job-policy";
 
 @Component({
   selector: 'template-new',
@@ -33,6 +34,7 @@ export class TemplateNewComponent implements OnInit {
   addRetryFailedPolicy: boolean = false;
   addRunSubJobsPolicy: boolean = false;
   addSubJobPolicy: boolean = false;
+  addRunDependentJobPolicy: boolean = false;
 
   createJob: CreateJob;
 
@@ -103,6 +105,10 @@ export class TemplateNewComponent implements OnInit {
     this.addSubJobPolicy = !this.addSubJobPolicy;
   }
 
+  triggerRunDependentJobPolicy(): void {
+    this.addRunDependentJobPolicy = !this.addRunDependentJobPolicy;
+  }
+
   onTriggerAdded(trigger: Trigger) {
     trigger.templateId = this.jobTemplate.templateId;
 
@@ -146,6 +152,12 @@ export class TemplateNewComponent implements OnInit {
     this.addSubJobPolicy = false;
   }
 
+  onRunDependentJobPolicyAdded(policy: RunDependentJobPolicy) {
+    this.jobTemplate.addRunDependentJobPolicy(policy);
+
+    this.addRunDependentJobPolicy = false;
+  }
+
   onRunnerAdded(runner: Runner) {
     this.jobTemplate.runner = runner;
 
@@ -176,6 +188,10 @@ export class TemplateNewComponent implements OnInit {
 
   onRemoveSubJobPolicy() {
     this.jobTemplate.subJobPolicy = null;
+  }
+
+  onRemoveRunDependentJobPolicy(policy: RunDependentJobPolicy) {
+    this.jobTemplate.removeRunDependentJobPolicy(policy);
   }
 
   onRemoveRunner() {

@@ -56,6 +56,9 @@
   <show-retry-failed-policy *ngIf="jobTemplate.retryFailedPolicy" [policy]="jobTemplate.retryFailedPolicy" (onRemovePolicy)="onRemoveRetryFailedPolicy()"></show-retry-failed-policy>
   <show-run-sub-jobs-policy *ngIf="jobTemplate.runSubJobsPolicy" [policy]="jobTemplate.runSubJobsPolicy" (onRemovePolicy)="onRemoveRunSubJobsPolicy()"></show-run-sub-jobs-policy>
   <policy-show-sub-job *ngIf="jobTemplate.subJobPolicy" [policy]="jobTemplate.subJobPolicy" (onRemovePolicy)="onRemoveSubJobPolicy()"></policy-show-sub-job>
+  <ng-container *ngFor="let policy of jobTemplate.runDependentJobPolicies">
+    <policy-show-run-dependent-job [policy]="policy" (onRemovePolicy)="onRemoveRunDependentJobPolicy($event)"></policy-show-run-dependent-job>
+  </ng-container>
 
   <a class="nav-link" *ngIf="!addExclusivePolicy && !jobTemplate.exclusivePolicy" (click)="triggerExclusivePolicy()" href="javascript:void(0)">Add exclusive policy</a>
   <div *ngIf="addExclusivePolicy">
@@ -85,6 +88,12 @@
   <div *ngIf="addSubJobPolicy">
     <policy-new-sub-job (onPolicyAdded)="onSubJobPolicyAdded($event)"></policy-new-sub-job>
     <a (click)="triggerSubJobPolicy()" href="javascript:void(0)">Cancel</a>
+  </div>
+
+  <a class="nav-link" *ngIf="!addRunDependentJobPolicy" (click)="triggerRunDependentJobPolicy()" href="javascript:void(0)">Add dependent job</a>
+  <div *ngIf="addRunDependentJobPolicy">
+    <policy-new-run-dependent-job (onPolicyAdded)="onRunDependentJobPolicyAdded($event)"></policy-new-run-dependent-job>
+    <a (click)="triggerRunDependentJobPolicy()" href="javascript:void(0)">Cancel</a>
   </div>
 
   <button type="submit" class="btn btn-success" [disabled]="!jobTemplateForm.form.valid || submitted">Create job template</button>

@@ -24,7 +24,9 @@ export class JobTemplateService {
     }
 
     getJobTemplate(id: string): Observable<JobTemplate> {
-        return this.http.get(`/api/job-templates/${id}`).map((res: Response) => res.json().data);
+        return this.http.get(`/api/job-templates/${id}`).map((res: Response) => {
+            return Object.assign(new JobTemplate(), res.json().data);
+        });
     }
 
     runNow(jobTemplate: JobTemplate): Observable<Response> {

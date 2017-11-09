@@ -62,7 +62,10 @@ import {PolicyShowSubJobComponent} from "./part/policy-show-sub-job.component";
 import {JobStateGraphComponent} from "./part/job-state-graph.component";
 import {JobExecutionTabComponent} from "./part/job-execution-tab.component";
 import {TemplateTriggersComponent} from "./part/template-triggers.component";
-import {PolicyNewDependentJobComponent} from "./part/policy-new-dependent-job.component";
+import {PolicyNewRunDependentJobComponent} from "./part/policy-new-dependent-job.component";
+import {Ng2CompleterModule} from "ng2-completer";
+import {TemplateSearchComponent} from "./part/template-search.component";
+import {PolicyShowRunDependentJobComponent} from "./part/policy-show-run-dependent-job.component";
 
 @NgModule({
   declarations: [
@@ -104,13 +107,16 @@ import {PolicyNewDependentJobComponent} from "./part/policy-new-dependent-job.co
     LandingComponent,
     TemplateViewChartComponent,
     TemplateTriggersComponent,
+    TemplateSearchComponent,
     PolicyNewSubJobComponent,
-    PolicyNewDependentJobComponent,
+    PolicyNewRunDependentJobComponent,
     PolicyShowSubJobComponent,
+    PolicyShowRunDependentJobComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    Ng2CompleterModule,
     AppRoutingModule,
     HttpModule,
     NgbModule.forRoot(),

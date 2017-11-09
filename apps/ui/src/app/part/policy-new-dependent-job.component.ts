@@ -1,18 +1,19 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {RunDependentJobPolicy} from "../shared/run-dependent-job-policy";
 import {JobStatus} from "../shared/job-status";
+import {JobTemplate} from "../shared/job-template";
 
 class SelectOption {
   constructor(public id: string, public text: string) {}
 }
 
 @Component({
-  selector: 'policy-new-dependent-job',
+  selector: 'policy-new-run-dependent-job',
   template: `
       <h6>New dependent job policy:</h6>
       <div class="form-group">
           <label for="sub-job-policy-parent-id">Template Id:</label>
-          <input class="form-control" id="run-dependent-job-policy-template-id" required [(ngModel)]="policy.parentId">
+          <template-search (onUnSelected)="unselected()" (onSelected)="selected($event)"></template-search>
       </div>
       <div class="form-group">
           <label for="sub-job-policy-parent-id">Run always:</label>
@@ -35,7 +36,7 @@ class SelectOption {
       <a href="javascript:void(0)" (click)="add()">Add</a>
   `,
 })
-export class PolicyNewDependentJobComponent {
+export class PolicyNewRunDependentJobComponent {
     @Output() onPolicyAdded = new EventEmitter<RunDependentJobPolicy>();
 
     policy: RunDependentJobPolicy;
@@ -61,5 +62,14 @@ export class PolicyNewDependentJobComponent {
         } else {
           this.policy.runOnStatus.add(status);
         }
+    }
+
+    public unselected(): void {
+      this.policy.templateId = null;
+    }
+
+    public selected(template: JobTemplate): void
+    {
+        this.policy.templateId = template.templateId;
     }
 }
