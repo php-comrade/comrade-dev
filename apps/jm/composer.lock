@@ -173,12 +173,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-comrade/php-shared.git",
-                "reference": "a2a66583595589d860ef51ae04e01a68b7847ca1"
+                "reference": "a10c5b6c379b281476f7465716bdb7c5f49b601f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-comrade/php-shared/zipball/a2a66583595589d860ef51ae04e01a68b7847ca1",
-                "reference": "a2a66583595589d860ef51ae04e01a68b7847ca1",
+                "url": "https://api.github.com/repos/php-comrade/php-shared/zipball/a10c5b6c379b281476f7465716bdb7c5f49b601f",
+                "reference": "a10c5b6c379b281476f7465716bdb7c5f49b601f",
                 "shasum": ""
             },
             "require": {
@@ -207,7 +207,7 @@
                 "message",
                 "model"
             ],
-            "time": "2017-10-23T16:35:08+00:00"
+            "time": "2017-11-09T16:34:10+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -2342,12 +2342,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/queue-interop/queue-interop.git",
-                "reference": "7ba7a6ceca78f5b970f9588eeaba10a5fc3c40d6"
+                "reference": "231e20c7cfc99dbaf29b5fe7506ff29d7a3fb898"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/queue-interop/queue-interop/zipball/7ba7a6ceca78f5b970f9588eeaba10a5fc3c40d6",
-                "reference": "7ba7a6ceca78f5b970f9588eeaba10a5fc3c40d6",
+                "url": "https://api.github.com/repos/queue-interop/queue-interop/zipball/231e20c7cfc99dbaf29b5fe7506ff29d7a3fb898",
+                "reference": "231e20c7cfc99dbaf29b5fe7506ff29d7a3fb898",
                 "shasum": ""
             },
             "require": {
@@ -2377,7 +2377,7 @@
                 "messaging",
                 "queue"
             ],
-            "time": "2017-10-17T11:37:11+00:00"
+            "time": "2017-11-08T13:27:17+00:00"
         },
         {
             "name": "ramsey/uuid",
@@ -3078,12 +3078,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "404da940b1d36d8a4b583d678a6f2d04f316797f"
+                "reference": "d6115049b2d9df8330364198613cc4e7b0010fe6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/404da940b1d36d8a4b583d678a6f2d04f316797f",
-                "reference": "404da940b1d36d8a4b583d678a6f2d04f316797f",
+                "url": "https://api.github.com/repos/symfony/config/zipball/d6115049b2d9df8330364198613cc4e7b0010fe6",
+                "reference": "d6115049b2d9df8330364198613cc4e7b0010fe6",
                 "shasum": ""
             },
             "require": {
@@ -3132,7 +3132,7 @@
             ],
             "description": "Symfony Config Component",
             "homepage": "https://symfony.com",
-            "time": "2017-10-28T16:10:19+00:00"
+            "time": "2017-11-07T14:20:24+00:00"
         },
         {
             "name": "symfony/console",
@@ -3598,16 +3598,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.0.39",
+            "version": "v1.0.40",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "1f769098ee289320e1b86404bde02825cbae9488"
+                "reference": "f0dd66c55e8e69f305fabec9fbbcbf5f36c9762b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/1f769098ee289320e1b86404bde02825cbae9488",
-                "reference": "1f769098ee289320e1b86404bde02825cbae9488",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/f0dd66c55e8e69f305fabec9fbbcbf5f36c9762b",
+                "reference": "f0dd66c55e8e69f305fabec9fbbcbf5f36c9762b",
                 "shasum": ""
             },
             "require": {
@@ -3640,7 +3640,7 @@
                     "email": "fabien.potencier@gmail.com"
                 }
             ],
-            "time": "2017-11-02T23:43:15+00:00"
+            "time": "2017-11-08T20:41:53+00:00"
         },
         {
             "name": "symfony/framework-bundle",

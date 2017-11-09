@@ -75,12 +75,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-comrade/php-client.git",
-                "reference": "d2b5883de4447360855da424bb0c8636c711d53e"
+                "reference": "239ac4b18cd8e515ee8af93dcf0e76e678a4f602"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-comrade/php-client/zipball/d2b5883de4447360855da424bb0c8636c711d53e",
-                "reference": "d2b5883de4447360855da424bb0c8636c711d53e",
+                "url": "https://api.github.com/repos/php-comrade/php-client/zipball/239ac4b18cd8e515ee8af93dcf0e76e678a4f602",
+                "reference": "239ac4b18cd8e515ee8af93dcf0e76e678a4f602",
                 "shasum": ""
             },
             "require": {
@@ -109,7 +109,7 @@
                 "Job Manager",
                 "client"
             ],
-            "time": "2017-10-19T12:30:00+00:00"
+            "time": "2017-11-07T13:56:20+00:00"
         },
         {
             "name": "comrade/shared",
@@ -117,12 +117,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-comrade/php-shared.git",
-                "reference": "a2a66583595589d860ef51ae04e01a68b7847ca1"
+                "reference": "a10c5b6c379b281476f7465716bdb7c5f49b601f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-comrade/php-shared/zipball/a2a66583595589d860ef51ae04e01a68b7847ca1",
-                "reference": "a2a66583595589d860ef51ae04e01a68b7847ca1",
+                "url": "https://api.github.com/repos/php-comrade/php-shared/zipball/a10c5b6c379b281476f7465716bdb7c5f49b601f",
+                "reference": "a10c5b6c379b281476f7465716bdb7c5f49b601f",
                 "shasum": ""
             },
             "require": {
@@ -151,7 +151,7 @@
                 "message",
                 "model"
             ],
-            "time": "2017-10-23T16:35:08+00:00"
+            "time": "2017-11-09T16:34:10+00:00"
         },
         {
             "name": "enqueue/amqp-bunny",
