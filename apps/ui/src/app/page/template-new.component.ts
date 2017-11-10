@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {JobTemplate} from "../shared/job-template";
 import {JobTemplateService} from "../shared/job-template.service";
-import * as uuid from "uuid";
 import {Router} from "@angular/router";
 import 'rxjs/add/operator/catch';
 import {Trigger} from "../shared/trigger";
@@ -39,8 +38,11 @@ export class TemplateNewComponent implements OnInit {
   createJob: CreateJob;
 
   constructor(private jobTemplateService: JobTemplateService, private router: Router, private titleService: Title) {
+    const uuidv4 = require('uuid/v4');
+
     this.jobTemplate = new JobTemplate();
-    this.jobTemplate.templateId = uuid.v4();
+    this.jobTemplate.templateId = uuidv4();
+    console.log(this.jobTemplate.templateId);
     this.submitted = false;
     this.message = '';
 
