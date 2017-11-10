@@ -11,11 +11,19 @@ use Makasim\Yadm\Storage;
  */
 class JobTemplateStorage extends Storage
 {
-    public function findSubJobTemplate(string $parentJobId, string $subJobName): ?JobTemplate
+    public function findSubJobTemplate(string $parentJobTemplateId, string $subJobName): ?JobTemplate
     {
         return $this->findOne([
-            'subJobPolicy.parentId' => $parentJobId,
+            'subJobPolicy.parentId' => $parentJobTemplateId,
             'name' => $subJobName
         ]);
+    }
+
+    /**
+     * @return \Traversable|JobTemplate[]
+     */
+    public function findSubJobTemplates(string $parentJobTemplateId): \Traversable
+    {
+        return $this->find(['subJobPolicy.parentId' => $parentJobTemplateId]);
     }
 }

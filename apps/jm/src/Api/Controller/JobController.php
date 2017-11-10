@@ -6,6 +6,7 @@ use App\Infra\JsonSchema\SchemaValidator;
 use App\JobStatus;
 use App\Message\ExecuteJob;
 use App\Model\JobResult;
+use App\Service\CreateDependentJobsProcessService;
 use App\Service\JobStateMachine;
 use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
@@ -353,6 +354,27 @@ class JobController
         if (false == $process = $processStorage->findOne(['id' => $processId])) {
             throw new NotFoundHttpException(sprintf('Process %s was not found', $processId));
         }
+
+        $graph = (new VisualizeFlow())->createGraph($process);
+
+        return new Response(
+            (new GraphViz())->createScript($graph),
+            200,
+            ['Content-Type' => 'text/vnd.graphviz']
+        );
+    }
+
+    /**
+     * @Extra\Route("/job/{id}/dependent-flow-graph.gv")
+     * @Extra\Method("GET")
+     */
+    public function getDependentFlowGraphDotAction(string $id, JobStorage $jobStorage, CreateDependentJobsProcessService $createDependentJobsProcessService): Response
+    {
+        if (false == $job = $jobStorage->findOne(['id' => $id])) {
+            throw new NotFoundHttpException(sprintf('Job template %s was not found', $id));
+        }
+
+        $process = $createDependentJobsProcessService->createProcessForJob($job);
 
         $graph = (new VisualizeFlow())->createGraph($process);
 

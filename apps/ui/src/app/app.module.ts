@@ -66,6 +66,7 @@ import {PolicyNewRunDependentJobComponent} from "./part/policy-new-dependent-job
 import {Ng2CompleterModule} from "ng2-completer";
 import {TemplateSearchComponent} from "./part/template-search.component";
 import {PolicyShowRunDependentJobComponent} from "./part/policy-show-run-dependent-job.component";
+import {JobDependentFlowGraphComponent} from "./part/job-dependent-flow-graph.component";
 
 @NgModule({
   declarations: [
@@ -96,6 +97,7 @@ import {PolicyShowRunDependentJobComponent} from "./part/policy-show-run-depende
     TimeAgoComponent,
     TimeCalComponent,
     JobFlowGraphComponent,
+    JobDependentFlowGraphComponent,
     JobStateGraphComponent,
     JobViewComponent,
     JobExecutionTabComponent,

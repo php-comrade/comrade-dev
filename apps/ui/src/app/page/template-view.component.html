@@ -79,6 +79,11 @@
   <div *ngIf="tab == 'graph'">
     <h4>Flow graph:</h4>
     <job-flow-graph *ngIf="jobTemplate" [updatedAt]="jobTemplate.createdAt.unix" [jobTemplateId]="jobTemplate.templateId"></job-flow-graph>
+    <ng-container *ngIf="jobTemplate && jobTemplate.runDependentJobPolicies.length">
+      <h4>Dependent Flow graph:</h4>
+      <job-dependent-flow-graph [updatedAt]="jobTemplate.createdAt.unix" [jobTemplateId]="jobTemplate.templateId"></job-dependent-flow-graph>
+    </ng-container>
+
     <h4>State graph:</h4>
     <job-state-graph *ngIf="jobTemplate" [updatedAt]="jobTemplate.createdAt.unix" [jobTemplateId]="jobTemplate.templateId"></job-state-graph>
   </div>
