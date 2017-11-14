@@ -59,7 +59,7 @@ export class TemplateSearchComponent {
   @Output() onSelected = new EventEmitter<JobTemplate>();
   @Output() onUnSelected = new EventEmitter<void>();
 
-  private completer: JobTemplateCompleter;
+  completer: JobTemplateCompleter;
 
   constructor(private httpService: HttpService) {
     this.completer = new JobTemplateCompleter(this.httpService);

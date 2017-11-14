@@ -8,7 +8,6 @@ import {GetJobChart} from "../shared/messages/get-job-chart";
 import {Date} from "../shared/date";
 import {HttpService} from "../shared/http.service";
 import {Moment} from "moment";
-import {until} from "selenium-webdriver";
 import {Response} from "@angular/http";
 import {JobStatus} from "../shared/job-status";
 
