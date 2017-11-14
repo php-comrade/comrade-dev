@@ -83,6 +83,7 @@ class LoadDemoFixturesCommand extends Command
         $this->createDemoJobWithSubJobs();
         $this->createDemoHttpRunnerJob();
         $this->createDemoDependentJobs();
+//        $this->createImportDemoJobs();
     }
 
     private function createDemoSuccessJob()
@@ -284,6 +285,153 @@ class LoadDemoFixturesCommand extends Command
         $this->createTrigger($createJob);
 
         $this->sendCreateJob($createJob);
+    }
+
+    private function createImportDemoJobs()
+    {
+        // status
+
+        $statusTemplate = JobTemplate::create();
+        $statusTemplate->setName('import_status');
+        $statusTemplate->setTemplateId(Uuid::generate());
+        $statusTemplate->setRunner(QueueRunner::createFor('import_status'));
+
+        $policy = GracePeriodPolicy::create();
+        $policy->setPeriod(300);
+        $statusTemplate->setGracePeriodPolicy($policy);
+
+        $this->sendCreateJob(CreateJob::createFor($statusTemplate));
+
+        // load
+
+        $loadTemplate = JobTemplate::create();
+        $loadTemplate->setName('import_load');
+        $loadTemplate->setTemplateId(Uuid::generate());
+        $loadTemplate->setRunner(QueueRunner::createFor('import_load'));
+
+        $policy = GracePeriodPolicy::create();
+        $policy->setPeriod(300);
+        $loadTemplate->setGracePeriodPolicy($policy);
+
+        $policy = RunDependentJobPolicy::create();
+        $policy->setTemplateId($statusTemplate->getTemplateId());
+        $policy->addRunOnStatus(JobStatus::FAILED);
+        $policy->addRunOnStatus(JobStatus::CANCELED);
+        $policy->addRunOnStatus(JobStatus::TERMINATED);
+        $loadTemplate->addRunDependentJobPolicy($policy);
+
+        $policy = RunSubJobsPolicy::create();
+        $policy->setResultPayloadKey('loaded_properties');
+        $policy->setOnFailedSubJob(RunSubJobsPolicy::MARK_JOB_AS_FAILED);
+        $loadTemplate->setRunSubJobsPolicy($policy);
+
+        $this->sendCreateJob(CreateJob::createFor($loadTemplate));
+
+        $loadPropertyTemplate = JobTemplate::create();
+        $loadPropertyTemplate->setName('import_load_property');
+        $loadPropertyTemplate->setTemplateId(Uuid::generate());
+        $loadPropertyTemplate->setRunner(QueueRunner::createFor('import_load_property'));
+
+        $policy = SubJobPolicy::create();
+        $policy->setParentId($loadTemplate->getTemplateId());
+        $loadPropertyTemplate->setSubJobPolicy($policy);
+
+        $policy = GracePeriodPolicy::create();
+        $policy->setPeriod(300);
+        $loadPropertyTemplate->setGracePeriodPolicy($policy);
+
+        $this->sendCreateJob(CreateJob::createFor($loadPropertyTemplate));
+
+        // transform
+
+        $transformTemplate = JobTemplate::create();
+        $transformTemplate->setName('import_transform');
+        $transformTemplate->setTemplateId(Uuid::generate());
+        $transformTemplate->setRunner(QueueRunner::createFor('import_transform'));
+
+        $policy = GracePeriodPolicy::create();
+        $policy->setPeriod(300);
+        $transformTemplate->setGracePeriodPolicy($policy);
+
+        $policy = RunSubJobsPolicy::create();
+        $policy->setResultPayloadKey('transformed_properties');
+        $policy->setOnFailedSubJob(RunSubJobsPolicy::MARK_JOB_AS_FAILED);
+        $transformTemplate->setRunSubJobsPolicy($policy);
+
+        $policy = RunDependentJobPolicy::create();
+        $policy->setTemplateId($statusTemplate->getTemplateId());
+        $policy->addRunOnStatus(JobStatus::FAILED);
+        $policy->addRunOnStatus(JobStatus::CANCELED);
+        $policy->addRunOnStatus(JobStatus::TERMINATED);
+        $transformTemplate->addRunDependentJobPolicy($policy);
+
+        $policy = RunDependentJobPolicy::create();
+        $policy->setTemplateId($loadTemplate->getTemplateId());
+        $policy->addRunOnStatus(JobStatus::COMPLETED);
+        $transformTemplate->addRunDependentJobPolicy($policy);
+
+        $this->sendCreateJob(CreateJob::createFor($transformTemplate));
+
+        $transformPropertyTemplate = JobTemplate::create();
+        $transformPropertyTemplate->setName('import_transform_property');
+        $transformPropertyTemplate->setTemplateId(Uuid::generate());
+        $transformPropertyTemplate->setRunner(QueueRunner::createFor('import_transform_property'));
+
+        $policy = SubJobPolicy::create();
+        $policy->setParentId($transformTemplate->getTemplateId());
+        $transformPropertyTemplate->setSubJobPolicy($policy);
+
+        $policy = GracePeriodPolicy::create();
+        $policy->setPeriod(300);
+        $transformPropertyTemplate->setGracePeriodPolicy($policy);
+
+        $this->sendCreateJob(CreateJob::createFor($transformPropertyTemplate));
+
+        // extract
+
+        $extractTemplate = JobTemplate::create();
+        $extractTemplate->setName('import_extract');
+        $extractTemplate->setTemplateId(Uuid::generate());
+        $extractTemplate->setRunner(QueueRunner::createFor('import_extract'));
+
+        $policy = GracePeriodPolicy::create();
+        $policy->setPeriod(300);
+        $extractTemplate->setGracePeriodPolicy($policy);
+
+        $policy = RunSubJobsPolicy::create();
+        $policy->setResultPayloadKey('extracted_properties');
+        $policy->setOnFailedSubJob(RunSubJobsPolicy::MARK_JOB_AS_FAILED);
+        $extractTemplate->setRunSubJobsPolicy($policy);
+
+        $policy = RunDependentJobPolicy::create();
+        $policy->setTemplateId($transformTemplate->getTemplateId());
+        $policy->addRunOnStatus(JobStatus::COMPLETED);
+        $extractTemplate->addRunDependentJobPolicy($policy);
+
+        $policy = RunDependentJobPolicy::create();
+        $policy->setTemplateId($statusTemplate->getTemplateId());
+        $policy->addRunOnStatus(JobStatus::FAILED);
+        $policy->addRunOnStatus(JobStatus::CANCELED);
+        $policy->addRunOnStatus(JobStatus::TERMINATED);
+        $extractTemplate->addRunDependentJobPolicy($policy);
+
+        $this->sendCreateJob(CreateJob::createFor($extractTemplate));
+
+        $extractPropertyTemplate = JobTemplate::create();
+        $extractPropertyTemplate->setName('import_extract_property');
+        $extractPropertyTemplate->setTemplateId(Uuid::generate());
+        $extractPropertyTemplate->setRunner(QueueRunner::createFor('import_extract_property'));
+
+        $policy = SubJobPolicy::create();
+        $policy->setParentId($extractTemplate->getTemplateId());
+        $extractPropertyTemplate->setSubJobPolicy($policy);
+
+        $policy = GracePeriodPolicy::create();
+        $policy->setPeriod(300);
+        $extractPropertyTemplate->setGracePeriodPolicy($policy);
+
+        $this->sendCreateJob(CreateJob::createFor($extractPropertyTemplate));
+
     }
 
     private function createTrigger(CreateJob $createJob): void
