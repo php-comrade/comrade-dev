@@ -4,6 +4,9 @@ parameters:
     locale: 'en'
     mongo_database: 'comrade'
 
+    wamp_public_dsn: '%env(WAMP_PUBLIC_DSN)%'
+    wamp_public_realm: '%env(WAMP_PUBLIC_REALM)%'
+
 services:
     _defaults:
         autowire: true

@@ -4,6 +4,7 @@ import {HttpService} from "./http.service";
 import {Observable} from "rxjs/Observable";
 import {Subscription} from "rxjs/Subscription";
 import {ReplaySubject} from "rxjs/ReplaySubject";
+import {Response} from "@angular/http";
 
 @Injectable()
 export class WampService {
@@ -18,9 +19,13 @@ export class WampService {
                 this.wampClient.close();
             }
 
-            let url = new URL(apiUrl);
-            this.wampClient = new Client(`ws://${url.hostname}:9090/`, 'realm1');
-            this.wampBaseUrl.next(`ws://${url.hostname}:9090/`);
+            this.http.getInfo(apiUrl).subscribe((res: Response) => {
+
+              let wamp_dsn = res.json().wamp_dsn;
+              let wamp_realm = res.json().wamp_realm;
+              this.wampClient = new Client(wamp_dsn, wamp_realm);
+              this.wampBaseUrl.next(wamp_dsn);
+            });
         });
     }
 

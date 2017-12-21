@@ -30,6 +30,8 @@ class InfoController
         return new JsonResponse([
             'title' => 'I am your comrade',
             'uri' => $request->getUri(),
+            'wamp_dsn' => $container->getParameter('wamp_public_dsn'),
+            'wamp_realm' => $container->getParameter('wamp_public_realm'),
             'version' => $version,
             'build' => $build,
         ]);
