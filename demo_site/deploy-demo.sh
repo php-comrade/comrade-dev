@@ -11,6 +11,7 @@ docker-machine ssh comrade.demo "docker stack deploy --prune --compose-file /doc
 while getopts "f" OPTION; do
   case $OPTION in
     f)
+      sleep 10
       docker-machine ssh comrade.demo "/load-demo-fixtures.sh"
       ;;
     \?)

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "66d313819f6ee030960dabe46ac8549f",
+    "content-hash": "ac9c10f040426f3295f658f3f9265872",
     "packages": [
         {
             "name": "bunny/bunny",
@@ -155,16 +155,16 @@
         },
         {
             "name": "enqueue/amqp-bunny",
-            "version": "0.8.13",
+            "version": "0.8.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/amqp-bunny.git",
-                "reference": "9cbb625446a6d94e71e7b7f9c0107118cb76cb57"
+                "reference": "dba2bd13b460060f517a301205075e29f3c7b143"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/amqp-bunny/zipball/9cbb625446a6d94e71e7b7f9c0107118cb76cb57",
-                "reference": "9cbb625446a6d94e71e7b7f9c0107118cb76cb57",
+                "url": "https://api.github.com/repos/php-enqueue/amqp-bunny/zipball/dba2bd13b460060f517a301205075e29f3c7b143",
+                "reference": "dba2bd13b460060f517a301205075e29f3c7b143",
                 "shasum": ""
             },
             "require": {
@@ -211,7 +211,7 @@
                 "messaging",
                 "queue"
             ],
-            "time": "2018-01-09T14:34:03+00:00"
+            "time": "2018-01-12T14:43:59+00:00"
         },
         {
             "name": "enqueue/amqp-tools",

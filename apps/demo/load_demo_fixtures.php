@@ -483,7 +483,7 @@ class LoadDemoFixturesCommand extends Command
             do {
                 usleep(100000);
 
-                $fp = fsockopen($host, $port);
+                $fp = @fsockopen($host, $port);
             } while (false == is_resource($fp) || $limit < time());
 
             if (false == $fp) {

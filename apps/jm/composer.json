@@ -5,7 +5,7 @@
         "php": "^7.1",
         "cboden/ratchet": "^0.4@dev",
         "comrade/shared": "*@dev",
-        "enqueue/amqp-bunny": "^0.8.13",
+        "enqueue/amqp-bunny": "^0.8.15",
         "enqueue/amqp-tools": "^0.8.14",
         "enqueue/enqueue-bundle": "^0.8.13",
         "formapro/pvm": "^0.2.3",
