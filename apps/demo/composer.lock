@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "9fa3bf647bcef8ddaeb021fa51e6f7a2",
+    "content-hash": "66d313819f6ee030960dabe46ac8549f",
     "packages": [
         {
             "name": "bunny/bunny",
@@ -155,16 +155,16 @@
         },
         {
             "name": "enqueue/amqp-bunny",
-            "version": "0.8.4",
+            "version": "0.8.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/amqp-bunny.git",
-                "reference": "204e48dc4c14b14902c86a4ec8cffd78dbcc5adf"
+                "reference": "9cbb625446a6d94e71e7b7f9c0107118cb76cb57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/amqp-bunny/zipball/204e48dc4c14b14902c86a4ec8cffd78dbcc5adf",
-                "reference": "204e48dc4c14b14902c86a4ec8cffd78dbcc5adf",
+                "url": "https://api.github.com/repos/php-enqueue/amqp-bunny/zipball/9cbb625446a6d94e71e7b7f9c0107118cb76cb57",
+                "reference": "9cbb625446a6d94e71e7b7f9c0107118cb76cb57",
                 "shasum": ""
             },
             "require": {
@@ -179,8 +179,8 @@
                 "enqueue/test": "^0.8@dev",
                 "phpunit/phpunit": "~5.4.0",
                 "queue-interop/queue-spec": "^0.5.3@dev",
-                "symfony/config": "^2.8|^3",
-                "symfony/dependency-injection": "^2.8|^3"
+                "symfony/config": "^2.8|^3|^4",
+                "symfony/dependency-injection": "^2.8|^3|^4"
             },
             "suggest": {
                 "enqueue/enqueue": "If you'd like to use advanced features like Client abstract layer or Symfony integration features"
@@ -204,26 +204,27 @@
                 "MIT"
             ],
             "description": "Message Queue Amqp Transport",
+            "homepage": "https://enqueue.forma-pro.com/",
             "keywords": [
                 "AMQP",
                 "bunny",
                 "messaging",
                 "queue"
             ],
-            "time": "2017-11-01T13:44:31+00:00"
+            "time": "2018-01-09T14:34:03+00:00"
         },
         {
             "name": "enqueue/amqp-tools",
-            "version": "0.8.5",
+            "version": "0.8.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/amqp-tools.git",
-                "reference": "d554cd149a542d7627ffefbdceff92bf813787f1"
+                "reference": "f375dee4d8609fca565a80df1c0f238bf0fe774f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/amqp-tools/zipball/d554cd149a542d7627ffefbdceff92bf813787f1",
-                "reference": "d554cd149a542d7627ffefbdceff92bf813787f1",
+                "url": "https://api.github.com/repos/php-enqueue/amqp-tools/zipball/f375dee4d8609fca565a80df1c0f238bf0fe774f",
+                "reference": "f375dee4d8609fca565a80df1c0f238bf0fe774f",
                 "shasum": ""
             },
             "require": {
@@ -255,25 +256,26 @@
                 "MIT"
             ],
             "description": "Message Queue Amqp Tools",
+            "homepage": "https://enqueue.forma-pro.com/",
             "keywords": [
                 "AMQP",
                 "messaging",
                 "queue"
             ],
-            "time": "2017-11-02T12:10:00+00:00"
+            "time": "2018-01-10T12:00:35+00:00"
         },
         {
             "name": "enqueue/enqueue",
-            "version": "0.8.8",
+            "version": "0.8.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/enqueue.git",
-                "reference": "1203deecd75416d9fae20f3cd10e9c1d9b41f588"
+                "reference": "d2e5c5a7c278eb5ebdf1262ad0a5a066d0d7778b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/1203deecd75416d9fae20f3cd10e9c1d9b41f588",
-                "reference": "1203deecd75416d9fae20f3cd10e9c1d9b41f588",
+                "url": "https://api.github.com/repos/php-enqueue/enqueue/zipball/d2e5c5a7c278eb5ebdf1262ad0a5a066d0d7778b",
+                "reference": "d2e5c5a7c278eb5ebdf1262ad0a5a066d0d7778b",
                 "shasum": ""
             },
             "require": {
@@ -300,11 +302,11 @@
                 "enqueue/stomp": "^0.8@dev",
                 "enqueue/test": "^0.8@dev",
                 "phpunit/phpunit": "~5.5",
-                "symfony/config": "^2.8|^3",
-                "symfony/console": "^2.8|^3",
-                "symfony/dependency-injection": "^2.8|^3",
-                "symfony/event-dispatcher": "^2.8|^3",
-                "symfony/http-kernel": "^2.8|^3"
+                "symfony/config": "^2.8|^3|^4",
+                "symfony/console": "^2.8|^3|^4",
+                "symfony/dependency-injection": "^2.8|^3|^4",
+                "symfony/event-dispatcher": "^2.8|^3|^4",
+                "symfony/http-kernel": "^2.8|^3|^4"
             },
             "suggest": {
                 "enqueue/amqp-ext": "AMQP transport (based on php extension)",
@@ -313,9 +315,9 @@
                 "enqueue/redis": "Redis transport",
                 "enqueue/sqs": "Amazon AWS SQS transport",
                 "enqueue/stomp": "STOMP transport",
-                "symfony/config": "^2.8|^3",
-                "symfony/console": "^2.8|^3 If you want to use li commands",
-                "symfony/dependency-injection": "^2.8|^3"
+                "symfony/config": "^2.8|^3|^4",
+                "symfony/console": "^2.8|^3|^4 If you want to use li commands",
+                "symfony/dependency-injection": "^2.8|^3|^4"
             },
             "type": "library",
             "extra": {
@@ -339,26 +341,27 @@
                 "MIT"
             ],
             "description": "Message Queue Library",
+            "homepage": "https://enqueue.forma-pro.com/",
             "keywords": [
                 "AMQP",
                 "messaging",
                 "queue",
                 "rabbitmq"
             ],
-            "time": "2017-11-11T20:31:57+00:00"
+            "time": "2018-01-09T16:40:53+00:00"
         },
         {
             "name": "enqueue/null",
-            "version": "0.8.0",
+            "version": "0.8.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-enqueue/null.git",
-                "reference": "ecd1f6b8e6dbcba5f3a31f6f9d934594323a7af7"
+                "reference": "ad8f47e0787ee05527473c75909871cee0908d28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-enqueue/null/zipball/ecd1f6b8e6dbcba5f3a31f6f9d934594323a7af7",
-                "reference": "ecd1f6b8e6dbcba5f3a31f6f9d934594323a7af7",
+                "url": "https://api.github.com/repos/php-enqueue/null/zipball/ad8f47e0787ee05527473c75909871cee0908d28",
+                "reference": "ad8f47e0787ee05527473c75909871cee0908d28",
                 "shasum": ""
             },
             "require": {
@@ -370,8 +373,8 @@
                 "enqueue/test": "^0.8@dev",
                 "phpunit/phpunit": "~5.5",
                 "queue-interop/queue-spec": "^0.5.3@dev",
-                "symfony/config": "^2.8|^3",
-                "symfony/dependency-injection": "^2.8|^3"
+                "symfony/config": "^2.8|^3|^4",
+                "symfony/dependency-injection": "^2.8|^3|^4"
             },
             "type": "library",
             "extra": {
@@ -392,12 +395,13 @@
                 "MIT"
             ],
             "description": "Enqueue Null transport",
+            "homepage": "https://enqueue.forma-pro.com/",
             "keywords": [
                 "messaging",
                 "queue",
                 "testing"
             ],
-            "time": "2017-10-12T11:26:29+00:00"
+            "time": "2018-01-04T09:46:31+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
@@ -837,16 +841,16 @@
         },
         {
             "name": "queue-interop/amqp-interop",
-            "version": "0.7.0",
+            "version": "0.7.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/queue-interop/amqp-interop.git",
-                "reference": "0c62531378f771617355748bcaa3c8b4bfa5ded0"
+                "reference": "03cfac42483d07ab45d1896a6a2e1d873a216bba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/queue-interop/amqp-interop/zipball/0c62531378f771617355748bcaa3c8b4bfa5ded0",
-                "reference": "0c62531378f771617355748bcaa3c8b4bfa5ded0",
+                "url": "https://api.github.com/repos/queue-interop/amqp-interop/zipball/03cfac42483d07ab45d1896a6a2e1d873a216bba",
+                "reference": "03cfac42483d07ab45d1896a6a2e1d873a216bba",
                 "shasum": ""
             },
             "require": {
@@ -868,7 +872,10 @@
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
-            "time": "2017-10-11T07:27:53+00:00"
+            "license": [
+                "MIT"
+            ],
+            "time": "2018-01-04T09:52:06+00:00"
         },
         {
             "name": "queue-interop/queue-interop",
@@ -1085,44 +1092,45 @@
         },
         {
             "name": "symfony/console",
-            "version": "v3.3.12",
+            "version": "v3.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/console.git",
-                "reference": "099302cc53e57cbb7414fd9f3ace40e5e2767c0b"
+                "reference": "8394c8ef121949e8f858f13bc1e34f05169e4e7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/console/zipball/099302cc53e57cbb7414fd9f3ace40e5e2767c0b",
-                "reference": "099302cc53e57cbb7414fd9f3ace40e5e2767c0b",
+                "url": "https://api.github.com/repos/symfony/console/zipball/8394c8ef121949e8f858f13bc1e34f05169e4e7d",
+                "reference": "8394c8ef121949e8f858f13bc1e34f05169e4e7d",
                 "shasum": ""
             },
             "require": {
                 "php": "^5.5.9|>=7.0.8",
-                "symfony/debug": "~2.8|~3.0",
+                "symfony/debug": "~2.8|~3.0|~4.0",
                 "symfony/polyfill-mbstring": "~1.0"
             },
             "conflict": {
-                "symfony/dependency-injection": "<3.3"
+                "symfony/dependency-injection": "<3.4",
+                "symfony/process": "<3.3"
             },
             "require-dev": {
                 "psr/log": "~1.0",
-                "symfony/config": "~3.3",
-                "symfony/dependency-injection": "~3.3",
-                "symfony/event-dispatcher": "~2.8|~3.0",
-                "symfony/filesystem": "~2.8|~3.0",
-                "symfony/process": "~2.8|~3.0"
+                "symfony/config": "~3.3|~4.0",
+                "symfony/dependency-injection": "~3.4|~4.0",
+                "symfony/event-dispatcher": "~2.8|~3.0|~4.0",
+                "symfony/lock": "~3.4|~4.0",
+                "symfony/process": "~3.3|~4.0"
             },
             "suggest": {
                 "psr/log": "For using the console logger",
                 "symfony/event-dispatcher": "",
-                "symfony/filesystem": "",
+                "symfony/lock": "",
                 "symfony/process": ""
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.3-dev"
+                    "dev-master": "3.4-dev"
                 }
             },
             "autoload": {
@@ -1149,36 +1157,36 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2017-11-12T16:53:41+00:00"
+            "time": "2018-01-03T07:37:34+00:00"
         },
         {
             "name": "symfony/debug",
-            "version": "v3.3.12",
+            "version": "v4.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/debug.git",
-                "reference": "74557880e2846b5c84029faa96b834da37e29810"
+                "reference": "9ae4223a661b56a9abdce144de4886cca37f198f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/debug/zipball/74557880e2846b5c84029faa96b834da37e29810",
-                "reference": "74557880e2846b5c84029faa96b834da37e29810",
+                "url": "https://api.github.com/repos/symfony/debug/zipball/9ae4223a661b56a9abdce144de4886cca37f198f",
+                "reference": "9ae4223a661b56a9abdce144de4886cca37f198f",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.5.9|>=7.0.8",
+                "php": "^7.1.3",
                 "psr/log": "~1.0"
             },
             "conflict": {
-                "symfony/http-kernel": ">=2.3,<2.3.24|~2.4.0|>=2.5,<2.5.9|>=2.6,<2.6.2"
+                "symfony/http-kernel": "<3.4"
             },
             "require-dev": {
-                "symfony/http-kernel": "~2.8|~3.0"
+                "symfony/http-kernel": "~3.4|~4.0"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.3-dev"
+                    "dev-master": "4.0-dev"
                 }
             },
             "autoload": {
@@ -1205,7 +1213,7 @@
             ],
             "description": "Symfony Debug Component",
             "homepage": "https://symfony.com",
-            "time": "2017-11-10T16:38:39+00:00"
+            "time": "2018-01-03T17:15:19+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
@@ -1268,16 +1276,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v3.3.12",
+            "version": "v3.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "a56a3989fb762d7b19a0cf8e7693ee99a6ffb78d"
+                "reference": "ff69f110c6b33fd33cd2089ba97d6112f44ef0ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/a56a3989fb762d7b19a0cf8e7693ee99a6ffb78d",
-                "reference": "a56a3989fb762d7b19a0cf8e7693ee99a6ffb78d",
+                "url": "https://api.github.com/repos/symfony/process/zipball/ff69f110c6b33fd33cd2089ba97d6112f44ef0ba",
+                "reference": "ff69f110c6b33fd33cd2089ba97d6112f44ef0ba",
                 "shasum": ""
             },
             "require": {
@@ -1286,7 +1294,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.3-dev"
+                    "dev-master": "3.4-dev"
                 }
             },
             "autoload": {
@@ -1313,7 +1321,7 @@
             ],
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
-            "time": "2017-11-13T15:31:11+00:00"
+            "time": "2018-01-03T07:37:34+00:00"
         }
     ],
     "packages-dev": [],

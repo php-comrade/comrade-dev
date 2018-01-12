@@ -17,6 +17,15 @@ services:
 
     Symfony\Component\EventDispatcher\EventDispatcherInterface: '@event_dispatcher'
 
+    Enqueue\Client\ProducerInterface:
+        alias: 'enqueue.client.producer'
+
+    Enqueue\Consumption\Extension\LoggerExtension:
+        autowire: false
+        arguments: ['@logger']
+        tags:
+            - {name: 'enqueue.consumption.extension', priority: 100 }
+
     App\Storage\JobStorage: '@yadm.job.storage'
     App\Storage\ExclusiveJobStorage: '@yadm.exclusive_job.storage'
     App\Storage\JobTemplateStorage: '@yadm.job_template.storage'
@@ -26,16 +35,10 @@ services:
     App\Storage\JobMetricsStorage: '@yadm.job_metrics.storage'
     App\Storage\TriggerStorage: '@yadm.trigger.storage'
 
-    Enqueue\Client\ProducerInterface:
-        alias: 'enqueue.client.producer'
-
     App\Infra\Error\ErrorCollector:
         tags:
             - { name: 'kernel.event_subscriber', priority: -100 }
             - { name: 'enqueue.consumption.extension', priority: -100 }
-
-    logger:
-        class: 'Psr\Log\NullLogger'
 
     formapro.pvm.process_execution_storage:
         autowire: false
@@ -101,6 +104,12 @@ services:
         arguments:
             - '@enqueue.producer'
             - '@enqueue.client.meta.queue_meta_registry'
+
+    App\Infra\Enqueue\WaitForBrokerListener:
+        autowire: false
+        arguments: ['%env(ENQUEUE_DSN)%', '@logger']
+        tags:
+            - { name: 'kernel.event_subscriber', priority: -100 }
 
     App\Infra\Enqueue\LimitMessageRedeliveryExtension:
         arguments:

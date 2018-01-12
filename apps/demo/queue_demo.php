@@ -18,6 +18,7 @@ use Interop\Queue\PsrMessage;
 use function Makasim\Values\get_value;
 use function Makasim\Values\register_cast_hooks;
 use function Makasim\Values\register_object_hooks;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
@@ -29,6 +30,8 @@ $logger = new ConsoleLogger($output);
 
 register_cast_hooks();
 register_object_hooks();
+
+wait_for_broker($logger, getenv('ENQUEUE_DSN'));
 
 /** @var AmqpContext $c */
 $c = dsn_to_context(getenv('ENQUEUE_DSN'));
@@ -167,6 +170,35 @@ function do_something_important($timeout)
             }
 
             $memoryConsumed = true;
+        }
+    }
+}
+
+function wait_for_broker(LoggerInterface $logger, $brokerDsn)
+{
+    $fp = null;
+    $limit = time() + 20;
+    $host = parse_url($brokerDsn, PHP_URL_HOST);
+    $port = parse_url($brokerDsn, PHP_URL_PORT);
+
+    try {
+        do {
+            $fp = @fsockopen($host, $port);
+
+            if (false == is_resource($fp)) {
+                $logger->debug(sprintf('service is not running %s:%s', $host, $port));
+                sleep(1);
+            }
+        } while (false == is_resource($fp) || $limit < time());
+
+        if (false == $fp) {
+            throw new \LogicException(sprintf('Failed to connect to "%s:%s"', $host, $port));
+        }
+
+        $logger->debug(sprintf('service is online %s:%s', $host, $port));
+    } finally {
+        if (is_resource($fp)) {
+            fclose($fp);
         }
     }
 }

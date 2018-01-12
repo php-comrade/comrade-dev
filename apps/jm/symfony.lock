@@ -1,5 +1,8 @@
 {
     "formapro/pvm": {
         "version": "0.2.x-dev"
+    },
+    "symfony/thanks": {
+        "version": "v1.0.0"
     }
 }

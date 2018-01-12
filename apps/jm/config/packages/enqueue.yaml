@@ -1,6 +1,10 @@
 enqueue:
     transport:
-        default: '%env(ENQUEUE_DSN)%'
+        default: 'amqp'
+        amqp:
+            dsn: '%env(ENQUEUE_DSN)%'
+            lazy: true
+            persisted: true
     client:
         redelivered_delay_time: 5
         prefix: ''

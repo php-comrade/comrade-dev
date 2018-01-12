@@ -18,11 +18,12 @@ services:
       - NGINX_PHP_FALLBACK=/index.php
       - NGINX_PHP_LOCATION=^/index\.php(/|$$)
       - APP_DEV_PERMITTED=1
+      - SHELL_VERBOSITY=3
 
   jmq:
     image: 'formapro/nginx-php-fpm:latest-all-exts'
     restart: 'always'
-    entrypoint: 'php bin/console quartz:scheduler -vvv'
+    entrypoint: 'php bin/console quartz:scheduler'
     working_dir: '/jobs_dev/apps/jm'
     depends_on:
       - 'rabbitmq'
@@ -31,6 +32,8 @@ services:
       - './apps/jm:/jobs_dev/apps/jm:cached'
       - './pkg/php-shared:/jobs_dev/apps/jm/vendor/comrade/shared:cached'
     env_file: 'apps/jm/.env'
+    environment:
+      - SHELL_VERBOSITY=3
 
   jmw:
     image: 'formapro/nginx-php-fpm:latest-all-exts'
@@ -44,13 +47,15 @@ services:
       - './apps/jm:/jobs_dev/apps/jm:cached'
       - './pkg/php-shared:/jobs_dev/apps/jm/vendor/comrade/shared:cached'
     env_file: 'apps/jm/.env'
+    environment:
+      - SHELL_VERBOSITY=3
     ports:
       - '9090:9090'
 
   jmc:
     image: 'formapro/nginx-php-fpm:latest-all-exts'
     restart: 'always'
-    entrypoint: 'php bin/console enqueue:consume --setup-broker --skip=quartz_rpc --receive-timeout=10000 --time-limit="+3600 seconds" --memory-limit=300 -vvv'
+    entrypoint: 'php bin/console enqueue:consume --setup-broker --skip=quartz_rpc --receive-timeout=10000 --time-limit="+5 minutes" --memory-limit=300'
     working_dir: '/jobs_dev/apps/jm'
     depends_on:
       - 'rabbitmq'
@@ -66,11 +71,12 @@ services:
     environment:
       - PHP_IDE_CONFIG=serverName=dl.dev
       - XDEBUG_CONFIG="idekey=PHPSTORM"
+      - SHELL_VERBOSITY=3
 
   jmqr:
     image: 'formapro/nginx-php-fpm:latest-all-exts'
     restart: 'always'
-    entrypoint: 'php bin/console enqueue:consume quartz_rpc --setup-broker --receive-timeout=10000 --time-limit="+3600 seconds" --memory-limit=300 -vvv'
+    entrypoint: 'php bin/console enqueue:consume quartz_rpc --setup-broker --receive-timeout=10000 --time-limit="+5 minutes" --memory-limit=300'
     working_dir: '/jobs_dev/apps/jm'
     depends_on:
       - 'rabbitmq'
@@ -79,6 +85,8 @@ services:
       - './apps/jm:/jobs_dev/apps/jm:cached'
       - './pkg/php-shared:/jobs_dev/apps/jm/vendor/comrade/shared:cached'
     env_file: 'apps/jm/.env'
+    environment:
+      - SHELL_VERBOSITY=3
 
   jmdq:
     image: 'formapro/nginx-php-fpm:latest-all-exts'

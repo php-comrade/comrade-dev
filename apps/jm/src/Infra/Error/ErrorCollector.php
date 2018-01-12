@@ -53,7 +53,7 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
 
         try {
             $this->producer->sendEvent(Topics::INTERNAL_ERROR, $error);
-        } catch (Exception $e) {}
+        } catch (\Throwable $e) {}
     }
 
     public function onCliException(ConsoleErrorEvent $event):void
@@ -65,7 +65,7 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
 
         try {
             $this->producer->sendEvent(Topics::INTERNAL_ERROR, $error);
-        } catch (Exception $e) {}
+        } catch (\Throwable $e) {}
     }
 
     public function onPostReceived(Context $context)
@@ -87,7 +87,7 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
 
         try {
             $this->producer->sendEvent(Topics::INTERNAL_ERROR, $error);
-        } catch (Exception $e) {}
+        } catch (\Throwable $e) {}
     }
 
     public function onInterrupted(Context $context)
@@ -114,7 +114,7 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
 
         try {
             $this->producer->sendEvent(Topics::INTERNAL_ERROR, $error);
-        } catch (Exception $e) {}
+        } catch (\Throwable $e) {}
     }
 
     /**
