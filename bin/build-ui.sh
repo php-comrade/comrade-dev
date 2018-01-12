@@ -10,12 +10,8 @@ then
     exit 1
 fi
 
-rm -rf build/ui-container
-
-cp -RLp apps/ui build/ui-container
-rm -rf build/ui-container/.git
-rm -rf build/ui-container/dist
-rm -rf build/ui-container/node_modules
+rm -rf build/ui-container/*
+rsync -av apps/ui/ build/ui-container --exclude .git --exclude node_modules --exclude dist
 
 (cd build/ui-container; npm install)
 (cd build/ui-container; ng build --prod)

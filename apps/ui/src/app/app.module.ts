@@ -46,7 +46,6 @@ import {ErrorService} from "./shared/error.service";
 import {LateServerErrorsComponent} from "./page/late-server-errors.component";
 import {HttpService} from "./shared/http.service";
 import {ApiBaseUrlComponent} from "./page/api-base-url.component";
-import {ApiGuard} from "./shared/api.guard";
 import {Ng2Webstorage} from "ngx-webstorage";
 import {WampService} from "./shared/wamp.service";
 import {CurrentJobService} from "./shared/current-job.service";
@@ -67,6 +66,7 @@ import {Ng2CompleterModule} from "ng2-completer";
 import {TemplateSearchComponent} from "./part/template-search.component";
 import {PolicyShowRunDependentJobComponent} from "./part/policy-show-run-dependent-job.component";
 import {JobDependentFlowGraphComponent} from "./part/job-dependent-flow-graph.component";
+import {WampGuard} from "./shared/wamp.guard";
 
 @NgModule({
   declarations: [
@@ -135,7 +135,7 @@ import {JobDependentFlowGraphComponent} from "./part/job-dependent-flow-graph.co
       TimelineService,
       ErrorService,
       HttpService,
-      ApiGuard,
+      WampGuard,
       WampService,
       CurrentJobService,
       CurrentJobTemplateService,
