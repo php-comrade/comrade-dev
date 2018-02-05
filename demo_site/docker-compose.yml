@@ -83,10 +83,14 @@ services:
       - 'RABBITMQ_DEFAULT_USER=comrade'
       - 'RABBITMQ_DEFAULT_PASS=comrade123'
       - 'RABBITMQ_DEFAULT_VHOST=comrade'
+    ports:
+      - "15672:15672"
     deploy:
       mode: 'global'
 
   mongo:
     image: 'mongo:3'
+    ports:
+      - "27017:27017"
     deploy:
       mode: 'global'
