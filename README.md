@@ -16,7 +16,7 @@ Comrade is a job scheduler&manager service.
 * Real-time, WEB based UI
 * Write worker in any language
 * Standalone service
-* Containerized, easy to deply
+* Containerized, easy to deploy
 * Work with any [Queue Interop](https://github.com/queue-interop/queue-interop) compatible queue
 * A client for PHP.
 
@@ -102,7 +102,7 @@ The best way to run Comrade in production is to use pre-build Docker containers.
       mongo: { image: 'mongo:3' }
     ```
     
-4. Run `docker-compose up`. Now you have the comrade server available at `localhost:81`, UI at `localhost:80`, websoket server at `localhost:9090`.
+4. Run `docker-compose up`. Now you have the comrade server available at `localhost:81`, UI at `localhost:80`, websocket server at `localhost:9090`.
 
 If you'd like to build and run Comrade from source code, do next:
 
