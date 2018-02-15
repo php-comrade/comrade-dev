@@ -1,21 +1,24 @@
 # Comrade
 
-Comrade is job scheduler and manager service.
+Comrade is a job scheduler&manager service.
 
 ## Features
 
 * Exclusive jobs
 * Dependent jobs
-* Sub jobs execution.
-* Cron like triggers
-* Grace period and retry polices
+* Sub jobs execution
+* Cron triggers
+* Simple triggers
+* Worker execution grace period (i.e. timeout)
 * Queue and HTTP runners
-* Polyglot API. Supports HTTP and MQ API.
-* JSON Schemas for everything,
-* Real-time UI is provided, 
-* A job could be executed on any programming language. 
-* Standalone micro service,
-* Containerized
+* Hybrid API. Supports HTTP and MQ API
+* JSON Schemas for everything
+* Real-time, WEB based UI
+* Write worker in any language
+* Standalone service
+* Containerized, easy to deply
+* Work with any [Queue Interop](https://github.com/queue-interop/queue-interop) compatible queue
+* A client for PHP.
 
 ## Online Demo
 
