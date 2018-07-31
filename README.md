@@ -109,6 +109,7 @@ If you'd like to build and run Comrade from source code, do next:
 ```bash
 $ git clone git@github.com:php-comrade/comrade-dev.git;
 $ (cd comrade-dev/apps/jm; composer install);
+$ (cd comrade-dev/apps/demo; composer install);
 $ (cd comrade-dev/apps/ui; npm install);
 $ echo '127.0.0.1 jm.loc' >> /etc/hosts
 $ echo '127.0.0.1 ui.jm.loc' >> /etc/hosts
