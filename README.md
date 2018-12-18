@@ -1,21 +1,24 @@
 # Comrade
 
-Comrade is job scheduler and manager service.
+Comrade is a job scheduler&manager service.
 
 ## Features
 
 * Exclusive jobs
 * Dependent jobs
-* Sub jobs execution.
-* Cron like triggers
-* Grace period and retry polices
+* Sub jobs execution
+* Cron triggers
+* Simple triggers
+* Worker execution grace period (i.e. timeout)
 * Queue and HTTP runners
-* Polyglot API. Supports HTTP and MQ API.
-* JSON Schemas for everything,
-* Real-time UI is provided, 
-* A job could be executed on any programming language. 
-* Standalone micro service,
-* Containerized
+* Hybrid API. Supports HTTP and MQ API
+* JSON Schemas for everything
+* Real-time, WEB based UI
+* Write worker in any language
+* Standalone service
+* Containerized, easy to deploy
+* Work with any [Queue Interop](https://github.com/queue-interop/queue-interop) compatible queue
+* A client for PHP.
 
 ## Online Demo
 
@@ -99,13 +102,14 @@ The best way to run Comrade in production is to use pre-build Docker containers.
       mongo: { image: 'mongo:3' }
     ```
     
-4. Run `docker-compose up`. Now you have the comrade server available at `localhost:81`, UI at `localhost:80`, websoket server at `localhost:9090`.
+4. Run `docker-compose up`. Now you have the comrade server available at `localhost:81`, UI at `localhost:80`, websocket server at `localhost:9090`.
 
 If you'd like to build and run Comrade from source code, do next:
 
 ```bash
 $ git clone git@github.com:php-comrade/comrade-dev.git;
 $ (cd comrade-dev/apps/jm; composer install);
+$ (cd comrade-dev/apps/demo; composer install);
 $ (cd comrade-dev/apps/ui; npm install);
 $ echo '127.0.0.1 jm.loc' >> /etc/hosts
 $ echo '127.0.0.1 ui.jm.loc' >> /etc/hosts
