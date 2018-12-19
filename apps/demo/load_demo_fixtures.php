@@ -15,11 +15,10 @@ use Comrade\Shared\Model\RetryFailedPolicy;
 use Comrade\Shared\Model\RunDependentJobPolicy;
 use Comrade\Shared\Model\RunSubJobsPolicy;
 use Comrade\Shared\Model\SubJobPolicy;
-use function Enqueue\dsn_to_context;
+use Enqueue\AmqpBunny\AmqpConnectionFactory;
 use Enqueue\Util\JSON;
 use Enqueue\Util\UUID;
-use Interop\Amqp\AmqpContext;
-use Interop\Queue\PsrContext;
+use Interop\Queue\Context;
 use function Makasim\Values\register_cast_hooks;
 use function Makasim\Values\register_object_hooks;
 use MongoDB\Client;
@@ -37,7 +36,7 @@ class LoadDemoFixturesCommand extends Command
     private $trigger;
 
     /**
-     * @var PsrContext
+     * @var Context
      */
     private $context;
 
@@ -46,7 +45,7 @@ class LoadDemoFixturesCommand extends Command
      */
     private $client;
 
-    public function __construct(PsrContext $context, Client $client)
+    public function __construct(Context $context, Client $client)
     {
         $this->context = $context;
         $this->client = $client;
@@ -500,11 +499,10 @@ class LoadDemoFixturesCommand extends Command
 register_cast_hooks();
 register_object_hooks();
 
-/** @var AmqpContext $queueContext */
-$queueContext = dsn_to_context(getenv('ENQUEUE_DSN'));
+$c = (new AmqpConnectionFactory(getenv('ENQUEUE_DSN')))->createContext();
 $mongoClient = new Client(getenv('MONGO_DSN'));
 
-$command = new \LoadDemoFixturesCommand($queueContext, $mongoClient);
+$command = new \LoadDemoFixturesCommand($c, $mongoClient);
 
 $app = new Application('comrade-demo');
 $app->add($command);
