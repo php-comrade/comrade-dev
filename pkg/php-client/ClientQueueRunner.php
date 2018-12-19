@@ -4,29 +4,27 @@ namespace Comrade\Client;
 use Comrade\Shared\Message\RunnerResult;
 use Comrade\Shared\Message\RunJob;
 use Comrade\Shared\Model\JobAction;
-use Comrade\Shared\Model\JobResult;
-use Comrade\Shared\Model\Runner;
 use Comrade\Shared\Model\Throwable;
 use Enqueue\Util\JSON;
-use Interop\Queue\PsrContext;
-use Interop\Queue\PsrMessage;
+use Interop\Queue\Context;
+use Interop\Queue\Message;
 
 class ClientQueueRunner
 {
     /**
-     * @var PsrContext
+     * @var Context
      */
     private $context;
 
     /**
-     * @param PsrContext $context
+     * @param Context $context
      */
-    public function __construct(PsrContext $context)
+    public function __construct(Context $context)
     {
         $this->context = $context;
     }
 
-    public function run(PsrMessage $message, callable $worker): void
+    public function run(Message $message, callable $worker): void
     {
         $runJob = RunJob::create(JSON::decode($message->getBody()));
         $metrics = null;

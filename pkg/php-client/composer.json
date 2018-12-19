@@ -8,7 +8,7 @@
         "php": ">=7.1",
 
         "comrade/shared": "*@dev",
-        "enqueue/enqueue": "^0.8",
+        "enqueue/enqueue": "^0.9",
         "guzzlehttp/guzzle": "^6.3"
     },
     "autoload": {
