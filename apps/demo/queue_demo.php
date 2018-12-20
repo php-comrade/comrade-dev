@@ -6,15 +6,15 @@ use Comrade\Shared\Message\RunnerResult;
 use Comrade\Shared\Message\Part\SubJob;
 use Comrade\Shared\Message\RunJob;
 use Comrade\Shared\Model\JobAction;
+use Enqueue\AmqpBunny\AmqpConnectionFactory;
 use Enqueue\Consumption\ChainExtension;
 use Enqueue\Consumption\Extension\LimitConsumptionTimeExtension;
+use Enqueue\Consumption\Extension\LogExtension;
 use Enqueue\Consumption\Extension\LoggerExtension;
 use Enqueue\Consumption\Extension\SignalExtension;
 use Enqueue\Consumption\QueueConsumer;
 use Enqueue\Consumption\Result;
-use function Enqueue\dsn_to_context;
-use Interop\Amqp\AmqpContext;
-use Interop\Queue\PsrMessage;
+use Interop\Queue\Message;
 use function Makasim\Values\get_value;
 use function Makasim\Values\register_cast_hooks;
 use function Makasim\Values\register_object_hooks;
@@ -31,10 +31,9 @@ $logger = new ConsoleLogger($output);
 register_cast_hooks();
 register_object_hooks();
 
-wait_for_broker($logger, getenv('ENQUEUE_DSN'));
+//wait_for_broker($logger, getenv('ENQUEUE_DSN'));
 
-/** @var AmqpContext $c */
-$c = dsn_to_context(getenv('ENQUEUE_DSN'));
+$c = (new AmqpConnectionFactory(getenv('ENQUEUE_DSN')))->createContext();
 
 $runner = new ClientQueueRunner($c);
 
@@ -45,12 +44,12 @@ foreach (['demo_success_job', 'demo_failed_job', 'demo_failed_with_exception_job
 }
 
 $queueConsumer = new QueueConsumer($c, new ChainExtension([
-    new LoggerExtension($logger),
     new SignalExtension(),
+    new LogExtension(),
     new LimitConsumptionTimeExtension(new \DateTime('now + 5 minutes')),
-]), 0, 200);
+]), [], $logger, 200);
 
-$queueConsumer->bind('demo_success_job', function(PsrMessage $message) use ($runner) {
+$queueConsumer->bindCallback('demo_success_job', function(Message $message) use ($runner) {
     $runner->run($message, function(RunJob $runJob) {
         do_something_important(rand(200, 1000));
 
@@ -60,7 +59,7 @@ $queueConsumer->bind('demo_success_job', function(PsrMessage $message) use ($run
     return Result::ACK;
 });
 
-$queueConsumer->bind('demo_success_with_result', function(PsrMessage $message) use ($runner) {
+$queueConsumer->bindCallback('demo_success_with_result', function(Message $message) use ($runner) {
     $runner->run($message, function(RunJob $runJob) {
         do_something_important(rand(200, 1000));
 
@@ -70,7 +69,7 @@ $queueConsumer->bind('demo_success_with_result', function(PsrMessage $message) u
     return Result::ACK;
 });
 
-$queueConsumer->bind('demo_success_on_third_attempt', function(PsrMessage $message) use ($runner) {
+$queueConsumer->bindCallback('demo_success_on_third_attempt', function(Message $message) use ($runner) {
     $runner->run($message, function(RunJob $runJob) {
         do_something_important(rand(200, 1000));
 
@@ -80,7 +79,7 @@ $queueConsumer->bind('demo_success_on_third_attempt', function(PsrMessage $messa
     return Result::ACK;
 });
 
-$queueConsumer->bind('demo_random_job', function(PsrMessage $message) use ($runner) {
+$queueConsumer->bindCallback('demo_random_job', function(Message $message) use ($runner) {
     $runner->run($message, function(RunJob $runJob) {
         do_something_important(rand(200, 1000));
 
@@ -92,7 +91,7 @@ $queueConsumer->bind('demo_random_job', function(PsrMessage $message) use ($runn
     return Result::ACK;
 });
 
-$queueConsumer->bind('demo_run_sub_tasks', function(PsrMessage $message) use ($runner) {
+$queueConsumer->bindCallback('demo_run_sub_tasks', function(Message $message) use ($runner) {
     $runner->run($message, function(RunJob $runJob) {
         do_something_important(rand(200, 1000));
 
@@ -109,7 +108,7 @@ $queueConsumer->bind('demo_run_sub_tasks', function(PsrMessage $message) use ($r
     return Result::ACK;
 });
 
-$queueConsumer->bind('demo_failed_job', function(PsrMessage $message) use ($runner) {
+$queueConsumer->bindCallback('demo_failed_job', function(Message $message) use ($runner) {
     $runner->run($message, function(RunJob $runJob) {
         do_something_important(rand(200, 1000));
 
@@ -119,7 +118,7 @@ $queueConsumer->bind('demo_failed_job', function(PsrMessage $message) use ($runn
     return Result::ACK;
 });
 
-$queueConsumer->bind('demo_dependent_job', function(PsrMessage $message) use ($runner) {
+$queueConsumer->bindCallback('demo_dependent_job', function(Message $message) use ($runner) {
     $runner->run($message, function(RunJob $runJob) {
         do_something_important(rand(200, 1000));
 
@@ -129,7 +128,7 @@ $queueConsumer->bind('demo_dependent_job', function(PsrMessage $message) use ($r
     return Result::ACK;
 });
 
-$queueConsumer->bind('demo_second_dependent_job', function(PsrMessage $message) use ($runner) {
+$queueConsumer->bindCallback('demo_second_dependent_job', function(Message $message) use ($runner) {
     $runner->run($message, function(RunJob $runJob) {
         do_something_important(rand(200, 1000));
 
@@ -143,7 +142,7 @@ $queueConsumer->bind('demo_second_dependent_job', function(PsrMessage $message) 
     return Result::ACK;
 });
 
-$queueConsumer->bind('demo_failed_with_exception_job', function(PsrMessage $message) use ($runner) {
+$queueConsumer->bindCallback('demo_failed_with_exception_job', function(Message $message) use ($runner) {
     try {
         $runner->run($message, function (RunJob $runJob) {
             do_something_important(rand(200, 1000));

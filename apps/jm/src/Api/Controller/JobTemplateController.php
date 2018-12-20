@@ -5,7 +5,7 @@ use App\Commands;
 use App\Infra\JsonSchema\SchemaValidator;
 use App\JobStatus;
 use App\Service\CreateDependentJobsProcessService;
-use App\Service\JobStateMachine;
+use App\JobStateMachine;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessStorage;
 use App\Storage\TriggerStorage;

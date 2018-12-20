@@ -3,18 +3,23 @@
     "license": "MIT",
     "require": {
         "php": "^7.1",
-        "comrade/shared": "*@dev",
-        "comrade/client": "*@dev",
-        "enqueue/amqp-bunny": "^0.8.15",
-        "enqueue/amqp-tools": "^0.8.14",
-        "symfony/process": "^3.3",
-        "symfony/console": "^3.3",
+        "comrade/shared": "0.1.x-dev",
+        "comrade/client": "0.1.x-dev",
+        "enqueue/amqp-bunny": "^0.9",
+        "enqueue/enqueue": "^0.9",
+        "symfony/process": "^4.2",
+        "symfony/console": "^4.2",
         "mongodb/mongodb": "^1",
-        "makasim/values": "^0.3.1"
+        "makasim/values": "^0.5"
     },
     "autoload": {
         "psr-4": {
             "Comrade\\Demo\\": ""
+        }
+    },
+    "config": {
+        "platform": {
+            "ext-mongodb": "1.5.0"
         }
     }
 }

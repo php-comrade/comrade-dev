@@ -2,7 +2,6 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'en'
-    mongo_database: 'comrade'
 
     wamp_public_dsn: '%env(WAMP_PUBLIC_DSN)%'
     wamp_public_realm: '%env(WAMP_PUBLIC_REALM)%'
@@ -17,51 +16,44 @@ services:
 
     Symfony\Component\EventDispatcher\EventDispatcherInterface: '@event_dispatcher'
 
-    Enqueue\Client\ProducerInterface:
-        alias: 'enqueue.client.producer'
-
     Enqueue\Consumption\Extension\LoggerExtension:
         autowire: false
         arguments: ['@logger']
         tags:
             - {name: 'enqueue.consumption.extension', priority: 100 }
 
-    App\Storage\JobStorage: '@yadm.job.storage'
-    App\Storage\ExclusiveJobStorage: '@yadm.exclusive_job.storage'
-    App\Storage\JobTemplateStorage: '@yadm.job_template.storage'
-    App\Storage\ProcessStorage: '@yadm.process.storage'
-    App\Storage\ProcessExecutionStorage: '@yadm.process_execution.storage'
-    App\Infra\Error\ErrorStorage: '@yadm.error.storage'
-    App\Storage\JobMetricsStorage: '@yadm.job_metrics.storage'
-    App\Storage\TriggerStorage: '@yadm.trigger.storage'
-
     App\Infra\Error\ErrorCollector:
         tags:
             - { name: 'kernel.event_subscriber', priority: -100 }
             - { name: 'enqueue.consumption.extension', priority: -100 }
 
-    formapro.pvm.process_execution_storage:
-        autowire: false
-        class: 'Formapro\Pvm\Yadm\MongoProcessStorage'
+    formapro.pvm.dal:
+        class: 'Formapro\Pvm\Yadm\StandaloneTokenDAL'
         arguments:
-            - '@App\Storage\ProcessExecutionStorage'
+          - '@App\Storage\ProcessExecutionStorage'
+          - '@App\Storage\TokenStorage'
 
     formapro.pvm.token_locker:
-        class: 'Formapro\Pvm\Yadm\MongoTokenLocker'
+        class: 'Formapro\Pvm\Yadm\TokenLocker'
         arguments:
-            - '@yadm.process_execution.pessimistic_lock'
+            - '@yadm.token.pessimistic_lock'
 
-    Formapro\Pvm\ProcessStorage: '@formapro.pvm.process_execution_storage'
     Formapro\Pvm\TokenLockerInterface: '@formapro.pvm.token_locker'
 
     Formapro\Pvm\DefaultBehaviorRegistry: ~
 
     Formapro\Pvm\BehaviorRegistry: '@Formapro\Pvm\DefaultBehaviorRegistry'
+    Formapro\Pvm\DAL: '@formapro.pvm.dal'
 
     Formapro\Pvm\Enqueue\AsyncTransition: ~
     Formapro\Pvm\AsyncTransition: '@Formapro\Pvm\Enqueue\AsyncTransition'
 
     Formapro\Pvm\ProcessEngine:
+        autowire: false
+        arguments:
+            - '@Formapro\Pvm\DefaultBehaviorRegistry'
+            - '@Formapro\Pvm\DAL'
+            - '@Formapro\Pvm\AsyncTransition'
 
     App\Infra\JsonSchema\LocalUriRetriver:
         autowire: false
@@ -85,25 +77,37 @@ services:
 
     App\Queue\:
         resource: '../src/Queue/*'
-        tags: ['enqueue.client.processor']
+        autoconfigure: true
+
+    App\Service\:
+        resource: '../src/Service/*'
+        autoconfigure: false
+        autowire: true
+
+    App\Command\:
+        resource: '../src/Command/*'
+        autoconfigure: true
+        autowire: true
 
     App\Pvm\Behavior\:
         resource: '../src/Pvm/Behavior/*'
-        tags: ['pvm.behavior']
+        autoconfigure: true
+        tags:
+            - { name: 'pvm.behavior' }
 
     Formapro\Pvm\Enqueue\HandleAsyncTransitionProcessor:
         autowire: false
         arguments:
             - '@Formapro\Pvm\ProcessEngine'
-            - '@formapro.pvm.process_execution_storage'
-        tags: ['enqueue.client.processor']
-
-
-    App\Infra\Enqueue\Producer:
-        autowire: false
-        arguments:
-            - '@enqueue.producer'
-            - '@enqueue.client.meta.queue_meta_registry'
+            - '@formapro.pvm.token_locker'
+            - '@logger'
+        tags:
+            -
+                name: 'enqueue.processor'
+                command: 'pvm_handle_async_transition'
+                queue: 'pvm_handle_async_transition'
+                prefix_queue: false
+                exclusive: true
 
     App\Infra\Enqueue\WaitForBrokerListener:
         autowire: false
@@ -113,7 +117,7 @@ services:
 
     App\Infra\Enqueue\LimitMessageRedeliveryExtension:
         arguments:
-          - '@enqueue.transport.context'
+          - '@enqueue.transport.default.context'
           - 5
         tags:
             - { name: 'enqueue.consumption.extension', priority: 100 }
@@ -122,18 +126,23 @@ services:
         autowire: false
         arguments:
             - '@yadm.client'
-            - '%mongo_database%'
+            - '%env(MONGO_DSN)%'
 
     App\Service\ChangeJobStateService: ~
 
     App\Api\Controller\:
-        resource: '../src/Api/Controller'
+        resource: '../src/Api/Controller/*'
+        public: true
+        tags: ['controller.service_arguments']
+
+    App\Controller\:
+        resource: '../src/Controller/*'
         public: true
         tags: ['controller.service_arguments']
 
     Quartz\Bridge\Scheduler\RemoteScheduler: '@quartz.remote.scheduler'
 
+    Quartz\Scheduler\Store\YadmStoreResource: '@quartz.store_resource'
+
     App\Infra\ThruwayClient:
         arguments: ['%env(WAMP_DSN)%', '%env(WAMP_REALM)%']
-
-    Interop\Queue\PsrContext: '@enqueue.transport.context'

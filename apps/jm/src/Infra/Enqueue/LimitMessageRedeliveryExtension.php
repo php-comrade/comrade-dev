@@ -2,19 +2,16 @@
 namespace App\Infra\Enqueue;
 
 use Enqueue\Client\ConsumptionExtension\DelayRedeliveredMessageExtension;
-use Enqueue\Consumption\Context;
-use Enqueue\Consumption\EmptyExtensionTrait;
-use Enqueue\Consumption\ExtensionInterface;
+use Enqueue\Consumption\Context\MessageReceived;
+use Enqueue\Consumption\MessageReceivedExtensionInterface;
 use Enqueue\Consumption\Result;
 use Interop\Amqp\AmqpContext;
-use Interop\Queue\PsrContext;
+use Interop\Queue\Context;
 
-class LimitMessageRedeliveryExtension implements ExtensionInterface
+class LimitMessageRedeliveryExtension implements MessageReceivedExtensionInterface
 {
-    use EmptyExtensionTrait;
-
     /**
-     * @var PsrContext
+     * @var Context
      */
     private $context;
 
@@ -23,18 +20,15 @@ class LimitMessageRedeliveryExtension implements ExtensionInterface
      */
     private $limitRetries;
 
-    public function __construct(PsrContext $context, int $limitRetries)
+    public function __construct(Context $context, int $limitRetries)
     {
         $this->context = $context;
         $this->limitRetries = $limitRetries;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function onPreReceived(Context $context)
+    public function onMessageReceived(MessageReceived $context): void
     {
-        $message = $context->getPsrMessage();
+        $message = $context->getMessage();
 
         $count = $message->getProperty(DelayRedeliveredMessageExtension::PROPERTY_REDELIVER_COUNT, 0);
         if ($count <= $this->limitRetries) {

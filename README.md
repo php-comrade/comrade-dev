@@ -107,13 +107,18 @@ The best way to run Comrade in production is to use pre-build Docker containers.
 If you'd like to build and run Comrade from source code, do next:
 
 ```bash
-$ git clone git@github.com:php-comrade/comrade-dev.git;
-$ (cd comrade-dev/apps/jm; composer install);
-$ (cd comrade-dev/apps/demo; composer install);
-$ (cd comrade-dev/apps/ui; npm install);
-$ echo '127.0.0.1 jm.loc' >> /etc/hosts
-$ echo '127.0.0.1 ui.jm.loc' >> /etc/hosts
-$ bin/dup
+git clone git@github.com:php-comrade/comrade-dev.git;
+cd comrade-dev
+./bin/setup
+echo '127.0.0.1 jm.loc' >> /etc/hosts
+echo '127.0.0.1 ui.jm.loc' >> /etc/hosts
+bin/dup
+```
+
+You could optionally load some sample fixtures:
+
+```bash
+bin/load-demo-fixtures.sh
 ```
 
 The Comrade service will be available at `jm.loc` host and its UI at `ui.jm.loc`.
@@ -138,18 +143,15 @@ use Comrade\Shared\Message\CreateJob;
 use Comrade\Shared\Model\CronTrigger;
 use Enqueue\Util\UUID;
 use Enqueue\Util\JSON;
-use function Enqueue\dsn_to_context;
 use function Makasim\Values\register_cast_hooks;
 use function Makasim\Values\register_object_hooks;
-use Interop\Queue\PsrContext;
 
 require_once __DIR__.'/vendor/autoload.php';
 
 register_cast_hooks();
 register_object_hooks();
 
-/** @var PsrContext $queueContext */
-$context = dsn_to_context(getenv('ENQUEUE_DSN'));
+$context = (new \Enqueue\ConnectionFactoryFactory())->create(getenv('ENQUEUE_DSN'))->createContext();
 
 $template = JobTemplate::create();
 $template->setName('demo_success_job');
@@ -187,9 +189,7 @@ The job worker could look like this:
 use Comrade\Shared\Message\RunJob;
 use Comrade\Shared\Model\JobAction;
 use Comrade\Client\ClientQueueRunner;
-use Interop\Queue\PsrContext;
-use Interop\Queue\PsrMessage;
-use function Enqueue\dsn_to_context;
+use Interop\Queue\Message;
 use Enqueue\Consumption\QueueConsumer;
 use Enqueue\Consumption\Result;
 use function Makasim\Values\register_cast_hooks;
@@ -198,14 +198,13 @@ use function Makasim\Values\register_object_hooks;
 register_cast_hooks();
 register_object_hooks();
 
-/** @var PsrContext $c */
-$c = dsn_to_context(getenv('ENQUEUE_DSN'));
+$context = (new \Enqueue\ConnectionFactoryFactory())->create(getenv('ENQUEUE_DSN'))->createContext();
 
 $runner = new ClientQueueRunner($c);
 
 $queueConsumer = new QueueConsumer($c);
 
-$queueConsumer->bind('demo_success_job', function(PsrMessage $message) use ($runner) {
+$queueConsumer->bindCallback('demo_success_job', function(Message $message) use ($runner) {
     $runner->run($message, function(RunJob $runJob) {
         // do your stuff here. 
 

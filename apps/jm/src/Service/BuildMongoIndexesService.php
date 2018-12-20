@@ -1,6 +1,7 @@
 <?php
 namespace App\Service;
 
+use Makasim\Yadm\CollectionFactory;
 use MongoDB\Client;
 
 class BuildMongoIndexesService
@@ -9,59 +10,59 @@ class BuildMongoIndexesService
      * @var Client
      */
     private $client;
-
+    
     /**
      * @var string
      */
-    private $dbName;
+    private $mongoDsn;
 
     /**
      * @param Client $client
-     * @param string $dbName
+     * @param string $mongoDsn
      */
-    public function __construct(Client $client, string $dbName)
+    public function __construct(Client $client, string $mongoDsn)
     {
         $this->client = $client;
-        $this->dbName = $dbName;
+        $this->mongoDsn = $mongoDsn;
     }
 
     public function build()
     {
-        $db = $this->client->selectDatabase($this->dbName);
+        $collectionFactory = new CollectionFactory($this->client, $this->mongoDsn);
 
-        $db->selectCollection('job_template')->createIndex([
+        $collectionFactory->create('job_template')->createIndex([
             'templateId' => 1,
         ], ['unique' => true]);
 
-        $db->selectCollection('job')->createIndex([
+        $collectionFactory->create('job')->createIndex([
             'templateId' => 1,
         ]);
 
-        $db->selectCollection('job')->createIndex([
+        $collectionFactory->create('job')->createIndex([
             'processTemplateId' => 1,
         ]);
 
-        $db->selectCollection('job')->createIndex([
+        $collectionFactory->create('job')->createIndex([
             'id' => 1,
         ], ['unique' => true]);
 
-        $db->selectCollection('job')->createIndex([
+        $collectionFactory->create('job')->createIndex([
             'processId' => 1,
         ]);
 
-        $db->selectCollection('pvm_process')->createIndex([
+        $collectionFactory->create('pvm_process')->createIndex([
             'templateId' => 1,
         ]);
 
-        $db->selectCollection('pvm_process_execution')->createIndex([
+        $collectionFactory->create('pvm_process_execution')->createIndex([
             'templateId' => 1,
         ]);
 
-        $db->selectCollection('pvm_process_execution')->createIndex([
+        $collectionFactory->create('pvm_process_execution')->createIndex([
             'id' => 1,
         ], ['unique' => true]);
 
-        $db->selectCollection('exclusive_job')->createIndex([
+        $collectionFactory->create('exclusive_job')->createIndex([
             'name' => 1,
         ], ['unique' => true]);
     }

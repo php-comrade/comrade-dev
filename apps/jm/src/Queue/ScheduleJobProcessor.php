@@ -9,12 +9,12 @@ use App\Storage\JobTemplateStorage;
 use Comrade\Shared\Message\ScheduleJob;
 use Enqueue\Client\CommandSubscriberInterface;
 use Enqueue\Consumption\Result;
-use Interop\Queue\PsrContext;
-use Interop\Queue\PsrMessage;
-use Interop\Queue\PsrProcessor;
+use Interop\Queue\Context;
+use Interop\Queue\Message;
+use Interop\Queue\Processor;
 use Enqueue\Util\JSON;
 
-class ScheduleJobProcessor implements PsrProcessor, CommandSubscriberInterface
+class ScheduleJobProcessor implements Processor, CommandSubscriberInterface
 {
     /**
      * @var JobTemplateStorage
@@ -48,9 +48,9 @@ class ScheduleJobProcessor implements PsrProcessor, CommandSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function process(PsrMessage $psrMessage, PsrContext $psrContext)
+    public function process(Message $Message, Context $Context)
     {
-        $data = JSON::decode($psrMessage->getBody());
+        $data = JSON::decode($Message->getBody());
         if ($errors = $this->schemaValidator->validate($data, ScheduleJob::SCHEMA)) {
             return Result::reject(Errors::toString($errors, 'Message schema validation has failed.'));
         }

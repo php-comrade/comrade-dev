@@ -2,6 +2,7 @@
 namespace App\Service;
 
 use App\Infra\Pvm\NotAllowedTransitionException;
+use App\JobStateMachine;
 use App\Model\Job;
 use App\Model\JobResult;
 use App\Storage\JobStorage;

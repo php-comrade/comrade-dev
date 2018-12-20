@@ -11,12 +11,12 @@ use Enqueue\Client\CommandSubscriberInterface;
 use Enqueue\Client\ProducerInterface;
 use Enqueue\Consumption\QueueSubscriberInterface;
 use Enqueue\Consumption\Result;
-use Interop\Queue\PsrContext;
-use Interop\Queue\PsrMessage;
-use Interop\Queue\PsrProcessor;
+use Interop\Queue\Context;
+use Interop\Queue\Message;
+use Interop\Queue\Processor;
 use Enqueue\Util\JSON;
 
-class CreateJobProcessor implements PsrProcessor, CommandSubscriberInterface, QueueSubscriberInterface
+class CreateJobProcessor implements Processor, CommandSubscriberInterface, QueueSubscriberInterface
 {
     /**
      * @var SchemaValidator
@@ -51,9 +51,9 @@ class CreateJobProcessor implements PsrProcessor, CommandSubscriberInterface, Qu
     /**
      * {@inheritdoc}
      */
-    public function process(PsrMessage $psrMessage, PsrContext $psrContext)
+    public function process(Message $Message, Context $Context)
     {
-        $data = JSON::decode($psrMessage->getBody());
+        $data = JSON::decode($Message->getBody());
         if ($errors = $this->schemaValidator->validate($data, CreateJob::SCHEMA)) {
             return Result::reject(Errors::toString($errors, 'Message schema validation has failed.'));
         }
@@ -68,23 +68,17 @@ class CreateJobProcessor implements PsrProcessor, CommandSubscriberInterface, Qu
         return self::ACK;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedCommand()
+    public static function getSubscribedCommand(): array
     {
         return [
-            'processorName' => Commands::CREATE_JOB,
-            'queueName' => Commands::CREATE_JOB,
-            'queueNameHardcoded' => true,
+            'command' => Commands::CREATE_JOB,
+            'queue' => Commands::CREATE_JOB,
+            'prefix_queue' => false,
             'exclusive' => true,
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedQueues()
+    public static function getSubscribedQueues(): array
     {
         return [Commands::CREATE_JOB];
     }

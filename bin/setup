@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+set -x
+set -e
+
+# backend
+if [ ! -f apps/jm/.env ]; then
+    cp apps/jm/.env.dist apps/jm/.env
+fi
+
+(cd apps/jm; composer install --prefer-source)
+(cd apps/jm; composer install --prefer-source)
+
+# frontend
+docker run --rm -it -v "`pwd`/apps/ui:/app" -w "/app" node:carbon npm install
+
+docker-compose build

@@ -12,7 +12,7 @@ use Comrade\Shared\Model\Job;
 use Comrade\Shared\Model\QueueRunner;
 use Enqueue\Client\ProducerInterface;
 use Formapro\Pvm\Transition;
-use Interop\Queue\PsrContext;
+use Interop\Queue\Context;
 use Enqueue\Util\JSON;
 use Formapro\Pvm\Behavior;
 use Formapro\Pvm\Exception\WaitExecutionException;
@@ -22,7 +22,7 @@ use Formapro\Pvm\Token;
 class QueueRunnerBehavior implements Behavior, SignalBehavior
 {
     /**
-     * @var PsrContext
+     * @var Context
      */
     private $psrContext;
 
@@ -42,7 +42,7 @@ class QueueRunnerBehavior implements Behavior, SignalBehavior
     private $changeJobStateService;
 
     public function __construct(
-        PsrContext $psrContext,
+        Context $psrContext,
         JobStorage $jobStorage,
         ProducerInterface $producer,
         ChangeJobStateService $changeJobStateService

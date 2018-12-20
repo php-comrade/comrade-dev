@@ -12,13 +12,13 @@ use Comrade\Shared\Model\JobMetrics;
 use Enqueue\Client\TopicSubscriberInterface;
 use Enqueue\Consumption\Result;
 use Enqueue\Util\JSON;
-use Interop\Queue\PsrContext;
-use Interop\Queue\PsrMessage;
-use Interop\Queue\PsrProcessor;
+use Interop\Queue\Context;
+use Interop\Queue\Message;
+use Interop\Queue\Processor;
 use function Makasim\Values\get_value;
 use function Makasim\Values\get_values;
 
-class JobMetricsProcessor implements PsrProcessor, TopicSubscriberInterface
+class JobMetricsProcessor implements Processor, TopicSubscriberInterface
 {
     /**
      * @var JobMetricsStorage
@@ -39,7 +39,7 @@ class JobMetricsProcessor implements PsrProcessor, TopicSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public function process(PsrMessage $message, PsrContext $context)
+    public function process(Message $message, Context $context)
     {
         if ($message->isRedelivered()) {
             return Result::reject('Message is redelivered. Reject it');

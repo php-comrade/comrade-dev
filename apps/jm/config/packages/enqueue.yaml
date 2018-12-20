@@ -1,13 +1,12 @@
 enqueue:
-    transport:
-        default: 'amqp'
-        amqp:
+    default:
+        transport:
             dsn: '%env(ENQUEUE_DSN)%'
             lazy: true
             persisted: true
             connection_timeout: 1100
             heartbeat: 500
-    client:
-        redelivered_delay_time: 5
-        prefix: ''
-        app_name: 'comrade'
+        client:
+            redelivered_delay_time: 5
+            prefix: ''
+            app_name: 'comrade'
