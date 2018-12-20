@@ -35,7 +35,8 @@ class PersistJobService
 
     public function persist(Job $job): void
     {
-        if (empty($this->changesCollector->changes($job))) {
+        $diff = $this->changesCollector->changes(get_values($job), $this->changesCollector->getOriginalValues($job));
+        if (empty($diff)) {
             return;
         }
 

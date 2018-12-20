@@ -7,11 +7,11 @@ use App\Infra\ThruwayClient;
 use Enqueue\Client\TopicSubscriberInterface;
 use Enqueue\Consumption\Result;
 use Enqueue\Util\JSON;
-use Interop\Queue\PsrContext;
-use Interop\Queue\PsrMessage;
-use Interop\Queue\PsrProcessor;
+use Interop\Queue\Context;
+use Interop\Queue\Message;
+use Interop\Queue\Processor;
 
-class WsPushInternalErrorProcessor implements PsrProcessor, TopicSubscriberInterface
+class WsPushInternalErrorProcessor implements Processor, TopicSubscriberInterface
 {
     /**
      * @var ThruwayClient
@@ -29,7 +29,7 @@ class WsPushInternalErrorProcessor implements PsrProcessor, TopicSubscriberInter
     /**
      * {@inheritdoc}
      */
-    public function process(PsrMessage $message, PsrContext $context)
+    public function process(Message $message, Context $context)
     {
         if ($message->isRedelivered()) {
             return Result::ack('Rejected redelivered message');

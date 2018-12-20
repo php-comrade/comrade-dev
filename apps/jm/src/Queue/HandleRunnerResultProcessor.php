@@ -14,12 +14,12 @@ use Enqueue\Client\CommandSubscriberInterface;
 use Enqueue\Client\ProducerInterface;
 use Enqueue\Consumption\QueueSubscriberInterface;
 use Enqueue\Consumption\Result;
-use Interop\Queue\PsrContext;
-use Interop\Queue\PsrMessage;
-use Interop\Queue\PsrProcessor;
+use Interop\Queue\Context;
+use Interop\Queue\Message;
+use Interop\Queue\Processor;
 use Enqueue\Util\JSON;
 
-class HandleRunnerResultProcessor implements PsrProcessor, CommandSubscriberInterface, QueueSubscriberInterface
+class HandleRunnerResultProcessor implements Processor, CommandSubscriberInterface, QueueSubscriberInterface
 {
     /**
      * @var SchemaValidator
@@ -70,9 +70,9 @@ class HandleRunnerResultProcessor implements PsrProcessor, CommandSubscriberInte
     /**
      * {@inheritdoc}
      */
-    public function process(PsrMessage $psrMessage, PsrContext $psrContext)
+    public function process(Message $Message, Context $Context)
     {
-        $data = JSON::decode($psrMessage->getBody());
+        $data = JSON::decode($Message->getBody());
         if ($errors = $this->schemaValidator->validate($data, RunnerResult::SCHEMA)) {
             return Result::reject(Errors::toString($errors, 'Message schema validation has failed.'));
         }
@@ -95,23 +95,17 @@ class HandleRunnerResultProcessor implements PsrProcessor, CommandSubscriberInte
         return self::ACK;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedCommand()
+    public static function getSubscribedCommand(): array
     {
         return [
-            'processorName' => Commands::HANDLE_RUNNER_RESULT,
-            'queueName' => Commands::HANDLE_RUNNER_RESULT,
-            'queueNameHardcoded' => true,
+            'command' => Commands::HANDLE_RUNNER_RESULT,
+            'queue' => Commands::HANDLE_RUNNER_RESULT,
+            'prefix_queue' => false,
             'exclusive' => true,
         ];
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedQueues()
+    public static function getSubscribedQueues(): array
     {
         return [Commands::HANDLE_RUNNER_RESULT];
     }

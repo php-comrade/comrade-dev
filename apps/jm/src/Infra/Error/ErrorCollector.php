@@ -6,13 +6,13 @@ use App\Topics;
 use App\Infra\Uuid;
 use Enqueue\Client\Config;
 use Enqueue\Client\ProducerInterface;
-use Enqueue\Consumption\Context;
-use Enqueue\Consumption\EmptyExtensionTrait;
-use Enqueue\Consumption\ExtensionInterface;
+use Enqueue\Consumption\Context\PostMessageReceived;
+use Enqueue\Consumption\Context\ProcessorException;
+use Enqueue\Consumption\PostMessageReceivedExtensionInterface;
+use Enqueue\Consumption\ProcessorExceptionExtensionInterface;
 use Enqueue\Consumption\Result;
-use Interop\Queue\Exception;
-use Interop\Queue\PsrMessage;
-use Interop\Queue\PsrProcessor;
+use Interop\Queue\Message;
+use Interop\Queue\Processor;
 use Symfony\Component\Console\ConsoleEvents;
 use Symfony\Component\Console\Event\ConsoleErrorEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -21,10 +21,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
+class ErrorCollector implements EventSubscriberInterface, ProcessorExceptionExtensionInterface, PostMessageReceivedExtensionInterface
 {
-    use EmptyExtensionTrait;
-
     /**
      * @var ProducerInterface
      */
@@ -68,18 +66,19 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
         } catch (\Throwable $e) {}
     }
 
-    public function onPostReceived(Context $context)
+    public function onPostMessageReceived(PostMessageReceived $context): void
     {
-        if (PsrProcessor::REJECT !== (string) $context->getResult()) {
+        if (Processor::REJECT !== (string) $context->getResult()) {
             return;
         }
-        if (StoreInternalErrorProcessor::PROCESSOR_NAME == $context->getPsrMessage()->getProperty(Config::PARAMETER_PROCESSOR_NAME)) {
+
+        if (StoreInternalErrorProcessor::PROCESSOR_NAME == $context->getMessage()->getProperty(Config::PROCESSOR)) {
             // do not try to store rejections happened while trying to store an error. it must end up being an endless cycle.
             return;
         }
 
         $error = $this->createNewError();
-        $error->setValue('queue.message', $this->convertQueueMessage($context->getPsrMessage()));
+        $error->setValue('queue.message', $this->convertQueueMessage($context->getMessage()));
 
         $result = $context->getResult();
         $error->setValue('queue.result.status', (string) $result);
@@ -90,13 +89,9 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
         } catch (\Throwable $e) {}
     }
 
-    public function onInterrupted(Context $context)
+    public function onProcessorException(ProcessorException $context): void
     {
-        if (false == $context->getException()) {
-            return;
-        }
-
-        if ($context->getPsrMessage() && StoreInternalErrorProcessor::PROCESSOR_NAME == $context->getPsrMessage()->getProperty(Config::PARAMETER_PROCESSOR_NAME)) {
+        if ($context->getMessage() && StoreInternalErrorProcessor::PROCESSOR_NAME == $context->getMessage()->getProperty(Config::PROCESSOR)) {
             // do not try to store errors happened while trying to store another error. it must end up being an endless cycle.
             return;
         }
@@ -104,8 +99,8 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
         $error = $this->createNewError();
         $error->setValue('error', $this->convertThrowable($context->getException()));
 
-        if ($context->getPsrMessage()) {
-            $error->setValue('queue.message', $this->convertQueueMessage($context->getPsrMessage()));
+        if ($context->getMessage()) {
+            $error->setValue('queue.message', $this->convertQueueMessage($context->getMessage()));
         }
         if ($result = $context->getResult()) {
             $error->setValue('queue.result.status', (string) $result);
@@ -117,9 +112,6 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
         } catch (\Throwable $e) {}
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents():array
     {
         return [
@@ -128,7 +120,7 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
         ];
     }
 
-    private function convertRequest(Request $request, $requestType):array
+    private function convertRequest(Request $request, $requestType): array
     {
         return [
             'type' => $requestType,
@@ -140,7 +132,7 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
         ];
     }
 
-    private function convertResponse(Response $response):array
+    private function convertResponse(Response $response): array
     {
         return [
             'response.raw' => (string) $response,
@@ -148,8 +140,8 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
             'response.statusCode' => $response->getStatusCode(),
         ];
     }
-    
-    private function convertThrowable(\Throwable $error):array
+
+    private function convertThrowable(\Throwable $error): array
     {
         $rawError = [
             'raw' => (string) $error,
@@ -167,7 +159,7 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
         return $rawError;
     }
 
-    private function convertQueueMessage(PsrMessage $message): array
+    private function convertQueueMessage(Message $message): array
     {
         return [
             // key might contain a dot and mongodb complains on it"
@@ -175,10 +167,10 @@ class ErrorCollector implements EventSubscriberInterface, ExtensionInterface
             'headers' => json_encode($message->getHeaders()),
             'body' => str_pad($message->getBody(), 1000, ' [...]'),
             'isRedelivered' => $message->isRedelivered(),
-            'topicName' => $message->getProperty(Config::PARAMETER_TOPIC_NAME),
-            'processorName' => $message->getProperty(Config::PARAMETER_PROCESSOR_NAME),
-            'processorQueueName' => $message->getProperty(Config::PARAMETER_PROCESSOR_QUEUE_NAME),
-            'commandName' => $message->getProperty(Config::PARAMETER_COMMAND_NAME),
+            'topicName' => $message->getProperty(Config::TOPIC),
+            'processorName' => $message->getProperty(Config::PROCESSOR),
+            'processorQueueName' => null,
+            'commandName' => $message->getProperty(Config::COMMAND),
         ];
     }
 

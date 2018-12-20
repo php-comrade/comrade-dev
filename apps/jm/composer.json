@@ -5,44 +5,45 @@
         "php": "^7.1",
         "cboden/ratchet": "^0.4@dev",
         "comrade/shared": "*@dev",
-        "enqueue/amqp-bunny": "^0.8.15",
-        "enqueue/amqp-tools": "^0.8.14",
-        "enqueue/enqueue-bundle": "^0.8.13",
-        "formapro/pvm": "^0.2.3",
+        "enqueue/amqp-bunny": "^0.9",
+        "enqueue/amqp-tools": "^0.9",
+        "enqueue/enqueue-bundle": "^0.9",
+        "formapro/pvm": "^0.4",
         "mikemccabe/json-patch-php": "dev-master as 0.1.1",
         "graphp/graphviz": "^0.2",
         "guzzlehttp/guzzle": "^6.3",
         "justinrainbow/json-schema": "^5",
-        "makasim/values": "^0.3.1",
-        "makasim/yadm": "^0.3.8@dev",
-        "makasim/yadm-bundle": "@dev",
+        "makasim/values": "^0.5",
+        "makasim/yadm": "^0.5",
+        "makasim/yadm-bundle": "^0.5",
         "nelmio/cors-bundle": "^1",
-        "php-quartz/bridge": "^0.1",
-        "php-quartz/bundle": "^0.1",
-        "php-quartz/quartz": "^0.1",
-        "queue-interop/queue-interop": "^0.6",
+        "php-quartz/bridge": "^0.1.2",
+        "php-quartz/bundle": "^0.1.2",
+        "php-quartz/quartz": "^0.1.2",
+        "queue-interop/queue-interop": "^0.8",
         "ramsey/uuid": "^3.6",
         "sensio/framework-extra-bundle": "^3",
-        "symfony/config": "^4",
-        "symfony/console": "^4",
-        "symfony/dotenv": "^4",
-        "symfony/expression-language": "^4",
+        "symfony/config": "^4.1",
+        "symfony/console": "^4.1",
+        "symfony/dotenv": "^4.1",
+        "symfony/expression-language": "^4.1",
         "symfony/flex": "^1.0",
-        "symfony/framework-bundle": "^4",
-        "symfony/process": "^4",
-        "symfony/security-bundle": "^4",
-        "symfony/serializer": "^4",
+        "symfony/framework-bundle": "^4.1",
+        "symfony/process": "^4.1",
+        "symfony/security-bundle": "^4.1",
+        "symfony/serializer": "^4.1",
         "symfony/thanks": "^1.0",
-        "symfony/twig-bundle": "^4",
-        "symfony/validator": "^4",
-        "symfony/yaml": "^4",
+        "symfony/twig-bundle": "^4.1",
+        "symfony/validator": "^4.1",
+        "symfony/yaml": "^4.1",
         "thruway/pawl-transport": "^0.5@dev",
         "thruway/ratchet-transport": "^0.5@dev",
         "voryx/thruway": "^0.5@dev"
     },
     "config": {
         "platform": {
-            "php": "7.1"
+            "php": "7.2",
+            "ext-mongodb": "1.5.0"
         },
         "preferred-install": {
             "*": "dist"
@@ -68,6 +69,12 @@
         "symfony": {
             "id": "01BH20HT59R1KN3CEXRM17KTRV",
             "allow-contrib": "true"
+        }
+    },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         }
     }
 }

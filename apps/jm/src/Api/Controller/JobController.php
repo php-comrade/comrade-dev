@@ -7,10 +7,11 @@ use App\JobStatus;
 use App\Message\ExecuteJob;
 use App\Model\JobResult;
 use App\Service\CreateDependentJobsProcessService;
-use App\Service\JobStateMachine;
+use App\JobStateMachine;
 use App\Storage\JobStorage;
 use App\Storage\JobTemplateStorage;
 use App\Storage\ProcessExecutionStorage;
+use App\Storage\TokenStorage;
 use Comrade\Shared\Message\GetDependentJobs;
 use Comrade\Shared\Message\GetDependentJobsResult;
 use Comrade\Shared\Message\GetJob;
@@ -344,7 +345,7 @@ class JobController
      * @param ProcessExecutionStorage $processStorage
      * @return Response
      */
-    public function getFlowGraphDotAction(string $id, JobStorage $jobStorage, ProcessExecutionStorage $processStorage)
+    public function getFlowGraphDotAction(string $id, JobStorage $jobStorage, TokenStorage $tokenStorage, ProcessExecutionStorage $processStorage)
     {
         if (false == $job = $jobStorage->findOne(['id' => $id])) {
             throw new NotFoundHttpException(sprintf('Job template %s was not found', $id));
@@ -355,7 +356,10 @@ class JobController
             throw new NotFoundHttpException(sprintf('Process %s was not found', $processId));
         }
 
+        $tokens = iterator_to_array($tokenStorage->find(['processorId' => $process->getId()]));
+
         $graph = (new VisualizeFlow())->createGraph($process);
+        (new VisualizeFlow())->applyTokens($graph, $process, $tokens);
 
         return new Response(
             (new GraphViz())->createScript($graph),
@@ -368,7 +372,7 @@ class JobController
      * @Extra\Route("/job/{id}/dependent-flow-graph.gv")
      * @Extra\Method("GET")
      */
-    public function getDependentFlowGraphDotAction(string $id, JobStorage $jobStorage, CreateDependentJobsProcessService $createDependentJobsProcessService): Response
+    public function getDependentFlowGraphDotAction(string $id, JobStorage $jobStorage, TokenStorage $tokenStorage, CreateDependentJobsProcessService $createDependentJobsProcessService): Response
     {
         if (false == $job = $jobStorage->findOne(['id' => $id])) {
             throw new NotFoundHttpException(sprintf('Job template %s was not found', $id));
@@ -376,7 +380,10 @@ class JobController
 
         $process = $createDependentJobsProcessService->createProcessForJob($job);
 
+        $tokens = iterator_to_array($tokenStorage->find(['processorId' => $process->getId()]));
+
         $graph = (new VisualizeFlow())->createGraph($process);
+        (new VisualizeFlow())->applyTokens($graph, $process, $tokens);
 
         return new Response(
             (new GraphViz())->createScript($graph),

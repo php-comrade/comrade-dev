@@ -5,13 +5,13 @@ yadm:
             class: 'App\Model\JobTemplate'
             storage_class: 'App\Storage\JobTemplateStorage'
             collection: 'job_template'
-            database: '%mongo_database%'
+            storage_autowire: true
 
         job:
             class: 'App\Model\Job'
             storage_class: 'App\Storage\JobStorage'
             collection: 'job'
-            database: '%mongo_database%'
+            storage_autowire: true
             pessimistic_lock: true
             hydrator_class: 'App\Infra\Yadm\SchemaBasedHydrator'
 
@@ -19,38 +19,44 @@ yadm:
             class: 'Comrade\Shared\Model\Trigger'
             storage_class: 'App\Storage\TriggerStorage'
             collection: 'trigger'
-            database: '%mongo_database%'
+            storage_autowire: true
             hydrator_class: 'App\Infra\Yadm\SchemaBasedHydrator'
 
         job_metrics:
             class: 'Comrade\Shared\Model\JobMetrics'
             storage_class: 'App\Storage\JobMetricsStorage'
             collection: 'metrics'
-            database: '%mongo_database%'
+            storage_autowire: true
             pessimistic_lock: true
 
         exclusive_job:
             class: 'App\Model\ExclusiveJob'
             storage_class: 'App\Storage\ExclusiveJobStorage'
             collection: 'exclusive_job'
-            database: '%mongo_database%'
+            storage_autowire: true
             pessimistic_lock: true
 
         process:
             class: 'App\Model\PvmProcess'
             storage_class: 'App\Storage\ProcessStorage'
             collection: 'pvm_process'
-            database: '%mongo_database%'
+            storage_autowire: true
+
+        token:
+            class: 'App\Model\PvmToken'
+            storage_class: 'App\Storage\TokenStorage'
+            collection: 'pvm_token'
+            storage_autowire: true
+            pessimistic_lock: true
 
         process_execution:
             class: 'App\Model\PvmProcess'
             storage_class: 'App\Storage\ProcessExecutionStorage'
             collection: 'pvm_process_execution'
-            database: '%mongo_database%'
-            pessimistic_lock: true
+            storage_autowire: true
 
         error:
             class: 'App\Infra\Error\Error'
             storage_class: 'App\Infra\Error\ErrorStorage'
             collection: 'error'
-            database: '%mongo_database%'
+            storage_autowire: true

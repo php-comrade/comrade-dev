@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  jm:
+    volumes:
+      - './apps/jm:/jobs_dev/apps/jm:cached'
+      - './pkg/php-shared:/jobs_dev/apps/jm/vendor/comrade/shared:cached'
+
+  jmq:
+    volumes:
+      - './apps/jm:/jobs_dev/apps/jm:cached'
+      - './pkg/php-shared:/jobs_dev/apps/jm/vendor/comrade/shared:cached'
+
+  jmw:
+    volumes:
+      - './apps/jm:/jobs_dev/apps/jm:cached'
+      - './pkg/php-shared:/jobs_dev/apps/jm/vendor/comrade/shared:cached'
+
+  jmc:
+    volumes:
+      - './apps/jm:/jobs_dev/apps/jm:cached'
+      - './pkg/php-shared:/jobs_dev/apps/jm/vendor/comrade/shared:cached'
+      - './docker/xdebug.ini:/etc/php/7.1/fpm/conf.d/xdebug.ini'
+      - './docker/xdebug.ini:/etc/php/7.1/cli/conf.d/xdebug.ini'
+
+  jmdq:
+    volumes:
+      - './apps/demo:/jobs_dev/apps/demo:cached'
+      - './pkg/php-shared:/jobs_dev/apps/demo/vendor/comrade/shared:cached'
+      - './pkg/php-client:/jobs_dev/apps/demo/vendor/comrade/client:cached'
+
+  jmdh:
+    volumes:
+      - './apps/demo:/jobs_dev/apps/demo:cached'
+      - './pkg/php-shared:/jobs_dev/apps/demo/vendor/comrade/shared:cached'
+      - './pkg/php-client:/jobs_dev/apps/demo/vendor/comrade/client:cached'
+
+  ui:
+    volumes:
+      - './apps/ui:/ui:cached'

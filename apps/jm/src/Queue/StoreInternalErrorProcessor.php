@@ -7,12 +7,12 @@ use App\Infra\Error\ErrorStorage;
 use Enqueue\Client\TopicSubscriberInterface;
 use Enqueue\Consumption\Result;
 use Enqueue\Util\JSON;
-use Interop\Queue\PsrContext;
-use Interop\Queue\PsrMessage;
-use Interop\Queue\PsrProcessor;
+use Interop\Queue\Context;
+use Interop\Queue\Message;
+use Interop\Queue\Processor;
 use function Makasim\Values\set_values;
 
-class StoreInternalErrorProcessor implements PsrProcessor, TopicSubscriberInterface
+class StoreInternalErrorProcessor implements Processor, TopicSubscriberInterface
 {
     const PROCESSOR_NAME = 'store_internal_error';
 
@@ -32,10 +32,10 @@ class StoreInternalErrorProcessor implements PsrProcessor, TopicSubscriberInterf
     /**
      * {@inheritdoc}
      */
-    public function process(PsrMessage $psrMessage, PsrContext $psrContext)
+    public function process(Message $Message, Context $Context)
     {
         try {
-            $data = JSON::decode($psrMessage->getBody());
+            $data = JSON::decode($Message->getBody());
 
             if (false == is_array($data)) {
                 throw new \LogicException('Data must be an array');
@@ -52,15 +52,12 @@ class StoreInternalErrorProcessor implements PsrProcessor, TopicSubscriberInterf
         return self::ACK;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedTopics()
+    public static function getSubscribedTopics(): array
     {
         return [
             Topics::INTERNAL_ERROR => [
-                'processorName' => self::PROCESSOR_NAME,
-                'queueName' => 'store_internal_error',
+                'processor' => self::PROCESSOR_NAME,
+                'queue' => 'store_internal_error',
             ]
         ];
     }

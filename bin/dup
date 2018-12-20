@@ -1,9 +1,20 @@
 #!/usr/bin/env bash
 
-docker-compose up -d --remove-orphans --scale jmc=2 --scale jmdq=2
-trap "docker-compose stop jmc jmq jmw jmqr jmdq jmdh ui; killall fswatch" SIGTERM  SIGINT
+set -e
+set -x
 
-fswatch -or -l 2 apps/jm pkg | xargs -n1 -I{} docker-compose restart jmc &
-fswatch -or -l 2 apps/demo pkg  | xargs -n1 -I{} docker-compose restart jmdq &
+fswatch -or -l 2 ./pkg ./apps/jm --exclude="\/jm\/var" | xargs -n1 -I{} docker-compose restart jmc &
+FSWATCH_PID=$!
+trap "kill -9 $FSWATCH_PID 2>/dev/null" SIGTERM SIGINT EXIT
 
-docker-compose logs --tail=0 -f jm jmc jmq jmw jmqr jmdq jmdh ui
+fswatch -or -l 2 ./pkg ./apps/demo | xargs -n1 -I{} docker-compose restart jmdq &
+FSWATCH_PID=$!
+trap "kill -9 $FSWATCH_PID 2>/dev/null" SIGTERM SIGINT EXIT
+
+DOCKER_UP_EXTRA=""
+case "$OSTYPE" in
+  darwin*)  DOCKER_UP_EXTRA="$DOCKER_UP_EXTRA -f docker-compose.mac.yml" ;;
+  *)         ;;
+esac
+
+docker-compose -f docker-compose.yml $DOCKER_UP_EXTRA up --remove-orphans --scale jmdq=2 --scale jmc=2

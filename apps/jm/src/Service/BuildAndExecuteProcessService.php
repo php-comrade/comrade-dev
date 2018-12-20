@@ -137,7 +137,7 @@ class BuildAndExecuteProcessService
         try {
             foreach ($process->getTransitions() as $transition) {
                 if ($transition->getFrom() === null) {
-                    $token = $process->createToken($transition);
+                    $token = $this->processEngine->createTokenFor($transition);
 
                     $this->processEngine->proceed($token, $this->logger);
                 }

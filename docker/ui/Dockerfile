@@ -1,4 +1,4 @@
-FROM node:6
+FROM node:carbon
 
 RUN npm install -g @angular/cli
 

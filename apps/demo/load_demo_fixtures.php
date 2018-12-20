@@ -22,9 +22,12 @@ use Interop\Queue\Context;
 use function Makasim\Values\register_cast_hooks;
 use function Makasim\Values\register_object_hooks;
 use MongoDB\Client;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Logger\ConsoleLogger;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Application;
 
@@ -45,14 +48,6 @@ class LoadDemoFixturesCommand extends Command
      */
     private $client;
 
-    public function __construct(Context $context, Client $client)
-    {
-        $this->context = $context;
-        $this->client = $client;
-
-        parent::__construct();
-    }
-
     protected function configure()
     {
         $this
@@ -64,8 +59,14 @@ class LoadDemoFixturesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->waitForService(getenv('MONGO_DSN'));
-        $this->waitForService(getenv('ENQUEUE_DSN'));
+        $output = new ConsoleOutput(ConsoleOutput::VERBOSITY_DEBUG);
+        $logger = new ConsoleLogger($output);
+
+        $this->waitForService(getenv('MONGO_DSN'), $logger);
+        $this->waitForService(getenv('ENQUEUE_DSN'), $logger);
+
+        $this->context = (new AmqpConnectionFactory(getenv('ENQUEUE_DSN')))->createContext();
+        $this->client = new Client(getenv('MONGO_DSN'));
 
         if ($input->getOption('drop')) {
             $db = parse_url(getenv('MONGO_DSN'), PHP_URL_PATH);
@@ -471,23 +472,28 @@ class LoadDemoFixturesCommand extends Command
         $this->context->createProducer()->send($queue, $message);
     }
 
-    private function waitForService($dsn)
+    private function waitForService($brokerDsn, LoggerInterface $logger)
     {
         $fp = null;
         $limit = time() + 20;
-        $host = parse_url($dsn, PHP_URL_HOST);
-        $port = parse_url($dsn, PHP_URL_PORT);
+        $host = parse_url($brokerDsn, PHP_URL_HOST);
+        $port = parse_url($brokerDsn, PHP_URL_PORT);
 
         try {
             do {
-                usleep(100000);
-
                 $fp = @fsockopen($host, $port);
+
+                if (false == is_resource($fp)) {
+                    $logger->debug(sprintf('service is not running %s:%s', $host, $port));
+                    sleep(1);
+                }
             } while (false == is_resource($fp) || $limit < time());
 
             if (false == $fp) {
                 throw new \LogicException(sprintf('Failed to connect to "%s:%s"', $host, $port));
             }
+
+            $logger->debug(sprintf('service is online %s:%s', $host, $port));
         } finally {
             if (is_resource($fp)) {
                 fclose($fp);
@@ -499,10 +505,7 @@ class LoadDemoFixturesCommand extends Command
 register_cast_hooks();
 register_object_hooks();
 
-$c = (new AmqpConnectionFactory(getenv('ENQUEUE_DSN')))->createContext();
-$mongoClient = new Client(getenv('MONGO_DSN'));
-
-$command = new \LoadDemoFixturesCommand($c, $mongoClient);
+$command = new \LoadDemoFixturesCommand();
 
 $app = new Application('comrade-demo');
 $app->add($command);

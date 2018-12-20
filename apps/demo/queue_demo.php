@@ -9,6 +9,7 @@ use Comrade\Shared\Model\JobAction;
 use Enqueue\AmqpBunny\AmqpConnectionFactory;
 use Enqueue\Consumption\ChainExtension;
 use Enqueue\Consumption\Extension\LimitConsumptionTimeExtension;
+use Enqueue\Consumption\Extension\LogExtension;
 use Enqueue\Consumption\Extension\LoggerExtension;
 use Enqueue\Consumption\Extension\SignalExtension;
 use Enqueue\Consumption\QueueConsumer;
@@ -30,7 +31,7 @@ $logger = new ConsoleLogger($output);
 register_cast_hooks();
 register_object_hooks();
 
-wait_for_broker($logger, getenv('ENQUEUE_DSN'));
+//wait_for_broker($logger, getenv('ENQUEUE_DSN'));
 
 $c = (new AmqpConnectionFactory(getenv('ENQUEUE_DSN')))->createContext();
 
@@ -43,10 +44,10 @@ foreach (['demo_success_job', 'demo_failed_job', 'demo_failed_with_exception_job
 }
 
 $queueConsumer = new QueueConsumer($c, new ChainExtension([
-    new LoggerExtension($logger),
     new SignalExtension(),
+    new LogExtension(),
     new LimitConsumptionTimeExtension(new \DateTime('now + 5 minutes')),
-]), 0, 200);
+]), [], $logger, 200);
 
 $queueConsumer->bindCallback('demo_success_job', function(Message $message) use ($runner) {
     $runner->run($message, function(RunJob $runJob) {
